@@ -1,0 +1,43 @@
+<div class="staff-photo-modal">
+  @if (currentPhoto()) {
+    <div class="staff-photo-modal__current">
+      <img [src]="currentPhoto()" alt="Foto actual" />
+      <span>{{ 'administration.staff-users.photo.current' | translate }}</span>
+    </div>
+  }
+
+  <app-sk-file-upload
+    accept="image/png,image/jpeg,image/webp"
+    [multiple]="false"
+    [maxSizeMb]="2"
+    [maxFiles]="1"
+    [label]="'administration.staff-users.photo.upload-label' | translate"
+    [helper]="'administration.staff-users.photo.upload-helper' | translate"
+    [placeholder]="'administration.staff-users.photo.upload-placeholder' | translate"
+    (filesChange)="onFilesChange($event)"
+    (uploadError)="onUploadError($event)"
+  />
+
+  @if (errorMessage()) {
+    <div class="staff-photo-modal__error">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <footer class="staff-photo-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="button"
+      variant="primary"
+      iconLeft="upload"
+      [label]="'common.save' | translate"
+      (click)="onConfirm()"
+    />
+  </footer>
+</div>

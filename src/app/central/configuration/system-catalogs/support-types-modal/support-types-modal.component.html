@@ -1,0 +1,50 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="support-type-name">
+        {{ 'configuration.support-types.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="support-type-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="45"
+        (input)="onNameChange($any($event.target).value)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="support-type-translation">
+        {{ 'configuration.support-types.fields.translation' | translate }}
+      </label>
+      <input
+        id="support-type-translation"
+        type="text"
+        class="module-modal__input"
+        formControlName="translation"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.support-types.update' : 'configuration.support-types.add') | translate"
+    ></app-ui-button>
+  </div>
+</form>

@@ -1,0 +1,105 @@
+<section class="login" *ngIf="hasSiteState(); else siteLoading">
+  <div class="login__panel login__panel--brand">
+    <div class="login__brand">
+      <div class="login__logo">
+        <img src="logo/logo-full.png" alt="Skolans" />
+      </div>
+
+      <div class="login__brand-copy">
+        <h1>{{ brandTitle() || ('login.welcome' | translate) }}</h1>
+        <p>{{ brandMessage() || ('login.message' | translate) }}</p>
+
+        @if (brandMessageAuthor() || brandMessageSource()) {
+          <span class="login__brand-quote-author">
+            — {{ brandMessageAuthor() || brandMessageSource() }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="login__panel login__panel--form">
+    <div class="login__mobile-intro">
+      <h1>{{ brandTitle() || ('login.welcome' | translate) }}</h1>
+      <p>{{ brandMessage() || ('login.message' | translate) }}</p>
+
+      @if (brandMessageAuthor() || brandMessageSource()) {
+        <span class="login__brand-quote-author">
+          — {{ brandMessageAuthor() || brandMessageSource() }}
+        </span>
+      }
+    </div>
+    <div class="login__card">
+      <div class="login__card-logo" *ngIf="site()?.logo">
+        <img [src]="site()?.logo" [alt]="site()?.tradename || 'Logo del sitio'" />
+      </div>
+      <div class="login__card-header">
+        <h2>{{ 'login.title' | translate }}</h2>
+        <p>{{ 'login.subtitle' | translate }}</p>
+      </div>
+
+      <form class="login__form-placeholder" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="login__field">
+          <label>{{ 'login.user' | translate }}</label>
+          <input
+            class="login__input"
+            type="text"
+            formControlName="email"
+            autocomplete="email"
+          />
+          <form-error [control]="userControl"></form-error>
+        </div>
+
+        <div class="login__field">
+          <label>{{ 'login.password' | translate }}</label>
+          <div class="login__password-wrapper">
+            <input
+              class="login__input"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              autocomplete="current-password"
+            />
+
+            <button
+              type="button"
+              class="login__password-toggle"
+              (click)="showPassword = !showPassword"
+            >
+              <app-ui-icon
+                [name]="showPassword ? 'eye-off' : 'eye'"
+                size="sm"
+                tone="muted"
+              ></app-ui-icon>
+            </button>
+          </div>
+          <form-error [control]="passwordControl"></form-error>
+        </div>
+
+        <div class="login__forgot">
+          <a routerLink="/auth/forgot-password">{{ 'login.forgot' | translate }}</a>
+        </div>
+
+        <button
+          class="login__button"
+          type="submit"
+          [disabled]="form.invalid || submitting"
+        >
+          {{ 'login.submit' | translate }}
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<ng-template #siteLoading>
+  <section class="login login--loading">
+    <div class="login__loading">
+      <div class="login__loading-logo">
+        <img src="logo/logo-full.png" alt="Skolans" />
+      </div>
+
+      <div class="login__loading-spinner"></div>
+      <p>{{ 'login.loading' | translate }}</p>
+    </div>
+  </section>
+</ng-template>

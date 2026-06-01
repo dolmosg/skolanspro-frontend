@@ -1,0 +1,12 @@
+:host ::ng-deep .community-catalog-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .community-catalog-color__dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}

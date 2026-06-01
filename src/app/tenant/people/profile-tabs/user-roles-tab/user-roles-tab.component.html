@@ -1,0 +1,31 @@
+<div class="user-roles-tab">
+  <div class="user-roles-tab__grid">
+    @for (role of availableRoles(); track role.id) {
+      <label class="user-roles-tab__item">
+        <input
+          type="checkbox"
+          [checked]="isSelected(role.id)"
+          [disabled]="!canUpdate()"
+          (change)="toggleRole(role.id, $any($event.target).checked)"
+        />
+
+        <span>
+          {{ role.translation ? (role.translation | translate) : role.name }}
+        </span>
+      </label>
+    }
+  </div>
+
+  @if (hasScreenOption('update')) {
+    <div class="user-roles-tab__actions">
+      <app-ui-button
+        type="button"
+        variant="primary"
+        size="sm"
+        [disabled]="!hasChanges()"
+        [label]="'common.save' | translate"
+        (click)="onSave()"
+      />
+    </div>
+  }
+</div>

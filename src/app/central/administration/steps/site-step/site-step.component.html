@@ -1,0 +1,160 @@
+<div class="sk-step" [formGroup]="form()">
+  <div class="sk-step__header">
+    <h3 class="sk-step__title">{{ 'administration.tenants.steps.site.title' | translate }}</h3>
+    <p class="sk-step__subtitle">
+      {{ 'administration.tenants.steps.site.subtitle' | translate }}
+    </p>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.site.sections.identity' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--single">
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-name">
+          {{ 'administration.tenants.fields.site_name' | translate }}
+        </label>
+
+        <input
+          id="site-name"
+          type="text"
+          class="sk-field__control"
+          formControlName="site_name"
+          autocomplete="organization"
+          placeholder="Demo School"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.site.sections.contact' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--single">
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-administrator-email">
+          {{ 'administration.tenants.fields.administrator_email' | translate }}
+        </label>
+
+        <input
+          id="site-administrator-email"
+          type="email"
+          class="sk-field__control"
+          formControlName="administrator_email"
+          autocomplete="email"
+          placeholder="admin@demoschool.com"
+        />
+      </div>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--three">
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-contact-name">
+          {{ 'administration.tenants.fields.contact_name' | translate }}
+        </label>
+
+        <input
+          id="site-contact-name"
+          type="text"
+          class="sk-field__control"
+          formControlName="contact_name"
+          autocomplete="given-name"
+          placeholder="Juan"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-contact-lastname">
+          {{ 'administration.tenants.fields.contact_lastname' | translate }}
+        </label>
+
+        <input
+          id="site-contact-lastname"
+          type="text"
+          class="sk-field__control"
+          formControlName="contact_lastname"
+          autocomplete="family-name"
+          placeholder="Pérez"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-contact-mothername">
+          {{ 'administration.tenants.fields.contact_mothername' | translate }}
+        </label>
+
+        <input
+          id="site-contact-mothername"
+          type="text"
+          class="sk-field__control"
+          formControlName="contact_mothername"
+          autocomplete="additional-name"
+          placeholder="López"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.site.sections.configuration' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--three">
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-language-id">
+          {{ 'administration.tenants.fields.language_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="languages()"
+          bindLabel="label"
+          bindValue="id"
+          [translateLabel]="true"
+          [control]="$any(controls()['language_id'])"
+          placeholder="administration.tenants.placeholders.select-language"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-organization-theme-id">
+          {{ 'administration.tenants.fields.organization_theme_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="themes()"
+          bindLabel="translation"
+          bindValue="id"
+          [translateLabel]="true"
+          [control]="$any(controls()['organization_theme_id'])"
+          placeholder="administration.tenants.placeholders.select-theme"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="site-name-casing-id">
+          {{ 'administration.tenants.fields.name_casing_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="captions()"
+          bindLabel="translation"
+          bindValue="id"
+          [translateLabel]="true"
+          [control]="$any(controls()['name_casing_id'])"
+          placeholder="administration.tenants.placeholders.select-caption"
+        />
+      </div>
+    </div>
+  </div>
+</div>

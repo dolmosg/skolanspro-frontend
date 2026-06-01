@@ -1,0 +1,64 @@
+:root {
+  /* Brand */
+  --color-primary: #fd7e14;
+  --color-primary-hover: #e96b0c;
+  --color-primary-soft: #ffe5d0;
+
+  /* States */
+  --color-success: #198754;
+  --color-success-hover: #157347;
+  --color-success-soft: #d1e7dd;
+
+  --color-danger: #dc3545;
+  --color-danger-hover: #bb2d3b;
+  --color-danger-soft: #f8d7da;
+
+  --color-warning: #ffc107;
+  --color-warning-hover: #e0a800;
+  --color-warning-soft: #fff3cd;
+
+  --color-info: #0dcaf0;
+  --color-info-hover: #31d2f2;
+  --color-info-soft: #cff4fc;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8f9fa;
+  --color-surface-muted: #f1f3f5;
+
+  /* Borders */
+  --color-border: #dee2e6;
+  --color-border-strong: #ced4da;
+
+  /* Text */
+  --color-text: #212529;
+  --color-text-soft: #495057;
+  --color-text-muted: #6c757d;
+  --color-text-faint: #adb5bd;
+
+  /* Shadows */
+  --shadow-primary: 0 8px 18px rgba(253, 126, 20, 0.25);
+  --shadow-danger: 0 8px 18px rgba(220, 53, 69, 0.18);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --sidebar-bg: #f8f9fa;
+  --sidebar-border: #dee2e6;
+  --sidebar-text: #495057;
+  --sidebar-text-strong: #212529;
+  --sidebar-hover: #f1f3f5;
+
+  --sidebar-active-bg: #fff3e8;
+  --sidebar-active-text: var(--color-primary);
+  --sidebar-active-indicator: var(--color-primary);
+
+  --sidebar-group-open-bg: #f8f9fa;
+  --sidebar-group-open-border: #dee2e6;
+
+  --sidebar-tree-line: #f1f3f5;
+  --sidebar-chevron: #adb5bd;
+  --sidebar-chevron-open: #6c757d;
+}

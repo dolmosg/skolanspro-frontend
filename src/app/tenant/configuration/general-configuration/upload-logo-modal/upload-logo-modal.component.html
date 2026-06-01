@@ -1,0 +1,52 @@
+<form class="upload-logo-modal" (ngSubmit)="onSubmit()">
+  @if (logo(); as currentLogo) {
+    <div class="upload-logo-modal__header">
+      <strong>{{ currentLogo.name }}</strong>
+
+      @if (currentLogo.logo) {
+        <img
+          class="upload-logo-modal__current"
+          [src]="currentLogo.logo"
+          [alt]="currentLogo.name"
+        />
+      }
+    </div>
+  }
+
+  <app-sk-file-upload
+    [label]="'configuration.organization-logos.upload-modal.label' | translate"
+    [helper]="'configuration.organization-logos.upload-modal.helper' | translate"
+    accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml"
+    [multiple]="false"
+    [maxSizeMb]="4"
+    [maxFiles]="1"
+    [placeholder]="'configuration.organization-logos.upload-modal.placeholder' | translate"
+    (filesChange)="onFilesChange($event)"
+    (uploadError)="onUploadError($event)"
+  />
+
+  @if (uploadError()) {
+    <div class="upload-logo-modal__error">
+      {{ uploadError() }}
+    </div>
+  }
+
+  <div class="upload-logo-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="button"
+      variant="primary"
+      size="sm"
+      [label]="'common.upload' | translate"
+      [disabled]="!canSave()"
+      (click)="onSubmit()"
+    />
+  </div>
+</form>

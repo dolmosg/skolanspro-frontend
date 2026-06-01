@@ -1,0 +1,186 @@
+<article class="study-plan-stages-summary">
+  <header class="study-plan-stages-summary__header">
+    <div>
+      <h4>{{ 'planning.study-plan-academics.stages.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-academics.stages.description' | translate }}</p>
+    </div>
+
+    @if (canAddStage()) {
+      @if (addStageOption(); as option) {
+        <app-ui-button
+          [label]="option.translation | translate"
+          [iconLeft]="option.icon"
+          variant="primary"
+          size="sm"
+          (clicked)="onAddStage()"
+        />
+      }
+    }
+  </header>
+
+  <div class="study-plan-stages-summary__metrics">
+    <div class="study-plan-stages-summary__metric">
+      <app-ui-icon name="layers" size="md" />
+      <strong>{{ stagesCount() }}</strong>
+      <span>{{ 'planning.study-plan-academics.stages.metrics.stages' | translate }}</span>
+    </div>
+
+    <div class="study-plan-stages-summary__metric">
+      <app-ui-icon name="calendar-days" size="md" />
+      <strong>{{ termsTotal() }}</strong>
+      <span>{{ 'planning.study-plan-academics.stages.metrics.terms' | translate }}</span>
+    </div>
+
+    <div class="study-plan-stages-summary__metric study-plan-stages-summary__metric--current">
+      <div class="study-plan-stages-summary__metric-status">
+        @if (currentTerm()?.type === 'current') {
+          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--success"></span>
+          <span>{{ 'planning.study-plan-academics.stages.metrics.current' | translate }}</span>
+        } @else if (currentTerm()?.type === 'next') {
+          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--warning"></span>
+          <span>{{ 'planning.study-plan-academics.stages.metrics.next' | translate }}</span>
+        } @else if (currentTerm()?.type === 'last') {
+          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--muted"></span>
+          <span>{{ 'planning.study-plan-academics.stages.metrics.last' | translate }}</span>
+        } @else {
+          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--muted"></span>
+          <span>{{ 'planning.study-plan-academics.stages.metrics.no-current' | translate }}</span>
+        }
+      </div>
+
+      <app-ui-icon name="calendar-check" size="md" />
+
+      @if (currentTerm(); as current) {
+        <div class="study-plan-stages-summary__term-heading">
+          <strong class="study-plan-stages-summary__term-code">
+            {{ current.term.code || current.term.name }}
+          </strong>
+
+          @if (current.term.status; as status) {
+            <span
+              class="study-plan-stages-summary__term-status"
+              [class.study-plan-stages-summary__term-status--open]="status.name === 'open'"
+              [class.study-plan-stages-summary__term-status--closed]="status.name === 'closed'"
+              [class.study-plan-stages-summary__term-status--review]="status.name === 'in-review'"
+              [class.study-plan-stages-summary__term-status--configuration]="
+                status.name === 'configuration'
+              "
+            >
+              {{ status.translation | translate }}
+            </span>
+          }
+        </div>
+
+        <span class="study-plan-stages-summary__term-stage">
+          {{ current.stage.name }}
+        </span>
+
+        <span class="study-plan-stages-summary__term-dates">
+          {{ current.term.start_date | date: 'dd/MM/yyyy' }}
+          —
+          {{ current.term.end_date | date: 'dd/MM/yyyy' }}
+        </span>
+
+        @if (daysToClose() !== null) {
+          <small>
+            {{
+              'planning.study-plan-academics.stages.metrics.closes-in'
+                | translate: { days: daysToClose() }
+            }}
+          </small>
+        }
+      } @else {
+        <strong>
+          {{ 'planning.study-plan-academics.stages.metrics.no-current-value' | translate }}
+        </strong>
+        <span>
+          {{ 'planning.study-plan-academics.stages.metrics.no-current-description' | translate }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <div class="study-plan-stages-summary__section-title">
+    {{ 'planning.study-plan-academics.stages.distribution' | translate }}
+  </div>
+
+  <div class="study-plan-stages-summary__stage-list">
+    @for (stage of stages(); track stage.id) {
+      <button class="study-plan-stages-summary__stage-row" type="button" (click)="onManage(stage.id)">
+        <span class="study-plan-stages-summary__stage-index">{{ stage.order }}</span>
+
+        <span class="study-plan-stages-summary__stage-content">
+          <span class="study-plan-stages-summary__stage-info">
+            <strong>{{ stage.name }}</strong>
+
+            <small>
+              {{ stage.start_date | date: 'dd/MM/yyyy' }}
+              —
+              {{ stage.end_date | date: 'dd/MM/yyyy' }}
+            </small>
+          </span>
+
+          <span class="study-plan-stages-summary__term-badges">
+            @for (term of stage.terms ?? []; track term.id) {
+              <span
+                class="study-plan-stages-summary__term-badge"
+                [class.study-plan-stages-summary__term-badge--open]="term.status?.name === 'open'"
+                [class.study-plan-stages-summary__term-badge--closed]="term.status?.name === 'closed'"
+                [class.study-plan-stages-summary__term-badge--review]="term.status?.name === 'in-review'"
+                [class.study-plan-stages-summary__term-badge--configuration]="
+                  term.status?.name === 'configuration'
+                "
+                [title]="
+                  (term.code || term.name) +
+                  ' · ' +
+                  ((term.status?.translation | translate) || term.status?.name || '')
+                "
+              >
+                {{ term.code || term.name }}
+              </span>
+            } @empty {
+              <span
+                class="study-plan-stages-summary__term-badge study-plan-stages-summary__term-badge--empty"
+                [title]="'planning.study-plan-academics.stages.empty' | translate"
+              >
+                0
+              </span>
+            }
+          </span>
+        </span>
+
+        <span class="study-plan-stages-summary__stage-action">
+          <app-ui-icon name="drilldown" size="md" />
+        </span>
+      </button>
+    } @empty {
+      <div class="study-plan-stages-summary__empty">
+        {{ 'planning.study-plan-academics.stages.empty' | translate }}
+      </div>
+    }
+  </div>
+
+  @if (hasCompleteStages()) {
+    <div class="study-plan-stages-summary__status study-plan-stages-summary__status--success">
+      <app-ui-icon name="check" size="md" />
+
+      <div>
+        <strong>{{ 'planning.study-plan-academics.stages.status.ready' | translate }}</strong>
+        <span>
+          {{ 'planning.study-plan-academics.stages.status.ready-description' | translate }}
+        </span>
+      </div>
+    </div>
+  } @else {
+    <div class="study-plan-stages-summary__status study-plan-stages-summary__status--warning">
+      <app-ui-icon name="triangle-alert" size="md" />
+
+      <div>
+        <strong>{{ 'planning.study-plan-academics.stages.status.pending' | translate }}</strong>
+        <span>
+          {{ 'planning.study-plan-academics.stages.status.pending-description' | translate }}
+        </span>
+      </div>
+    </div>
+  }
+</article>

@@ -1,0 +1,76 @@
+<form class="gradebook-type-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- NAME -->
+  <div class="gradebook-type-modal__field">
+    <label>
+      {{ 'configuration.gradebook-types.fields.name' | translate }}
+      <span>*</span>
+    </label>
+
+    <input type="text" formControlName="name" (change)="onNameChange($event)" />
+  </div>
+
+  <!-- TRANSLATION -->
+  <div class="gradebook-type-modal__field">
+    <label>
+      {{ 'configuration.gradebook-types.fields.translation' | translate }}
+    </label>
+
+    <input type="text" formControlName="translation" />
+  </div>
+
+  <!-- FLAGS -->
+  <div class="gradebook-type-modal__grid">
+    <label>
+      <input type="checkbox" formControlName="subjects" />
+      {{ 'configuration.gradebook-types.fields.subjects' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="integrations" />
+      {{ 'configuration.gradebook-types.fields.integrations' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="aspects" />
+      {{ 'configuration.gradebook-types.fields.aspects' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="sections" />
+      {{ 'configuration.gradebook-types.fields.sections' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="rubrics" />
+      {{ 'configuration.gradebook-types.fields.rubrics' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="active" />
+      {{ 'common.active' | translate }}
+    </label>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="gradebook-type-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="
+        isEditMode()
+          ? ('configuration.gradebook-types.update' | translate)
+          : ('configuration.gradebook-types.add' | translate)
+      "
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="submit"
+    />
+  </div>
+</form>

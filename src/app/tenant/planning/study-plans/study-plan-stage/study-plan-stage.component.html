@@ -1,0 +1,251 @@
+<section class="study-plan-stage">
+  <header class="study-plan-stage__header">
+    <div class="study-plan-stage__title">
+      <span>{{ studyPlanName() }}</span>
+      <h2>{{ stageName() || ('planning.study-plan-stages.title' | translate) }}</h2>
+      <p>{{ 'planning.study-plan-stages.description' | translate }}</p>
+    </div>
+
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  @if (stage(); as currentStage) {
+    <div class="study-plan-stage__workspace">
+      <aside class="study-plan-stage__sidebar">
+        <section class="study-plan-stage__nav-section">
+          <span class="study-plan-stage__nav-label">
+            {{ 'planning.study-plan-stages.configuration.title' | translate }}
+          </span>
+
+          <button
+            class="study-plan-stage__nav-item"
+            type="button"
+            [class.study-plan-stage__nav-item--active]="isStageSelected()"
+            (click)="selectStage()"
+          >
+            <span class="study-plan-stage__nav-icon">
+              <app-ui-icon name="layers" size="sm" />
+            </span>
+
+            <span class="study-plan-stage__nav-content">
+              <strong>{{ currentStage.name }}</strong>
+              <small>
+                {{ currentStage.start_date | date: 'dd/MM/yyyy' }}
+                —
+                {{ currentStage.end_date | date: 'dd/MM/yyyy' }}
+              </small>
+            </span>
+          </button>
+        </section>
+
+        <section class="study-plan-stage__nav-section">
+          <div class="study-plan-stage__nav-header">
+            <span class="study-plan-stage__nav-label">
+              {{ 'planning.study-plan-stages.terms.title' | translate }}
+            </span>
+
+            @if (getScreenChild('study-plan-stage-terms'); as termsChild) {
+              <app-ui-button
+                [label]="termsChild.translation | translate"
+                [iconLeft]="termsChild.icon"
+                variant="secondary"
+                size="sm"
+              />
+            }
+          </div>
+
+          <div class="study-plan-stage__term-nav">
+            @for (term of terms(); track term.id) {
+              <button
+                class="study-plan-stage__nav-item study-plan-stage__nav-item--term"
+                type="button"
+                [class.study-plan-stage__nav-item--active]="isTermSelected(term)"
+                (click)="selectTerm(term)"
+              >
+                <span class="study-plan-stage__term-code">
+                  {{ term.code || term.name }}
+                </span>
+
+                <span class="study-plan-stage__nav-content">
+                  <strong>{{ term.name }}</strong>
+                  <small>
+                    {{ term.start_date | date: 'dd/MM/yyyy' }}
+                    —
+                    {{ term.end_date | date: 'dd/MM/yyyy' }}
+                  </small>
+                </span>
+
+                @if (term.status; as status) {
+                  <span
+                    class="study-plan-stage__term-status"
+                    [class.study-plan-stage__term-status--open]="status.name === 'open'"
+                    [class.study-plan-stage__term-status--closed]="status.name === 'closed'"
+                    [class.study-plan-stage__term-status--review]="status.name === 'in-review'"
+                    [class.study-plan-stage__term-status--configuration]="
+                      status.name === 'configuration'
+                    "
+                  >
+                    {{ status.translation | translate }}
+                  </span>
+                }
+              </button>
+            } @empty {
+              <div class="study-plan-stage__empty">
+                {{ 'planning.study-plan-stages.terms.empty' | translate }}
+              </div>
+            }
+          </div>
+        </section>
+      </aside>
+
+      <section class="study-plan-stage__detail">
+        @if (isStageSelected()) {
+          <header class="study-plan-stage__detail-header">
+            <div>
+              <span>{{ 'planning.study-plan-stages.configuration.stage-label' | translate }}</span>
+              <h3>{{ currentStage.name }}</h3>
+            </div>
+
+            @if (getScreenOption('update-stage'); as updateOption) {
+              <app-ui-button
+                [label]="updateOption.translation | translate"
+                [iconLeft]="updateOption.icon"
+                [variant]="getScreenOptionVariant('update-stage', 'primary')"
+                size="sm"
+              />
+            }
+          </header>
+
+          <div class="study-plan-stage__detail-grid">
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.fields.name' | translate }}</span>
+              <strong>{{ currentStage.name }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.fields.dates' | translate }}</span>
+              <strong>
+                {{ currentStage.start_date | date: 'dd/MM/yyyy' }}
+                —
+                {{ currentStage.end_date | date: 'dd/MM/yyyy' }}
+              </strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.fields.terms' | translate }}</span>
+              <strong>{{ termsCount() }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.fields.order' | translate }}</span>
+              <strong>{{ currentStage.order + 1 }}</strong>
+            </div>
+          </div>
+        } @else if (selectedTerm(); as term) {
+          <header class="study-plan-stage__detail-header">
+            <div>
+              <span>{{ 'planning.study-plan-stages.configuration.term-label' | translate }}</span>
+              <h3>{{ term.code || term.name }}</h3>
+              <p>{{ term.name }}</p>
+            </div>
+
+            @if (getScreenOption('update-term'); as updateOption) {
+              <app-ui-button
+                [label]="updateOption.translation | translate"
+                [iconLeft]="updateOption.icon"
+                [variant]="getScreenOptionVariant('update-term', 'primary')"
+                size="sm"
+              />
+            }
+          </header>
+
+          <div class="study-plan-stage__detail-grid">
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.code' | translate }}</span>
+              <strong>{{ term.code }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.name' | translate }}</span>
+              <strong>{{ term.name }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.alternate-name' | translate }}</span>
+              <strong>{{ term.alternate_name || '—' }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.dates' | translate }}</span>
+              <strong>
+                {{ term.start_date | date: 'dd/MM/yyyy' }}
+                —
+                {{ term.end_date | date: 'dd/MM/yyyy' }}
+              </strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.review-date' | translate }}</span>
+              <strong>{{ term.review_date | date: 'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.status' | translate }}</span>
+
+              @if (term.status; as status) {
+                <strong>{{ status.translation | translate }}</strong>
+              } @else {
+                <strong>—</strong>
+              }
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.exemption' | translate }}</span>
+              <strong>
+                {{
+                  (term.exemption ? 'common.yes' : 'common.no') | translate
+                }}
+              </strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.attendance' | translate }}</span>
+              <strong>
+                {{
+                  (term.attendance ? 'common.yes' : 'common.no') | translate
+                }}
+              </strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.comments' | translate }}</span>
+              <strong>
+                {{
+                  (term.comments ? 'common.yes' : 'common.no') | translate
+                }}
+              </strong>
+            </div>
+
+            <div class="study-plan-stage__field">
+              <span>{{ 'planning.study-plan-stages.terms.fields.order' | translate }}</span>
+              <strong>{{ term.order + 1 }}</strong>
+            </div>
+          </div>
+        }
+      </section>
+    </div>
+  } @else {
+    <div class="study-plan-stage__placeholder">
+      <app-ui-icon name="layers" size="lg" />
+
+      <h3>{{ 'planning.study-plan-stages.empty.title' | translate }}</h3>
+      <p>{{ 'planning.study-plan-stages.empty.description' | translate }}</p>
+    </div>
+  }
+</section>

@@ -1,0 +1,54 @@
+<form class="phone-types-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="phone-types-modal__grid">
+    <div class="phone-types-modal__field phone-types-modal__field--full">
+      <label class="phone-types-modal__label" for="phone-type-description">
+        {{ 'configuration.phone-types.fields.description' | translate }}
+      </label>
+
+      <input
+        #descriptionInput
+        id="phone-type-description"
+        type="text"
+        class="phone-types-modal__input"
+        formControlName="description"
+        autocomplete="off"
+        (input)="onDescriptionChange($event)"
+      />
+
+      <form-error [control]="form.controls.description"></form-error>
+    </div>
+
+    <div class="phone-types-modal__field phone-types-modal__field--full">
+      <label class="phone-types-modal__label" for="phone-type-translation">
+        {{ 'configuration.phone-types.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="phone-type-translation"
+        type="text"
+        class="phone-types-modal__input"
+        formControlName="translation"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="phone-types-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="(isEdit() ? 'common.save' : 'common.create') | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

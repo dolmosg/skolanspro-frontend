@@ -1,0 +1,58 @@
+/* =========================================
+   CATALOG PAGE LAYOUT
+========================================= */
+
+.sk-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sk-page__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* =========================================
+   TOOLBAR (GLOBAL)
+========================================= */
+
+.sk-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  flex: 0 0 auto;
+}
+
+/* Opcional: variante para páginas */
+.sk-page__toolbar {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.sk-table-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sk-table-wrap > * {
+  flex: 1 1 auto;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}

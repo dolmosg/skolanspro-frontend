@@ -1,0 +1,69 @@
+<form class="activity-type-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="activity-type-modal__grid">
+    <div class="activity-type-modal__field">
+      <label for="activity-type-name">
+        {{ 'configuration.activity-types.fields.name' | translate }}
+      </label>
+
+      <input
+        id="activity-type-name"
+        type="text"
+        formControlName="name"
+        maxlength="45"
+        (input)="onNameChange($event)"
+      />
+    </div>
+
+    <div class="activity-type-modal__field activity-type-modal__field--wide">
+      <label for="activity-type-translation">
+        {{ 'configuration.activity-types.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="activity-type-translation"
+        type="text"
+        formControlName="translation"
+        maxlength="200"
+      />
+    </div>
+
+    <div class="activity-type-modal__field">
+      <label for="activity-type-icon">
+        {{ 'configuration.activity-types.fields.icon' | translate }}
+      </label>
+
+      <input id="activity-type-icon" type="text" formControlName="icon" maxlength="45" />
+    </div>
+
+    <div class="activity-type-modal__checks">
+      <label>
+        <input type="checkbox" formControlName="gradeable" />
+        {{ 'configuration.activity-types.fields.gradeable' | translate }}
+      </label>
+
+      <label>
+        <input type="checkbox" formControlName="configurable" />
+        {{ 'configuration.activity-types.fields.configurable' | translate }}
+      </label>
+
+      <label>
+        <input type="checkbox" formControlName="active" />
+        {{ 'configuration.activity-types.fields.active' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <input type="hidden" formControlName="order" />
+
+  <div class="activity-type-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button [label]="'common.save' | translate" variant="primary" size="sm" type="submit" />
+  </div>
+</form>

@@ -1,0 +1,88 @@
+<form
+  class="subject-classification-modal"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="subject-classification-modal__grid">
+    <div class="subject-classification-modal__field">
+      <label for="subject-classification-name">
+        {{ 'academics.subject-classifications.fields.name' | translate }}
+      </label>
+
+      <input
+        id="subject-classification-name"
+        type="text"
+        formControlName="name"
+        maxlength="70"
+      />
+    </div>
+
+    <div class="subject-classification-modal__field subject-classification-modal__field--wide">
+      <label for="subject-classification-translation">
+        {{ 'academics.subject-classifications.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="subject-classification-translation"
+        type="text"
+        formControlName="translation"
+        maxlength="200"
+      />
+    </div>
+
+    <!-- COLOR -->
+    <div class="subject-classification-modal__field">
+      <label>
+        {{ 'academics.subject-classifications.fields.color' | translate }}
+      </label>
+
+      <div class="subject-classification-modal__color-row">
+        <div
+          class="subject-classification-modal__color-preview"
+          [style.background]="form.controls.color.value || '#ffffff'"
+        ></div>
+
+        <input
+          type="color"
+          formControlName="color"
+          class="subject-classification-modal__color-input"
+        />
+
+        <span class="subject-classification-modal__color-value">
+          {{ form.controls.color.value || '—' }}
+        </span>
+
+        @if (form.controls.color.value) {
+          <button type="button" (click)="clearColor()">×</button>
+        }
+      </div>
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="subject-classification-modal__checks">
+      <label>
+        <input type="checkbox" formControlName="active" />
+        {{ 'academics.subject-classifications.fields.active' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <input type="hidden" formControlName="order" />
+
+  <div class="subject-classification-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

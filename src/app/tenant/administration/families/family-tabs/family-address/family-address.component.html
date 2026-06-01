@@ -1,0 +1,152 @@
+<form class="family-address" [formGroup]="form" (ngSubmit)="save()">
+  <section class="family-address__card">
+    <div class="family-address__header">
+      <div>
+        <h3>{{ 'administration.family-address.title' | translate }}</h3>
+        <p>{{ 'administration.family-address.subtitle' | translate }}</p>
+      </div>
+
+      <div class="family-address__actions">
+        <app-ui-button
+          type="button"
+          variant="secondary"
+          iconLeft="reset"
+          [disabled]="!form.dirty"
+          [label]="'common.reset' | translate"
+          (click)="resetForm()"
+        >
+          {{ 'common.reset' | translate }}
+        </app-ui-button>
+
+        @if (canSave()) {
+          @if (getScreenOption(saveOptionName()); as saveOption) {
+            <app-ui-button
+              type="submit"
+              [variant]="saveOption.color"
+              [iconLeft]="saveOption.icon"
+              [disabled]="form.invalid || !form.dirty"
+              [label]="saveOption.translation | translate"
+            >
+              {{ saveOption.translation | translate }}
+            </app-ui-button>
+          }
+        }
+
+        @if (address() && canDelete()) {
+          @if (getScreenOption('delete'); as deleteOption) {
+            <app-ui-button
+              type="button"
+              [variant]="deleteOption.color"
+              [iconLeft]="deleteOption.icon"
+              [label]="deleteOption.translation | translate"
+              (click)="deleteAddress()"
+            >
+              {{ deleteOption.translation | translate }}
+            </app-ui-button>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="family-address__grid">
+      <div class="family-address__field family-address__field--wide">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.street' | translate }}
+          <span>*</span>
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="street" maxlength="70" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.outdoor' | translate }}
+          <span>*</span>
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="outdoor" maxlength="70" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.indoor' | translate }}
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="indoor" maxlength="45" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.zip_code' | translate }}
+          <span>*</span>
+        </label>
+
+        <input
+          class="family-address__input"
+          type="text"
+          formControlName="zip_code"
+          maxlength="10"
+        />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.colony' | translate }}
+          <span>*</span>
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="colony" maxlength="70" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.municipality' | translate }}
+          <span>*</span>
+        </label>
+
+        <input
+          class="family-address__input"
+          type="text"
+          formControlName="municipality"
+          maxlength="70"
+        />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.state' | translate }}
+          <span>*</span>
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="state" maxlength="70" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.city' | translate }}
+        </label>
+
+        <input class="family-address__input" type="text" formControlName="city" maxlength="70" />
+      </div>
+
+      <div class="family-address__field">
+        <label class="family-address__label">
+          {{ 'administration.family-address.fields.country' | translate }}
+          <span>*</span>
+        </label>
+
+        <select class="family-address__input" formControlName="country_id">
+          <option [ngValue]="null">
+            {{ 'common.select-option' | translate }}
+          </option>
+
+          @for (country of countries(); track country.id) {
+            <option [ngValue]="country.id">
+              {{ country.translation ? (country.translation | translate) : country.name }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+  </section>
+</form>

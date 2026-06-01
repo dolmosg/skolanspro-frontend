@@ -1,0 +1,192 @@
+<section class="study-plan-general">
+  <article class="study-plan-general__card">
+    <header class="study-plan-general__header">
+      <div>
+        <h3>{{ 'planning.study-plan-general.title' | translate }}</h3>
+        <p>{{ 'planning.study-plan-general.description' | translate }}</p>
+      </div>
+
+      <div class="study-plan-general__actions">
+        @if (!editing() && canEdit()) {
+          @if (getScreenOption('update'); as updateOption) {
+            <app-ui-button
+              [label]="updateOption.translation | translate"
+              [iconLeft]="updateOption.icon"
+              [variant]="updateOption.color"
+              size="sm"
+              (click)="startEdit()"
+            />
+          }
+        }
+
+        @if (editing()) {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="secondary"
+            size="sm"
+            (click)="cancelEdit()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            iconLeft="save"
+            variant="primary"
+            size="sm"
+            (click)="save()"
+          />
+        }
+      </div>
+    </header>
+
+    @if (item(); as studyPlan) {
+      @if (!editing()) {
+        <div class="study-plan-general__summary">
+          <!-- Bloque principal -->
+          <div class="study-plan-general__details study-plan-general__details--primary">
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.name' | translate }}</span>
+              <strong>{{ studyPlan.name }}</strong>
+            </div>
+
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.level' | translate }}</span>
+              <strong>{{ getCatalogLabel(catalogs().levels, studyPlan.level_id) }}</strong>
+            </div>
+
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.school-year' | translate }}</span>
+              <strong>{{ getCatalogLabel(catalogs().years, studyPlan.school_year_id) }}</strong>
+            </div>
+          </div>
+
+          <!-- Bloque secundario -->
+          <div class="study-plan-general__details">
+            <div class="study-plan-general__detail study-plan-general__detail--wide">
+              <span>{{ 'planning.study-plan-general.fields.period' | translate }}</span>
+              <strong>
+                {{ studyPlan.start | date: 'dd/MM/yyyy' }}
+                —
+                {{ studyPlan.end | date: 'dd/MM/yyyy' }}
+              </strong>
+            </div>
+
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.section' | translate }}</span>
+              <strong>{{ getCatalogLabel(catalogs().sections, studyPlan.section_id) }}</strong>
+            </div>
+
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.structure' | translate }}</span>
+              <strong>
+                {{
+                  getCatalogLabel(
+                    catalogs()['studyplan-structures'],
+                    studyPlan.studyplan_structure_id
+                  ) | translate
+                }}
+              </strong>
+            </div>
+
+            <div class="study-plan-general__detail">
+              <span>{{ 'planning.study-plan-general.fields.schedule-type' | translate }}</span>
+              <strong>
+                {{
+                  getCatalogLabel(
+                    catalogs()['schedule-types'],
+                    studyPlan.schedule_type_id
+                  ) | translate
+                }}
+              </strong>
+            </div>
+
+            <div class="study-plan-general__detail study-plan-general__detail--wide">
+              <span>{{ 'planning.study-plan-general.fields.description' | translate }}</span>
+              <strong>
+                {{ studyPlan.description || ('common.no-description' | translate) }}
+              </strong>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <form class="study-plan-general__form" [formGroup]="form" (ngSubmit)="save()">
+          <div class="study-plan-general__field study-plan-general__field--wide">
+            <label>{{ 'planning.study-plan-general.fields.name' | translate }}</label>
+            <input type="text" formControlName="name" />
+          </div>
+
+          <div class="study-plan-general__field study-plan-general__field--wide">
+            <label>{{ 'planning.study-plan-general.fields.description' | translate }}</label>
+            <textarea rows="3" formControlName="description"></textarea>
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.start' | translate }}</label>
+            <input type="date" formControlName="start" />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.end' | translate }}</label>
+            <input type="date" formControlName="end" />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.level' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs().levels"
+              bindLabel="description"
+              bindValue="id"
+              [control]="form.controls.level_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.school-year' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs().years"
+              bindLabel="name"
+              bindValue="id"
+              [control]="form.controls.school_year_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.section' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs().sections"
+              bindLabel="description"
+              bindValue="id"
+              [control]="form.controls.section_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.structure' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['studyplan-structures']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.studyplan_structure_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-general__field">
+            <label>{{ 'planning.study-plan-general.fields.schedule-type' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['schedule-types']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.schedule_type_id"
+              [clearable]="false"
+            />
+          </div>
+        </form>
+      }
+    }
+  </article>
+</section>

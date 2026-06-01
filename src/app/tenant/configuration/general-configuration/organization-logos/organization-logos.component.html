@@ -1,0 +1,120 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (getScreenOption('add'); as addOption) {
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [variant]="getScreenOptionVariant('add', 'primary')"
+            size="sm"
+            [iconLeft]="addOption.icon"
+            (click)="onAdd()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        <div class="sk-selection-inline">
+          <strong>{{ 'controllers.organization-logos' | translate }}</strong>
+        </div>
+      </div>
+
+      <div class="sk-toolbar__right"></div>
+    </div>
+
+    @if (!hasLogos()) {
+      <div class="organization-logos-empty">
+        <div class="organization-logos-empty__icon">🖼️</div>
+
+        <h3>{{ 'configuration.organization-logos.messages.empty-title' | translate }}</h3>
+
+        <p>{{ 'configuration.organization-logos.messages.empty' | translate }}</p>
+      </div>
+    } @else {
+      <div class="organization-logos-grid">
+        @for (logo of organizationLogos(); track logo.id) {
+          <article
+            class="organization-logo-card"
+            [class.organization-logo-card--default]="logo.default"
+            [class.organization-logo-card--inactive]="!logo.active"
+          >
+            <div class="organization-logo-card__preview">
+              @if (logo.logo) {
+                <img
+                  [src]="logo.logo"
+                  [alt]="logo.name"
+                  class="organization-logo-card__image"
+                />
+              } @else {
+                <div class="organization-logo-card__placeholder">
+                  {{ 'configuration.organization-logos.messages.no-image' | translate }}
+                </div>
+              }
+            </div>
+
+            <div class="organization-logo-card__body">
+              <div class="organization-logo-card__header">
+                <h3 class="organization-logo-card__title">
+                  {{ logo.name }}
+                </h3>
+
+                <div class="organization-logo-card__badges">
+                  @if (logo.default) {
+                    <span class="organization-logo-card__badge organization-logo-card__badge--default">
+                      {{ 'configuration.organization-logos.badges.default' | translate }}
+                    </span>
+                  }
+
+                  @if (logo.active) {
+                    <span class="organization-logo-card__badge organization-logo-card__badge--active">
+                      {{ 'common.active' | translate }}
+                    </span>
+                  } @else {
+                    <span class="organization-logo-card__badge organization-logo-card__badge--inactive">
+                      {{ 'common.inactive' | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+
+              <div class="organization-logo-card__actions">
+                @if (getScreenOption('update'); as updateOption) {
+                  <app-ui-button
+                    [iconLeft]="updateOption.icon"
+                    [variant]="getScreenOptionVariant('update')"
+                    size="sm"
+                    [iconOnly]="true"
+                    [title]="updateOption.translation | translate"
+                    (click)="onEdit(logo)"
+                  />
+                }
+
+                @if (getScreenOption('upload'); as uploadOption) {
+                  <app-ui-button
+                    [iconLeft]="uploadOption.icon"
+                    [variant]="getScreenOptionVariant('upload')"
+                    size="sm"
+                    [iconOnly]="true"
+                    [title]="uploadOption.translation | translate"
+                    (click)="onUpload(logo)"
+                  />
+                }
+
+                @if (getScreenOption('delete'); as deleteOption) {
+                  <app-ui-button
+                    [iconLeft]="deleteOption.icon"
+                    [variant]="getScreenOptionVariant('delete', 'danger')"
+                    size="sm"
+                    [iconOnly]="true"
+                    [title]="deleteOption.translation | translate"
+                    (click)="onDelete(logo)"
+                  />
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

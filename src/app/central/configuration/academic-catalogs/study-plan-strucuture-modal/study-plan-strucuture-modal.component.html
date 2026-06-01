@@ -1,0 +1,109 @@
+<div class="studyplan-structure-modal">
+  <form
+    class="studyplan-structure-modal__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="studyplan-structure-modal__grid">
+
+      <!-- Name -->
+      <div class="studyplan-structure-modal__field studyplan-structure-modal__field--full">
+        <label class="studyplan-structure-modal__label">
+          {{ 'configuration.studyplan-structures.fields.name' | translate }}
+        </label>
+
+        <input
+          class="studyplan-structure-modal__input"
+          type="text"
+          formControlName="name"
+          maxlength="45"
+          (change)="onNameChange($event)"
+        />
+
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <small class="studyplan-structure-modal__error">
+            {{ 'validation.required' | translate }}
+          </small>
+        }
+      </div>
+
+      <!-- Translation -->
+      <div class="studyplan-structure-modal__field studyplan-structure-modal__field--full">
+        <label class="studyplan-structure-modal__label">
+          {{ 'configuration.studyplan-structures.fields.translation' | translate }}
+        </label>
+
+        <input
+          class="studyplan-structure-modal__input"
+          type="text"
+          formControlName="translation"
+          maxlength="200"
+        />
+      </div>
+
+      <!-- Stages -->
+      <div class="studyplan-structure-modal__field">
+        <label class="studyplan-structure-modal__label">
+          {{ 'configuration.studyplan-structures.fields.stages' | translate }}
+        </label>
+
+        <input
+          class="studyplan-structure-modal__input"
+          type="number"
+          formControlName="stages"
+          min="1"
+          max="12"
+        />
+      </div>
+
+      <!-- Stage Name -->
+      <div class="studyplan-structure-modal__field">
+        <label class="studyplan-structure-modal__label">
+          {{ 'configuration.studyplan-structures.fields.stage-name' | translate }}
+        </label>
+
+        <input
+          class="studyplan-structure-modal__input"
+          type="text"
+          formControlName="stage_name"
+          maxlength="45"
+        />
+      </div>
+
+      <!-- Active -->
+      <div class="studyplan-structure-modal__field studyplan-structure-modal__field--inline">
+        <label class="studyplan-structure-modal__label">
+          {{ 'configuration.studyplan-structures.fields.active' | translate }}
+        </label>
+
+        <label class="studyplan-structure-modal__checkbox">
+          <input
+            type="checkbox"
+            formControlName="active"
+          />
+
+          <span>
+            {{ 'common.active' | translate }}
+          </span>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="studyplan-structure-modal__actions">
+      <app-ui-button
+        [label]="'common.cancel' | translate"
+        variant="secondary"
+        type="button"
+        (click)="onCancel()"
+      />
+
+      <app-ui-button
+        [label]="isEdit() ? ('common.save' | translate) : ('common.create' | translate)"
+        variant="primary"
+        type="submit"
+      />
+    </div>
+  </form>
+</div>

@@ -1,0 +1,106 @@
+.user-security-tab {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  &__grid {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 1rem 1.25rem;
+  }
+
+  &__field {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color-text-muted, #6b7280);
+
+      span {
+        color: #ef4444;
+        margin-left: 0.25rem;
+      }
+    }
+
+    input,
+    select,
+    app-sk-select {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    app-sk-select {
+      display: block;
+    }
+
+    input,
+    select {
+      height: 36px;
+      padding: 0 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border, #e5e7eb);
+      background: #fff;
+      font-size: 0.85rem;
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+      }
+
+      &:disabled {
+        background-color: var(--color-surface-muted, #f3f4f6);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &__field--checkbox {
+    justify-content: center;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    input[type='checkbox'] {
+      width: auto;
+      min-width: auto;
+      height: auto;
+      accent-color: var(--color-primary);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+
+    @media (max-width: 480px) {
+      justify-content: stretch;
+
+      app-ui-button {
+        width: 100%;
+      }
+    }
+  }
+}

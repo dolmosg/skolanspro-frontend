@@ -1,0 +1,68 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (getScreenOption('add'); as addOption) {
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [variant]="addOption.color"
+            size="sm"
+            [iconLeft]="addOption.icon"
+            (click)="openCreateModal()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">1</span>
+            <strong>{{ selectedItems()[0].translation || selectedItems()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (hasSingleSelection()) {
+          @if (getScreenOption('update'); as updateOption) {
+            <app-ui-button
+              [iconLeft]="updateOption.icon"
+              [variant]="updateOption.color"
+              size="sm"
+              [iconOnly]="true"
+              [title]="updateOption.translation | translate"
+              (click)="openEditModal(selectedItems()[0])"
+            />
+          }
+
+          @if (getScreenOption('delete'); as deleteOption) {
+            <app-ui-button
+              [iconLeft]="deleteOption.icon"
+              [variant]="deleteOption.color"
+              size="sm"
+              [iconOnly]="true"
+              [title]="deleteOption.translation | translate"
+              (click)="deleteItem(selectedItems()[0])"
+            />
+          }
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="catalog()"
+        [loading]="loading()"
+        selectionMode="single"
+        [emptyMessage]="'configuration.community-catalogs.messages.empty' | translate"
+        height="fill"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="tablePagination()"
+        [pageSize]="10"
+        [getRowId]="getRowId"
+        (selectionChange)="onSelectionChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

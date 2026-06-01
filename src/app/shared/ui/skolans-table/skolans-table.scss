@@ -1,0 +1,108 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.skolans-table {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.skolans-table__grid {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--color-surface, #ffffff);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+/* Auto-height mode */
+.skolans-table--auto .skolans-table__grid {
+  min-height: unset;
+}
+
+/* AG Grid theme tweaks (alpine) */
+.ag-theme-alpine {
+  --ag-foreground-color: var(--color-text, #111827);
+  --ag-background-color: var(--color-surface, #ffffff);
+  --ag-header-foreground-color: var(--color-text, #111827);
+  --ag-header-background-color: var(--color-muted-surface, #f9fafb);
+  --ag-border-color: var(--color-border, #e5e7eb);
+  --ag-row-hover-color: color-mix(in srgb, var(--color-primary, #2563eb) 6%, transparent);
+  --ag-selected-row-background-color: color-mix(in srgb, var(--color-primary, #2563eb) 10%, transparent);
+  --ag-font-size: 0.875rem;
+  --ag-font-family: inherit;
+  --ag-wrapper-border-radius: 0.75rem;
+  --ag-paging-panel-height: 44px;
+}
+
+/* Header */
+.ag-theme-alpine .ag-header {
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 600;
+}
+
+/* Rows */
+.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid var(--color-border, #f1f5f9);
+}
+
+/* Cells */
+.ag-theme-alpine .ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+/* Overlays */
+.ag-theme-alpine .ag-overlay {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+/* Pagination */
+.ag-theme-alpine .ag-paging-panel {
+  display: flex !important;
+  align-items: center;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding: 0 0.75rem;
+  background: var(--color-surface, #ffffff);
+}
+
+.ag-theme-alpine .ag-paging-button {
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 0.5rem;
+}
+
+.ag-theme-alpine .ag-paging-button:not(.ag-disabled):hover {
+  background: var(--color-surface-subtle, #f8fafc);
+}
+
+:host,
+.skolans-table,
+.skolans-table__grid {
+  box-sizing: border-box;
+}
+
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}

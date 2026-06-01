@@ -1,0 +1,470 @@
+<div class="subjects">
+  <section class="subjects__main">
+    <div class="subjects__panel">
+      <div class="subjects__header">
+        <div>
+          <h2>{{ 'academics.subjects.title' | translate }}</h2>
+          <p>{{ 'academics.subjects.description' | translate }}</p>
+        </div>
+
+        @if (hasRequiredContext()) {
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              size="sm"
+              variant="primary"
+              (click)="startCreate()"
+            />
+          }
+        }
+      </div>
+
+      <div class="subjects__filters subjects__filters--primary">
+        <label>
+          <span>{{ 'academics.subjects.fields.section' | translate }}</span>
+          <app-sk-select
+            [items]="sections()"
+            bindLabel="description"
+            bindValue="id"
+            [placeholder]="'academics.subjects.placeholders.section' | translate"
+            [control]="sectionControl"
+          />
+        </label>
+
+        <label>
+          <span>{{ 'academics.subjects.fields.level' | translate }}</span>
+          <app-sk-select
+            [items]="levels()"
+            bindLabel="description"
+            bindValue="id"
+            [placeholder]="'academics.subjects.placeholders.level' | translate"
+            [control]="levelControl"
+          />
+        </label>
+
+        <label>
+          <span>{{ 'academics.subjects.fields.grade' | translate }}</span>
+          <app-sk-select
+            [items]="availableGrades()"
+            bindLabel="description"
+            bindValue="id"
+            [placeholder]="'academics.subjects.placeholders.grade' | translate"
+            [disabled]="!selectedLevelId()"
+            [control]="gradeControl"
+          />
+        </label>
+      </div>
+
+      @if (!hasRequiredContext()) {
+        <div class="subjects__empty-state">
+          <div class="subjects__empty-state-icon">📚</div>
+          <h3>{{ 'academics.subjects.empty-context.title' | translate }}</h3>
+          <p>{{ 'academics.subjects.empty-context.description' | translate }}</p>
+        </div>
+      } @else {
+        <div class="subjects__filters subjects__filters--secondary">
+          <label>
+            <span>{{ 'academics.subjects.filters.code' | translate }}</span>
+            <input
+              type="text"
+              [placeholder]="'academics.subjects.placeholders.code' | translate"
+              [value]="codeFilter()"
+              (input)="onCodeFilter($event)"
+            />
+          </label>
+
+          <label>
+            <span>{{ 'academics.subjects.filters.active' | translate }}</span>
+            <app-sk-select
+              [items]="activeOptions"
+              bindLabel="label"
+              bindValue="id"
+              [translateLabel]="true"
+              [clearable]="false"
+              [searchable]="false"
+              [control]="activeControl"
+            />
+          </label>
+
+          <label>
+            <span>{{ 'academics.subjects.filters.official' | translate }}</span>
+            <app-sk-select
+              [items]="officialOptions"
+              bindLabel="label"
+              bindValue="id"
+              [translateLabel]="true"
+              [clearable]="false"
+              [searchable]="false"
+              [control]="officialControl"
+            />
+          </label>
+        </div>
+
+        <div class="subjects__summary">
+          <span>
+            {{ 'academics.subjects.summary.filtered' | translate }}:
+            <strong>{{ filteredSubjects().length }}</strong>
+          </span>
+        </div>
+
+        <div class="subjects__table">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ 'academics.subjects.fields.code' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.name' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.active' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.official' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.weekly-blocks' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.classification' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.subcategory' | translate }}</th>
+                <th>{{ 'academics.subjects.fields.grade' | translate }}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (subject of filteredSubjects(); track subject.id) {
+                <tr
+                  [class.subjects__row--selected]="selectedSubject()?.id === subject.id"
+                  (click)="selectSubject(subject)"
+                >
+                  <td>{{ subject.code || '—' }}</td>
+                  <td>
+                    <strong>{{ subject.name }}</strong>
+                    @if (subject.short_name) {
+                      <small>{{ subject.short_name }}</small>
+                    }
+                  </td>
+                  <td>
+                    <span
+                      class="subjects__status"
+                      [class.subjects__status--off]="!subject.active"
+                    ></span>
+                  </td>
+                  <td>
+                    <span
+                      class="subjects__status"
+                      [class.subjects__status--off]="!subject.official"
+                    ></span>
+                  </td>
+                  <td>{{ subject.weekly_blocks }}</td>
+                  <td>
+                    {{
+                      subject.classification?.translation ||
+                        subject.classification?.name ||
+                        ('academics.subjects.labels.no-classification' | translate)
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      subject.subcategory?.translation ||
+                        subject.subcategory?.name ||
+                        ('academics.subjects.labels.no-subcategory' | translate)
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      subject.grade?.description ||
+                        subject.grade?.name ||
+                        ('academics.subjects.labels.crossover' | translate)
+                    }}
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="8" class="subjects__empty">
+                    {{ 'academics.subjects.empty-results' | translate }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </section>
+
+  @if (hasRequiredContext()) {
+    <aside class="subjects__detail">
+      @if (creatingSubject() || selectedSubject()) {
+        <div class="subjects-detail">
+          @if (selectedSubject(); as subject) {
+            <div class="subjects-detail__header">
+              <div class="subjects-detail__icon">
+                <app-ui-icon name="book-open" size="lg" />
+              </div>
+
+              <div>
+                <h3>{{ subject.name }}</h3>
+                <p>{{ subject.code || ('academics.subjects.labels.without-code' | translate) }}</p>
+              </div>
+            </div>
+
+            @if (!isEditingMode()) {
+              <div class="subjects-detail__badges">
+                <span [class.subjects-detail__badge--off]="!subject.active">
+                  {{
+                    subject.active
+                      ? ('academics.subjects.options.active' | translate)
+                      : ('academics.subjects.options.inactive' | translate)
+                  }}
+                </span>
+
+                <span [class.subjects-detail__badge--off]="!subject.official">
+                  {{
+                    subject.official
+                      ? ('academics.subjects.options.official' | translate)
+                      : ('academics.subjects.options.unofficial' | translate)
+                  }}
+                </span>
+              </div>
+
+              <div class="subjects-detail__section">
+                <h4>{{ 'academics.subjects.detail.general-info' | translate }}</h4>
+
+                <label>
+                  <span>{{ 'academics.subjects.fields.name' | translate }}</span>
+                  <input type="text" [value]="subject.name" readonly />
+                </label>
+
+                <div class="subjects-detail__grid">
+                  <label>
+                    <span>{{ 'academics.subjects.fields.code' | translate }}</span>
+                    <input type="text" [value]="subject.code || ''" readonly />
+                  </label>
+
+                  <label>
+                    <span>{{ 'academics.subjects.fields.short-name' | translate }}</span>
+                    <input type="text" [value]="subject.short_name || ''" readonly />
+                  </label>
+                </div>
+
+                <label>
+                  <span>{{ 'academics.subjects.fields.weekly-blocks' | translate }}</span>
+                  <input type="number" [value]="subject.weekly_blocks" readonly />
+                </label>
+
+                <label>
+                  <span>{{ 'academics.subjects.fields.learning-area' | translate }}</span>
+                  <input
+                    type="text"
+                    [value]="
+                      subject.learning_area?.translation ||
+                      subject.learning_area?.name ||
+                      ('academics.subjects.labels.no-learning-area' | translate)
+                    "
+                    readonly
+                  />
+                </label>
+
+                <div class="subjects-detail__grid">
+                  <label>
+                    <span>{{ 'academics.subjects.fields.classification' | translate }}</span>
+                    <input
+                      type="text"
+                      [value]="
+                        subject.classification?.translation ||
+                        subject.classification?.name ||
+                        ('academics.subjects.labels.no-classification' | translate)
+                      "
+                      readonly
+                    />
+                  </label>
+
+                  <label>
+                    <span>{{ 'academics.subjects.fields.subcategory' | translate }}</span>
+                    <input
+                      type="text"
+                      [value]="
+                        subject.subcategory?.translation ||
+                        subject.subcategory?.name ||
+                        ('academics.subjects.labels.no-subcategory' | translate)
+                      "
+                      readonly
+                    />
+                  </label>
+                </div>
+
+                <div class="subjects-detail__grid">
+                  <label>
+                    <span>{{ 'academics.subjects.fields.section' | translate }}</span>
+                    <input
+                      type="text"
+                      [value]="subject.section?.description || subject.section?.name || ''"
+                      readonly
+                    />
+                  </label>
+
+                  <label>
+                    <span>{{ 'academics.subjects.fields.grade' | translate }}</span>
+                    <input
+                      type="text"
+                      [value]="
+                        subject.grade?.description ||
+                        subject.grade?.name ||
+                        ('academics.subjects.labels.crossover' | translate)
+                      "
+                      readonly
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div class="subjects-detail__actions">
+                @if (getScreenOption('delete'); as deleteOption) {
+                  <app-ui-button
+                    [iconLeft]="deleteOption.icon"
+                    [title]="deleteOption.translation | translate"
+                    [iconOnly]="true"
+                    size="sm"
+                    variant="danger"
+                    (click)="deleteSubject(subject)"
+                  />
+                }
+
+                @if (getScreenOption('update'); as updateOption) {
+                  <app-ui-button
+                    [iconLeft]="updateOption.icon"
+                    [title]="updateOption.translation | translate"
+                    [iconOnly]="true"
+                    size="sm"
+                    variant="primary"
+                    (click)="startEdit()"
+                  />
+                }
+              </div>
+            }
+          } @else {
+            <div class="subjects-detail__header">
+              <div class="subjects-detail__icon">
+                <app-ui-icon name="book-open" size="lg" />
+              </div>
+
+              <div>
+                <h3>{{ 'academics.subjects.detail.create-info' | translate }}</h3>
+                <p>{{ 'academics.subjects.detail.create-description' | translate }}</p>
+              </div>
+            </div>
+          }
+
+          @if (isEditingMode()) {
+            <form
+              class="subjects-detail__section"
+              [formGroup]="subjectForm"
+              (ngSubmit)="creatingSubject() ? saveNewSubject() : saveSubject()"
+            >
+              <h4>
+                {{
+                  creatingSubject()
+                    ? ('academics.subjects.detail.create-info' | translate)
+                    : ('academics.subjects.detail.edit-info' | translate)
+                }}
+              </h4>
+
+              <label>
+                <span>{{ 'academics.subjects.fields.name' | translate }}</span>
+                <input type="text" formControlName="name" />
+              </label>
+
+              <div class="subjects-detail__grid">
+                <label>
+                  <span>{{ 'academics.subjects.fields.code' | translate }}</span>
+                  <input type="text" formControlName="code" />
+                </label>
+
+                <label>
+                  <span>{{ 'academics.subjects.fields.short-name' | translate }}</span>
+                  <input type="text" formControlName="short_name" />
+                </label>
+              </div>
+
+              <label>
+                <span>{{ 'academics.subjects.fields.weekly-blocks' | translate }}</span>
+                <input type="number" min="0" formControlName="weekly_blocks" />
+              </label>
+
+              <label>
+                <span>{{ 'academics.subjects.fields.learning-area' | translate }}</span>
+                <app-sk-select
+                  [items]="learningAreas()"
+                  bindLabel="translation"
+                  bindValue="id"
+                  [placeholder]="'academics.subjects.placeholders.learning-area' | translate"
+                  [control]="subjectForm.controls.learning_area_id"
+                />
+              </label>
+
+              <label>
+                <span>{{ 'academics.subjects.fields.classification' | translate }}</span>
+                <app-sk-select
+                  [items]="classifications()"
+                  bindLabel="translation"
+                  bindValue="id"
+                  [placeholder]="'academics.subjects.placeholders.classification' | translate"
+                  [control]="subjectForm.controls.subject_classification_id"
+                />
+              </label>
+
+              <label>
+                <span>{{ 'academics.subjects.fields.subcategory' | translate }}</span>
+                <app-sk-select
+                  [items]="availableSubcategories()"
+                  bindLabel="translation"
+                  bindValue="id"
+                  [placeholder]="'academics.subjects.placeholders.subcategory' | translate"
+                  [disabled]="!subjectForm.controls.subject_classification_id.value"
+                  [control]="subjectForm.controls.subject_subcategory_id"
+                />
+              </label>
+
+              <div class="subjects-detail__switches">
+                <label class="subjects-detail__switch">
+                  <input type="checkbox" formControlName="active" />
+                  <span></span>
+                  <strong>{{ 'academics.subjects.fields.active' | translate }}</strong>
+                </label>
+
+                <label class="subjects-detail__switch">
+                  <input type="checkbox" formControlName="official" />
+                  <span></span>
+                  <strong>{{ 'academics.subjects.fields.official' | translate }}</strong>
+                </label>
+              </div>
+
+              <div class="subjects-detail__actions">
+                <app-ui-button
+                  iconLeft="cancel"
+                  [title]="'common.cancel' | translate"
+                  [iconOnly]="true"
+                  size="sm"
+                  variant="secondary"
+                  type="button"
+                  (click)="creatingSubject() ? cancelCreate() : cancelEdit()"
+                />
+
+                <app-ui-button
+                  iconLeft="save"
+                  [title]="'common.save' | translate"
+                  [iconOnly]="true"
+                  size="sm"
+                  variant="primary"
+                  type="submit"
+                  [disabled]="subjectForm.invalid"
+                />
+              </div>
+            </form>
+          }
+        </div>
+      } @else {
+        <div class="subjects-detail subjects-detail--empty">
+          <div class="subjects-detail__icon">
+            <app-ui-icon name="book-open" size="md" />
+          </div>
+          <h3>{{ 'academics.subjects.detail.empty-title' | translate }}</h3>
+          <p>{{ 'academics.subjects.detail.empty-description' | translate }}</p>
+        </div>
+      }
+    </aside>
+  }
+</div>

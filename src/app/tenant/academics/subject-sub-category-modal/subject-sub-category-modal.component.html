@@ -1,0 +1,61 @@
+<form
+  class="subject-subcategory-modal"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="subject-subcategory-modal__grid">
+    <div class="subject-subcategory-modal__field">
+      <label for="subject-subcategory-name">
+        {{ 'academics.subject-subcategories.fields.name' | translate }}
+      </label>
+
+      <input
+        id="subject-subcategory-name"
+        type="text"
+        formControlName="name"
+        maxlength="70"
+      />
+    </div>
+
+    <div class="subject-subcategory-modal__field subject-subcategory-modal__field--wide">
+      <label for="subject-subcategory-translation">
+        {{ 'academics.subject-subcategories.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="subject-subcategory-translation"
+        type="text"
+        formControlName="translation"
+        maxlength="200"
+      />
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="subject-subcategory-modal__checks">
+      <label>
+        <input type="checkbox" formControlName="active" />
+        {{ 'academics.subject-subcategories.fields.active' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <input type="hidden" formControlName="subject_classification_id" />
+  <input type="hidden" formControlName="order" />
+
+  <div class="subject-subcategory-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

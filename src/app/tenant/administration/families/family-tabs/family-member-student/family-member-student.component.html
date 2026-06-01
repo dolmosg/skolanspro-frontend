@@ -1,0 +1,156 @@
+<section class="family-member-student">
+  <aside class="family-member-student__side">
+    <div class="family-member-student__avatar">
+      <img [src]="person()?.photo" [alt]="person()?.full_name || 'Alumno'" />
+    </div>
+
+    <h2 class="family-member-student__name">
+      {{ person()?.full_name }}
+    </h2>
+
+    @if (loadedStudent()?.status ?? student().status; as status) {
+      <div class="family-member-student__status">
+        <span [class]="'is-' + status.css_class">
+          {{ status.translation | translate }}
+        </span>
+      </div>
+    }
+
+    <div class="family-member-student__summary">
+      <label>{{ 'administration.family-members.student-detail.enrollment' | translate }}</label>
+      <p>{{ loadedStudent()?.enrollment || student().enrollment || '-' }}</p>
+
+      <label>{{
+        'administration.family-members.student-detail.current-academic' | translate
+      }}</label>
+      <p>
+        @if (currentYear(); as year) {
+          {{ year.school_year?.name || '-' }} · {{ year.grade?.level?.description || '-' }} ·
+          {{ year.grade?.description || '-' }}
+        } @else {
+          -
+        }
+      </p>
+
+      <label>{{ 'security.users.fields.email' | translate }}</label>
+      <p>{{ user()?.email || '-' }}</p>
+    </div>
+
+    <div class="family-member-student__actions">
+      @if (getScreenOption('upload-photo'); as uploadPhotoOption) {
+        <app-ui-button
+          [variant]="uploadPhotoOption.color"
+          [title]="uploadPhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="uploadPhotoOption.icon"
+          (click)="onUploadPhoto()"
+        />
+      }
+
+      @if (getScreenOption('remove-photo'); as removePhotoOption) {
+        <app-ui-button
+          [variant]="removePhotoOption.color"
+          [title]="removePhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="removePhotoOption.icon"
+          (click)="onRemovePhoto()"
+        />
+      }
+
+      @if (getScreenOption('delete'); as deleteOption) {
+        <app-ui-button
+          [variant]="deleteOption.color"
+          [title]="deleteOption.translation | translate"
+          size="sm"
+          [iconLeft]="deleteOption.icon"
+          (click)="onDelete()"
+        />
+      }
+    </div>
+  </aside>
+
+  <main class="family-member-student__main">
+    <header class="family-member-student__header">
+      <div>
+        <h1>{{ 'administration.family-members.student-detail.title' | translate }}</h1>
+        <p>{{ 'administration.family-members.student-detail.subtitle' | translate }}</p>
+      </div>
+    </header>
+
+    <nav class="family-member-student__tabs">
+      @for (child of children(); track child.id) {
+        <button
+          type="button"
+          [class.is-active]="activeTab() === child.name"
+          (click)="setTab(child.name)"
+        >
+          {{ child.translation | translate }}
+        </button>
+      }
+    </nav>
+
+    <section class="family-member-student__panel">
+      @switch (activeTab()) {
+        @case ('person-profile') {
+          <h2>{{ 'controllers.person-profile' | translate }}</h2>
+
+          <app-person-profile-tab
+            [person]="person()"
+            [fields]="personFields()"
+            [catalogs]="catalogs()?.person_profile ?? null"
+            [saveRoute]="profileSaveRoute()"
+            [route]="childRoute('person-profile')"
+            [context]="'student'"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('student-academic') {
+          <h2>{{ 'controllers.student-academic' | translate }}</h2>
+
+          <div class="family-member-student__placeholder">
+            {{ 'administration.family-members.student-detail.academic-placeholder' | translate }}
+          </div>
+        }
+
+        @case ('user-security') {
+          <h2>{{ 'controllers.user-security' | translate }}</h2>
+
+          <app-user-security-tab
+            [user]="user()"
+            [roles]="catalogs()?.roles ?? []"
+            [route]="childRoute('user-security')"
+            (userUpdated)="onUserUpdated($event)"
+          />
+        }
+
+        @case ('person-communication') {
+          <h2>{{ 'controllers.person-communication' | translate }}</h2>
+
+          <app-person-communication-tab
+            [person]="person()"
+            [route]="childRoute('person-communication')"
+            [catalogs]="communicationCatalogs()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('student-years') {
+          <h2>{{ 'controllers.student-years' | translate }}</h2>
+
+          <app-student-years
+            [route]="childRoute('student-years')!"
+            [studentId]="loadedStudent()?.id ?? student().id"
+            [studentYears]="loadedStudent()?.years ?? []"
+          />
+        }
+
+        @default {
+          <div class="family-member-student__empty">
+            {{ 'common.no-data' | translate }}
+          </div>
+        }
+      }
+    </section>
+  </main>
+</section>

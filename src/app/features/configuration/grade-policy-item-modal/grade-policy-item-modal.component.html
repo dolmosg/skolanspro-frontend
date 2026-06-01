@@ -1,0 +1,39 @@
+<form class="grade-policy-item-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="grade-policy-item-modal__grid">
+    <div class="grade-policy-item-modal__field">
+      <label>
+        {{ 'configuration.grade-policy-items.fields.code' | translate }}
+        <span>*</span>
+      </label>
+      <input type="text" formControlName="code" maxlength="5" />
+    </div>
+
+    <div class="grade-policy-item-modal__field">
+      <label>
+        {{ 'configuration.grade-policy-items.fields.threshold' | translate }}
+        <span>*</span>
+      </label>
+      <input type="number" formControlName="threshold" min="0" max="999.99" step="0.01" />
+    </div>
+
+    <div class="grade-policy-item-modal__field grade-policy-item-modal__field--wide">
+      <label>
+        {{ 'configuration.grade-policy-items.fields.name' | translate }}
+        <span>*</span>
+      </label>
+      <input type="text" formControlName="name" maxlength="128" />
+    </div>
+  </div>
+
+  <div class="grade-policy-item-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button [label]="'common.save' | translate" variant="primary" size="sm" type="submit" />
+  </div>
+</form>

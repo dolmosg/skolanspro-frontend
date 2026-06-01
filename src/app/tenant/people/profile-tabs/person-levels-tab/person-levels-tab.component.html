@@ -1,0 +1,31 @@
+<div class="person-levels-tab">
+  <div class="person-levels-tab__grid">
+    @for (level of levels(); track level.id) {
+      <label class="person-levels-tab__item">
+        <input
+          type="checkbox"
+          [checked]="isSelected(level.id)"
+          [disabled]="!canUpdate()"
+          (change)="toggleLevel(level.id, $any($event.target).checked)"
+        />
+
+        <span>
+          {{ level.translation ? (level.translation | translate) : level.description }}
+        </span>
+      </label>
+    }
+  </div>
+
+  @if (hasScreenOption('update')) {
+    <div class="person-levels-tab__actions">
+      <app-ui-button
+        type="button"
+        variant="primary"
+        size="sm"
+        [label]="'common.save' | translate"
+        [disabled]="!hasChanges()"
+        (click)="onSave()"
+      />
+    </div>
+  }
+</div>

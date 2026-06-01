@@ -1,0 +1,35 @@
+.dashboard {
+  &__hero {
+    padding: 8px 4px;
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 16px 0 10px;
+    font-size: 34px;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+  }
+
+  p {
+    max-width: 720px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #64748b;
+  }
+}

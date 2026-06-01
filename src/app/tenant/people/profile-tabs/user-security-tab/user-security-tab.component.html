@@ -1,0 +1,70 @@
+<form class="user-security-tab" [formGroup]="form()" (ngSubmit)="onSave()">
+  <div class="user-security-tab__grid">
+    <div class="user-security-tab__field">
+      <label>
+        {{ 'administration.user-security.fields.email' | translate }}
+        <span>*</span>
+      </label>
+
+      <input type="email" formControlName="email" />
+    </div>
+
+    <div class="user-security-tab__field">
+      <label>
+        {{ 'administration.user-security.fields.role' | translate }}
+        <span>*</span>
+      </label>
+
+      <app-sk-select
+        [control]="control('role_id')"
+        [items]="roles()"
+        bindLabel="translation"
+        bindValue="id"
+        [translateLabel]="true"
+        [clearable]="true"
+        [placeholder]="'administration.user-security.fields.select-role' | translate"
+      />
+    </div>
+
+    <div class="user-security-tab__field user-security-tab__field--checkbox">
+      <label class="user-security-tab__checkbox-label">
+        <input type="checkbox" formControlName="active" />
+        {{ 'administration.user-security.fields.active' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <div class="user-security-tab__actions">
+    @if (hasScreenOption('reset')) {
+      <app-ui-button
+        type="button"
+        variant="danger"
+        size="sm"
+        [label]="'common.cancel' | translate"
+        [disabled]="!hasChanges()"
+        (click)="onCancel()"
+      />
+    }
+
+    @if (hasScreenOption('change-password')) {
+      <app-ui-button
+        type="button"
+        variant="secondary"
+        size="sm"
+        [label]="'administration.user-security.change-password' | translate"
+        [disabled]="hasChanges()"
+        (click)="onChangePassword()"
+      />
+    }
+
+    @if (hasScreenOption('update')) {
+      <app-ui-button
+        type="submit"
+        variant="primary"
+        size="sm"
+        [disabled]="!hasChanges() || form().invalid"
+        [label]="'common.save' | translate"
+      />
+    }
+  </div>
+</form>

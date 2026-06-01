@@ -1,0 +1,85 @@
+<form class="action-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="action-modal__grid">
+    <div class="action-modal__field action-modal__field--full">
+      <label class="action-modal__label" for="action-name">
+        {{ 'configuration.actions.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="action-name"
+        type="text"
+        class="action-modal__input"
+        formControlName="name"
+        autocomplete="off"
+        (input)="onNameChange($event)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="action-modal__field action-modal__field--full">
+      <label class="action-modal__label" for="action-translation">
+        {{ 'configuration.actions.fields.translation' | translate }}
+      </label>
+      <input
+        id="action-translation"
+        type="text"
+        class="action-modal__input"
+        formControlName="translation"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+
+    <div class="action-modal__field">
+      <label class="action-modal__label" for="action-icon">
+        {{ 'configuration.actions.fields.icon' | translate }}
+      </label>
+      <input
+        id="action-icon"
+        type="text"
+        class="action-modal__input"
+        formControlName="icon"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.icon"></form-error>
+    </div>
+
+    <div class="action-modal__field">
+      <label class="action-modal__label" for="action-color">
+        {{ 'configuration.actions.fields.color' | translate }}
+      </label>
+      <input
+        id="action-color"
+        type="text"
+        class="action-modal__input"
+        formControlName="color"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.color"></form-error>
+    </div>
+
+    <div class="action-modal__field action-modal__field--full action-modal__field--inline">
+      <label class="action-modal__checkbox">
+        <input type="checkbox" formControlName="priv" />
+        <span>{{ 'configuration.actions.fields.priv' | translate }}</span>
+      </label>
+    </div>
+  </div>
+
+  <div modal-footer class="action-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="(isEdit() ? 'common.save' : 'common.create') | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

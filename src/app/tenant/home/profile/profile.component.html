@@ -1,0 +1,93 @@
+<section class="profile">
+  <aside class="profile__card">
+    <div class="profile__avatar">
+      @if (displayPhoto()) {
+        <img [src]="displayPhoto()!" [alt]="displayName()" />
+      } @else {
+        <span>{{ displayInitials() }}</span>
+      }
+    </div>
+
+    <div class="profile__identity">
+      <h1>{{ displayName() }}</h1>
+
+      @if (user()?.role) {
+        <p class="profile__role">
+          {{ user()?.role?.translation | translate }}
+        </p>
+      }
+
+      <p class="profile__email">
+        {{ displayEmail() }}
+      </p>
+    </div>
+    @if (options().length > 0) {
+  <div class="profile__actions">
+    @for (option of options(); track option.id) {
+      <app-ui-button
+        [iconOnly]="true"
+        [title]="option.translation | translate"
+        [variant]="option.color"
+        size="sm"
+        [iconLeft]="option.icon"
+        (click)="onProfileOptionClick(option.name)"
+      />
+    }
+  </div>
+}
+  </aside>
+
+  <section class="profile__main">
+    <nav class="profile__tabs" aria-label="Secciones del perfil">
+      @for (child of children(); track child.id) {
+        <button
+          type="button"
+          class="profile__tab"
+          [class.profile__tab--active]="activeTab() === child.name"
+          (click)="activeTab.set(child.name)"
+        >
+          @if (child.icon) {
+            <app-ui-icon [name]="child.icon" size="sm" />
+          }
+
+          <span>{{ child.translation | translate }}</span>
+        </button>
+      }
+    </nav>
+
+    <div class="profile__tab-content">
+      @switch (activeTab()) {
+        @case ('person-profile') {
+          <app-person-profile-tab
+            [person]="person()"
+            [fields]="personFields()"
+            [catalogs]="catalogs()?.person_profile ?? null"
+            [saveRoute]="profileSaveRoute()"
+            [route]="childRoute('person-profile')"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('person-communication') {
+          <app-person-communication-tab
+            [person]="person()"
+            [route]="childRoute('person-communication')"
+            [catalogs]="communicationCatalogs()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('person-password') {
+          <app-person-password-tab
+          [user]="person()?.user!"
+          [route]="childRoute('person-password')"
+          />
+        }
+
+        @default {
+          <p>Selecciona una sección del perfil.</p>
+        }
+      }
+    </div>
+  </section>
+</section>

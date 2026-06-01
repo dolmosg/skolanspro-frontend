@@ -1,0 +1,46 @@
+<form class="organization-logos-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="organization-logos-modal__grid">
+    <div class="organization-logos-modal__field organization-logos-modal__field--full">
+      <label class="organization-logos-modal__label" for="organization-logo-name">
+        {{ 'configuration.organization-logos.fields.name' | translate }}
+      </label>
+
+      <input
+        id="organization-logo-name"
+        class="organization-logos-modal__input"
+        type="text"
+        formControlName="name"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <label class="organization-logos-modal__check">
+      <input type="checkbox" formControlName="default" />
+      <span>{{ 'configuration.organization-logos.fields.default' | translate }}</span>
+    </label>
+
+    <label class="organization-logos-modal__check">
+      <input type="checkbox" formControlName="active" />
+      <span>{{ 'configuration.organization-logos.fields.active' | translate }}</span>
+    </label>
+  </div>
+
+  <div class="organization-logos-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="isEditMode() ? ('common.update' | translate) : ('common.save' | translate)"
+      [disabled]="form.invalid"
+    />
+  </div>
+</form>

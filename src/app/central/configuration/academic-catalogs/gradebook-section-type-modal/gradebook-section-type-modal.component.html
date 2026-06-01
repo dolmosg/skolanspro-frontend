@@ -1,0 +1,57 @@
+<form class="gradebook-section-type-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="gradebook-section-type-modal__field">
+    <label>
+      {{ 'configuration.gradebook-section-types.fields.name' | translate }}
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      formControlName="name"
+      (input)="onNameChange($event)"
+    />
+  </div>
+
+  <div class="gradebook-section-type-modal__field">
+    <label>
+      {{ 'configuration.gradebook-section-types.fields.translation' | translate }}
+    </label>
+
+    <input type="text" formControlName="translation" />
+  </div>
+
+  <div class="gradebook-section-type-modal__grid">
+    <label>
+      <input type="checkbox" formControlName="configurable" />
+      {{ 'configuration.gradebook-section-types.fields.configurable' | translate }}
+    </label>
+
+    <label>
+      <input type="checkbox" formControlName="active" />
+      {{ 'common.active' | translate }}
+    </label>
+  </div>
+
+  <div class="gradebook-section-type-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="
+        isEditMode()
+          ? ('configuration.gradebook-section-types.update' | translate)
+          : ('configuration.gradebook-section-types.add' | translate)
+      "
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="submit"
+    />
+  </div>
+</form>

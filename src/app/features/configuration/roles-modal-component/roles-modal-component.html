@@ -1,0 +1,75 @@
+<form class="roles-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="roles-modal__grid">
+    <div class="roles-modal__field roles-modal__field--full">
+      <label class="roles-modal__label" for="role-name">
+        {{ 'configuration.roles.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="role-name"
+        type="text"
+        class="roles-modal__input"
+        formControlName="name"
+        autocomplete="off"
+        (input)="onNameChange($event)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="roles-modal__field roles-modal__field--full">
+      <label class="roles-modal__label" for="role-translation">
+        {{ 'configuration.roles.fields.translation' | translate }}
+      </label>
+      <input
+        id="role-translation"
+        type="text"
+        class="roles-modal__input"
+        formControlName="translation"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+
+    <div class="roles-modal__field roles-modal__field--full">
+      <label class="roles-modal__label" for="role-path">
+        {{ 'configuration.roles.fields.path' | translate }}
+      </label>
+      <input
+        id="role-path"
+        type="text"
+        class="roles-modal__input"
+        formControlName="path"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.path"></form-error>
+    </div>
+
+    <div class="roles-modal__field roles-modal__field--full">
+      <label class="roles-modal__label" for="role-help">
+        {{ 'configuration.roles.fields.help' | translate }}
+      </label>
+      <input id="role-help" class="roles-modal__input" formControlName="help" />
+      <form-error [control]="form.controls.help"></form-error>
+    </div>
+
+    <div class="roles-modal__field roles-modal__field--full roles-modal__field--checkbox">
+      <label class="roles-modal__checkbox">
+        <input type="checkbox" formControlName="internal" />
+        <span>
+          {{ 'configuration.roles.fields.internal' | translate }}
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div modal-footer class="roles-modal__actions">
+    <app-ui-button label="Cancelar" variant="ghost" size="sm" type="button" (click)="onCancel()" />
+
+    <app-ui-button
+      [label]="isEdit() ? 'Guardar cambios' : 'Crear rol'"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

@@ -1,0 +1,53 @@
+<section class="person-communication-tab">
+  @if (hasChildren()) {
+    <div class="communication-tabs">
+      @for (child of children(); track child.id ?? child.name) {
+        <button
+          type="button"
+          class="communication-tab"
+          [class.active]="activeChild()?.name === child.name"
+          (click)="selectChild(child)"
+        >
+          {{ tabLabel(child) | translate }}
+        </button>
+      }
+    </div>
+
+    <div class="communication-content">
+      @switch (childKey(activeChild())) {
+        @case ('mails') {
+          <app-person-mails-tab
+            [person]="person()"
+            [route]="childRoute('person-mails')"
+            [mailTypes]="mailTypes()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('phones') {
+          <app-person-phones-tab
+            [person]="person()"
+            [route]="childRoute('person-phones')"
+            [phoneTypes]="phoneTypes()"
+            [countries]="countries()"
+            [defaultCountryId]="defaultCountryId()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('address') {
+          <app-person-address-tab
+            [person]="person()"
+            [route]="childRoute('person-addresses')"
+            [addressTypes]="addressTypes()"
+            [countries]="countries()"
+            [defaultCountryId]="defaultCountryId()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+      }
+    </div>
+  } @else {
+    <div class="empty-state">No hay opciones de comunicación disponibles.</div>
+  }
+</section>

@@ -1,0 +1,15 @@
+@if (isOpen()) {
+  <app-skl-modal-component
+    [title]="state().title"
+    [description]="state().description"
+    [size]="state().size"
+    [closeOnBackdrop]="state().closeOnBackdrop"
+    [closeOnEscape]="state().closeOnEscape"
+    [showCloseButton]="state().showCloseButton"
+    (closed)="onClose()"
+  >
+    <ng-container
+      *ngComponentOutlet="state().component; inputs: componentInputs()"
+    ></ng-container>
+  </app-skl-modal-component>
+}

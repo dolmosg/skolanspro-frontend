@@ -1,0 +1,88 @@
+<form class="staff-user-modal" [formGroup]="form" (ngSubmit)="onSave()">
+  <div class="staff-user-modal__grid">
+    <div class="staff-user-modal__field">
+      <label>{{ 'security.users.fields.email' | translate }} <span class="required">*</span></label>
+
+      <input
+        type="email"
+        formControlName="email"
+        [placeholder]="'security.users.fields.email' | translate"
+      />
+
+      @if (isInvalid('email')) {
+        <small>{{ 'validation.invalid_data' | translate }}</small>
+      }
+    </div>
+
+    <div class="staff-user-modal__field">
+      <label
+        >{{ 'administration.staff-users.modal.role' | translate }}
+        <span class="required">*</span></label
+      >
+
+      <app-sk-select
+        [control]="control('role_id')"
+        [items]="roles()"
+        bindLabel="translation"
+        bindValue="id"
+        [clearable]="true"
+        [placeholder]="'common.select' | translate"
+        [translateLabel]="true"
+      />
+
+      @if (isInvalid('role_id')) {
+        <small>{{ 'validation.invalid_data' | translate }}</small>
+      }
+    </div>
+
+    @for (field of visibleFields(); track field.id) {
+      <div class="staff-user-modal__field">
+        <label>
+          {{ field.translation | translate }}
+
+          @if (field.required) {
+            <span class="required">*</span>
+          }
+        </label>
+
+        @if (isSelectField(field.name)) {
+          <app-sk-select
+            [control]="control(field.name)"
+            [items]="selectItems(field.name)"
+            bindLabel="translation"
+            bindValue="id"
+            [clearable]="true"
+            [placeholder]="'common.select' | translate"
+            [translateLabel]="true"
+          />
+        } @else {
+          <input
+            [type]="inputType(field.name)"
+            [formControlName]="field.name"
+            [placeholder]="field.translation | translate"
+          />
+        }
+
+        @if (isInvalid(field.name)) {
+          <small>{{ 'validation.invalid_data' | translate }}</small>
+        }
+      </div>
+    }
+  </div>
+
+  <footer class="staff-user-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      iconLeft="save"
+      [label]="'common.save' | translate"
+    />
+  </footer>
+</form>

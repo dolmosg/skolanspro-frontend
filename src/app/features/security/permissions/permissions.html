@@ -1,0 +1,84 @@
+<section class="sk-page permissions-page">
+  <div class="sk-page__panel">
+    <header class="sk-page__header permissions-page__header">
+      <div>
+        <h1 class="permissions-page__title">Permisos</h1>
+        <p class="permissions-page__subtitle">
+          Selecciona un rol y un módulo para administrar las acciones permitidas.
+        </p>
+      </div>
+    </header>
+
+    <div class="permissions-page__filters">
+      <div class="permissions-page__field">
+        <label for="permission-role">Rol</label>
+        <app-sk-select
+          id="permission-role"
+          [control]="roleControl"
+          [items]="roles()"
+          bindLabel="translation"
+          bindValue="id"
+          placeholder="Selecciona un rol"
+          [disabled]="loadingRoles()"
+          [translateLabel]="true"
+        />
+      </div>
+
+      <div class="permissions-page__field">
+        <label for="permission-module">Módulo</label>
+        <app-sk-select
+          id="permission-module"
+          [control]="moduleControl"
+          [items]="modules()"
+          bindLabel="translation"
+          bindValue="id"
+          placeholder="Selecciona un módulo"
+          [disabled]="!selectedRoleId || loadingModules()"
+          [translateLabel]="true"
+        />
+      </div>
+    </div>
+
+    <div class="permissions-page__path" *ngIf="selectedRoleId && selectedModuleId">
+      <button type="button" class="permissions-page__path-link" (click)="goToRootLevel()">
+        Nivel raíz
+      </button>
+
+      <ng-container *ngFor="let item of path(); let index = index">
+        <span class="permissions-page__path-separator">/</span>
+        <button type="button" class="permissions-page__path-link" (click)="goToPath(index)">
+          {{ (item.label | translate) || item.label }}
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="permissions-page__state" *ngIf="!selectedRoleId">
+      Selecciona un rol para comenzar.
+    </div>
+
+    <div class="permissions-page__state" *ngIf="selectedRoleId && !selectedModuleId">
+      Selecciona un módulo para ver sus controladores y acciones.
+    </div>
+
+    <div class="permissions-page__state" *ngIf="selectedRoleId && selectedModuleId && loadingControllers()">
+      Cargando controladores...
+    </div>
+
+    <div
+      class="permissions-page__controllers"
+      *ngIf="selectedRoleId && selectedModuleId && !loadingControllers()"
+    >
+      <div class="permissions-page__empty" *ngIf="controllers().length === 0">
+        No hay controladores disponibles en este nivel.
+      </div>
+
+      <app-controller-permissions
+        *ngFor="let controller of controllers()"
+        [controller]="controller"
+        (actionToggled)="updateActionPermission($event)"
+        (childrenEntered)="handleChildrenEntered($event)"
+      />
+    </div>
+
+  </div>
+</section>

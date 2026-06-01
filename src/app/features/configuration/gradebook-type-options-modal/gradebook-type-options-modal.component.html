@@ -1,0 +1,148 @@
+<div class="gradebook-type-options-modal">
+  <div class="gradebook-type-options-modal__header">
+    <div class="sk-selection-inline">
+      <span class="sk-selection-badge">{{ selectedCount() }}</span>
+      <strong>{{ 'common.selected' | translate }}</strong>
+    </div>
+
+    <div class="gradebook-type-options-modal__tools">
+      <input
+        type="text"
+        [value]="search()"
+        [placeholder]="'common.search' | translate"
+        (input)="onSearch($event)"
+      />
+
+      @if (search()) {
+        <app-ui-button
+          variant="ghost"
+          size="sm"
+          iconLeft="clear-search"
+          [iconOnly]="true"
+          [title]="'common.clear' | translate"
+          type="button"
+          (click)="clearSearch()"
+        />
+      }
+    </div>
+  </div>
+
+  <div class="gradebook-type-options-modal__bulk">
+    <app-ui-button
+      [label]="'common.select-all' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="check"
+      type="button"
+      [disabled]="!hasVisibleRows() || allVisibleSelected()"
+      (click)="selectAllVisible()"
+    />
+
+    <app-ui-button
+      [label]="'common.clear' | translate"
+      variant="ghost"
+      size="sm"
+      iconLeft="clear-search"
+      type="button"
+      [disabled]="!hasVisibleRows()"
+      (click)="clearVisible()"
+    />
+  </div>
+
+  <div class="gradebook-type-options-modal__list">
+    @if (!hasRows()) {
+      <div class="gradebook-type-options-modal__empty">
+        {{ 'configuration.gradebook-types.options.messages.empty' | translate }}
+      </div>
+    } @else if (!hasVisibleRows()) {
+      <div class="gradebook-type-options-modal__empty">
+        {{ 'configuration.gradebook-types.options.messages.no-results' | translate }}
+      </div>
+    } @else {
+      @for (row of filteredRows(); track row.option.id) {
+        <div
+          class="gradebook-type-options-modal__item"
+          [class.gradebook-type-options-modal__item--selected]="row.selected"
+        >
+          <div class="gradebook-type-options-modal__main">
+            <label class="gradebook-type-options-modal__checkbox">
+              <input
+                type="checkbox"
+                [checked]="row.selected"
+                (change)="toggleSelected(row)"
+              />
+
+              <span class="gradebook-type-options-modal__label">
+                {{ row.option.translation | translate }}
+              </span>
+            </label>
+
+            <small>{{ row.option.name }}</small>
+          </div>
+
+          <div class="gradebook-type-options-modal__meta">
+            @if (row.selected) {
+              <span class="gradebook-type-options-modal__order">
+                {{ row.order + 1 }}
+              </span>
+
+              <div class="gradebook-type-options-modal__move">
+                <app-ui-button
+                  variant="ghost"
+                  size="sm"
+                  iconLeft="up"
+                  [iconOnly]="true"
+                  [title]="'common.move-up' | translate"
+                  type="button"
+                  [disabled]="!canMoveUp(row)"
+                  (click)="moveUp(row)"
+                />
+
+                <app-ui-button
+                  variant="ghost"
+                  size="sm"
+                  iconLeft="down"
+                  [iconOnly]="true"
+                  [title]="'common.move-down' | translate"
+                  type="button"
+                  [disabled]="!canMoveDown(row)"
+                  (click)="moveDown(row)"
+                />
+              </div>
+
+              <label class="gradebook-type-options-modal__active">
+                <input
+                  type="checkbox"
+                  [checked]="row.active"
+                  (change)="toggleActive(row)"
+                />
+
+                <span>{{ 'common.active' | translate }}</span>
+              </label>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="gradebook-type-options-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="button"
+      (click)="onSubmit()"
+    />
+  </div>
+</div>

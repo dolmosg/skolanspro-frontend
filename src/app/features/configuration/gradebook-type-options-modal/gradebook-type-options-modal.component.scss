@@ -1,0 +1,206 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.gradebook-type-options-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.gradebook-type-options-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.gradebook-type-options-modal__tools {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.4rem;
+
+  input {
+    box-sizing: border-box;
+    width: min(260px, 100%);
+    min-height: 34px;
+    padding: 0.45rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #e5e7eb);
+    font-size: 0.82rem;
+    background: var(--color-surface, #ffffff);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary, #2563eb);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+  }
+}
+
+.gradebook-type-options-modal__bulk {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.gradebook-type-options-modal__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.gradebook-type-options-modal__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-surface, #ffffff);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    background: var(--color-surface-muted, #f9fafb);
+  }
+
+  &--selected {
+    border-color: var(--color-primary, #2563eb);
+    background: rgba(37, 99, 235, 0.06);
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08);
+  }
+}
+
+.gradebook-type-options-modal__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.15rem;
+
+  small {
+    margin-left: 1.55rem;
+    font-size: 0.72rem;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.gradebook-type-options-modal__checkbox {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-text, #374151);
+
+  input[type='checkbox'] {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary, #2563eb);
+    cursor: pointer;
+  }
+}
+
+.gradebook-type-options-modal__label {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gradebook-type-options-modal__meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.gradebook-type-options-modal__order {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.65rem;
+  height: 1.65rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft, rgba(37, 99, 235, 0.1));
+  color: var(--color-primary, #2563eb);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.gradebook-type-options-modal__move {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.gradebook-type-options-modal__active {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #6b7280);
+
+  input[type='checkbox'] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--color-primary, #2563eb);
+    cursor: pointer;
+  }
+}
+
+.gradebook-type-options-modal__empty {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px dashed var(--color-border, #e5e7eb);
+  color: var(--color-text-muted, #6b7280);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.gradebook-type-options-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .gradebook-type-options-modal__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .gradebook-type-options-modal__tools {
+    width: 100%;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .gradebook-type-options-modal__item {
+    grid-template-columns: 1fr;
+  }
+
+  .gradebook-type-options-modal__meta {
+    justify-content: flex-start;
+    padding-left: 1.55rem;
+  }
+}

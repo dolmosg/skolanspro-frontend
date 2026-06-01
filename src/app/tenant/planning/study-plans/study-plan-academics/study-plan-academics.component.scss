@@ -1,0 +1,148 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-academics {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  gap: 1.5rem;
+}
+
+.study-plan-academics__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text, #111827);
+  }
+
+  p {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.study-plan-academics__stage-view {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-academics__grid {
+  display: grid;
+  align-items: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.study-plan-academics__card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 1.25rem;
+  background: var(--color-surface, #ffffff);
+  box-shadow: 0 2px 10px rgb(15 23 42 / 0.04);
+  gap: 1.25rem;
+}
+
+.study-plan-academics__card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+
+  > div {
+    min-width: 0;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text, #111827);
+  }
+
+  p {
+    margin: 0.35rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.study-plan-academics__placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 220px;
+  padding: 1.5rem;
+  border: 1px dashed var(--color-border, #d1d5db);
+  border-radius: 1.25rem;
+  background: linear-gradient(
+    180deg,
+    rgb(124 58 237 / 0.02) 0%,
+    rgb(124 58 237 / 0.04) 100%
+  );
+  text-align: center;
+  gap: 0.85rem;
+
+  app-ui-icon {
+    color: var(--color-primary, #7c3aed);
+  }
+
+  strong {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text, #111827);
+  }
+
+  span {
+    max-width: 280px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.study-plan-academics__placeholder--action {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: rgb(124 58 237 / 0.24);
+    background: rgb(124 58 237 / 0.05);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+}

@@ -1,0 +1,66 @@
+<div
+  class="nav-item"
+  [class.nav-item--active]="isActive()"
+  [class.nav-item--open]="open()"
+  [class.nav-item--has-children]="item.children?.length"
+  [class.nav-item--collapsed]="collapsed"
+  [style.--level]="level"
+>
+  @if (item.children?.length) {
+    <button
+      type="button"
+      class="nav-item__button"
+      [attr.aria-expanded]="open()"
+      (click)="toggle()"
+      [attr.title]="(collapsed || showTitle) ? (item.labelKey | translate) : null"
+    >
+      <span class="nav-item__left" [class.nav-item__left--with-icon]="item.icon">
+        @if (item.icon) {
+          <app-ui-icon [name]="item.icon" />
+        }
+
+        @if (!collapsed) {
+          <span class="nav-item__label">
+            {{ item.labelKey | translate }}
+          </span>
+        }
+      </span>
+
+      @if (!collapsed) {
+        <span class="nav-item__chevron"> ▾ </span>
+      }
+    </button>
+  } @else {
+    <a
+      class="nav-item__link"
+      [routerLink]="getContextualRoute(item.route)"
+      [attr.aria-current]="isRouteActive(item.route) ? 'page' : null"
+      [attr.title]="(collapsed || showTitle) ? (item.labelKey | translate) : null"
+    >
+      <span class="nav-item__left" [class.nav-item__left--with-icon]="item.icon">
+        @if (item.icon) {
+          <app-ui-icon [name]="item.icon" />
+        }
+
+        @if (!collapsed) {
+          <span class="nav-item__label">
+            {{ item.labelKey | translate }}
+          </span>
+        }
+      </span>
+    </a>
+  }
+
+  @if (open()) {
+    <div class="nav-item__children" [class.nav-item__children--flyout]="collapsed">
+      @for (child of item.children; track child.id) {
+        <app-sidebar-nav-item
+          [item]="child"
+          [level]="level + 1"
+          [collapsed]="false"
+          [showTitle]="collapsed"
+        />
+      }
+    </div>
+  }
+</div>

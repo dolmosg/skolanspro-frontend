@@ -1,0 +1,53 @@
+.mail-types {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.mail-types__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mail-types__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--sk-heading, #1f2937);
+}
+
+.mail-types__subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--sk-muted, #64748b);
+}
+
+.mail-types__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Ajuste para la tabla */
+app-skolans-table {
+  display: block;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mail-types__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mail-types__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

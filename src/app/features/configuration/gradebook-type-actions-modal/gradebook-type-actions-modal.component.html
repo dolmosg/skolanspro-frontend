@@ -1,0 +1,112 @@
+<div class="gradebook-type-actions-modal">
+  <div class="gradebook-type-actions-modal__header">
+    <div class="sk-selection-inline">
+      <span class="sk-selection-badge">{{ selectedCount() }}</span>
+      <strong>{{ 'common.selected' | translate }}</strong>
+    </div>
+
+    <div class="gradebook-type-actions-modal__tools">
+      <input
+        type="text"
+        [value]="search()"
+        [placeholder]="'common.search' | translate"
+        (input)="onSearch($event)"
+      />
+
+      @if (search()) {
+        <app-ui-button
+          variant="ghost"
+          size="sm"
+          iconLeft="clear-search"
+          [iconOnly]="true"
+          [title]="'common.clear' | translate"
+          type="button"
+          (click)="clearSearch()"
+        />
+      }
+    </div>
+  </div>
+
+  <div class="gradebook-type-actions-modal__list">
+    @if (!hasRows()) {
+      <div class="gradebook-type-actions-modal__empty">
+        {{ 'configuration.gradebook-types.actions.messages.empty' | translate }}
+      </div>
+    } @else if (!hasVisibleRows()) {
+      <div class="gradebook-type-actions-modal__empty">
+        {{ 'configuration.gradebook-types.actions.messages.no-results' | translate }}
+      </div>
+    } @else {
+      @for (row of filteredRows(); track row.action.id) {
+        <div
+          class="gradebook-type-actions-modal__item"
+          [class.gradebook-type-actions-modal__item--selected]="row.selected"
+        >
+          <div class="gradebook-type-actions-modal__main">
+            <label class="gradebook-type-actions-modal__checkbox">
+              <input
+                type="checkbox"
+                [checked]="row.selected"
+                (change)="toggleSelected(row)"
+              />
+
+              <span class="gradebook-type-actions-modal__label">
+                {{ row.action.translation | translate }}
+              </span>
+            </label>
+
+            <small>{{ row.action.name }}</small>
+          </div>
+
+          <div class="gradebook-type-actions-modal__preview">
+            <app-ui-button
+              [label]="row.action.translation | translate"
+              [variant]="buttonVariant(row.action.color)"
+              size="sm"
+              [iconLeft]="row.action.icon"
+              type="button"
+            />
+          </div>
+
+          <div class="gradebook-type-actions-modal__meta">
+            @if (row.selected) {
+              <span class="gradebook-type-actions-modal__order">
+                {{ row.order + 1 }}
+              </span>
+
+              <label class="gradebook-type-actions-modal__active">
+                <input
+                  type="checkbox"
+                  [checked]="row.active"
+                  (change)="toggleActive(row)"
+                />
+
+                <span>{{ 'common.active' | translate }}</span>
+              </label>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="gradebook-type-actions-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="button"
+      (click)="onSubmit()"
+    />
+  </div>
+</div>

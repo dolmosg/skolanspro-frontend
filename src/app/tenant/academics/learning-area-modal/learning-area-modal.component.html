@@ -1,0 +1,70 @@
+<form class="learning-area-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="learning-area-modal__grid">
+    <div class="learning-area-modal__field">
+      <label for="learning-area-name">
+        {{ 'academics.learning-areas.fields.name' | translate }}
+      </label>
+
+      <input id="learning-area-name" type="text" formControlName="name" maxlength="70" />
+    </div>
+
+    <div class="learning-area-modal__field learning-area-modal__field--wide">
+      <label for="learning-area-translation">
+        {{ 'academics.learning-areas.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="learning-area-translation"
+        type="text"
+        formControlName="translation"
+        maxlength="200"
+      />
+    </div>
+
+    <!-- COLOR -->
+    <div class="learning-area-modal__field">
+      <label>
+        {{ 'academics.learning-areas.fields.color' | translate }}
+      </label>
+
+      <div class="learning-area-modal__color-row">
+        <div
+          class="learning-area-modal__color-preview"
+          [style.background]="form.controls.color.value || '#ffffff'"
+        ></div>
+
+        <input type="color" formControlName="color" class="learning-area-modal__color-input" />
+
+        <span class="learning-area-modal__color-value">
+          {{ form.controls.color.value || '—' }}
+        </span>
+
+        @if (form.controls.color.value) {
+          <button type="button" (click)="clearColor()">×</button>
+        }
+      </div>
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="learning-area-modal__checks">
+      <label>
+        <input type="checkbox" formControlName="active" />
+        {{ 'academics.learning-areas.fields.active' | translate }}
+      </label>
+    </div>
+  </div>
+
+  <input type="hidden" formControlName="order" />
+
+  <div class="learning-area-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button [label]="'common.save' | translate" variant="primary" size="sm" type="submit" />
+  </div>
+</form>

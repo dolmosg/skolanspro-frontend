@@ -1,0 +1,283 @@
+<div class="sk-step" [formGroup]="form()">
+  <div class="sk-step__header">
+    <h3 class="sk-step__title">
+      {{ 'administration.tenants.steps.organization.title' | translate }}
+    </h3>
+
+    <p class="sk-step__subtitle">
+      {{ 'administration.tenants.steps.organization.subtitle' | translate }}
+    </p>
+  </div>
+
+  <!-- =========================================================
+       IDENTITY
+  ========================================================== -->
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.organization.sections.identity' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--three">
+      <!-- Business -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-business">
+          {{ 'administration.tenants.fields.business' | translate }}
+        </label>
+
+        <input
+          id="organization-business"
+          type="text"
+          class="sk-field__control"
+          formControlName="business"
+          autocomplete="organization"
+          placeholder="Demo School S.A. de C.V."
+        />
+      </div>
+
+      <!-- Trade -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-trade">
+          {{ 'administration.tenants.fields.trade' | translate }}
+        </label>
+
+        <input
+          id="organization-trade"
+          type="text"
+          class="sk-field__control"
+          formControlName="trade"
+          autocomplete="organization-title"
+          placeholder="Demo School"
+        />
+      </div>
+
+      <!-- TIN -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-tin">
+          {{ 'administration.tenants.fields.tin' | translate }}
+        </label>
+
+        <input
+          id="organization-tin"
+          type="text"
+          class="sk-field__control"
+          formControlName="tin"
+          autocomplete="off"
+          placeholder="RFC / Tax ID"
+          skUppercase
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       ADDRESS
+  ========================================================== -->
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.organization.sections.address' | translate }}
+      </h4>
+    </div>
+
+    <!-- Street / Outdoor / Zipcode -->
+
+    <div class="sk-form-grid sk-form-grid--three">
+      <!-- Street -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-street">
+          {{ 'administration.tenants.fields.street' | translate }}
+        </label>
+
+        <input
+          id="organization-street"
+          type="text"
+          class="sk-field__control"
+          formControlName="street"
+          autocomplete="address-line1"
+          placeholder="Av. Reforma"
+        />
+      </div>
+
+      <!-- Outdoor -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-outdoor">
+          {{ 'administration.tenants.fields.outdoor' | translate }}
+        </label>
+
+        <input
+          id="organization-outdoor"
+          type="text"
+          class="sk-field__control"
+          formControlName="outdoor"
+          autocomplete="address-line2"
+          placeholder="123"
+        />
+      </div>
+      <!-- Indoor -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-indoor">
+          {{ 'administration.tenants.fields.indoor' | translate }}
+        </label>
+
+        <input
+          id="organization-indoor"
+          type="text"
+          class="sk-field__control"
+          formControlName="indoor"
+          autocomplete="address-line2"
+          placeholder="4B"
+        />
+      </div>
+    </div>
+
+    <!-- ZipCode / Colony -->
+
+    <div class="sk-form-grid sk-form-grid--two">
+      <!-- Zipcode -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-zipcode">
+          {{ 'administration.tenants.fields.zipcode' | translate }}
+        </label>
+
+        <input
+          id="organization-zipcode"
+          type="text"
+          class="sk-field__control"
+          formControlName="zipcode"
+          inputmode="numeric"
+          autocomplete="postal-code"
+          placeholder="06000"
+          (change)="onZipCodeChange()"
+        />
+      </div>
+
+      <!-- Colony -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-colony">
+          {{ 'administration.tenants.fields.colony' | translate }}
+        </label>
+
+        <input
+          id="organization-colony"
+          type="text"
+          class="sk-field__control"
+          formControlName="colony"
+          autocomplete="address-level3"
+          placeholder="Centro"
+        />
+      </div>
+    </div>
+
+     @if (hasPostalCodeOptions()) {
+      <div class="postal-code-results">
+        <div class="postal-code-results__title">
+          {{ 'administration.person-addresses.messages.select_settlement' | translate }}
+        </div>
+
+        @for (settlement of postalCodeSettlements(); track settlement.id) {
+          <button
+            type="button"
+            class="postal-code-results__item"
+            (click)="selectSettlement(settlement)"
+          >
+            <span class="postal-code-results__name">
+              {{ settlement.settlement }}
+            </span>
+
+            <span class="postal-code-results__meta">
+              {{ settlement.settlement_type }}
+              · {{ settlement.municipality }}
+              · {{ settlement.city }}
+              · {{ settlement.state }}
+            </span>
+          </button>
+        }
+      </div>
+    }
+    <!-- Municipality / City -->
+
+    <div class="sk-form-grid sk-form-grid--two">
+      <!-- Municipality -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-municipality">
+          {{ 'administration.tenants.fields.municipality' | translate }}
+        </label>
+
+        <input
+          id="organization-municipality"
+          type="text"
+          class="sk-field__control"
+          formControlName="municipality"
+          placeholder="Cuauhtémoc"
+        />
+      </div>
+
+      <!-- City -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-city">
+          {{ 'administration.tenants.fields.city' | translate }}
+        </label>
+
+        <input
+          id="organization-city"
+          type="text"
+          class="sk-field__control"
+          formControlName="city"
+          autocomplete="address-level2"
+          placeholder="Ciudad de México"
+        />
+      </div>
+    </div>
+
+    <!-- State / Country -->
+
+    <div class="sk-form-grid sk-form-grid--two">
+      <!-- State -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-state">
+          {{ 'administration.tenants.fields.state' | translate }}
+        </label>
+
+        <input
+          id="organization-state"
+          type="text"
+          class="sk-field__control"
+          formControlName="state"
+          autocomplete="address-level1"
+          placeholder="CDMX"
+        />
+      </div>
+
+      <!-- Country -->
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="organization-country-id">
+          {{ 'administration.tenants.fields.country_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="countries()"
+          bindLabel="name"
+          bindValue="id"
+          [control]="$any(form().controls['country_id'])"
+          placeholder="administration.tenants.placeholders.select-country"
+        />
+      </div>
+    </div>
+  </div>
+</div>

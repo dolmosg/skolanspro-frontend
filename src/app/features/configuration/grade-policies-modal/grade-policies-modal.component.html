@@ -1,0 +1,97 @@
+<div class="grade-policy-modal">
+  <form
+    class="grade-policy-modal__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="grade-policy-modal__grid">
+
+      <!-- Name -->
+      <div class="grade-policy-modal__field grade-policy-modal__field--full">
+        <label class="grade-policy-modal__label">
+          {{ 'configuration.grade-policies.fields.name' | translate }}
+        </label>
+
+        <input
+          class="grade-policy-modal__input"
+          type="text"
+          formControlName="name"
+          maxlength="45"
+          (change)="onNameChange($event)"
+        />
+
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <small class="grade-policy-modal__error">
+            {{ 'validation.required' | translate }}
+          </small>
+        }
+      </div>
+
+      <!-- Translation -->
+      <div class="grade-policy-modal__field grade-policy-modal__field--full">
+        <label class="grade-policy-modal__label">
+          {{ 'configuration.grade-policies.fields.translation' | translate }}
+        </label>
+
+        <input
+          class="grade-policy-modal__input"
+          type="text"
+          formControlName="translation"
+          maxlength="200"
+        />
+      </div>
+
+      <!-- Configurable -->
+      <div class="grade-policy-modal__field grade-policy-modal__field--inline">
+        <label class="grade-policy-modal__label">
+          {{ 'configuration.grade-policies.fields.configurable' | translate }}
+        </label>
+
+        <label class="grade-policy-modal__checkbox">
+          <input
+            type="checkbox"
+            formControlName="configurable"
+          />
+
+          <span>
+            {{ 'configuration.grade-policies.fields.configurable' | translate }}
+          </span>
+        </label>
+      </div>
+
+      <!-- Active -->
+      <div class="grade-policy-modal__field grade-policy-modal__field--inline">
+        <label class="grade-policy-modal__label">
+          {{ 'configuration.grade-policies.fields.active' | translate }}
+        </label>
+
+        <label class="grade-policy-modal__checkbox">
+          <input
+            type="checkbox"
+            formControlName="active"
+          />
+
+          <span>
+            {{ 'common.active' | translate }}
+          </span>
+        </label>
+      </div>
+
+    </div>
+
+    <div class="grade-policy-modal__actions">
+      <app-ui-button
+        [label]="'common.cancel' | translate"
+        variant="secondary"
+        type="button"
+        (click)="onCancel()"
+      />
+
+      <app-ui-button
+        [label]="isEdit() ? ('common.save' | translate) : ('common.create' | translate)"
+        variant="primary"
+        type="submit"
+      />
+    </div>
+  </form>
+</div>

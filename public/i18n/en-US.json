@@ -1,0 +1,2589 @@
+{
+	"academics": {
+		"learning-areas": {
+			"add": "New Learning Area",
+			"delete": "Delete Learning Area",
+			"fields": {
+				"active": "Active",
+				"color": "Color",
+				"name": "Name",
+				"translation": "Description"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this learning area?",
+				"ordering": "Ordering mode active"
+			},
+			"order": "Order Learning Areas",
+			"title": "Learning Areas",
+			"update": "Edit Learning Area"
+		},
+		"subject-classifications": {
+			"add": "New Subject Classification",
+			"delete": "Delete Subject Classification",
+			"fields": {
+				"active": "Active",
+				"color": "Color",
+				"name": "Name",
+				"translation": "Description"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this subject classification?",
+				"ordering": "Ordering mode active"
+			},
+			"order": "Order Subject Classifications",
+			"title": "Subject Classifications",
+			"translation": {
+				"arts": "Arts",
+				"emotional": "Socioemotional Education",
+				"language": "Language",
+				"mathematics": "Mathematics",
+				"natural": "Natural Sciences",
+				"social": "Social Sciences",
+				"sports": "Sports",
+				"without": "Unclassified"
+			},
+			"update": "Edit Subject Classification"
+		},
+		"subject-subcategories": {
+			"add": "New Subject Subcategory",
+			"delete": "Delete Subject Subcategory",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"translation": "Description"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this subject subcategory?",
+				"ordering": "Ordering mode active"
+			},
+			"order": "Order Subject Subcategories",
+			"title": "Subject Subcategories",
+			"update": "Edit Subject Subcategory"
+		},
+		"subjects": {
+			"add": "New Subject",
+			"delete": "Remove Subject",
+			"description": "Select section, academic level and grade to view subjects.",
+			"detail": {
+				"edit-info": "Edit Subject",
+				"empty-description": "Details will appear here after selecting a row.",
+				"empty-title": "Select a subject",
+				"general-info": "General information"
+			},
+			"empty-context": {
+				"description": "Subjects will be shown after selecting section, academic level and grade.",
+				"title": "Select the academic context"
+			},
+			"empty-results": "No subjects match these filters.",
+			"fields": {
+				"active": "Active",
+				"classification": "Classification",
+				"code": "Code",
+				"grade": "Grade",
+				"learning-area": "Learning area",
+				"level": "Academic level",
+				"name": "Name",
+				"official": "Official",
+				"section": "Section",
+				"short-name": "Short name",
+				"subcategory": "Subcategory",
+				"weekly-blocks": "Weekly blocks"
+			},
+			"filters": {
+				"active": "Filter by active",
+				"code": "Filter by code",
+				"official": "Filter by official"
+			},
+			"labels": {
+				"crossover": "Crossover",
+				"no-classification": "No classification",
+				"no-learning-area": "No learning area",
+				"no-subcategory": "No subcategory",
+				"without-code": "No code"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this subject?"
+			},
+			"options": {
+				"active": "Active",
+				"all": "All",
+				"inactive": "Inactive",
+				"official": "Official",
+				"unofficial": "Unofficial"
+			},
+			"placeholders": {
+				"classification": "Select a classification",
+				"code": "Search code...",
+				"grade": "Select a grade",
+				"learning-area": "Select learning area",
+				"level": "Select a level",
+				"section": "Select a section",
+				"subcategory": "Select a subcategory"
+			},
+			"summary": {
+				"filtered": "Filtered subjects"
+			},
+			"title": "Subjects",
+			"update": "Update Subject"
+		}
+	},
+	"administration": {
+		"families": {
+			"add": "New family",
+			"clean": "Clean search",
+			"fields": {
+				"code": "Code",
+				"email": "Email",
+				"family-status": "Status",
+				"lastname": "Last name",
+				"mothername": "Mother surname",
+				"name": "Name",
+				"registered-at": "Registered at"
+			},
+			"messages": {
+				"hasMore": "Only the first 50 results are shown. Refine your search to see more specific results.",
+				"search-results": "Search results"
+			},
+			"modal": {
+				"title": "Add a new family"
+			},
+			"search": "Search",
+			"search-by": {
+				"family": "By family",
+				"student": "By Student"
+			},
+			"search-options": {
+				"emptyDescription": "There are no families or students that match the captured search criteria.",
+				"emptyResults": "No families were found",
+				"empyInitial": "No search performed",
+				"family": "Search by Family",
+				"initialDescription": "Use the filters to locate related families or students.",
+				"students": "Search by Students"
+			}
+		},
+		"family-address": {
+			"add": "New address",
+			"delete": "Remove address",
+			"fields": {
+				"city": "City",
+				"colony": "Neighborhood",
+				"country": "Country",
+				"indoor": "Interior number",
+				"municipality": "Municipality",
+				"outdoor": "Exterior number",
+				"state": "State",
+				"street": "Street",
+				"zip_code": "Postal code"
+			},
+			"subtitle": "Enter the main address information for the family",
+			"title": "Family Address",
+			"update": "Update Address"
+		},
+		"family-general": {
+			"cancel": "Reset",
+			"delete": "Delete Family",
+			"editable-information": "Editable information",
+			"fields": {
+				"canceled-at": "Cancellation date",
+				"code": "Code",
+				"registered-at": "Registration date"
+			},
+			"informative-information": "Informative information",
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this family? This action may affect related information.",
+				"delete-title": "Remove family"
+			},
+			"subtitle": "General and administrative family information.",
+			"summary": {
+				"active-students": "Active students",
+				"active-students-description": "Active students related to this family.",
+				"title": "Family Summary",
+				"tutors": "Tutors",
+				"tutors-description": "Registered guardians within the family."
+			},
+			"title": "Family Information",
+			"update": "Update"
+		},
+		"family-members": {
+			"actions": {
+				"back-to-members": "Back to members"
+			},
+			"add-student": "New student",
+			"add-tutor": "New tutor",
+			"badges": {
+				"main-contact": "Main contact"
+			},
+			"delete": "Remove member",
+			"detail": {
+				"student-placeholder": "Student detail coming soon.",
+				"tutor-placeholder": "Tutor detail coming soon."
+			},
+			"remove-photo": "Remove photo",
+			"student-detail": {
+				"current-academic": "Current year",
+				"enrollment": "Enrollment",
+				"role": "Role",
+				"subtitle": "View and manage student information",
+				"title": "Student's detail"
+			},
+			"students": {
+				"empty": "No students registered.",
+				"title": "Students"
+			},
+			"tutor-detail": {
+				"subtitle": "View and manage tutor information",
+				"title": "Tutor details"
+			},
+			"tutors": {
+				"empty": "No tutors registered.",
+				"title": "Tutors"
+			},
+			"update": "Update member",
+			"upload-photo": "Upload photo"
+		},
+		"family-profile": {
+			"general": {
+				"title": "General information"
+			}
+		},
+		"family-students": {
+			"administration.family-students.photo.remove-confirm": "This action will remove the student's photo. Do you want to continue?",
+			"administration.family-students.photo.remove-title": "Remove photo",
+			"administration.family-students.photo.title": "Update photo",
+			"delete": "Remove Student",
+			"photo": {
+				"remove-confirm": "Do you want to remove the student's photo?",
+				"remove-title": "Remove Photo"
+			},
+			"remove-photo": "Remove Photo",
+			"reset": "Reset",
+			"update": "Update",
+			"upload-photo": "Upload Photo"
+		},
+		"family-tutors": {
+			"delete": "Remove tutor",
+			"photo": {
+				"current": "Current photo",
+				"remove-confirm": "Are you sure you want to delete your profile picture?",
+				"remove-title": "Remove photo",
+				"title": "Update profile photo",
+				"upload-helper": "Allowed formats: JPG, PNG or WEBP. Maximum size: 2 MB.",
+				"upload-label": "Upload image",
+				"upload-placeholder": "Drag an image here or click to select it"
+			},
+			"remove-photo": "Remove photo",
+			"reset": "Cancel",
+			"update": "Update Profile",
+			"upload-photo": "Upload photo"
+		},
+		"person-addresses": {
+			"add": "New address",
+			"delete": "Remove address",
+			"fields": {
+				"city": "City",
+				"colony": "Colony",
+				"country": "Country",
+				"indoor": "Indoor",
+				"municipality": "Municipality",
+				"name": "Name",
+				"outdoor": "Outdoor",
+				"state": "State",
+				"street": "Street",
+				"type": "Type",
+				"zip_code": "Zip code"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Phone",
+				"create-description": "Define a new Phone and its properties",
+				"registered": "Registered addresses",
+				"select_settlement": "Select a settlement",
+				"update-description": "Update the information for the selected phone"
+			},
+			"update": "Update address"
+		},
+		"person-communication": {
+			"index": "Person communication"
+		},
+		"person-direct-communication": {
+			"fields": {
+				"direct": "Accepts direct communication",
+				"direct_type": "Types of direct communication"
+			},
+			"general": "General Communication",
+			"update": "Update"
+		},
+		"person-levels": {
+			"update": "Update"
+		},
+		"person-mails": {
+			"add": "New email",
+			"delete": "Remove email",
+			"fields": {
+				"active": "Active",
+				"email": "Email",
+				"type": "Mail type"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Email",
+				"create-description": "Define a new email and its properties",
+				"update-description": "Update the information for the selected email"
+			},
+			"update": "Update email"
+		},
+		"person-phones": {
+			"add": "New phone",
+			"delete": "Remove phone",
+			"fields": {
+				"country": "Country",
+				"phone": "Phone",
+				"type": "Phone type"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Phone",
+				"create-description": "Define a new Phone and its properties",
+				"registered": "Registered phones",
+				"update-description": "Update the information for the selected phone"
+			},
+			"placeholders": {
+				"country": "Country"
+			},
+			"update": "Update phone"
+		},
+		"person-profile": {
+			"reset": "Cancel",
+			"update": "Update"
+		},
+		"person-sections": {
+			"update": "Update"
+		},
+		"school-years": {
+			"add": "New year",
+			"delete": "Remove Year",
+			"fields": {
+				"current": "Current",
+				"name": "Name",
+				"order": "Order",
+				"visible": "Visible"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this school year?",
+				"create-description": "Fill in the information to create a new school year",
+				"created": "School year created successfully",
+				"current-cannot-be-deleted": "You cannot delete the current school year",
+				"delete-title": "Delete school year",
+				"deleted": "School year deleted successfully",
+				"empty": "No school years found",
+				"loaded": "School years loaded successfully",
+				"ordering": "Reordering school years",
+				"reordered": "School years order updated successfully",
+				"update-description": "Update the selected school year information",
+				"updated": "School year updated successfully"
+			},
+			"order": "Order School Years",
+			"subtitle": "Manage the academic cycles of the institution",
+			"title": "School Years",
+			"update": "Update year"
+		},
+		"staff-users": {
+			"add": "New Staff",
+			"delete": "Remove Staff",
+			"delete-modal": {
+				"confirm": "Are you sure you want to remove this user from staff? This action cannot be undone.",
+				"title": "Remove user"
+			},
+			"modal": {
+				"role": "Role",
+				"title": "Add Staff User"
+			},
+			"photo": {
+				"current": "Current photo",
+				"remove-confirm": "Are you sure you want to delete your profile picture?",
+				"remove-title": "Remove photo",
+				"title": "Update profile photo",
+				"upload-helper": "Allowed formats: JPG, PNG or WEBP. Maximum size: 2 MB.",
+				"upload-label": "Upload image",
+				"upload-placeholder": "Drag an image here or click to select it"
+			},
+			"profile": {
+				"subtitle": "General information and user settings",
+				"title": "Profile"
+			},
+			"remove-photo": "Remove photo",
+			"update": "Update Staff",
+			"upload-photo": "Upload photo"
+		},
+		"student-years": {
+			"add": "New School Year",
+			"create-title": "Add school year",
+			"delete": "Remove Year",
+			"empty": "No student years available",
+			"fields": {
+				"complements": "Complements",
+				"grade": "Grade",
+				"level": "Academic level",
+				"school-year": "School year",
+				"special-education": "Special education"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this student school year?"
+			},
+			"subtitle": "Student academic history by school year",
+			"summary": {
+				"current-school-year": "Current school year",
+				"registered-years": "Registered years",
+				"subtitle": "General student information for the current school year",
+				"title": "Academic summary"
+			},
+			"update": "Update Year",
+			"withdraw": "Withdraw"
+		},
+		"tenants": {
+			"actions": {
+				"reset-domain": "Reset"
+			},
+			"activate": "Activate tenant",
+			"add": "New tenant",
+			"delete": "Remove tenant",
+			"fields": {
+				"administrator_email": "Administrator Email",
+				"billing_type_id": "Billing Type",
+				"business": "Business",
+				"city": "City",
+				"colony": "Neighborhood",
+				"contact_lastname": "Last Name",
+				"contact_mothername": "Second Last Name",
+				"contact_name": "First Name",
+				"country_id": "Country",
+				"created_at": "Created at",
+				"domain": "Domain",
+				"google_login": "Google Login",
+				"grades_health_record": "Health Record in Grades",
+				"id": "Name",
+				"indoor": "Indoor Number",
+				"language": "Language",
+				"language_id": "Language",
+				"licenses": "Licenses",
+				"logo": "Logo",
+				"mailer_email": "System Email",
+				"mailer_name": "Sender Name",
+				"maintenance_mode": "Maintenance Mode",
+				"maintenance_until": "Available Until",
+				"municipality": "Municipality",
+				"name_caption_id": "Name Format",
+				"organization_theme_id": "Theme",
+				"outdoor": "Outdoor Number",
+				"password_type_id": "Password Type",
+				"site_name": "Site Name",
+				"state": "State",
+				"status": "Status",
+				"street": "Street",
+				"support_type_id": "Support Type",
+				"tenant_status_id": "Status",
+				"theme": "Theme",
+				"tin": "Tax ID",
+				"trade": "Trade",
+				"zipcode": "Postal Code"
+			},
+			"helpers": {
+				"administrator_email": "Main email for system administration.",
+				"billing_type_id": "Defines the billing configuration applied.",
+				"business": "Legal business name of the institution.",
+				"country_id": "Select the country the institution belongs to.",
+				"domain": "This identifier will be used to generate the system domain.",
+				"google_login": "Allows users to sign in with their Google account.",
+				"grades_health_record": "Enables medical record tracking in the academic module.",
+				"id": "This identifier will be used to generate the system domain.",
+				"language_id": "Default system language.",
+				"logo": "URL of the institution logo.",
+				"mailer_email": "Email address used to send system notifications.",
+				"mailer_name": "Name displayed as the sender in emails.",
+				"maintenance_mode": "Enables maintenance mode for the platform.",
+				"maintenance_until": "Date and time until the system remains in maintenance mode.",
+				"name_caption_id": "Defines how user names will be displayed.",
+				"organization_theme_id": "Visual theme of the organization.",
+				"password_type_id": "Defines the password policy used.",
+				"site_name": "Name that will be displayed across the platform.",
+				"support_type_id": "Defines the support type assigned to the institution.",
+				"trade": "Display name used for the institution."
+			},
+			"logo": {
+				"helper": "Drag an image or click to select it. Allowed formats: PNG, JPG, WEBP, SVG. Maximum size: 2 MB.",
+				"label": "Logo",
+				"logo": {
+					"helper": "",
+					"label": "",
+					"placeholder": "",
+					"ready": "",
+					"title": ""
+				},
+				"modules": {
+					"home": "Home"
+				},
+				"placeholder": "Select or drag the logo here",
+				"ready": "File ready to upload",
+				"title": "Upload tenant logo"
+			},
+			"messages": {
+				"confirm-activate": "Are you sure you want to activate the tenant?",
+				"confirm-delete": "You are about to remove the tenant",
+				"confirm-migrate-all": "Are you sure you want to run migrations for all tenants? This action may take several minutes and will affect all environments.",
+				"confirm-provision": "Are you sure you want to provision this tenant? Required resources will be created and this action cannot be undone.",
+				"confirm-suspend": "Are you sure about suspending the tenant?",
+				"create-description": "Define a new tenant and its properties",
+				"created": "A new tenant was created",
+				"deleted": "Tenant removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"updated": "Tenant was updated",
+				"without-selection": "No selection"
+			},
+			"migrate-all": "Migrate all",
+			"placeholders": {
+				"select-billing-type": "Select billing type",
+				"select-caption": "Select name caption",
+				"select-country": "Select country",
+				"select-language": "Select language",
+				"select-password-type": "Select password type",
+				"select-status": "Select status",
+				"select-support-type": "Select Support type",
+				"select-theme": "Select theme"
+			},
+			"provision": "Provision",
+			"steps": {
+				"operation": {
+					"sections": {
+						"catalogs": "Catalogs",
+						"mailer": "Mailer",
+						"preferences": "Preferences"
+					},
+					"subtitle": "Define mailer, preferences, and system catalogs.",
+					"title": "Operational Settings"
+				},
+				"organization": {
+					"sections": {
+						"address": "Dirección",
+						"identity": "Datos generales"
+					},
+					"subtitle": "Captura los datos generales y la dirección de la institución.",
+					"title": "Información de la institución"
+				},
+				"site": {
+					"sections": {
+						"configuration": "Configuration",
+						"contact": "Contact",
+						"identity": "Identity"
+					},
+					"subtitle": "Define general information, contact details, and site settings.",
+					"title": "Site Configuration"
+				},
+				"tenant": {
+					"subtitle": "Define the tenant's identifier and domain",
+					"title": "Tenant information"
+				}
+			},
+			"suspend": "Suspend Tenant",
+			"update": "Update tenant",
+			"upload-logo": "Upload logo"
+		},
+		"user-security": {
+			"change-password": "Change password",
+			"fields": {
+				"active": "Active",
+				"email": "Email",
+				"role": "Role",
+				"select-role": "Select role"
+			},
+			"reset": "Cancel",
+			"update": "Update"
+		}
+	},
+	"common": {
+		"activate": "Activate",
+		"active": "Active",
+		"all": "All",
+		"back": "Back",
+		"cancel": "Cancel",
+		"capture": "Capture",
+		"clear": "Clear",
+		"create": "Create",
+		"current": "Current",
+		"dashboard": "Dashboard",
+		"default": "Default",
+		"delete": "Delete",
+		"inactive": "Inactive",
+		"move-down": "Move down",
+		"move-up": "Move up",
+		"no": "No",
+		"no-data": "No data available",
+		"no-description": "No Description",
+		"no_type": "Select a type",
+		"order": "Order",
+		"remove": "Remove",
+		"reports": "Reports",
+		"reset": "Reset",
+		"run": "Run",
+		"save": "Save",
+		"search": "Search",
+		"select": "Select an option",
+		"select-all": "Select all",
+		"selected": "Selected items",
+		"status": "Status",
+		"submit": "Submit",
+		"suspend": "Suspend",
+		"update": "Update",
+		"upload": "Upload",
+		"yes": "Yes"
+	},
+	"configuration": {
+		"academic-catalogs": {
+			"index": "Academic Catalogs"
+		},
+		"actions": {
+			"add": "New action",
+			"defaults": "Default actions",
+			"delete": "Remove action",
+			"fields": {
+				"color": "Color",
+				"icon": "Icon",
+				"name": "Name",
+				"priv": "Private",
+				"translation": "Translation"
+			},
+			"index": "Actions",
+			"messages": {
+				"belongs-to-controller": "Actions for",
+				"children-of": "Children of",
+				"confirm-defaults": "Are you sure you want to add the default actions?",
+				"confirm-delete": "You are about to remove the action",
+				"create-description": "Define a new action and its properties",
+				"created": "A new action was created",
+				"deleted": "Action removed",
+				"empty": "No data",
+				"ordering": "Ordering actions",
+				"ordering-help": "Drag and drop the actions to change their order. Changes will be applied when saved.",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"updated": "Action was updated",
+				"without-selection": "No selection"
+			},
+			"order": "Order actions",
+			"update": "Update action"
+		},
+		"activity-types": {
+			"add": "New Activity Type",
+			"delete": "Remove Activity Type",
+			"fields": {
+				"active": "Active",
+				"configurable": "Configurable",
+				"gradeable": "Gradeable",
+				"icon": "Icon",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this activity type?",
+				"create-description": "Define a new activity type available in the system.",
+				"ordering": "Ordering activity types",
+				"update-description": "Modify the selected activity type information."
+			},
+			"order": "Order Activity Types",
+			"translation": {
+				"delivery": "Delivery",
+				"evaluation": "Evaluation",
+				"exam": "Exam",
+				"explanation": "Explanation",
+				"none": "No activity",
+				"poll": "Poll"
+			},
+			"update": "Update Activity Type"
+		},
+		"address-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"description": "Description",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"deleted": "Type removed",
+				"empty": "No data",
+				"retrieved": "Types information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Type",
+				"updated": "Type was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"home": "Home",
+				"office": "Office"
+			},
+			"update": "Update type"
+		},
+		"aspect-modes": {
+			"add": "Add Aspect Mode",
+			"delete": "Delete Aspect Mode",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this aspect mode?",
+				"create-description": "Create a new aspect mode.",
+				"created": "Aspect mode created successfully",
+				"deleted": "Aspect mode deleted successfully",
+				"empty": "No aspect modes available",
+				"ordered": "Aspect modes reordered successfully",
+				"ordering": "Reordering aspect modes",
+				"update-description": "Update the selected aspect mode.",
+				"updated": "Aspect mode updated successfully"
+			},
+			"order": "Reorder Aspect Modes",
+			"translation": {
+				"full": "Full",
+				"stage": "Stage",
+				"subject": "Subject",
+				"term": "Term"
+			},
+			"update": "Update Aspect Mode"
+		},
+		"attendance-calculations": {
+			"add": "Add Calculation Method",
+			"delete": "Delete Calculation Method",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"created": "Calculation method created successfully",
+				"deleted": "Calculation method deleted successfully",
+				"ordered": "Calculation methods reordered successfully",
+				"updated": "Calculation method updated successfully"
+			},
+			"order": "Reorder Calculation Methods",
+			"translation": {
+				"executed": "Executed",
+				"programmed": "Programmed"
+			},
+			"update": "Update Calculation Method"
+		},
+		"attendance-types": {
+			"add": "New Attendance Type",
+			"delete": "Remove Attendance Type",
+			"order": "Order Attendance Types",
+			"translation": {
+				"group": "Attendance by Group",
+				"group-scope": "Group Attendance by Language",
+				"no": "No attendance",
+				"subject": "Attendance by Subject"
+			},
+			"update": "Update Attendance Type"
+		},
+		"billing-catalogs": {
+			"index": "Billing catalogs"
+		},
+		"block-types": {
+			"add": "New Block Type",
+			"delete": "Remove Block Type",
+			"order": "Order block types",
+			"translation": {
+				"break": "Break",
+				"lessons": "Lessons"
+			},
+			"update": "Update Block Type"
+		},
+		"blood-types": {
+			"add": "New blood type",
+			"delete": "Remove blood type",
+			"fields": {
+				"name": "Name"
+			},
+			"update": "Update blood type"
+		},
+		"campuses": {
+			"add": "New campus",
+			"delete": "Remove campus",
+			"fields": {
+				"active": "Active",
+				"city": "City",
+				"colony": "Colony",
+				"css-class": "Color",
+				"description": "Description",
+				"indoor": "Indoor",
+				"municipality": "Municipality",
+				"name": "Name",
+				"outdoor": "Outdoor",
+				"state": "State",
+				"street": "Street",
+				"translation": "Translation",
+				"zip-code": "Zip Code"
+			},
+			"levels": "Assign levels",
+			"update": "Update campus"
+		},
+		"catalogs": {
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete the selected record? This cannot be undone.",
+				"create-description": "Fill in the details to create a new record. It will be added to the catalog immediately.",
+				"delete-title": "Remove the selected record",
+				"edit-description": "Modify the selected record. Changes will be applied immediately across the system.",
+				"empty": "No data available",
+				"ordering": "Reordering"
+			}
+		},
+		"comment-types": {
+			"add": "New Comment Type",
+			"delete": "Remove Comment Type",
+			"order": "Order Comment Types",
+			"translation": {
+				"catalog": "By Catalog",
+				"no": "No Comments",
+				"pairs": "Co-Teaching",
+				"subject": "By Subject",
+				"teacher": "By Teacher"
+			},
+			"update": "Update Comment Type"
+		},
+		"community-catalogs": {
+			"fields": {
+				"active": "Active",
+				"css-class": "Color",
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"index": "Community Catálogs",
+			"messages": {
+				"empty": "No data available"
+			}
+		},
+		"controllers": {
+			"add": "New controller",
+			"children": "Review children",
+			"contexts": {
+				"both": "Both",
+				"central": "Central",
+				"tenant": "Tenant"
+			},
+			"delete": "Remove controller",
+			"drill-down": "Review actions",
+			"fields": {
+				"context": "Context",
+				"icon": "Icon",
+				"module": "Module",
+				"name": "Name",
+				"order": "Order",
+				"priv": "Private",
+				"translation": "Translation",
+				"visible": "Visible"
+			},
+			"index": "Controllers",
+			"messages": {
+				"children-of": "Children of",
+				"confirm-delete": "You are about to remove the selected Controller",
+				"create-description": "Define a new controller and its properties",
+				"created": "A new controller was created",
+				"deleted": "Controller removed",
+				"empty": "No data",
+				"module": "Module",
+				"ordering": "Ordering controlers",
+				"ordering-help": "Drag and drop the controllers to change their order. Changes will be applied when saved.",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Controller",
+				"updated": "Controller was updated",
+				"without-selection": "No selection"
+			},
+			"order": "Order controllers",
+			"ordering": "Order modules",
+			"update": "Update controller"
+		},
+		"countries": {
+			"add": "Add country",
+			"delete": "Remove country",
+			"fields": {
+				"iso_code": "ISO code",
+				"language": "Language",
+				"name": "Name",
+				"phone_code": "Phone code"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this country?",
+				"create-description": "Fill in the country information.",
+				"empty": "No countries found",
+				"selected": "Selected",
+				"update-description": "Modify the country information."
+			},
+			"update": "Update country"
+		},
+		"days": {
+			"translation": {
+				"friday": "Friday",
+				"monday": "Monday",
+				"saturday": "Saturday",
+				"sunday": "Sunday",
+				"thursday": "Thursday",
+				"tuesday": "Tuesday",
+				"wednesday": "Wednesday"
+			}
+		},
+		"diagnostic-types": {
+			"add": "New Diagnostic Type",
+			"delete": "Remove Diagnostic Type",
+			"order": "Order Diagnostic Types",
+			"translation": {
+				"grouped": "Grouped",
+				"list": "List",
+				"rubric": "Rubric"
+			},
+			"update": "Update Diagnostic Type"
+		},
+		"evaluation-types": {
+			"add": "New Evaluation Type",
+			"delete": "Remove Evaluation Type",
+			"order": "Order Evaluation Types",
+			"translation": {
+				"activities": "By Activities",
+				"aspects": "By Aspects",
+				"colors": "By Colors",
+				"grades": "Single Grade",
+				"no": "No Evaluation",
+				"points": "By Points",
+				"quantity": "By Quantity"
+			},
+			"update": "Update Evaluation Type"
+		},
+		"family-statuses": {
+			"add": "New status",
+			"delete": "Remove Status",
+			"translation": {
+				"active": "Active",
+				"applicant": "Applicant",
+				"archived": "Archived",
+				"exalumni": "Alumni",
+				"inactive": "Inactive"
+			},
+			"update": "Update Status"
+		},
+		"feedback-types": {
+			"add": "New Feed Back Type",
+			"delete": "Remove Feed Back Type",
+			"order": "Order Feed Back Types",
+			"translation": {
+				"errors": "Errors Only",
+				"full": "Full Comments",
+				"none": "No Comments",
+				"summary": "General Summary"
+			},
+			"update": "Update Feed Back Type"
+		},
+		"genders": {
+			"add": "New gender",
+			"delete": "Remove gender",
+			"fields": {
+				"icon": "Icon",
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the gender",
+				"create-description": "Define a new gender and its properties",
+				"created": "A new gender was created",
+				"deleted": "Gender removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected gender",
+				"updated": "Gender was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"female": "Female",
+				"male": "Male"
+			},
+			"update": "Update gender"
+		},
+		"grade-policies": {
+			"add": "New Grade Policy",
+			"configure": "Configure policy",
+			"delete": "Remove Grade Policy",
+			"fields": {
+				"active": "Active",
+				"configurable": "Configurable",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this grade policy?",
+				"create-description": "Define how grades are transformed or displayed",
+				"delete-title": "Delete grade policy",
+				"edit-description": "Edit the selected grade policy",
+				"empty": "No grade policies available",
+				"ordering": "Ordering grade policies"
+			},
+			"order": "Order Grade Policies",
+			"translation": {
+				"no-rounding": "No Rounding",
+				"performance-scale": "Performance Scale",
+				"round": "Standard Rounding",
+				"sep-rounding": "SEP Rounding",
+				"truncate": "Truncate"
+			},
+			"update": "Update Grade Policy"
+		},
+		"grade-policy-items": {
+			"add": "New threshold",
+			"delete": "Remove threshold",
+			"fields": {
+				"code": "Code",
+				"defaults": "Default values",
+				"items": "Thresholds",
+				"name": "Name",
+				"order": "Order",
+				"threshold": "Threshold"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to remove this threshold?",
+				"confirm-restore": "This will replace all thresholds with the default values. Do you want to continue?",
+				"empty": "No thresholds configured",
+				"loaded": "Thresholds loaded successfully",
+				"ordering": "Ordering thresholds",
+				"reordered": "Order updated successfully",
+				"reset": "Thresholds restored successfully",
+				"subtitle": "Configure the ranges and values for this grading policy",
+				"table-description": "Define the code, name, and minimum threshold for each range",
+				"updated": "Thresholds updated successfully"
+			},
+			"order": "Order thresholds",
+			"restore": "Restore defaults",
+			"update": "Update threshold"
+		},
+		"grade-progressions": {
+			"index": "Grade progressions",
+			"messages": {
+				"empty": "No grades available",
+				"ordering": "Ordering grades for progression"
+			}
+		},
+		"gradebook-actions": {
+			"add": "New Gradebook Action",
+			"delete": "Delete Gradebook Action",
+			"fields": {
+				"color": "Color",
+				"icon": "Icon",
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this gradebook action?",
+				"created": "Gradebook action created successfully",
+				"deleted": "Gradebook action deleted successfully",
+				"empty": "No gradebook actions available",
+				"loaded": "Gradebook actions loaded successfully",
+				"not-found": "Gradebook action not found",
+				"ordering": "Ordering mode active",
+				"reordered": "Order updated successfully",
+				"updated": "Gradebook action updated successfully"
+			},
+			"subtitle": "Configure the available actions for gradebooks",
+			"title": "Gradebook Actions",
+			"translation": {
+				"excel": "Export to Excel",
+				"execute": "Execute",
+				"mail": "Send by email",
+				"print": "Print",
+				"print-group": "Print group"
+			},
+			"update": "Update Gradebook Action"
+		},
+		"gradebook-options": {
+			"add": "New Grade Book Option",
+			"delete": "Remove Grade Book Option",
+			"translation": {
+				"closed": "Terms Closed",
+				"group": "Group",
+				"student": "Student",
+				"terms": "Terms"
+			},
+			"update": "Update Grade Book Option"
+		},
+		"gradebook-section-types": {
+			"add": "New Section Type",
+			"delete": "Delete Section Type",
+			"fields": {
+				"active": "Active",
+				"configurable": "Configurable",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this section type?",
+				"create": "Section type created successfully",
+				"create-description": "Create a new section type for the report card.",
+				"delete": "Section type deleted successfully",
+				"delete-description": "This action will delete the selected section type.",
+				"empty": "No section types available",
+				"loaded": "Section types loaded successfully",
+				"order-updated": "Order updated successfully",
+				"ordering": "Ordering mode active",
+				"update": "Section type updated successfully",
+				"update-description": "Update the section type information."
+			},
+			"order": "Order Section Type",
+			"translation": {
+				"attendance": "Attendance",
+				"attendance-discipline": "Attendance and Discipline",
+				"averages": "Averages",
+				"comments": "Comments",
+				"discipline": "Discipline",
+				"discipline-tutor": "Tutor Discipline",
+				"gradebook": "Report Card",
+				"language-comments": "Language Comments",
+				"rubric": "Rubric",
+				"signature-slip": "Signature Slip",
+				"signatures": "Signatures"
+			},
+			"update": "Update Section Type"
+		},
+		"gradebook-types": {
+			"actions": {
+				"messages": {
+					"description": "Select the actions available for this Grade Book type.",
+					"updated": "The Grade Book Type actions were successfully updated."
+				}
+			},
+			"add": "New Gradebook Type",
+			"configure-actions": "Set actions",
+			"configure-options": "Gradebook Type Options",
+			"delete": "Delete Gradebook Type",
+			"edit": "Edit Gradebook Type",
+			"fields": {
+				"aspects": "Aspects",
+				"integrations": "Integrations",
+				"name": "Name",
+				"rubrics": "Rubrics",
+				"sections": "Sections",
+				"subjects": "Subjects",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this gradebook type?",
+				"created": "Gradebook type created successfully",
+				"deleted": "Gradebook type deleted successfully",
+				"loaded": "Gradebook types loaded successfully",
+				"not-found": "Grade Book type not found",
+				"ordering": "Ordering mode active",
+				"reordered": "Order updated successfully",
+				"updated": "Gradebook type updated successfully"
+			},
+			"options": {
+				"messages": {
+					"description": "Select the options available for this gradebook type.",
+					"updated": "The Grade Book Type options were successfully updated."
+				}
+			},
+			"order": "Order Grade Book Types",
+			"subtitle": "Configure the available gradebook types in the system",
+			"title": "Gradebook Types",
+			"translation": {
+				"aspects": "Aspects",
+				"attendance": "Attendance",
+				"discipline": "Discipline",
+				"rubric": "Rubric",
+				"rubric-sections": "Rubric Sections",
+				"sections": "Sections",
+				"selected-aspects": "Selected Aspects",
+				"terms": "Terms"
+			},
+			"update": "Update Grade Book Type"
+		},
+		"grades": {
+			"add": "New Grade",
+			"delete": "Remove grade",
+			"fields": {
+				"active": "Active",
+				"description": "Description",
+				"level": "Level",
+				"name": "Name "
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Grade",
+				"create-description": "Define a new Grade and its properties",
+				"created": "A new Grade was created",
+				"deleted": "Grade removed",
+				"empty": "No grades for the level",
+				"retrieved": "Types information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Grade",
+				"updated": "Grade was updated",
+				"without-selection": "No selection"
+			},
+			"update": "Update grade"
+		},
+		"grading-scales": {
+			"add": "Add Grading Scale",
+			"delete": "Delete Grading Scale",
+			"fields": {
+				"active": "Active",
+				"maximum": "Maximum",
+				"minimum": "Minimum",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this grading scale?",
+				"created": "Grading scale created successfully",
+				"deleted": "Grading scale deleted successfully",
+				"empty": "No grading scales available",
+				"ordered": "Grading scales reordered successfully",
+				"ordering": "Reordering grading scales",
+				"updated": "Grading scale updated successfully"
+			},
+			"order": "Reorder Grading Scales",
+			"translation": {
+				"zero-hundred": "0 to 100",
+				"zero-ten": "0 to 10"
+			},
+			"update": "Update Grading Scale"
+		},
+		"group-types": {
+			"add": "New Group Type",
+			"delete": "Remove Group Type",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"requires-subject": "Requires Subject",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this group type?",
+				"create-description": "Create a new group type",
+				"delete-title": "Delete group type",
+				"edit-description": "Edit the selected group type",
+				"empty": "No group types available",
+				"ordering": "Ordering group types"
+			},
+			"order": "Order Group Types",
+			"translation": {
+				"crossover": "Crossover",
+				"normal": "Regular",
+				"subject": "By Subject"
+			},
+			"update": "Update Group Type"
+		},
+		"invoice-uses": {
+			"add": "New use",
+			"delete": "Remove use",
+			"fields": {
+				"code": "Code",
+				"name": "Name",
+				"tin-types": "TIN Types"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Invoice Use",
+				"create-description": "Define a new use and its properties",
+				"created": "A new Invoice Use was created",
+				"deleted": "Invoice Use removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"tin-types-description": "Select the allowed TIN types for this invoice use.",
+				"tin-types-updated": "Invoice use TIN types updated successfully.",
+				"update-description": "Update the information for the selected use",
+				"updated": "Invoice Use was updated",
+				"without-selection": "No selection"
+			},
+			"tin-types": "Tin type selector",
+			"update": "Update use"
+		},
+		"languages": {
+			"add": "New language",
+			"delete": "Remove language",
+			"fields": {
+				"active": "Its active?",
+				"code": "Code",
+				"direction": "Direction",
+				"label": "Translation",
+				"name": "Name",
+				"shorthand": "Shorthand"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the language",
+				"create-description": "Define a new language status and its properties",
+				"created": "A new language was created",
+				"delete": "Your are about to remove the language",
+				"deleted": "The language was removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected language",
+				"updated": "The marital status was updated",
+				"without-selection": "No selection"
+			},
+			"options": {
+				"direction": {
+					"ltr": "Left to right",
+					"rtl": "Right to left"
+				}
+			},
+			"translation": {
+				"english": "English (US)",
+				"spanish": "Spanish (MX)"
+			},
+			"update": "Update language"
+		},
+		"levels": {
+			"add": "New level",
+			"delete": "Remove Level",
+			"fields": {
+				"billing": "Billing",
+				"css-class": "Color",
+				"description": "Description",
+				"name": "Name",
+				"organization-logo": "Logo",
+				"registration": "Registration",
+				"revoe": "RVOE",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Level",
+				"create-description": "Define a new Level and its properties",
+				"created": "A new Level was created",
+				"deleted": "Level removed",
+				"empty": "No data",
+				"none": "Default logo",
+				"ordering": "Ordering Levels",
+				"retrieved": "Types information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Level",
+				"updated": "Level was updated",
+				"without-selection": "No selection"
+			},
+			"order": "Order Levels",
+			"update": "Update level"
+		},
+		"localization-catalogs": {
+			"index": "Localization catalogs"
+		},
+		"mail-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"description": "Description",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"deleted": "Type removed",
+				"empty": "No data",
+				"retrieved": "Types information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Type",
+				"updated": "Type was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"personal": "Personal",
+				"work": "Work"
+			},
+			"update": "Update type"
+		},
+		"marital-statuses": {
+			"add": "New status",
+			"delete": "Remove status",
+			"fields": {
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the marital status",
+				"create-description": "Define a new marital status and its properties",
+				"created": "A new marital status was created",
+				"delete": "Your are about to remove the marital status",
+				"deleted": "The marital status was removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected marital status",
+				"updated": "The marital status was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"divorced": "Divorced",
+				"free-union": "Free union",
+				"married": "Married",
+				"separated": "Separated",
+				"single-father": "Single father",
+				"single-mother": "Single mother",
+				"widowed": "Widowed"
+			},
+			"update": "Update Status"
+		},
+		"modules": {
+			"actions": "View actions",
+			"add": "New module",
+			"contexts": {
+				"both": "Both",
+				"central": "Central",
+				"tenant": "Tenant"
+			},
+			"delete": "Remove module",
+			"fields": {
+				"context": "Context",
+				"icon": "Icon",
+				"name": "Name",
+				"order": "Order",
+				"priv": "Private",
+				"translation": "Translation"
+			},
+			"index": "Index",
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Module",
+				"create-description": "Define a new module and its properties",
+				"created": "A new module was created",
+				"deleted": "Module removed",
+				"empty": "No data",
+				"ordering": "Ordering modules",
+				"ordering-help": "Drag and drop the modules to change their order. Changes will be applied when saved.",
+				"retrieved": "Modules information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected module",
+				"updated": "Module was updated",
+				"without-selection": "No selection"
+			},
+			"order": "Order modules",
+			"update": "Update module"
+		},
+		"name-casings": {
+			"add": "New Casing",
+			"delete": "Remove casing",
+			"fields": {
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"translation": {
+				"capital": "Initial capital letter",
+				"normal": "Normal format",
+				"uppercase": "All in capital letters"
+			},
+			"update": "Update casing"
+		},
+		"organization-logos": {
+			"add": "New logo",
+			"badges": {
+				"default": "Default"
+			},
+			"delete": "Remove logo",
+			"fields": {
+				"active": "Active",
+				"default": "Default Logo",
+				"name": "Name"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Logo",
+				"create-description": "Define a new Grade and its properties",
+				"created": "A new Logo was created",
+				"deleted": "Logo removed",
+				"no-image": "No image uploaded yet",
+				"update-description": "Update the information for the selected Logo",
+				"updated": "Grade was updated"
+			},
+			"update": "Update logo",
+			"upload": "Upload file",
+			"upload-modal": {
+				"description": "Select an image to replace the current logo.",
+				"helper": "Allowed formats: PNG, JPG, JPEG, WEBP and SVG.",
+				"label": "Logo File",
+				"placeholder": "Drag an image here or click to select it.",
+				"title": "Upload Logo"
+			}
+		},
+		"organization-themes": {
+			"add": "New theme",
+			"delete": "Remove theme",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the theme",
+				"create-description": "Define a new theme and its properties",
+				"created": "A new theme was created",
+				"delete": "Your are about to remove the theme",
+				"deleted": "The theme was removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected theme",
+				"updated": "The marital status was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"blue": "Blue",
+				"green": "Green",
+				"orange": "Orange",
+				"purple": "Purple",
+				"teal": "Teal"
+			},
+			"update": "Update theme"
+		},
+		"parent-fields": {
+			"reset": "Reset",
+			"save": "Save changes"
+		},
+		"password-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"delete": "Your are about to remove the type",
+				"deleted": "The type was removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected type",
+				"updated": "The marital status was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"random": "Random password",
+				"site-name": "Site name"
+			},
+			"update": "Update type"
+		},
+		"people-catalogs": {
+			"index": "People catalogs"
+		},
+		"person-fields": {
+			"context": {
+				"parent": "Parent",
+				"staff": "Staff",
+				"student": "Student"
+			},
+			"description": "Define which information will be collected for each type of person and which fields are required.",
+			"fields": {
+				"field": "Field",
+				"protected": "Protected",
+				"required": "Required",
+				"visible": "Visible"
+			},
+			"rules": "Protected fields are always required and cannot be modified. If a field is not visible, it is automatically not required.",
+			"save": "Save"
+		},
+		"person_fields": {
+			"translation": {
+				"birthdate": "Birthdate",
+				"birthplace": "Place of Birth",
+				"blood_type_id": "Blood Type",
+				"citizenship": "Citizenship",
+				"degree": "Education Level",
+				"degree_title": "Degree Title",
+				"gender_id": "Gender",
+				"idn": "IDN",
+				"job_description": "Job Description",
+				"lastname": "Last Name",
+				"marital_status_id": "Marital Status",
+				"mothername": "Second Last Name",
+				"name": "First Name",
+				"occupation": "Occupation",
+				"religion": "Religion",
+				"tin": "Tax ID",
+				"translation": "Alternate Name"
+			}
+		},
+		"phone-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"description": "Description",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the selected Type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"deleted": "Type removed",
+				"empty": "No data",
+				"retrieved": "Types information retrieved successfully",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected Type",
+				"updated": "Type was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"home": "Home",
+				"mobile": "Mobile",
+				"office": "Office"
+			},
+			"update": "Update type"
+		},
+		"postal-codes": {
+			"description": "Lookup and import for the national postal code catalog.",
+			"errors": {
+				"file-not-found": "Import file was not found.",
+				"file-not-readable": "Import file cannot be read.",
+				"invalid-format": "Postal code file has an invalid format."
+			},
+			"fields": {
+				"city": "City",
+				"municipality": "Municipality",
+				"postal-code": "Postal code",
+				"settlement": "Settlement",
+				"settlement-type": "Type",
+				"state": "State"
+			},
+			"import": "Import catalog",
+			"messages": {
+				"import-description": "This will replace the current postal code catalog.",
+				"imported": "Postal code catalog imported successfully.",
+				"loaded": "Postal code catalog loaded successfully."
+			},
+			"stats": {
+				"total": "Records"
+			},
+			"title": "Postal codes"
+		},
+		"project-types": {
+			"add": "New Project Type",
+			"delete": "Remove Project Type",
+			"order": "Order Project Types",
+			"translation": {
+				"group": "Team",
+				"individual": "Individual"
+			},
+			"update": "Update Project Type"
+		},
+		"question-input-types": {
+			"add": "New Input Type",
+			"delete": "Delete Input Type",
+			"fields": {
+				"active": "Active",
+				"component": "Component",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this input type?",
+				"create-description": "Define a new input type for capturing answers.",
+				"edit-description": "Modify the selected input type information.",
+				"empty": "No input types available.",
+				"ordering": "Ordering input types"
+			},
+			"order": "Order Input Types",
+			"translation": {
+				"checkbox": "Checkbox",
+				"date": "Date",
+				"file": "File",
+				"number": "Number",
+				"radio": "Single choice",
+				"select": "Dropdown",
+				"table": "Table",
+				"text": "Text",
+				"textarea": "Long text"
+			},
+			"update": "Update Input Type"
+		},
+		"question-types": {
+			"add": "New Question Type",
+			"configure": "Configure Question Type",
+			"configure-input-types": "Configure input types",
+			"delete": "Delete Question Type",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"show-instructions": "Show instructions",
+				"show-question": "Show question",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this question type?",
+				"create-description": "Define a new question type available in the system.",
+				"edit-description": "Modify the selected question type information.",
+				"empty": "No question types available.",
+				"invalid-input-type": "One or more input types are invalid.",
+				"one-default-input-type-required": "You must select exactly one default input type.",
+				"ordering": "Ordering question types"
+			},
+			"order": "Order Question Types",
+			"translation": {
+				"boolean": "True / False",
+				"columns": "Columns",
+				"delivery": "Submission",
+				"multiple": "Multiple choice",
+				"open": "Open-ended",
+				"range": "Range",
+				"result": "Result",
+				"rubric": "Rubric",
+				"scale": "Scale",
+				"simple": "Single answer",
+				"spaces": "Fill in the blanks"
+			},
+			"update": "Update Question Type"
+		},
+		"roles": {
+			"add": "New role",
+			"delete": "Remove Role",
+			"fields": {
+				"help": "Help",
+				"id": "ID",
+				"internal": "Internal",
+				"name": "Name",
+				"path": "Path",
+				"translation": "Translation"
+			},
+			"helpers": {
+				"admin": "Application administrator user",
+				"coordinator": "Coordinator user",
+				"root": "Primary user of the application"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the role",
+				"create-description": "Define a new role and its properties",
+				"created": "A new role was created",
+				"deleted": "Role removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"updated": "Role was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"access-control": "Access control",
+				"admin": "Administrator",
+				"administration-director": "Administration Director",
+				"administrative": "Administrative",
+				"admissions": "Admissions",
+				"after-school": "After school",
+				"after-teacher": "After school teacher",
+				"applicant": "Applicant",
+				"asistente-sep": "Sep Assistant",
+				"asistenteb": "Assistant B",
+				"asistented": "Director assistant",
+				"assistant": "Assistant",
+				"cafeteria": "Cafeteria",
+				"cashier": "Cashier",
+				"comunicacion": "Communication",
+				"config": "Configurator",
+				"consultas": "Queries",
+				"coordinator": "Coordinator",
+				"deputy-director": "Deputy director",
+				"director": "Director",
+				"director-assistant": "Director's assistant",
+				"hebrew-prefect": "Hebrew prefect",
+				"internal-store": "Internal store",
+				"jutification-prefect": "Justification prefect",
+				"kitchen": "Kitchen",
+				"nursing": "Nursing",
+				"parent": "Parent",
+				"patronage": "Patronage",
+				"people-entry": "People entry",
+				"prefect": "Prefect",
+				"preschool-tutor": "Preschool tutor",
+				"principal": "Principal",
+				"psychologist": "Psychologist",
+				"purchases": "Purchases",
+				"root": "Root",
+				"sep": "Sep's assistant",
+				"skolans": "Skolans",
+				"student": "Student",
+				"support": "Support",
+				"teacher": "Teacher",
+				"transport-admin": "Transportation manager",
+				"transports": "Transportation",
+				"tutor": "Tutor"
+			},
+			"update": "Update role"
+		},
+		"rubric-types": {
+			"add": "New Rubric Type",
+			"delete": "Remove Rubric Type",
+			"order": "Order Rubric Types",
+			"translation": {
+				"continuous": "Continuous Scale",
+				"scale-less": "Per-Indicator Scale",
+				"sectioned": "Section-Base Capture",
+				"sep": "Sep Format",
+				"stepped": "Stepped Scale"
+			},
+			"update": "Update Rubric Type"
+		},
+		"schedule-types": {
+			"add": "New Schedule Type",
+			"delete": "Remove Schedule Type",
+			"order": "Order Schedule Types",
+			"translation": {
+				"stage": "By Stage",
+				"week": "By Week"
+			},
+			"update": "Update Schedule Type"
+		},
+		"sections": {
+			"add": "New section",
+			"delete": "Remove Section",
+			"fields": {
+				"active": "Active",
+				"capital": "Capital Letter",
+				"css-class": "Color",
+				"description": "Description",
+				"gender": "Gender",
+				"gender-placeholder": "Select a genre or leave it unassigned.",
+				"name": "Name",
+				"translation": "Translation"
+			},
+			"order": "Order Sections",
+			"update": "Update Section"
+		},
+		"staff-fields": {
+			"reset": "Reset",
+			"save": "Save changes"
+		},
+		"student-fields": {
+			"reset": "Reset",
+			"save": "Save changes"
+		},
+		"student-statuses": {
+			"add": "New status",
+			"delete": "Remove Status",
+			"translation": {
+				"active": "Active",
+				"graduated": "Graduated",
+				"inactive": "Inactive",
+				"suspended": "Suspended",
+				"withdrawn": "Withdrawn"
+			},
+			"update": "Update Status"
+		},
+		"student-year-statuses": {
+			"add": "New Status",
+			"delete": "Remove Status",
+			"translation": {
+				"active": "Active",
+				"completed": "Completed",
+				"conditional": "Conditional",
+				"suspended": "Suspended",
+				"withdrawn": "Withdrawn"
+			},
+			"update": "Update Status"
+		},
+		"studyplan-structures": {
+			"add": "New Structure",
+			"delete": "Delete Structure",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"stage-name": "Stage Name",
+				"stages": "Stages",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this structure?",
+				"create-description": "Define how the study plan is structured",
+				"empty": "No structures found",
+				"ordering": "Reordering structures",
+				"update-description": "Modify the study plan structure"
+			},
+			"order": "Order Structures",
+			"translation": {
+				"annual": "Annual",
+				"quarterly": "Quarterly",
+				"semester": "Semester",
+				"trimester": "Trimester"
+			},
+			"update": "Update Structure"
+		},
+		"subject-types": {
+			"add": "New Subject Type",
+			"delete": "Delete Subject Type",
+			"description": "Defines how subjects behave within the system.",
+			"fields": {
+				"active": "Active",
+				"automatic": "Auto",
+				"can-create": "Create",
+				"can-remove": "Remove",
+				"name": "Name",
+				"searchable": "Search",
+				"translation": "Translation",
+				"uses-teams": "Teams"
+			},
+			"messages": {
+				"confirm-delete": "Are you sure you want to delete this subject type?",
+				"create-description": "Create a new subject type.",
+				"empty": "No subject types found.",
+				"ordering": "Ordering mode enabled",
+				"update-description": "Update subject type configuration."
+			},
+			"order": "Reorder Subject Types",
+			"title": "Subject Types",
+			"translation": {
+				"areas": "Area-based subject",
+				"crossovers": "Crossover subject",
+				"special": "Special subject",
+				"subject": "Subject",
+				"teams": "Team-based subject"
+			},
+			"update": "Edit Subject Type"
+		},
+		"support-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"name": "Name ",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"deleted": "Type removed",
+				"empty": "No data",
+				"ordering": "Ordering types",
+				"ordering-help": "Drag and drop the modules to change their order. Changes will be applied when saved.",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected type",
+				"updated": "Role was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"administered": "Administered support",
+				"free": "Free support"
+			},
+			"update": "Update type"
+		},
+		"survey-types": {
+			"add": "New Survey Type",
+			"delete": "Remove Survey Type",
+			"order": "Order Survey Types",
+			"translation": {
+				"family-multiple": "For Families per Student",
+				"family-unique": "For Families",
+				"staff": "For Staff",
+				"student": "For Students"
+			},
+			"update": "Update Survey Type"
+		},
+		"system-catalogs": {
+			"index": "System catalogs"
+		},
+		"tax-regimes": {
+			"add": "New regime",
+			"delete": "Remove regime",
+			"fields": {
+				"code": "Code",
+				"name": "Name"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the regime",
+				"create-description": "Define a new regime and its properties",
+				"created": "A new regime was created",
+				"deleted": "Regime removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected regime",
+				"updated": "Role was updated",
+				"without-selection": "No selection"
+			},
+			"tin-types": "Select tin types",
+			"update": "Update regime"
+		},
+		"tenant-statuses": {
+			"translation": {
+				"active": "Active",
+				"pending": "Pending",
+				"suspended": "Suspended"
+			}
+		},
+		"term-statuses": {
+			"add": "New Term Status",
+			"delete": "Delete Term Status",
+			"fields": {
+				"active": "Active",
+				"css_class": "CSS Class",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete this term status?",
+				"create-description": "Create a new term status.",
+				"empty": "No term statuses have been registered.",
+				"update-description": "Update the selected term status information."
+			},
+			"ordering": "Order Term Statuses",
+			"title": "Term Statuses",
+			"translation": {
+				"closed": "Closed",
+				"configuration": "Configuration",
+				"in-review": "In Review",
+				"open": "Open"
+			},
+			"update": "Edit Term Status"
+		},
+		"term-types": {
+			"add": "New Term Type",
+			"delete": "Remove Term Type",
+			"order": "Order Term Types",
+			"translation": {
+				"exam": "Exams",
+				"extraordinary": "Extraordinary",
+				"holiday": "Holiday",
+				"lessons": "Lessons"
+			},
+			"update": "Update Term Type"
+		},
+		"tin-types": {
+			"add": "New type",
+			"delete": "Remove type",
+			"fields": {
+				"country": "Country",
+				"name": "Name",
+				"translation": "Translation",
+				"validation": "Validation"
+			},
+			"messages": {
+				"confirm-delete": "You are about to remove the type",
+				"create-description": "Define a new type and its properties",
+				"created": "A new type was created",
+				"delete": "Your are about to remove the type",
+				"deleted": "The type was removed",
+				"empty": "No data",
+				"select-record": "Select the record you want to work with",
+				"selected": "Selected record",
+				"update-description": "Update the information for the selected type",
+				"updated": "The marital status was updated",
+				"without-selection": "No selection"
+			},
+			"translation": {
+				"ein": "Employer Identification Number",
+				"moral": "Moral",
+				"physical": "Physical",
+				"ssn": "Social Security Number"
+			},
+			"update": "Update type"
+		},
+		"tutor-statuses": {
+			"add": "New Status",
+			"delete": "Remove Status",
+			"translation": {
+				"active": "Active Tutor",
+				"deceased": "Deceased Tutor",
+				"inactive": "Inactive Tutor"
+			},
+			"update": "Update Status"
+		},
+		"tutor-types": {
+			"translation": {
+				"father": "Father",
+				"mother": "Mother",
+				"tutor": "Tutor"
+			}
+		}
+	},
+	"context": {
+		"both": "Both",
+		"central": "Central",
+		"tenant": "Tenant"
+	},
+	"controllers": {
+		"academic-catalogs": "Academic Catalogs",
+		"actions": "Actions",
+		"activity-types": "Activity Types",
+		"address-types": "Address types",
+		"aspect-modes": "Aspect modes",
+		"attendance-calculations": "Attendance Calculations",
+		"attendance-types": "Attendance Types",
+		"billing-types": "Billing types",
+		"block-types": "Block Types",
+		"blood-types": "Blood types",
+		"campuses": "Campuses",
+		"comment-types": "Comment Types",
+		"community-catalogs": "Community Catalogs",
+		"controllers": "Controllers",
+		"countries": "Countries",
+		"data-utilities": "Data Utilities",
+		"diagnostic-types": "Diagnostic Types",
+		"evaluation-types": "Evaluation Types",
+		"families": "Families",
+		"family-address": "Address",
+		"family-collection": "Collection",
+		"family-contacts": "Contacts",
+		"family-finances": "Finances",
+		"family-general": "General",
+		"family-members": "Members",
+		"family-profile": "Family Profile",
+		"family-statuses": "Family Statuses",
+		"family-students": "Students",
+		"family-tutors": "Family tutors",
+		"feedback-types": "Feedback Types",
+		"finance-catalogs": "Finance catalogs",
+		"genders": "Genders",
+		"general-configuration": "General",
+		"grade-policies": "Grade Policies",
+		"grade-policy-items": "Configure policy",
+		"grade-progressions": "Grade progressions",
+		"gradebook-actions": "Grade Book Actions",
+		"gradebook-options": "Grade Book Options",
+		"gradebook-section-types": "Grade Book Section Types",
+		"gradebook-types": "Grade Book Types",
+		"grades": "School Grades",
+		"grading-scales": "Grading Scales",
+		"group-types": "Group Types",
+		"home": "Home",
+		"invoice-uses": "Invoice uses",
+		"languages": "Languages",
+		"learning-areas": "Learning Areas",
+		"levels": "Levels",
+		"localization-catalogs": "Localization catalogs",
+		"mail-types": "Mail types",
+		"marital-statuses": "Marital statuses",
+		"modules": "Modules",
+		"my-school": "My School",
+		"name-casings": "Name casings",
+		"normalize-people-names": "Normalize Person Names",
+		"organization-logos": "Organization logos",
+		"organization-themes": "Themes",
+		"parent-fields": "Parent fields",
+		"password-types": "Password types",
+		"peerson-addresses": "Addresses",
+		"people-catalogs": "People catalogs",
+		"permissions": "Permissions",
+		"person-addresses": "Addresses",
+		"person-attributes": "Person attributes",
+		"person-communication": "Communication",
+		"person-direct-communication": "Direct Communication",
+		"person-fields": "Person Fields",
+		"person-levels": "Levels",
+		"person-mails": "Emails",
+		"person-password": "Password",
+		"person-phones": "Phones",
+		"person-profile": "Profile",
+		"person-sections": "Sections",
+		"phone-types": "Phone types",
+		"postal-codes": "Postal Codes",
+		"profile": "My Profile",
+		"project-types": "Project types",
+		"question-input-types": "Input Types",
+		"question-types": "Question Types",
+		"roles": "Roles",
+		"root-dashboard": "Dashboard",
+		"rubric-types": "Rubric Types",
+		"schedule-types": "Schedule Types",
+		"school-years": "School Years",
+		"sections": "Sections",
+		"staff-detail": "Staff Detail",
+		"staff-fields": "Staff Fields",
+		"staff-users": "Staff",
+		"student-collection": "Student Collection",
+		"student-fields": "Student Fields",
+		"student-rfid": "Rfid Cards",
+		"student-statuses": "Student Statuses",
+		"student-year-statuses": "Student Year Statuses",
+		"student-years": "School years",
+		"study-plan-academics": "Academic Structure",
+		"study-plan-attendance": "Attendance",
+		"study-plan-evaluation": "Evaluation & Monitoring",
+		"study-plan-general": "General information",
+		"study-plan-grading": "Grading",
+		"study-plan-information": "Information",
+		"study-plan-lms": "LMS",
+		"study-plan-report-cards": "Report Cards",
+		"study-plan-scheduling": "Scheduling & Timetable",
+		"study-plan-stage-terms": "Terms",
+		"study-plans": "Study Plans",
+		"studyplan-structures": "Study Plan Structures",
+		"subject-classifications": "Classification",
+		"subject-subcategories": "Subcategories",
+		"subject-types": "Subject Types",
+		"subjects": "Subjects",
+		"support-types": "Support types",
+		"survey-types": "Survey Types",
+		"system-catalogs": "System catalogs",
+		"tax-regimes": "Tax regimes",
+		"tenants": "Tenants",
+		"term-statuses": "Term statuses",
+		"term-types": "Term Types",
+		"tin-types": "Tin Types",
+		"tutor-statuses": "Tutor Statuses",
+		"user-levles": "User Levels",
+		"user-roles": "Additional Roles",
+		"user-security": "Security",
+		"users": "Users"
+	},
+	"forgot_password": {
+		"back": "Back to sign in",
+		"submit": "Send instructions",
+		"subtitle": "Enter your username or email and we will send you instructions to reset your password.",
+		"title": "Recover access",
+		"user": "User or email"
+	},
+	"home": {
+		"person-addresses": {
+			"add": "New address",
+			"delete": "Remove address",
+			"update": "Update address"
+		},
+		"person-mails": {
+			"add": "New Email",
+			"delete": "Remove Email",
+			"update": "Update Email"
+		},
+		"person-password": {
+			"description": "Update the user's access password.",
+			"fields": {
+				"password": "New password",
+				"password-confirmation": "Repeat password"
+			},
+			"messages": {
+				"updated": "The password was updated"
+			},
+			"title": "Change password",
+			"validation": {
+				"password-confirmation-required": "You must repeat the password.",
+				"password-minlength": "Password must contain at least 8 characters.",
+				"password-mismatch": "Passwords do not match.",
+				"password-required": "Password is required."
+			}
+		},
+		"person-phones": {
+			"add": "New phone",
+			"delete": "Remove Phone",
+			"update": "Update Phone"
+		},
+		"profile": {
+			"index": "My Profile",
+			"reset-photo": "Reset photo",
+			"upload-photo": "Upload Photo"
+		}
+	},
+	"layout": {
+		"sidebar": {
+			"academic": "",
+			"dashboard": ""
+		},
+		"topbar": {
+			"change_language": "Change language",
+			"change_role": "Change role",
+			"notifications": "Notifications",
+			"profile": "My Profile"
+		}
+	},
+	"login": {
+		"forgot": "Forgot password?",
+		"loading": "Loading, please wait ....",
+		"password": "Password",
+		"submit": "Log in",
+		"subtitle": "Log in with your credentials to continue",
+		"title": "Log in",
+		"user": "User or email",
+		"welcome": "Welcome again"
+	},
+	"modules": {
+		"academics": "Academics",
+		"administration": "Administration",
+		"configuration": "Configuration",
+		"home": "Home",
+		"planning": "Planning",
+		"security": "Security",
+		"utilities": "Utilities"
+	},
+	"planning": {
+		"study-plan-academics": {
+			"actions": {
+				"manage": "Manage"
+			},
+			"add-stage": "New Stage",
+			"description": "Define how the academic structure of the study plan is organized.",
+			"index": "Study Plan Academics",
+			"integrations": {
+				"description": "Configure how subjects are academically integrated in report cards and grade calculations.",
+				"pending-description": "Define weight distributions and subject groupings.",
+				"pending-title": "Academic integrations",
+				"title": "Subject Integrations"
+			},
+			"stages": {
+				"description": "Configure the academic stages and the terms associated with the study plan.",
+				"distribution": "Academic Distribution",
+				"empty": "No stages have been registered.",
+				"metrics": {
+					"closed-terms": "Closed",
+					"closes-in": "Closes in {{days}} days",
+					"current": "Current Term",
+					"last": "Last Term",
+					"next": "Next Term",
+					"no-current": "No Term",
+					"no-current-description": "No current term was found for this study plan.",
+					"no-current-value": "Not Available",
+					"open-terms": "Active",
+					"stages": "Stages",
+					"terms": "Terms"
+				},
+				"status": {
+					"pending": "Configuration Pending",
+					"pending-description": "The study plan does not have any stages configured yet.",
+					"ready": "Structure Configured",
+					"ready-description": "The study plan already has academic stages configured."
+				},
+				"title": "Stages and Terms"
+			},
+			"subjects": {
+				"description": "Manage the subjects assigned to each academic grade.",
+				"pending-description": "Assign subjects and define the academic structure by grade.",
+				"pending-title": "Subject configuration",
+				"title": "Subjects by Grade"
+			},
+			"title": "Academic Structure"
+		},
+		"study-plan-attendance": {
+			"description": "Configure how attendance is recorded and when students keep eligibility to take exams.",
+			"explanation": {
+				"main": "Students must meet at least {{ percent }} attendance to be eligible to take exams."
+			},
+			"fields": {
+				"attendance-calculation": "Attendance calculation",
+				"attendance-delay": "Allowed capture delay",
+				"attendance-details": "Attendance details",
+				"attendance-percent": "Minimum attendance",
+				"attendance-type": "Attendance type",
+				"delay-absence-ratio": "Delays per absence"
+			},
+			"messages": {
+				"updated": "Attendance Settings were successfully updated"
+			},
+			"reset": "Reset settings",
+			"save": "Save settings",
+			"sections": {
+				"exam-right": "Exam eligibility",
+				"recording": "Attendance recording",
+				"system": "System rules"
+			},
+			"title": "Attendance and exam eligibility",
+			"units": {
+				"days": "days"
+			},
+			"update": "Edit"
+		},
+		"study-plan-general": {
+			"description": "Configure the main study plan details",
+			"edit": "Edit general information",
+			"fields": {
+				"description": "Description",
+				"end": "End",
+				"level": "Level",
+				"name": "Name",
+				"period": "Period",
+				"schedule-type": "Schedule type",
+				"school-year": "School year",
+				"section": "Section",
+				"start": "Start",
+				"structure": "Structure"
+			},
+			"messages": {
+				"updated": "General Information Updated"
+			},
+			"reset": "Reset",
+			"save": "Save",
+			"title": "General information",
+			"update": "Edit"
+		},
+		"study-plan-grading": {
+			"context": "Defines how student final grades are calculated and presented.",
+			"description": "Configure how grades are calculated and presented",
+			"explanation": {
+				"calculation": "The final grade is calculated from period averages, giving {{ classPercent }} weight to class periods and {{ examPercent }} to exam periods."
+			},
+			"fields": {
+				"aspect-mode": "Aspect mode",
+				"class-percent": "Class percentage",
+				"comment-type": "Comment type",
+				"decimals": "Decimals",
+				"exam-percent": "Exam percentage",
+				"exemption-average": "Minimum average",
+				"exemption-percent": "Required percentage",
+				"exemptions": "Exemptions",
+				"grade-policy": "Rounding policy",
+				"grading-scale": "Grading scale",
+				"rounding": "Rounding method"
+			},
+			"messages": {
+				"percentages-must-sum-one": "Class percentage and exam percentage must add up to 100%.",
+				"updated": "Grading settings were successfully updated."
+			},
+			"reset": "Reset settings",
+			"save": "Save settings",
+			"sections": {
+				"calculation": "Grade calculation",
+				"rules": "Additional rules",
+				"scale": "Scale & format"
+			},
+			"title": "Grading & tracking",
+			"update": "Edit"
+		},
+		"study-plan-stages": {
+			"add": "New Stage",
+			"delete": "Delete Stage",
+			"description": "View and configure the selected academic stage and its associated terms.",
+			"empty": {
+				"description": "The selected stage information could not be loaded.",
+				"title": "Stage Not Available"
+			},
+			"fields": {
+				"dates": "Stage Dates",
+				"order": "Order",
+				"terms": "Terms"
+			},
+			"terms": {
+				"description": "Review the terms defined within this academic stage.",
+				"empty": "This stage does not have any terms registered yet.",
+				"review-date": "Review Date",
+				"title": "Stage Terms"
+			},
+			"title": "Study Plan Stages",
+			"update": "Edit Stage"
+		},
+		"study-plans": {
+			"add": "New Study Plan",
+			"children": {
+				"academics": "Define the academic structure of the plan: stages, grades, and subjects.",
+				"evaluation": "Configure aspects, grade capture, and academic monitoring.",
+				"information": "View and adjust the general information of the study plan.",
+				"report-cards": "Configure report cards, periods, and academic result presentation.",
+				"scheduling": "Organize groups, assignments, and scheduling configuration."
+			},
+			"configuration": {
+				"back": "Back",
+				"description": "Configure the key elements of the study plan by selecting one of the available sections.ß",
+				"title": "Study Plan Configuration"
+			},
+			"delete": "Delete Study Plan",
+			"fields": {
+				"dates": "Plan duration",
+				"description": "Description",
+				"end": "End date",
+				"level": "Academic level",
+				"name": "Name",
+				"schedule-type": "Schedule type",
+				"school-year": "School year",
+				"section": "Section",
+				"start": "Start date",
+				"structure": "Structure"
+			},
+			"messages": {
+				"already-exists": "A study plan already exists for this level, school year, and section.",
+				"confirm-delete": "Are you sure you want to delete this study plan?",
+				"create-description": "Enter the basic information to create a new study plan.",
+				"created": "Study plan created successfully.",
+				"deleted": "Study plan deleted successfully.",
+				"empty": "No study plans available.",
+				"loaded": "Study plans loaded successfully.",
+				"no-description": "No description",
+				"select-study-plan": "Select a study plan to view its details."
+			},
+			"sections": {
+				"access": "Plan configuration",
+				"general-information": "General information"
+			},
+			"update": "Update Study Plan"
+		}
+	},
+	"security": {
+		"permissions": {
+			"edit": "Update permissions",
+			"index": "Permissions"
+		},
+		"users": {
+			"change-password": "Change Password",
+			"fields": {
+				"email": "Email",
+				"lastname": "Last name",
+				"mothername": "Mother surname",
+				"name": "Name",
+				"role": "Role"
+			},
+			"messages": {
+				"confirm-change-password": "A new password will be generated for this user. Do you wish to continue?",
+				"email-already-exists": "Email taken",
+				"no-results": "The search yielded no results",
+				"refine-search": "More results are available. Please refine your search."
+			},
+			"profile": "User profile"
+		}
+	},
+	"sidebar": {
+		"academic": "Academic",
+		"admissions": "Admissions",
+		"applicants": "Applicants",
+		"attendance": "Attendance",
+		"banks": "Banks",
+		"dashboard": "Dashboard",
+		"finance": "Finance",
+		"grades": "Grades",
+		"mails": "Emails",
+		"parameters": "Parameters",
+		"permissions": "Permissions",
+		"processes": "Processes",
+		"report_cards": "Report Cards",
+		"roles": "Roles",
+		"settings": "Settings",
+		"statements": "Statements",
+		"users": "Users"
+	},
+	"utilities": {
+		"data-utilities": {
+			"index": "Data utilities"
+		},
+		"labels": {
+			"click-to-run": "Click to run"
+		},
+		"messages": {
+			"confirm-execution": "Confirm execution"
+		},
+		"normalize-people-names": {
+			"execute": "Execute",
+			"messages": {
+				"executed": "Normalize People Names Executed"
+			}
+		}
+	},
+	"validation": {
+		"date": "Date invalid format",
+		"email": "Email format invalid",
+		"invalid_selection": "Invalid selection",
+		"required": "Required"
+	}
+}

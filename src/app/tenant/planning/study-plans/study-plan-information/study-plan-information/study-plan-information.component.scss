@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-information {
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-information__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch; // 🔥 CLAVE
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-information__item {
+  display: flex; // 🔥 IMPORTANTE
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+@media (max-width: 991px) {
+  .study-plan-information__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,67 @@
+<form class="question-type-input-types-config" (ngSubmit)="onSubmit()">
+  <header class="question-type-input-types-config__header">
+    <span class="question-type-input-types-config__eyebrow">
+      {{ 'configuration.question-types.configure-input-types' | translate }}
+    </span>
+
+    <h3>
+      {{ questionTypeName() | translate }}
+    </h3>
+  </header>
+
+  <div class="question-type-input-types-config__list">
+    @for (item of items(); track item.id) {
+      <div
+        class="question-type-input-types-config__item"
+        [class.question-type-input-types-config__item--active]="item.active"
+      >
+        <label class="question-type-input-types-config__check">
+          <input
+            type="checkbox"
+            [checked]="item.active"
+            (change)="toggleActive(item.id)"
+          />
+
+          <span class="question-type-input-types-config__name">
+            {{ item.translation ? (item.translation | translate) : item.name }}
+          </span>
+        </label>
+
+        <span class="question-type-input-types-config__component">
+          {{ item.component || '—' }}
+        </span>
+
+        <label class="question-type-input-types-config__default">
+          <input
+            type="radio"
+            name="default-input-type"
+            [checked]="item.is_default"
+            [disabled]="!item.active"
+            (change)="setDefault(item.id)"
+          />
+
+          <span>
+            {{ 'common.default' | translate }}
+          </span>
+        </label>
+      </div>
+    }
+  </div>
+
+  <footer class="question-type-input-types-config__actions">
+    <app-ui-button
+      type="button"
+      variant="danger"
+      iconLeft="reset"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      iconLeft="save"
+      [label]="'common.save' | translate"
+    />
+  </footer>
+</form>

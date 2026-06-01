@@ -1,0 +1,55 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  @if (taxRegime(); as item) {
+    <div class="module-modal__summary">
+      <span class="module-modal__summary-label">
+        {{ 'configuration.tax-regimes.fields.code' | translate }}
+      </span>
+      <strong>{{ item.code }}</strong>
+      <span class="module-modal__summary-separator">—</span>
+      <span>{{ item.name }}</span>
+    </div>
+  }
+
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="tax-regime-tin-types">
+        {{ 'configuration.tax-regimes.fields.tin-types' | translate }}
+      </label>
+      <div class="tin-types-list">
+        @for (tin of tinTypes(); track tin.id) {
+          <label class="tin-types-item">
+            <input
+              type="checkbox"
+              [checked]="form.controls.tin_type_ids.value.includes(tin.id)"
+              (change)="onTinTypeChange(tin.id, $any($event.target).checked)"
+            />
+            <span>
+              {{ tin.translation | translate }}
+              <small *ngIf="tin.country">
+                ({{ tin.country.name }})
+              </small>
+            </span>
+          </label>
+        }
+      </div>
+      <form-error [control]="form.controls.tin_type_ids"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="'common.save' | translate"
+    ></app-ui-button>
+  </div>
+</form>

@@ -1,0 +1,163 @@
+<section class="staff-profile">
+  <aside class="staff-profile__side">
+    <div class="staff-profile__avatar">
+      <img [src]="person()?.photo" alt="Staff" />
+    </div>
+
+    <h2 class="staff-profile__name">{{ person()?.name }} {{ person()?.lastname }}</h2>
+
+    <p class="staff-profile__role">
+      {{ user()?.role?.translation | translate }}
+    </p>
+
+    <div class="staff-profile__status">
+      <span [class.is-active]="user()?.active">
+        {{ user()?.active ? ('common.active' | translate) : ('common.inactive' | translate) }}
+      </span>
+    </div>
+
+    <div class="staff-profile__summary">
+      <label>{{ 'security.users.fields.email' | translate }}</label>
+      <p>{{ user()?.email }}</p>
+    </div>
+
+    <div class="staff-profile__actions">
+      @if (getScreenOption('upload-photo'); as uploadPhotoOption) {
+        <app-ui-button
+          [variant]="uploadPhotoOption.color"
+          [title]="uploadPhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="uploadPhotoOption.icon"
+          (click)="onUploadPhoto()"
+        />
+      }
+
+      @if (getScreenOption('remove-photo'); as removePhotoOption) {
+        <app-ui-button
+          [variant]="removePhotoOption.color"
+          [title]="removePhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="removePhotoOption.icon"
+          (click)="onRemovePhoto()"
+        />
+      }
+
+      @if (getScreenOption('delete'); as deleteOption) {
+        <app-ui-button
+          [variant]="deleteOption.color"
+          [title]="deleteOption.translation | translate"
+          size="sm"
+          [iconLeft]="deleteOption.icon"
+          (click)="onDelete()"
+        />
+      }
+    </div>
+  </aside>
+
+  <main class="staff-profile__main">
+    <header class="staff-profile__header">
+      <div>
+        <h1>{{ 'administration.staff-users.profile.title' | translate }}</h1>
+        <p>{{ 'administration.staff-users.profile.subtitle' | translate }}</p>
+      </div>
+    </header>
+
+    <nav class="staff-profile__tabs">
+      @for (child of children(); track child.id) {
+        <button
+          type="button"
+          [class.is-active]="activeTab() === child.name"
+          (click)="setTab(child.name)"
+        >
+          {{ child.translation | translate }}
+        </button>
+      }
+    </nav>
+
+    <section class="staff-profile__panel">
+      @switch (activeTab()) {
+        @case ('person-profile') {
+          <h2>{{ 'controllers.person-profile' | translate }}</h2>
+          <app-person-profile-tab
+            [person]="person()"
+            [fields]="person_fields()"
+            [catalogs]="catalogs()?.person_profile ?? null"
+            [saveRoute]="profileSaveRoute()"
+            [route]="childRoute('person-profile')"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('user-security') {
+          <h2>{{ 'controllers.user-security' | translate }}</h2>
+
+          <app-user-security-tab
+            [user]="user()"
+            [roles]="catalogs()?.roles ?? []"
+            [route]="childRoute('user-security')"
+            (userUpdated)="onUserUpdated($event)"
+          />
+        }
+
+        @case ('person-communication') {
+          <h2>{{ 'controllers.person-communication' | translate }}</h2>
+          <app-person-communication-tab
+            [person]="person()"
+            [route]="childRoute('person-communication')"
+            [catalogs]="communicationCatalogs()"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('person-sections') {
+          <h2>{{ 'controllers.person-sections' | translate }}</h2>
+          <app-person-sections-tab
+            [person]="person()"
+            [sections]="catalogs()?.sections ?? []"
+            [assignments]="assignments()?.sections ?? []"
+            [route]="childRoute('person-sections')"
+            (assignmentsUpdated)="onAssignmentsUpdated($event)"
+          />
+        }
+
+        @case ('person-levels') {
+          <h2>{{ 'controllers.person-levels' | translate }}</h2>
+          <app-person-levels-tab
+            [person]="person()"
+            [levels]="catalogs()?.levels ?? []"
+            [assignments]="assignments()?.levels ?? []"
+            [route]="childRoute('person-levels')"
+            (assignmentsUpdated)="onAssignmentsUpdated($event)"
+          />
+        }
+
+        @case ('user-roles') {
+          <h2>{{ 'controllers.user-roles' | translate }}</h2>
+          <app-user-roles-tab
+            [user]="user()"
+            [roles]="catalogs()?.roles ?? []"
+            [assignments]="assignments()?.roles ?? []"
+            [route]="childRoute('user-roles')"
+            (assignmentsUpdated)="onAssignmentsUpdated($event)"
+          />
+        }
+
+        @case ('person-direct-communication') {
+          <h2>{{ 'controllers.person-direct-communication' | translate }}</h2>
+          <app-person-direct-communication-tab
+            [person]="person()"
+            [directTypes]="catalogs()?.direct_types ?? []"
+            [route]="childRoute('person-direct-communication')"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @default {
+          <div class="staff-profile__empty">
+            {{ 'common.no-data' | translate }}
+          </div>
+        }
+      }
+    </section>
+  </main>
+</section>

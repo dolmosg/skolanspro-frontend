@@ -1,0 +1,117 @@
+<section class="study-plan-configuration">
+  @if (studyPlan(); as plan) {
+    <header class="study-plan-configuration__header">
+      <div>
+        <h2>{{ 'planning.study-plans.configuration.title' | translate }}</h2>
+        <p>{{ 'planning.study-plans.configuration.description' | translate }}</p>
+      </div>
+
+      <app-ui-button
+        type="button"
+        variant="secondary"
+        iconLeft="back"
+        [label]="'planning.study-plans.configuration.back' | translate"
+        (click)="goBack()"
+      />
+    </header>
+
+    <section class="study-plan-configuration__summary">
+      <div class="study-plan-configuration__summary-item">
+        <app-ui-icon name="book-open" size="md" />
+        <span>{{ 'planning.study-plans.fields.name' | translate }}</span>
+        <strong>{{ plan.name }}</strong>
+      </div>
+
+      <div class="study-plan-configuration__summary-item">
+        <app-ui-icon name="graduation-cap" size="md" />
+        <span>{{ 'planning.study-plans.fields.level' | translate }}</span>
+        <strong>{{ plan.level?.description || plan.level?.name || '—' }}</strong>
+      </div>
+
+      <div class="study-plan-configuration__summary-item">
+        <app-ui-icon name="calendar" size="md" />
+        <span>{{ 'planning.study-plans.fields.school-year' | translate }}</span>
+        <strong>{{ plan.school_year?.name || '—' }}</strong>
+      </div>
+
+      <div class="study-plan-configuration__summary-item">
+        <app-ui-icon name="layout-template" size="md" />
+        <span>{{ 'planning.study-plans.fields.section' | translate }}</span>
+        <strong>{{ plan.section?.description || plan.section?.name || '—' }}</strong>
+      </div>
+
+      <div class="study-plan-configuration__summary-item">
+        <app-ui-icon name="calendar-range" size="md" />
+        <span>{{ 'planning.study-plans.fields.dates' | translate }}</span>
+        <strong>
+          {{ plan.start | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+          -
+          {{ plan.end | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+        </strong>
+      </div>
+    </section>
+
+    <section class="study-plan-configuration__sections">
+      <h3>{{ 'planning.study-plans.configuration.title' | translate }}</h3>
+
+      <div class="study-plan-configuration__cards">
+        @for (child of getScreenChildren(); track child.id) {
+          <button
+            type="button"
+            class="study-plan-configuration__card"
+            [class.study-plan-configuration__card--active]="activeSection() === child.name"
+            (click)="changeSection(child.name)"
+          >
+            <app-ui-icon [name]="child.icon" size="md" />
+
+            <strong>{{ child.translation | translate }}</strong>
+
+            <small>
+              {{ getStudyPlanChildDescription(child.name) | translate }}
+            </small>
+
+            <app-ui-icon name="drilldown" size="md" />
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="study-plan-configuration__workspace">
+      @switch (activeSection()) {
+        @case ('study-plan-information') {
+          <app-study-plan-information
+            [studyPlan]="studyPlan()"
+            [route]="childRoute('study-plan-information')"
+          />
+        }
+
+        @case ('study-plan-academics') {
+          <app-study-plan-academics
+            [studyPlan]="studyPlan()"
+            [route]="childRoute('study-plan-academics')"
+          />
+        }
+
+        @case ('study-plan-scheduling') {
+          <p>Organización y horarios</p>
+        }
+
+        @case ('study-plan-evaluation') {
+          <p>Evaluación y seguimiento</p>
+        }
+
+        @case ('study-plan-report-cards') {
+          <p>Boletas</p>
+        }
+
+        @default {
+          <p>{{ 'planning.study-plans.configuration.select-section' | translate }}</p>
+        }
+      }
+    </section>
+  } @else {
+    <div class="study-plan-configuration__empty">
+      {{ 'planning.study-plans.messages.not-found' | translate }}
+    </div>
+  }
+</section>

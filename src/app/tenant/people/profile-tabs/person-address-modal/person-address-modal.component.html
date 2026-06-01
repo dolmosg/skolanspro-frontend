@@ -1,0 +1,242 @@
+<form class="person-address-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="person-address-modal__grid">
+    <!-- TYPE -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label">
+        {{ 'administration.person-addresses.fields.type' | translate }}
+      </label>
+
+      <app-sk-select
+        #typeSelect
+        [control]="form.controls.address_type_id"
+        [items]="addressTypesNormalized()"
+        bindLabel="label"
+        bindValue="id"
+        [placeholder]="'common.no_type' | translate"
+        [searchable]="true"
+        [clearable]="true"
+        [translateLabel]="true"
+      />
+
+      <form-error [control]="form.controls.address_type_id"></form-error>
+    </div>
+
+    <!-- COUNTRY -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label">
+        {{ 'administration.person-addresses.fields.country' | translate }}
+      </label>
+
+      <app-sk-select
+        [control]="form.controls.country_id"
+        [items]="countriesNormalized()"
+        bindLabel="label"
+        bindValue="id"
+        [placeholder]="'administration.person-addresses.placeholders.country' | translate"
+        [searchable]="true"
+        [clearable]="true"
+      />
+
+      <form-error [control]="form.controls.country_id"></form-error>
+    </div>
+
+    <!-- NAME -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label" for="person-address-name">
+        {{ 'administration.person-addresses.fields.name' | translate }}
+      </label>
+
+      <input
+        id="person-address-name"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="name"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <!-- ZIP CODE -->
+    <div class="person-address-modal__field person-address-modal__field--small">
+      <label class="person-address-modal__label" for="person-address-zip-code">
+        {{ 'administration.person-addresses.fields.zip_code' | translate }}
+      </label>
+
+      <input
+        id="person-address-zip-code"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="zip_code"
+        autocomplete="off"
+        (change)="onZipCodeChange()"
+      />
+
+      <form-error [control]="form.controls.zip_code"></form-error>
+    </div>
+
+    @if (hasPostalCodeOptions()) {
+      <div class="postal-code-results">
+        <div class="postal-code-results__title">
+          {{ 'administration.person-addresses.messages.select_settlement' | translate }}
+        </div>
+
+        @for (settlement of postalCodeSettlements(); track settlement.id) {
+          <button
+            type="button"
+            class="postal-code-results__item"
+            (click)="selectSettlement(settlement)"
+          >
+            <span class="postal-code-results__name">
+              {{ settlement.settlement }}
+            </span>
+
+            <span class="postal-code-results__meta">
+              {{ settlement.settlement_type }}
+              · {{ settlement.municipality }}
+              · {{ settlement.city }}
+              · {{ settlement.state }}
+            </span>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- STREET -->
+    <div class="person-address-modal__field person-address-modal__field--wide">
+      <label class="person-address-modal__label" for="person-address-street">
+        {{ 'administration.person-addresses.fields.street' | translate }}
+      </label>
+
+      <input
+        #streetInput
+        id="person-address-street"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="street"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.street"></form-error>
+    </div>
+
+    <!-- OUTDOOR -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label" for="person-address-outdoor">
+        {{ 'administration.person-addresses.fields.outdoor' | translate }}
+      </label>
+
+      <input
+        id="person-address-outdoor"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="outdoor"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.outdoor"></form-error>
+    </div>
+
+    <!-- INDOOR -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label" for="person-address-indoor">
+        {{ 'administration.person-addresses.fields.indoor' | translate }}
+      </label>
+
+      <input
+        id="person-address-indoor"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="indoor"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.indoor"></form-error>
+    </div>
+
+    <!-- COLONY -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label" for="person-address-colony">
+        {{ 'administration.person-addresses.fields.colony' | translate }}
+      </label>
+
+      <input
+        id="person-address-colony"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="colony"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.colony"></form-error>
+    </div>
+
+    <!-- MUNICIPALITY -->
+    <div class="person-address-modal__field">
+      <label class="person-address-modal__label" for="person-address-municipality">
+        {{ 'administration.person-addresses.fields.municipality' | translate }}
+      </label>
+
+      <input
+        id="person-address-municipality"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="municipality"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.municipality"></form-error>
+    </div>
+
+    <!-- CITY -->
+    <div class="person-address-modal__field person-address-modal__field--half">
+      <label class="person-address-modal__label" for="person-address-city">
+        {{ 'administration.person-addresses.fields.city' | translate }}
+      </label>
+
+      <input
+        id="person-address-city"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="city"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.city"></form-error>
+    </div>
+
+    <!-- STATE -->
+    <div class="person-address-modal__field person-address-modal__field--half">
+      <label class="person-address-modal__label" for="person-address-state">
+        {{ 'administration.person-addresses.fields.state' | translate }}
+      </label>
+
+      <input
+        id="person-address-state"
+        type="text"
+        class="person-address-modal__input"
+        formControlName="state"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.state"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="person-address-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="(isEdit() ? 'common.save' : 'common.create') | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

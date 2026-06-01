@@ -1,0 +1,94 @@
+<form class="controller-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="controller-modal__grid">
+    <div class="controller-modal__field controller-modal__field--full">
+      <label class="controller-modal__label" for="controller-name">
+        {{ 'configuration.controllers.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="controller-name"
+        type="text"
+        class="controller-modal__input"
+        formControlName="name"
+        autocomplete="off"
+        (change)="onNameChange($event)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="controller-modal__field controller-modal__field--full">
+      <label class="controller-modal__label" for="controller-translation">
+        {{ 'configuration.controllers.fields.translation' | translate }}
+      </label>
+      <input
+        id="controller-translation"
+        type="text"
+        class="controller-modal__input"
+        formControlName="translation"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+
+    <div class="controller-modal__field">
+      <label class="controller-modal__label" for="controller-icon">
+        {{ 'configuration.controllers.fields.icon' | translate }}
+      </label>
+      <input
+        id="controller-icon"
+        type="text"
+        class="controller-modal__input"
+        formControlName="icon"
+        autocomplete="off"
+      />
+      <form-error [control]="form.controls.icon"></form-error>
+    </div>
+
+    <div class="controller-modal__field">
+      <label class="controller-modal__label" for="controller-context">
+        {{ 'configuration.controllers.fields.context' | translate }}
+      </label>
+      <select
+        id="controller-context"
+        class="controller-modal__input"
+        formControlName="context"
+      >
+        <option value="central">{{ 'context.central' | translate }}</option>
+        <option value="tenant">{{ 'context.tenant' | translate }}</option>
+        <option value="both">{{ 'context.both' | translate }}</option>
+      </select>
+      <form-error [control]="form.controls.context"></form-error>
+    </div>
+
+    <div class="controller-modal__field controller-modal__field--inline">
+      <label class="controller-modal__checkbox">
+        <input type="checkbox" formControlName="priv" />
+        <span>{{ 'configuration.controllers.fields.priv' | translate }}</span>
+      </label>
+    </div>
+
+    <div class="controller-modal__field controller-modal__field--inline">
+      <label class="controller-modal__checkbox">
+        <input type="checkbox" formControlName="visible" />
+        <span>{{ 'configuration.controllers.fields.visible' | translate }}</span>
+      </label>
+    </div>
+  </div>
+
+  <div modal-footer class="controller-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="(isEdit() ? 'common.save' : 'common.create') | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

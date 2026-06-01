@@ -1,0 +1,23 @@
+<div class="skl-confirm">
+  <div class="skl-confirm__content text-center">
+    <p class="skl-confirm__message mb-0">
+      {{ message }}
+    </p>
+  </div>
+
+  <div modal-footer class="skl-confirm__actions">
+    <app-ui-button
+      [label]="cancelLabel"
+      variant="ghost"
+      size="sm"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="confirmLabel"
+      [variant]="variant"
+      size="sm"
+      (click)="onConfirm()"
+    />
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<form class="levels-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="levels-modal__grid">
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-name">
+        {{ 'configuration.levels.fields.name' | translate }}
+      </label>
+
+      <input
+        id="level-name"
+        class="levels-modal__input"
+        type="text"
+        formControlName="name"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-description">
+        {{ 'configuration.levels.fields.description' | translate }}
+      </label>
+
+      <input
+        id="level-description"
+        class="levels-modal__input"
+        type="text"
+        formControlName="description"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-registration">
+        {{ 'configuration.levels.fields.registration' | translate }}
+      </label>
+
+      <input
+        id="level-registration"
+        class="levels-modal__input"
+        type="text"
+        formControlName="registration"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-revoe">
+        {{ 'configuration.levels.fields.revoe' | translate }}
+      </label>
+
+      <input
+        id="level-revoe"
+        class="levels-modal__input"
+        type="text"
+        formControlName="revoe"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-billing">
+        {{ 'configuration.levels.fields.billing' | translate }}
+      </label>
+
+      <input
+        id="level-billing"
+        class="levels-modal__input"
+        type="text"
+        formControlName="billing"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-css-class">
+        {{ 'configuration.levels.fields.css-class' | translate }}
+      </label>
+
+      <input
+        id="level-css-class"
+        class="levels-modal__input"
+        type="text"
+        formControlName="css_class"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-translation">
+        {{ 'configuration.levels.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="level-translation"
+        class="levels-modal__input"
+        type="text"
+        formControlName="translation"
+        maxlength="128"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="levels-modal__field">
+      <label class="levels-modal__label" for="level-organization-logo">
+        {{ 'configuration.levels.fields.organization-logo' | translate }}
+      </label>
+
+      <app-sk-select
+        [control]="form.controls.organization_logo_id"
+        [items]="organizationLogos()"
+        bindValue="id"
+        bindLabel="name"
+        [placeholder]="'configuration.levels.messages.none' | translate"
+      />
+    </div>
+  </div>
+
+  <div class="levels-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="isEditMode() ? ('common.update' | translate) : ('common.save' | translate)"
+      [disabled]="form.invalid"
+    />
+  </div>
+</form>

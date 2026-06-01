@@ -1,0 +1,31 @@
+<div class="person-sections-tab">
+  <div class="person-sections-tab__grid">
+    @for (section of sections(); track section.id) {
+      <label class="person-sections-tab__item">
+        <input
+          type="checkbox"
+          [checked]="isSelected(section.id)"
+          [disabled]="!canUpdate()"
+          (change)="toggleSection(section.id, $any($event.target).checked)"
+        />
+
+        <span>
+          {{ section.translation ? (section.translation | translate) : section.description }}
+        </span>
+      </label>
+    }
+  </div>
+
+  @if (hasScreenOption('update')) {
+    <div class="person-sections-tab__actions">
+      <app-ui-button
+        type="button"
+        variant="primary"
+        size="sm"
+        [label]="'common.save' | translate"
+        [disabled]="!hasChanges()"
+        (click)="onSave()"
+      />
+    </div>
+  }
+</div>

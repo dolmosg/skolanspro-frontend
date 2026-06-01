@@ -1,0 +1,61 @@
+@use './styles/tokens';
+@use './styles/catalog-page';
+@use './styles/selection-bar';
+@use './styles/toolbar';
+@use 'ngx-toastr/toastr';
+
+@import "@ng-select/ng-select/themes/default.theme.css";
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+/* =========================================
+   SK SELECT (NG-SELECT OVERRIDES)
+========================================= */
+
+app-sk-select ng-select.ng-select .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-single .ng-select-container {
+  border-radius: 0.75rem !important;
+  min-height: 44px !important;
+  border-color: #d1d5db !important;
+  box-shadow: none !important;
+}
+
+app-sk-select ng-select.ng-select .ng-select-container:hover,
+app-sk-select ng-select.ng-select.ng-select-single .ng-select-container:hover {
+  border-color: #9ca3af !important;
+}
+
+app-sk-select ng-select.ng-select.ng-select-focused > .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-opened > .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-opened.ng-select-focused > .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-focused .ng-select-container,
+app-sk-select ng-select.ng-select.ng-select-opened .ng-select-container,
+app-sk-select ng-select.ng-select:focus-within .ng-select-container {
+  border-color: var(--color-primary, #fd7e14) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #fd7e14) 15%, transparent) !important;
+  outline: none !important;
+}
+
+app-sk-select ng-select.ng-select input,
+app-sk-select ng-select.ng-select input:focus,
+app-sk-select ng-select.ng-select .ng-input > input,
+app-sk-select ng-select.ng-select .ng-input > input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

@@ -1,0 +1,112 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (!orderingMode()) {
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [variant]="getScreenOptionVariant('add', 'primary')"
+              size="sm"
+              [iconLeft]="addOption.icon"
+              (click)="onAdd()"
+            />
+          }
+        } @else {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="secondary"
+            size="sm"
+            iconLeft="close"
+            [disabled]="savingOrder()"
+            (click)="cancelOrdering()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            variant="primary"
+            size="sm"
+            iconLeft="check"
+            [disabled]="savingOrder()"
+            (click)="saveOrder()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (orderingMode()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">↕</span>
+            <strong>{{ 'configuration.sections.messages.ordering' | translate }}</strong>
+          </div>
+        } @else if (hasSingleSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">1</span>
+            <strong>{{ selectedSections()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (!orderingMode()) {
+          @if (hasSingleSelection()) {
+            @if (getScreenOption('update'); as updateOption) {
+              <app-ui-button
+                [iconLeft]="updateOption.icon"
+                [variant]="getScreenOptionVariant('update')"
+                size="sm"
+                [iconOnly]="true"
+                [title]="updateOption.translation | translate"
+                (click)="onEdit()"
+              />
+            }
+
+            @if (getScreenOption('delete'); as deleteOption) {
+              <app-ui-button
+                [iconLeft]="deleteOption.icon"
+                [variant]="getScreenOptionVariant('delete', 'danger')"
+                size="sm"
+                [iconOnly]="true"
+                [title]="deleteOption.translation | translate"
+                (click)="onDelete()"
+              />
+            }
+          } @else {
+            @if (getScreenOption('order'); as orderOption) {
+              @if (sections().length > 1) {
+                <app-ui-button
+                  [iconLeft]="orderOption.icon"
+                  [variant]="getScreenOptionVariant('order')"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="orderOption.translation | translate"
+                  (click)="startOrdering()"
+                />
+              }
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="sections()"
+        [loading]="loading() || savingOrder()"
+        selectionMode="single"
+        [emptyMessage]="'configuration.sections.messages.empty' | translate"
+        height="fill"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="tablePagination()"
+        [pageSize]="10"
+        [enableRowDrag]="orderingMode()"
+        [rowDragManaged]="true"
+        [suppressMoveWhenRowDragging]="true"
+        [getRowId]="getRowId"
+        (selectionChange)="onSelectionChange($event)"
+        (rowDragEnd)="onRowOrderChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,53 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          variant="secondary"
+          size="sm"
+          iconLeft="close"
+          [disabled]="savingOrder()"
+          (click)="cancelOrdering()"
+        />
+
+        <app-ui-button
+          [label]="'common.save' | translate"
+          variant="primary"
+          size="sm"
+          iconLeft="check"
+          [disabled]="savingOrder()"
+          (click)="saveOrder()"
+        />
+      </div>
+
+      <div class="sk-toolbar__center">
+        <div class="sk-selection-inline">
+          <span class="sk-selection-badge">↕</span>
+          <strong>{{ 'configuration.grade-progressions.messages.ordering' | translate }}</strong>
+        </div>
+      </div>
+
+      <div class="sk-toolbar__right"></div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="grades()"
+        [loading]="loading() || savingOrder()"
+        selectionMode="none"
+        [emptyMessage]="'configuration.grade-progressions.messages.empty' | translate"
+        height="fill"
+        [pagination]="false"
+        [alwaysShowPagination]="false"
+        [pageSize]="10"
+        [enableRowDrag]="true"
+        [rowDragManaged]="true"
+        [suppressMoveWhenRowDragging]="true"
+        [getRowId]="getRowId"
+        (rowDragEnd)="onRowOrderChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

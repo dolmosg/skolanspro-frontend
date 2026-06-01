@@ -1,0 +1,197 @@
+<div class="family-members">
+  @if (isListView()) {
+    <section class="family-members__section">
+      <header class="family-members__section-header">
+        <h2 class="family-members__section-title">
+          {{ 'administration.family-members.tutors.title' | translate }}
+        </h2>
+
+        @if (getScreenOption('add-tutor'); as addTutorOption) {
+          <app-ui-button
+            type="button"
+            [variant]="addTutorOption.color"
+            [iconLeft]="addTutorOption.icon"
+            size="sm"
+            [label]="addTutorOption.translation | translate"
+          />
+        }
+      </header>
+
+      @if (hasTutors()) {
+        <div class="family-members__grid">
+          @for (tutor of tutors(); track tutor.id) {
+            <button type="button" class="family-members__card" (click)="selectTutor(tutor)">
+              <div class="family-members__avatar family-members__avatar--tutor">
+                <img
+                  [src]="tutor.person.photo"
+                  [alt]="tutor.person.full_name"
+                  class="family-members__avatar-img"
+                />
+              </div>
+
+              <div class="family-members__card-main">
+                <div class="family-members__card-header">
+                  <h3 class="family-members__name">
+                    {{ fullName(tutor.person) }}
+                  </h3>
+
+                  @if (tutor.tutor_type) {
+                    <span class="family-members__badge family-members__badge--type">
+                      {{ tutor.tutor_type.translation | translate }}
+                    </span>
+                  }
+                </div>
+
+                <div class="family-members__badges">
+                  @if (tutor.tutor_status) {
+                    <span
+                      class="family-members__badge"
+                      [class]="
+                        'family-members__badge family-members__badge--' +
+                        tutor.tutor_status.css_class
+                      "
+                    >
+                      {{ tutor.tutor_status.translation | translate }}
+                    </span>
+                  }
+
+                  @if (tutor.main_contact) {
+                    <span class="family-members__badge family-members__badge--main">
+                      {{ 'administration.family-members.badges.main-contact' | translate }}
+                    </span>
+                  }
+                </div>
+
+                <div class="family-members__meta">
+                  <div class="family-members__meta-row">
+                    <app-ui-icon name="mails" size="sm" tone="muted" />
+                    <span>{{ tutor.person.user?.email || '-' }}</span>
+                  </div>
+
+                  <div class="family-members__meta-row">
+                    <app-ui-icon name="phones" size="sm" tone="muted" />
+                    <span>{{ (tutor.person.phones?.[0]?.phone | phoneFormat) || '-' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="family-members__chevron">›</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="family-members__empty">
+          {{ 'administration.family-members.tutors.empty' | translate }}
+        </div>
+      }
+    </section>
+
+    <section class="family-members__section">
+      <header class="family-members__section-header">
+        <h2 class="family-members__section-title">
+          {{ 'administration.family-members.students.title' | translate }}
+        </h2>
+
+        @if (getScreenOption('add-student'); as addStudentOption) {
+          <app-ui-button
+            type="button"
+            [variant]="addStudentOption.color"
+            [iconLeft]="addStudentOption.icon"
+            size="sm"
+            [label]="addStudentOption.translation | translate"
+          />
+        }
+      </header>
+
+      @if (hasStudents()) {
+        <div class="family-members__grid">
+          @for (student of students(); track student.id) {
+            <button type="button" class="family-members__card" (click)="selectStudent(student)">
+              <div class="family-members__avatar family-members__avatar--student">
+                <img
+                  class="family-members__avatar-img"
+                  [src]="student.person.photo"
+                  [alt]="student.person.full_name"
+                />
+              </div>
+
+              <div class="family-members__card-main">
+                <div class="family-members__card-header">
+                  <h3 class="family-members__name">
+                    {{ fullName(student.person) }}
+                  </h3>
+
+                  @if (student.status) {
+                    <span
+                      class="family-members__badge"
+                      [class]="
+                        'family-members__badge family-members__badge--' + student.status.css_class
+                      "
+                    >
+                      {{ student.status.translation | translate }}
+                    </span>
+                  }
+                </div>
+
+                <div class="family-members__meta family-members__meta--student">
+                  <div class="family-members__meta-row">
+                    <app-ui-icon name="id-card" size="sm" tone="muted" />
+                    <span>{{ student.enrollment || '-' }}</span>
+                  </div>
+
+                  <div class="family-members__student-context">
+                    <span
+                      >Nivel: {{ student.level?.translation || student.level?.name || '-' }}</span
+                    >
+                    <span
+                      >Grado: {{ student.grade?.translation || student.grade?.name || '-' }}</span
+                    >
+                    <span>Grupo: {{ student.group?.name || '-' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="family-members__chevron">›</span>
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="family-members__empty">
+          {{ 'administration.family-members.students.empty' | translate }}
+        </div>
+      }
+    </section>
+  } @else {
+    <section class="family-members__detail">
+      <button type="button" class="family-members__back" (click)="backToMembers()">
+        <app-ui-icon name="chevron-left" size="sm" tone="primary" />
+        {{ 'administration.family-members.actions.back-to-members' | translate }}
+      </button>
+
+      @if (selectedMember(); as selected) {
+        @if (selected.type === 'tutor') {
+          <div class="family-members__detail-card">
+            <app-family-member-tutor
+              [tutor]="selected.data"
+              [family]="family()"
+              [route]="memberRoute('family-tutors')"
+              (back)="backToMembers()"
+              (tutorUpdated)="onTutorUpdated($event)"
+            />
+          </div>
+        }
+
+        @if (selected.type === 'student') {
+          <div class="family-members__detail-card">
+            <app-family-member-student
+              [student]="selected.data"
+              [family]="family()"
+              [route]="memberRoute('family-students')"
+              (studentUpdated)="onStudentUpdated($event)"
+            />
+          </div>
+        }
+      }
+    </section>
+  }
+</div>

@@ -1,0 +1,55 @@
+<form class="aspect-mode-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- NAME -->
+  <div class="aspect-mode-modal__field">
+    <label>
+      {{ 'configuration.aspect-modes.fields.name' | translate }}
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      formControlName="name"
+      (input)="onNameChange($event)"
+    />
+  </div>
+
+  <!-- TRANSLATION -->
+  <div class="aspect-mode-modal__field">
+    <label>
+      {{ 'configuration.aspect-modes.fields.translation' | translate }}
+    </label>
+
+    <input type="text" formControlName="translation" />
+  </div>
+
+  <!-- FLAGS -->
+  <div class="aspect-mode-modal__grid">
+    <label>
+      <input type="checkbox" formControlName="active" />
+      {{ 'common.active' | translate }}
+    </label>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="aspect-mode-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="
+        isEditMode()
+          ? ('configuration.aspect-modes.update' | translate)
+          : ('configuration.aspect-modes.add' | translate)
+      "
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="submit"
+    />
+  </div>
+</form>

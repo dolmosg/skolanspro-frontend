@@ -1,0 +1,63 @@
+<section class="controller-navigation" aria-label="Controller navigation">
+  <div class="controller-navigation__toolbar">
+    <div class="controller-navigation__search">
+      <app-ui-icon name="search" size="sm" />
+
+      <input
+        type="search"
+        [value]="search()"
+        [placeholder]="'common.search' | translate"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+
+      @if (search()) {
+        <button
+          type="button"
+          class="controller-navigation__clear"
+          [attr.aria-label]="'common.clear' | translate"
+          (click)="onSearchChange('')"
+        >
+          <app-ui-icon name="close" size="sm" />
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (items().length > 0) {
+    <div class="controller-navigation__grid">
+      @for (controller of items(); track controller.id) {
+        <a
+          class="controller-navigation__card"
+          [routerLink]="controller.navigationRoute"
+          [attr.aria-label]="controller.translation | translate"
+        >
+          <span
+            [class]="'controller-navigation__icon controller-navigation__icon--' + (controller.color || 'primary')"
+          >
+            <app-ui-icon [name]="controller.icon || 'controller'" size="lg" />
+          </span>
+
+          <span class="controller-navigation__content">
+            <span class="controller-navigation__title">
+              {{ controller.translation | translate }}
+            </span>
+          </span>
+
+          <span class="controller-navigation__arrow" aria-hidden="true">
+            <app-ui-icon name="drilldown" size="sm" />
+          </span>
+        </a>
+      }
+    </div>
+  } @else {
+    <div class="controller-navigation__empty">
+      <span class="controller-navigation__empty-icon">
+        <app-ui-icon name="folder-open" size="lg" />
+      </span>
+
+      <p class="controller-navigation__empty-title">
+        {{ 'common.empty.no-options' | translate }}
+      </p>
+    </div>
+  }
+</section>

@@ -1,0 +1,24 @@
+<section class="skolans-table">
+  <ag-grid-angular
+    #grid
+    class="ag-theme-alpine skolans-table__grid"
+    [style.width]="tableStyle().width"
+    [style.height]="tableStyle().height"
+    [columnDefs]="columnDefs"
+    [rowData]="rowData"
+    [pagination]="pagination"
+    [paginationPageSize]="pageSize"
+    [paginationAutoPageSize]="true"
+    [suppressPaginationPanel]="!pagination && !alwaysShowPagination"
+    [domLayout]="'normal'"
+    [defaultColDef]="defaultColDef"
+    [rowSelection]="rowSelection()"
+    [overlayNoRowsTemplate]="emptyMessage | translate"
+    [overlayLoadingTemplate]="'Cargando información...'"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (rowClicked)="onRowClicked($event)"
+    (rowDragEnd)="onRowDragEnd($event)"
+    (rowDragMove)="onRowDragMove($event)"
+  ></ag-grid-angular>
+</section>

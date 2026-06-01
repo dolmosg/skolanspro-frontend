@@ -1,0 +1,66 @@
+<form class="person-profile-tab" [formGroup]="form()" (ngSubmit)="onSave()">
+  <div class="person-profile-tab__grid">
+    @for (field of fields(); track field.id) {
+      @if (field.visible && hasControl(field.name)) {
+        <div class="person-profile-tab__field">
+          <label>
+            {{ field.translation | translate }}
+
+            @if (field.required) {
+              <span>*</span>
+            }
+          </label>
+
+          @switch (getFieldType(field)) {
+            @case ('select') {
+              <app-sk-select
+                [control]="control(field.name)"
+                [items]="getCatalog(field)"
+                bindLabel="translation"
+                bindValue="id"
+                [translateLabel]="true"
+                [clearable]="true"
+                [placeholder]="'common.select' | translate"
+              />
+            }
+
+            @case ('date') {
+              <input type="date" [formControlName]="field.name" />
+            }
+
+            @default {
+              <input
+                type="text"
+                [formControlName]="field.name"
+                [skTextCase]="getTextCaseMode(field)"
+              />
+            }
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <div class="person-profile-tab__actions">
+    @if (hasScreenOption('reset')) {
+      <app-ui-button
+        type="button"
+        variant="danger"
+        size="sm"
+        [label]="'common.cancel' | translate"
+        [disabled]="!form().dirty || form().invalid"
+        (click)="onCancel()"
+      />
+    }
+
+    @if (hasScreenOption('update')) {
+      <app-ui-button
+        type="submit"
+        variant="primary"
+        size="sm"
+        [disabled]="!form().dirty || form().invalid"
+        [label]="'common.save' | translate"
+      />
+    }
+  </div>
+</form>

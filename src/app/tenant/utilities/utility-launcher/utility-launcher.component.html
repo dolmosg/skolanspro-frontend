@@ -1,0 +1,46 @@
+<section class="utility-launcher" aria-label="Utility launcher">
+  @if (utilities.length > 0) {
+    <div class="utility-launcher__grid">
+      @for (utility of utilities; track utility.id) {
+        <button
+          type="button"
+          class="utility-launcher__card"
+          [attr.aria-label]="utility.translation | translate"
+          [disabled]="loading()"
+          (click)="runUtility(utility)"
+        >
+          <span
+            class="utility-launcher__icon"
+            [class]="'utility-launcher__icon utility-launcher__icon--' + getUtilityColor(utility.color)"
+          >
+            <app-ui-icon [name]="utility.icon || 'run'" size="lg" />
+          </span>
+
+          <span class="utility-launcher__content">
+            <span class="utility-launcher__title">
+              {{ utility.translation | translate }}
+            </span>
+
+            <span class="utility-launcher__subtitle">
+              {{ 'utilities.labels.click-to-run' | translate }}
+            </span>
+          </span>
+
+          <span class="utility-launcher__arrow" aria-hidden="true">
+            <app-ui-icon name="run" size="sm" />
+          </span>
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="utility-launcher__empty">
+      <span class="utility-launcher__empty-icon">
+        <app-ui-icon name="folder-open" size="lg" />
+      </span>
+
+      <p class="utility-launcher__empty-title">
+        {{ 'common.empty.no-options' | translate }}
+      </p>
+    </div>
+  }
+</section>

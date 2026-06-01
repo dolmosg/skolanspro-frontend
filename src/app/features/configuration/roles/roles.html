@@ -1,0 +1,61 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        <app-ui-button
+          [label]="'configuration.roles.add' | translate"
+          variant="primary"
+          size="sm"
+          iconLeft="add"
+          (click)="onAdd()"
+        />
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">1</span>
+            <strong>{{ selectedRoles()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (hasSelection()) {
+          <app-ui-button
+            iconLeft="edit"
+            variant="secondary"
+            size="sm"
+            [iconOnly]="true"
+            [title]="'configuration.roles.update' | translate"
+            (click)="onEdit()"
+          />
+
+          <app-ui-button
+            iconLeft="delete"
+            variant="danger"
+            size="sm"
+            [iconOnly]="true"
+            [title]="'configuration.roles.delete' | translate"
+            (click)="onDelete()"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="roles()"
+        [loading]="loading()"
+        selectionMode="single"
+        [emptyMessage]="'configuration.roles.messages.empty' | translate"
+        height="fill"
+        [pagination]="true"
+        [alwaysShowPagination]="true"
+        [pageSize]="10"
+        (selectionChange)="onSelectionChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

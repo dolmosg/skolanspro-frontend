@@ -1,0 +1,259 @@
+<div class="family-general">
+  <section class="family-general__main-card">
+    <header class="family-general__card-header">
+      <div class="family-general__card-header-content">
+        <div>
+          <h2 class="family-general__title">
+            {{ 'administration.family-general.title' | translate }}
+          </h2>
+
+          <p class="family-general__subtitle">
+            {{ 'administration.family-general.subtitle' | translate }}
+          </p>
+        </div>
+
+        <div class="family-general__header-actions">
+          @if (family().status) {
+            <span
+              class="family-general__status"
+              [class]="
+                'family-general__status family-general__status--' + family().status?.css_class
+              "
+            >
+              {{ family().status?.translation | translate }}
+            </span>
+          }
+
+          @if (getScreenOption('delete'); as deleteOption) {
+            <app-ui-button
+              type="button"
+              [variant]="deleteOption.color"
+              [iconLeft]="deleteOption.icon"
+              size="sm"
+              [label]="deleteOption.translation | translate"
+              (click)="deleteFamily()"
+            />
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="family-general__card-body">
+      <section class="family-general__section">
+        <div class="family-general__section-header">
+          <h3 class="family-general__section-title">
+            {{ 'administration.family-general.editable-information' | translate }}
+          </h3>
+
+          @if (canUpdate()) {
+            <div class="family-general__actions">
+              @if (getScreenOption('cancel'); as cancelOption) {
+                <app-ui-button
+                  type="button"
+                  [variant]="cancelOption.color"
+                  [iconLeft]="cancelOption.icon"
+                  size="sm"
+                  [label]="cancelOption.translation | translate"
+                  (click)="cancelEdit()"
+                />
+              }
+
+              @if (getScreenOption('update'); as updateOption) {
+                <app-ui-button
+                  type="button"
+                  [variant]="updateOption.color"
+                  [iconLeft]="updateOption.icon"
+                  size="sm"
+                  [label]="updateOption.translation | translate"
+                  (click)="save()"
+                />
+              }
+            </div>
+          }
+        </div>
+
+        <form class="family-general__grid" [formGroup]="form">
+          <div class="family-general__field">
+            <label class="family-general__label">
+              {{ 'administration.families.fields.lastname' | translate }}
+            </label>
+
+            @if (canUpdate()) {
+              <input
+                class="family-general__control"
+                type="text"
+                formControlName="lastname"
+                [skTextCase]="textCaseMode()"
+              />
+              @if (hasError('lastname')) {
+                <form-error [control]="form.controls.lastname" />
+              }
+            } @else {
+              <div class="family-general__value">{{ family().lastname }}</div>
+            }
+          </div>
+
+          <div class="family-general__field">
+            <label class="family-general__label">
+              {{ 'administration.families.fields.mothername' | translate }}
+            </label>
+
+            @if (canUpdate()) {
+              <input
+                class="family-general__control"
+                type="text"
+                formControlName="mothername"
+                [skTextCase]="textCaseMode()"
+              />
+              @if (hasError('mothername')) {
+                <form-error [control]="form.controls.mothername" />
+              }
+            } @else {
+              <div class="family-general__value">{{ family().mothername || '-' }}</div>
+            }
+          </div>
+
+          <div class="family-general__field">
+            <label class="family-general__label">
+              {{ 'administration.families.fields.email' | translate }}
+            </label>
+
+            @if (canUpdate()) {
+              <input class="family-general__control" type="email" formControlName="email" />
+              @if (hasError('email')) {
+                <form-error [control]="form.controls.email" />
+              }
+            } @else {
+              <div class="family-general__value">{{ family().email || '-' }}</div>
+            }
+          </div>
+
+          <div class="family-general__field">
+            <label class="family-general__label">
+              {{ 'administration.families.fields.family-status' | translate }}
+            </label>
+
+            @if (canUpdate()) {
+              <app-sk-select
+                [items]="familyStatuses()"
+                bindLabel="translation"
+                bindValue="id"
+                [translateLabel]="true"
+                [clearable]="false"
+                [control]="form.controls.family_status_id"
+              />
+              @if (hasError('family_status_id')) {
+                <form-error [control]="form.controls.family_status_id" />
+              }
+            } @else {
+              <div class="family-general__value">
+                @if (family().status) {
+                  <span
+                    class="family-general__status"
+                    [class]="
+                      'family-general__status family-general__status--' + family().status?.css_class
+                    "
+                  >
+                    {{ family().status?.translation | translate }}
+                  </span>
+                } @else {
+                  -
+                }
+              </div>
+            }
+          </div>
+        </form>
+      </section>
+
+      <section class="family-general__section family-general__section--readonly">
+        <h3 class="family-general__section-title">
+          {{ 'administration.family-general.informative-information' | translate }}
+        </h3>
+
+        <div class="family-general__stats-grid">
+          <div class="family-general__stat-card">
+            <span class="family-general__stat-label">
+              {{ 'administration.family-general.fields.code' | translate }}
+            </span>
+
+            <strong class="family-general__stat-value">
+              {{ family().code || '-' }}
+            </strong>
+          </div>
+
+          <div class="family-general__stat-card">
+            <span class="family-general__stat-label">
+              {{ 'administration.family-general.fields.registered-at' | translate }}
+            </span>
+
+            <strong class="family-general__stat-value">
+              {{
+                family().registered_at
+                  ? (family().registered_at | date: 'mediumDate' : 'UTC' : siteState.locale())
+                  : '-'
+              }}
+            </strong>
+          </div>
+
+          <div class="family-general__stat-card">
+            <span class="family-general__stat-label">
+              {{ 'administration.family-general.fields.canceled-at' | translate }}
+            </span>
+
+            <strong class="family-general__stat-value">
+              {{ family().canceled_at || '-' }}
+            </strong>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <aside class="family-general__side">
+    <section class="family-general__summary-card">
+      <header class="family-general__summary-header">
+        <h3 class="family-general__summary-title">
+          {{ 'administration.family-general.summary.title' | translate }}
+        </h3>
+
+        <!-- <span class="family-general__summary-badge">
+          {{ 'common.live' | translate }}
+        </span> -->
+      </header>
+
+      <div class="family-general__summary-list">
+        <div class="family-general__summary-item">
+          <div class="family-general__summary-content">
+            <span class="family-general__summary-item-title">
+              {{ 'administration.family-general.summary.active-students' | translate }}
+            </span>
+
+            <span class="family-general__summary-item-subtitle">
+              {{ 'administration.family-general.summary.active-students-description' | translate }}
+            </span>
+          </div>
+
+          <div class="family-general__summary-number">
+            {{ family().students_count }}
+          </div>
+        </div>
+
+        <div class="family-general__summary-item">
+          <div class="family-general__summary-content">
+            <span class="family-general__summary-item-title">
+              {{ 'administration.family-general.summary.tutors' | translate }}
+            </span>
+
+            <span class="family-general__summary-item-subtitle">
+              {{ 'administration.family-general.summary.tutors-description' | translate }}
+            </span>
+          </div>
+
+          <div class="family-general__summary-number">
+            {{ family().tutors_count }}
+          </div>
+        </div>
+      </div>
+    </section>
+  </aside>
+</div>

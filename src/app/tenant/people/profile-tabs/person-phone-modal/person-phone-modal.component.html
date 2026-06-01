@@ -1,0 +1,79 @@
+<form class="person-phone-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="person-phone-modal__grid">
+
+    <!-- COUNTRY -->
+    <div class="person-phone-modal__field person-phone-modal__field--full">
+      <label class="person-phone-modal__label" for="person-phone-country">
+        {{ 'administration.person-phones.fields.country' | translate }}
+      </label>
+
+      <app-sk-select
+        [control]="form.controls.country_id"
+        [items]="countriesNormalized()"
+        bindLabel="label"
+        bindValue="id"
+        [placeholder]="'administration.person-phones.placeholders.country' | translate"
+        [searchable]="true"
+        [clearable]="true"
+      />
+
+      <form-error [control]="form.controls.country_id"></form-error>
+    </div>
+
+    <!-- PHONE -->
+    <div class="person-phone-modal__field person-phone-modal__field--full">
+      <label class="person-phone-modal__label" for="person-phone-value">
+        {{ 'administration.person-phones.fields.phone' | translate }}
+      </label>
+
+      <input
+        #phoneInput
+        id="person-phone-value"
+        type="tel"
+        class="person-phone-modal__input"
+        formControlName="phone"
+        autocomplete="off"
+      />
+
+      <form-error [control]="form.controls.phone"></form-error>
+    </div>
+
+    <!-- PHONE TYPE -->
+    <div class="person-phone-modal__field person-phone-modal__field--full">
+      <label class="person-phone-modal__label" for="person-phone-type">
+        {{ 'administration.person-phones.fields.type' | translate }}
+      </label>
+
+      <app-sk-select
+        [control]="form.controls.phone_type_id"
+        [items]="phoneTypesNormalized()"
+        bindLabel="label"
+        bindValue="id"
+        [placeholder]="'common.no_type' | translate"
+        [searchable]="true"
+        [clearable]="true"
+        [translateLabel]="true"
+      />
+
+      <form-error [control]="form.controls.phone_type_id"></form-error>
+    </div>
+
+  </div>
+
+  <div modal-footer class="person-phone-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="ghost"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="(isEdit() ? 'common.save' : 'common.create') | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </div>
+</form>

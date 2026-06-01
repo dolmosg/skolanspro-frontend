@@ -1,0 +1,212 @@
+<section class="study-plan-grading">
+  <article class="study-plan-grading__card">
+    <header class="study-plan-grading__header">
+      <div>
+        <h3>{{ 'planning.study-plan-grading.title' | translate }}</h3>
+        <p>{{ 'planning.study-plan-grading.description' | translate }}</p>
+      </div>
+
+      <div class="study-plan-grading__actions">
+        @if (!editing() && canEdit()) {
+          @if (getScreenOption('update'); as option) {
+            <app-ui-button
+              [label]="option.translation | translate"
+              [iconLeft]="option.icon"
+              [variant]="option.color"
+              size="sm"
+              (click)="startEdit()"
+            />
+          }
+        }
+
+        @if (editing()) {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="secondary"
+            size="sm"
+            (click)="cancelEdit()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            iconLeft="save"
+            variant="primary"
+            size="sm"
+            (click)="save()"
+          />
+        }
+      </div>
+    </header>
+
+    @if (item(); as grading) {
+      <div class="study-plan-grading__context">
+        {{ liveGradingExplanation() }}
+      </div>
+      @if (!editing()) {
+        <div class="study-plan-grading__summary">
+          <section class="study-plan-grading__section">
+            <h4>{{ 'planning.study-plan-grading.sections.scale' | translate }}</h4>
+
+            <div class="study-plan-grading__grid">
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.grading-scale' | translate }}</span>
+                <strong>{{ grading.grading_scale?.translation | translate }}</strong>
+              </div>
+
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.rounding' | translate }}</span>
+                <strong>{{ grading.grade_policy?.translation | translate }}</strong>
+              </div>
+
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.aspect-mode' | translate }}</span>
+                <strong>{{ grading.aspect_mode?.translation | translate }}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="study-plan-grading__section">
+            <h4>{{ 'planning.study-plan-grading.sections.calculation' | translate }}</h4>
+
+            <div class="study-plan-grading__grid">
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.class-percent' | translate }}</span>
+                <strong>{{ grading.class_percent | percent: '1.0-0' }}</strong>
+              </div>
+
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.exam-percent' | translate }}</span>
+                <strong>{{ grading.exam_percent | percent: '1.0-0' }}</strong>
+              </div>
+
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.decimals' | translate }}</span>
+                <strong>{{ grading.decimals }}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="study-plan-grading__section">
+            <h4>{{ 'planning.study-plan-grading.sections.rules' | translate }}</h4>
+
+            <div class="study-plan-grading__grid">
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.comment-type' | translate }}</span>
+                <strong>{{ grading.comment_type?.translation | translate }}</strong>
+              </div>
+
+              <div class="study-plan-grading__item">
+                <span>{{ 'planning.study-plan-grading.fields.exemptions' | translate }}</span>
+                <strong>
+                  {{ grading.exemptions ? ('common.yes' | translate) : ('common.no' | translate) }}
+                </strong>
+              </div>
+
+              @if (grading.exemptions) {
+                <div class="study-plan-grading__item">
+                  <span>{{
+                    'planning.study-plan-grading.fields.exemption-average' | translate
+                  }}</span>
+                  <strong>{{ grading.exemption_average }}</strong>
+                </div>
+
+                <div class="study-plan-grading__item">
+                  <span>{{
+                    'planning.study-plan-grading.fields.exemption-percent' | translate
+                  }}</span>
+                  <strong>{{ grading.exemption_percent | percent: '1.0-0' }}</strong>
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+      } @else {
+        <form class="study-plan-grading__form" [formGroup]="form" (ngSubmit)="save()">
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.grading-scale' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['grading-scales']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.grading_scale_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.grade-policy' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['grade-policies']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.grade_policy_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.aspect-mode' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['aspect-modes']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.aspect_mode_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.comment-type' | translate }}</label>
+            <app-sk-select
+              [items]="catalogs()['comment-types']"
+              bindLabel="translation"
+              bindValue="id"
+              [translateLabel]="true"
+              [control]="form.controls.comment_type_id"
+              [clearable]="false"
+            />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.decimals' | translate }}</label>
+            <input type="number" formControlName="decimals" min="0" max="4" />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.class-percent' | translate }}</label>
+            <input type="number" formControlName="class_percent" min="0" max="100" />
+          </div>
+
+          <div class="study-plan-grading__field">
+            <label>{{ 'planning.study-plan-grading.fields.exam-percent' | translate }}</label>
+            <input type="number" formControlName="exam_percent" min="0" max="100" />
+          </div>
+
+          <label class="study-plan-grading__check">
+            <input type="checkbox" formControlName="exemptions" />
+            <span>{{ 'planning.study-plan-grading.fields.exemptions' | translate }}</span>
+          </label>
+
+          @if (form.controls.exemptions.value) {
+            <div class="study-plan-grading__field">
+              <label>{{
+                'planning.study-plan-grading.fields.exemption-average' | translate
+              }}</label>
+              <input type="number" formControlName="exemption_average" />
+            </div>
+
+            <div class="study-plan-grading__field">
+              <label>{{
+                'planning.study-plan-grading.fields.exemption-percent' | translate
+              }}</label>
+              <input type="number" formControlName="exemption_percent" min="0" max="100" />
+            </div>
+          }
+        </form>
+      }
+    }
+  </article>
+</section>

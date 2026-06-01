@@ -1,0 +1,113 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (!orderingMode()) {
+          <app-ui-button
+            [label]="'configuration.actions.add' | translate"
+            variant="primary"
+            size="sm"
+            iconLeft="add"
+            (click)="onAdd()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (orderingMode()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">↕</span>
+            <strong>{{ 'configuration.actions.messages.ordering' | translate }}</strong>
+          </div>
+        } @else if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">{{ selectedActions().length }}</span>
+            <strong>{{ selectedActions()[0]?.name }}</strong>
+          </div>
+        } @else if (currentControllerName()) {
+          <div class="sk-selection-inline">
+            <span>{{ 'configuration.actions.messages.belongs-to-controller' | translate }}:</span>
+            <strong>{{ currentControllerName() }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (!orderingMode()) {
+          @if (hasSingleSelection()) {
+            <app-ui-button
+              iconLeft="edit"
+              variant="secondary"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.actions.update' | translate"
+              (click)="onEdit()"
+            />
+
+            <app-ui-button
+              iconLeft="delete"
+              variant="danger"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.actions.delete' | translate"
+              (click)="onDelete()"
+            />
+          } @else {
+            <app-ui-button
+              [label]="'configuration.actions.defaults' | translate"
+              variant="secondary"
+              size="sm"
+              iconLeft="check"
+              [iconOnly]="true"
+              (click)="onDefaults()"
+            />
+
+            @if (actions().length > 1) {
+              <app-ui-button
+                iconLeft="drag"
+                variant="ghost"
+                size="sm"
+                [iconOnly]="true"
+                [title]="'configuration.actions.ordering' | translate"
+                (click)="startOrdering()"
+              />
+            }
+          }
+        } @else {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="ghost"
+            size="sm"
+            (click)="cancelOrdering()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            variant="primary"
+            size="sm"
+            [disabled]="savingOrder()"
+            (click)="saveOrder()"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="actions()"
+        [loading]="loading()"
+        [getRowId]="getRowId"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="true"
+        [enableRowDrag]="orderingMode()"
+        [rowDragManaged]="true"
+        selectionMode="single"
+        height="fill"
+        [emptyMessage]="'configuration.actions.messages.empty' | translate"
+        (selectionChange)="onSelectionChange($event)"
+        (rowDragEnd)="onRowOrderChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

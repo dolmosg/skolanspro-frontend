@@ -1,0 +1,79 @@
+<form class="grades-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="sk-form-grid">
+    <div class="sk-form-field">
+      <label for="grade-name">
+        {{ 'configuration.grades.fields.name' | translate }}
+      </label>
+
+      <input
+        id="grade-name"
+        type="text"
+        formControlName="name"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="sk-form-field">
+      <label for="grade-description">
+        {{ 'configuration.grades.fields.description' | translate }}
+      </label>
+
+      <input
+        id="grade-description"
+        type="text"
+        formControlName="description"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="sk-form-field sk-form-field--full">
+      <label for="grade-level">
+        {{ 'configuration.grades.fields.level' | translate }}
+      </label>
+
+      <input
+        id="grade-level"
+        type="text"
+        [value]="level()?.name ?? ''"
+        readonly
+      />
+    </div>
+
+    <div class="sk-form-field sk-form-field--full">
+      <label class="sk-checkbox">
+        <input
+          type="checkbox"
+          formControlName="active"
+        />
+
+        <span>
+          {{ 'configuration.grades.fields.active' | translate }}
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="sk-modal-actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="
+        isEditMode()
+          ? ('common.update' | translate)
+          : ('common.save' | translate)
+      "
+      [disabled]="form.invalid"
+    />
+  </div>
+</form>

@@ -1,0 +1,142 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (canGoBack()) {
+          <app-ui-button
+            [label]="'common.back' | translate"
+            iconLeft="back"
+            variant="secondary"
+            size="sm"
+            (click)="onBackLevel()"
+          />
+        }
+        @if (!orderingMode()) {
+          <app-ui-button
+            [label]="'configuration.controllers.add' | translate"
+            variant="primary"
+            size="sm"
+            iconLeft="add"
+            (click)="onAdd()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (orderingMode()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">↕</span>
+            <strong>{{ 'configuration.controllers.messages.ordering' | translate }}</strong>
+          </div>
+        } @else if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">{{ selectedControllers().length }}</span>
+            <strong>{{ selectedControllers()[0]?.name }}</strong>
+          </div>
+        } @else if (currentParentName()) {
+          <div class="sk-selection-inline">
+            <span>{{ 'configuration.controllers.messages.children-of' | translate }}:</span>
+            <strong>{{ currentParentName() }}</strong>
+          </div>
+        } @else if (moduleName()) {
+          <div class="sk-selection-inline">
+            <span>{{ 'configuration.controllers.messages.module' | translate }}:</span>
+            <strong>{{ moduleName() | translate }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (!orderingMode()) {
+          @if (hasSingleSelection()) {
+            <app-ui-button
+              iconLeft="edit"
+              variant="secondary"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.controllers.update' | translate"
+              [disabled]="!hasSingleSelection()"
+              (click)="onEdit()"
+            />
+
+            <app-ui-button
+              iconLeft="delete"
+              variant="danger"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.controllers.delete' | translate"
+              [disabled]="!hasSelection()"
+              (click)="onDelete()"
+            />
+
+            <app-ui-button
+              iconLeft="drilldown"
+              variant="secondary"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.controllers.children' | translate"
+              [disabled]="!hasSingleSelection()"
+              (click)="onDrillDown()"
+            />
+
+            <app-ui-button
+              iconLeft="cubes"
+              variant="secondary"
+              size="sm"
+              [iconOnly]="true"
+              [title]="'configuration.controllers.drill-down' | translate"
+              [disabled]="!hasSingleSelection()"
+              (click)="onActions()"
+            />
+          } @else {
+            @if (controllers().length > 1) {
+              <app-ui-button
+                iconLeft="drag"
+                variant="ghost"
+                size="sm"
+                [iconOnly]="true"
+                [title]="'configuration.controllers.ordering' | translate"
+                (click)="startOrdering()"
+              />
+            }
+          }
+        } @else {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="ghost"
+            size="sm"
+            (click)="cancelOrdering()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            variant="primary"
+            size="sm"
+            [disabled]="savingOrder()"
+            (click)="saveOrder()"
+          />
+        }
+      </div>
+    </div>
+
+
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="controllers()"
+        [loading]="loading()"
+        [getRowId]="getRowId"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="true"
+        [enableRowDrag]="orderingMode()"
+        [rowDragManaged]="true"
+        selectionMode="single"
+        height="fill"
+        [emptyMessage]="'configuration.controllers.messages.empty' | translate"
+        (selectionChange)="onSelectionChange($event)"
+        (rowDragEnd)="onRowOrderChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

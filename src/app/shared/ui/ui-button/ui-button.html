@@ -1,0 +1,25 @@
+<button
+  class="ui-button__control"
+  [attr.type]="type()"
+  [attr.title]="resolvedTitle()"
+  [attr.aria-label]="isIconOnly() ? resolvedTitle() || label() : null"
+  [disabled]="disabled()"
+>
+  @if (iconOnly()) {
+    @if (iconLeft()) {
+      <app-ui-icon [name]="iconLeft()!" [size]="size() === 'sm' ? 'sm' : 'md'" tone="default" />
+    }
+  } @else {
+    @if (iconLeft()) {
+      <app-ui-icon [name]="iconLeft()" [size]="size() === 'sm' ? 'sm' : 'md'" tone="default" />
+    }
+
+    @if (label()) {
+      <span class="ui-button__label">{{ label() }}</span>
+    }
+
+    @if (iconRight()) {
+      <app-ui-icon [name]="iconRight()" [size]="size() === 'sm' ? 'sm' : 'md'" tone="default" />
+    }
+  }
+</button>

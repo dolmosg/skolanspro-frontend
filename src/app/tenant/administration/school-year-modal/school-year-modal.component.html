@@ -1,0 +1,48 @@
+<form class="school-year-modal" [formGroup]="form" (ngSubmit)="save()">
+  <div class="school-year-modal__field">
+    <label for="name">
+      {{ 'administration.school-years.fields.name' | translate }}
+    </label>
+
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      placeholder="2025-2026"
+      autocomplete="off"
+    />
+
+    @if (nameInvalid) {
+      <small class="school-year-modal__error">
+        {{ 'administration.school-years.validation.name' | translate }}
+      </small>
+    }
+  </div>
+
+  <div class="school-year-modal__checks">
+    <label class="school-year-modal__check">
+      <input type="checkbox" formControlName="current" />
+      <span>{{ 'administration.school-years.fields.current' | translate }}</span>
+    </label>
+
+    <label class="school-year-modal__check">
+      <input type="checkbox" formControlName="visible" />
+      <span>{{ 'administration.school-years.fields.visible' | translate }}</span>
+    </label>
+  </div>
+
+  <div class="school-year-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      [label]="'common.cancel' | translate"
+      (click)="cancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      [label]="'common.save' | translate"
+    />
+  </div>
+</form>

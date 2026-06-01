@@ -1,0 +1,126 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 10%, transparent), transparent 28%),
+    radial-gradient(circle at bottom right, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 24%),
+    var(--color-surface-muted);
+}
+
+.logout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.logout__card {
+  width: 100%;
+  max-width: 520px;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 28px;
+  padding: 40px 32px;
+  box-shadow:
+    0 16px 40px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.logout__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logout__state h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.logout__state p {
+  margin: 0;
+  max-width: 380px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.logout__icon {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.logout__spinner {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--color-primary) 18%, var(--color-border));
+  border-top-color: var(--color-primary);
+  animation: logout-spin 0.85s linear infinite;
+}
+
+.logout__actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.logout__button {
+  min-width: 220px;
+  height: 46px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.logout__button:hover {
+  background: var(--color-primary-hover);
+}
+
+@media (max-width: 575.98px) {
+  .logout {
+    padding: 18px;
+  }
+
+  .logout__card {
+    padding: 32px 22px;
+    border-radius: 24px;
+  }
+
+  .logout__state h1 {
+    font-size: 26px;
+  }
+}
+
+@keyframes logout-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

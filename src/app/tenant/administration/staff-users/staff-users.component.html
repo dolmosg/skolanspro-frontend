@@ -1,0 +1,108 @@
+<div class="staff-users">
+  <div class="staff-users__header">
+    <div>
+      <h2>Usuarios del personal</h2>
+      <p>Busca usuarios registrados como staff dentro del tenant.</p>
+    </div>
+
+    @if (getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [label]="addOption.translation | translate"
+        [variant]="addOption.color"
+        size="sm"
+        [iconLeft]="addOption.icon"
+        (click)="onAdd()"
+      />
+    }
+  </div>
+
+  <form class="staff-users__search" [formGroup]="form" (ngSubmit)="search()">
+    <div class="staff-users__grid">
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" formControlName="name" placeholder="Nombre" />
+      </div>
+
+      <div class="field">
+        <label>Apellido paterno</label>
+        <input type="text" formControlName="lastname" placeholder="Apellido paterno" />
+      </div>
+
+      <div class="field">
+        <label>Apellido materno</label>
+        <input type="text" formControlName="mothername" placeholder="Apellido materno" />
+      </div>
+
+      <div class="field">
+        <label>Correo</label>
+        <input type="email" formControlName="email" placeholder="correo@dominio.com" />
+      </div>
+
+      <div class="field">
+        <label>Rol</label>
+
+        <app-sk-select
+          [control]="form.controls.role_id"
+          [items]="roles()"
+          bindLabel="translation"
+          bindValue="id"
+          [clearable]="true"
+          [placeholder]="'common.all' | translate"
+          [translateLabel]="true"
+        />
+      </div>
+    </div>
+
+    <div class="staff-users__actions">
+      <app-ui-button
+        type="button"
+        label="Limpiar"
+        variant="secondary"
+        iconLeft="reset"
+        (clicked)="reset()"
+      />
+
+      <app-ui-button type="submit" label="Buscar" variant="primary" iconLeft="search" />
+    </div>
+  </form>
+
+  @if (hasMore()) {
+    <div class="staff-users__warning">
+      Hay más de 50 resultados. Refina la búsqueda para encontrar usuarios más rápido.
+    </div>
+  }
+
+  @if (searched()) {
+    @if (users().length === 0) {
+      <div class="staff-users__empty">
+        No se encontraron usuarios con los filtros seleccionados.
+      </div>
+    } @else {
+      <div class="staff-users__results">
+        @for (user of users(); track user.id) {
+          <div class="user-card">
+            <div>
+              <strong>
+                {{ user.person.lastname }} {{ user.person.mothername }} {{ user.person.name }}
+              </strong>
+              <span>{{ user.email || 'Sin correo' }}</span>
+            </div>
+
+            <div class="user-card__actions">
+              <div class="user-card__role">
+                {{ (user.role?.translation | translate) || user.role?.name || 'Sin rol' }}
+              </div>
+
+              <app-ui-button
+                label="Ver"
+                variant="secondary"
+                iconLeft="user-round-pen"
+                (click)="goToDetail(user.person.id)"
+              />
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

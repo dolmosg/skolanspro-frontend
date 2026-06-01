@@ -1,0 +1,116 @@
+<section class="gradebook-actions sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <!-- LEFT -->
+      <div class="sk-toolbar__left">
+        @if (!orderingMode()) {
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [variant]="addOption.color"
+              size="sm"
+              [iconLeft]="addOption.icon"
+              (click)="onAdd()"
+            />
+          }
+        } @else {
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="secondary"
+            size="sm"
+            iconLeft="close"
+            [disabled]="savingOrder()"
+            (click)="cancelOrdering()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            variant="primary"
+            size="sm"
+            iconLeft="check"
+            [disabled]="savingOrder()"
+            (click)="saveOrder()"
+          />
+        }
+      </div>
+
+      <!-- CENTER -->
+      <div class="sk-toolbar__center">
+        @if (orderingMode()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">↕</span>
+            <strong>{{ 'configuration.gradebook-actions.messages.ordering' | translate }}</strong>
+          </div>
+        } @else if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">{{ selectedGradebookActions().length }}</span>
+            <strong>{{ selectedGradebookActions()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <!-- RIGHT -->
+      <div class="sk-toolbar__right">
+        @if (!orderingMode()) {
+          @if (hasSingleSelection()) {
+            @if (getScreenOption('update'); as updateOption) {
+              <app-ui-button
+                [iconLeft]="updateOption.icon"
+                [variant]="updateOption.color"
+                size="sm"
+                [iconOnly]="true"
+                [title]="updateOption.translation | translate"
+                (click)="onEdit()"
+              />
+            }
+
+            @if (getScreenOption('delete'); as deleteOption) {
+              <app-ui-button
+                [iconLeft]="deleteOption.icon"
+                [variant]="deleteOption.color"
+                size="sm"
+                [iconOnly]="true"
+                [title]="deleteOption.translation | translate"
+                (click)="onDelete()"
+              />
+            }
+          } @else {
+            @if (getScreenOption('order'); as orderOption) {
+              @if (gradebookActions().length > 1) {
+                <app-ui-button
+                  [label]="orderOption.translation | translate"
+                  [variant]="orderOption.color"
+                  size="sm"
+                  [iconLeft]="orderOption.icon"
+                  [iconOnly]="true"
+                  (click)="startOrdering()"
+                />
+              }
+            }
+          }
+        }
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="gradebookActions()"
+        [loading]="loading() || savingOrder()"
+        selectionMode="single"
+        [emptyMessage]="'configuration.gradebook-actions.messages.empty' | translate"
+        height="fill"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="tablePagination()"
+        [pageSize]="10"
+        [enableRowDrag]="orderingMode()"
+        [rowDragManaged]="true"
+        [suppressMoveWhenRowDragging]="true"
+        [getRowId]="getRowId"
+        (selectionChange)="onSelectionChange($event)"
+        (rowDragEnd)="onRowOrderChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+<form class="person-direct-communication-tab" [formGroup]="form()" (ngSubmit)="onSave()">
+  <div class="person-direct-communication-tab__grid">
+    <div
+      class="person-direct-communication-tab__field person-direct-communication-tab__field--checkbox"
+    >
+      <label>
+        <input type="checkbox" formControlName="direct" (change)="onDirectChange()" />
+
+        {{ 'administration.person-direct-communication.fields.direct' | translate }}
+      </label>
+    </div>
+
+    <div class="person-direct-communication-tab__field">
+      <label>
+        {{ 'administration.person-direct-communication.fields.direct_type' | translate }}
+      </label>
+
+      <div class="person-direct-communication-tab__options">
+        <label class="person-direct-communication-tab__option">
+          <input
+            type="radio"
+            [checked]="control('direct_type_id').value === null"
+            [disabled]="!control('direct').value || !canUpdate()"
+            (change)="setDirectType(null)"
+          />
+
+          <span>
+            {{ 'administration.person-direct-communication.general' | translate }}
+          </span>
+        </label>
+
+        @for (type of directTypes(); track type.id) {
+          <label class="person-direct-communication-tab__option">
+            <input
+              type="radio"
+              [checked]="control('direct_type_id').value === type.id"
+              [disabled]="!control('direct').value || !canUpdate()"
+              (change)="setDirectType(type.id)"
+            />
+
+            <span>
+              {{ type.translation ? (type.translation | translate) : type.name }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (hasScreenOption('update')) {
+    <div class="person-direct-communication-tab__actions">
+      <app-ui-button
+        type="submit"
+        variant="primary"
+        size="sm"
+        [disabled]="!hasChanges()"
+        [label]="'common.save' | translate"
+      />
+    </div>
+  }
+</form>

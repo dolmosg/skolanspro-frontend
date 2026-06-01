@@ -1,0 +1,64 @@
+<form class="student-year-modal" [formGroup]="form" (ngSubmit)="save()">
+  <div class="student-year-modal__grid">
+    <div class="student-year-modal__field">
+      <label>{{ 'administration.student-years.fields.school-year' | translate }}</label>
+
+      <app-sk-select
+        [items]="schoolYears()"
+        bindLabel="name"
+        bindValue="id"
+        [control]="form.controls.school_year_id"
+      />
+
+      <form-error [control]="form.controls.school_year_id" />
+    </div>
+
+    <div class="student-year-modal__field">
+      <label>{{ 'administration.student-years.fields.grade' | translate }}</label>
+
+      <app-sk-select
+        [items]="grades()"
+        bindLabel="description"
+        bindValue="id"
+        [control]="form.controls.grade_id"
+      />
+
+      <form-error [control]="form.controls.grade_id" />
+    </div>
+
+    <div class="student-year-modal__field student-year-modal__field--full">
+      <label>{{ 'common.status' | translate }}</label>
+
+      <app-sk-select
+        [items]="statuses()"
+        bindLabel="translation"
+        bindValue="id"
+        [translateLabel]="true"
+        [control]="form.controls.student_year_status_id"
+      />
+
+      <form-error [control]="form.controls.student_year_status_id" />
+    </div>
+
+    <label class="student-year-modal__check">
+      <input type="checkbox" formControlName="special_education" />
+      <span>{{ 'administration.student-years.fields.special-education' | translate }}</span>
+    </label>
+
+    <label class="student-year-modal__check">
+      <input type="checkbox" formControlName="complements" />
+      <span>{{ 'administration.student-years.fields.complements' | translate }}</span>
+    </label>
+  </div>
+
+  <footer class="student-year-modal__actions">
+    <app-ui-button
+      variant="danger"
+      type="button"
+      [label]="'common.cancel' | translate"
+      (click)="cancel()"
+    />
+
+    <app-ui-button variant="primary" type="submit" [label]="'common.save' | translate" />
+  </footer>
+</form>

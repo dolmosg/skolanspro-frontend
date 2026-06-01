@@ -1,0 +1,65 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        <app-ui-button
+          type="button"
+          variant="primary"
+          size="sm"
+          [label]="'configuration.languages.add' | translate"
+          iconLeft="add"
+          (click)="onAdd()"
+        />
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (hasSelection()) {
+          <app-ui-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="edit"
+            [title]="'configuration.languages.update' | translate"
+            (click)="onEdit()"
+          />
+
+          <app-ui-button
+            type="button"
+            variant="danger"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="delete"
+            [title]="'configuration.languages.delete' | translate"
+            (click)="onDelete()"
+          />
+        }
+      </div>
+    </div>
+
+    @if (hasSelection()) {
+      <div class="sk-selection-bar">
+        <span class="sk-selection-badge">1</span>
+        <span>
+          {{ 'configuration.languages.messages.selected' | translate }}:
+          <strong>{{ selectedLanguages()[0].name }}</strong>
+        </span>
+      </div>
+    }
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="languages()"
+        [loading]="loading()"
+        [emptyMessage]="'configuration.languages.messages.empty' | translate"
+        selectionMode="single"
+        height="fill"
+        [pagination]="true"
+        [alwaysShowPagination]="true"
+        [pageSize]="10"
+        (selectionChange)="onSelectionChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

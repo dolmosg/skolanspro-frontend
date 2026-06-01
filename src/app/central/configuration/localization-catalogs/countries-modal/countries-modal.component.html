@@ -1,0 +1,80 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="country-name">
+        {{ 'configuration.countries.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="country-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="100"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="country-phone-code">
+        {{ 'configuration.countries.fields.phone_code' | translate }}
+      </label>
+      <input
+        id="country-phone-code"
+        type="text"
+        class="module-modal__input"
+        formControlName="phone_code"
+        maxlength="10"
+      />
+      <form-error [control]="form.controls.phone_code"></form-error>
+    </div>
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="country-iso-code">
+        {{ 'configuration.countries.fields.iso_code' | translate }}
+      </label>
+      <input
+        id="country-iso-code"
+        type="text"
+        class="module-modal__input"
+        formControlName="iso_code"
+        maxlength="10"
+      />
+      <form-error [control]="form.controls.iso_code"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="country-language">
+        {{ 'configuration.countries.fields.language' | translate }}
+      </label>
+      <app-sk-select
+        [items]="languages()"
+        bindLabel="code"
+        bindValue="code"
+        [translateLabel]="false"
+        [clearable]="false"
+        [searchable]="true"
+        [control]="form.controls.language"
+        [placeholder]="'configuration.countries.fields.language' | translate"
+      ></app-sk-select>
+      <form-error [control]="form.controls.language"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.countries.update' : 'configuration.countries.add') | translate"
+    ></app-ui-button>
+  </div>
+</form>

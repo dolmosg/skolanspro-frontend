@@ -1,0 +1,180 @@
+<section class="student-years">
+  <header class="student-years__toolbar">
+    <div>
+      <h2>{{ 'controllers.student-years' | translate }}</h2>
+      <p>{{ 'administration.student-years.subtitle' | translate }}</p>
+    </div>
+
+    @if (getScreenOption('add'); as createOption) {
+      <app-ui-button
+        [variant]="createOption.color"
+        [title]="createOption.translation | translate"
+        size="sm"
+        [iconLeft]="createOption.icon"
+        (click)="onCreate()"
+      />
+    }
+  </header>
+
+  <div class="student-years__layout">
+    <!-- LEFT: TIMELINE -->
+    <div class="student-years__timeline">
+      @for (year of orderedYears(); track year.id) {
+        <article class="student-years__item" [class.is-current]="year.school_year?.current">
+          <div class="student-years__marker"></div>
+
+          <div class="student-years__card">
+            <header class="student-years__card-header">
+              <div>
+                <h3>{{ year.school_year?.name || '-' }}</h3>
+                <p>
+                  {{ year.grade?.level?.description || '-' }} ·
+                  {{ year.grade?.description || '-' }}
+                </p>
+              </div>
+
+              <div class="student-years__badges">
+                @if (year.school_year?.current) {
+                  <span class="student-years__badge is-current">
+                    {{ 'common.current' | translate }}
+                  </span>
+                }
+
+                @if (year.status) {
+                  <span [class]="'student-years__badge is-' + year.status.css_class">
+                    {{ year.status.translation | translate }}
+                  </span>
+                }
+              </div>
+            </header>
+
+            <div class="student-years__details">
+              <div>
+                <label>{{ 'administration.student-years.fields.level' | translate }}</label>
+                <span>{{ year.grade?.level?.description || '-' }}</span>
+              </div>
+
+              <div>
+                <label>{{ 'administration.student-years.fields.grade' | translate }}</label>
+                <span>{{ year.grade?.description || '-' }}</span>
+              </div>
+
+              <div>
+                <label>{{
+                  'administration.student-years.fields.special-education' | translate
+                }}</label>
+                <span>
+                  {{
+                    year.special_education ? ('common.yes' | translate) : ('common.no' | translate)
+                  }}
+                </span>
+              </div>
+
+              <div>
+                <label>{{ 'administration.student-years.fields.complements' | translate }}</label>
+                <span>
+                  {{ year.complements ? ('common.yes' | translate) : ('common.no' | translate) }}
+                </span>
+              </div>
+            </div>
+
+            <footer class="student-years__actions">
+              @if (getScreenOption('update'); as updateOption) {
+                <app-ui-button
+                  [variant]="updateOption.color"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="updateOption.translation | translate"
+                  [iconLeft]="updateOption.icon"
+                  (click)="onUpdate(year)"
+                />
+              }
+
+              <!-- 🔥 SOLO en ciclo actual -->
+              @if (year.school_year?.current && getScreenOption('withdraw'); as withdrawOption) {
+                <app-ui-button
+                  [variant]="withdrawOption.color"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="withdrawOption.translation | translate"
+                  [iconLeft]="withdrawOption.icon"
+                  (click)="onWithdraw(year)"
+                />
+              }
+
+              <!-- ❗ Opcional: solo permitir delete en históricos -->
+              @if (!year.school_year?.current && getScreenOption('delete'); as deleteOption) {
+                <app-ui-button
+                  [variant]="deleteOption.color"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="deleteOption.translation | translate"
+                  [iconLeft]="deleteOption.icon"
+                  (click)="onDelete(year)"
+                />
+              }
+            </footer>
+          </div>
+        </article>
+      }
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <aside class="student-years__summary">
+      <div class="student-years__summary-card">
+        <h3>{{ 'administration.student-years.summary.title' | translate }}</h3>
+
+        <p>{{ 'administration.student-years.summary.subtitle' | translate }}</p>
+
+        <div class="student-years__summary-metric">
+          <strong>{{ orderedYears().length }}</strong>
+          <span>{{ 'administration.student-years.summary.registered-years' | translate }}</span>
+        </div>
+
+        @if (currentYear(); as year) {
+          <div class="student-years__summary-list">
+            <div>
+              <label>{{
+                'administration.student-years.summary.current-school-year' | translate
+              }}</label>
+              <span>{{ year.school_year?.name || '-' }}</span>
+            </div>
+
+            <div>
+              <label>{{ 'administration.student-years.fields.level' | translate }}</label>
+              <span>{{ year.grade?.level?.description || '-' }}</span>
+            </div>
+
+            <div>
+              <label>{{ 'administration.student-years.fields.grade' | translate }}</label>
+              <span>{{ year.grade?.description || '-' }}</span>
+            </div>
+
+            <div>
+              <label>{{ 'common.status' | translate }}</label>
+              <span>{{ year.status?.translation | translate }}</span>
+            </div>
+
+            <div>
+              <label>{{
+                'administration.student-years.fields.special-education' | translate
+              }}</label>
+              <span>
+                {{
+                  year.special_education ? ('common.yes' | translate) : ('common.no' | translate)
+                }}
+              </span>
+            </div>
+
+            <div>
+              <label>{{ 'administration.student-years.fields.complements' | translate }}</label>
+              <span>
+                {{ year.complements ? ('common.yes' | translate) : ('common.no' | translate) }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </aside>
+  </div>
+</section>

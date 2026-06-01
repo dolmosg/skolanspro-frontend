@@ -1,0 +1,64 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="gender-name">
+        {{ 'configuration.genders.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="gender-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="45"
+        (input)="onNameChange()"
+      />
+      <form-error [control]="form.controls.name" />
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="gender-icon">
+        {{ 'configuration.genders.fields.icon' | translate }}
+      </label>
+      <input
+        id="gender-icon"
+        type="text"
+        class="module-modal__input"
+        formControlName="icon"
+        maxlength="45"
+      />
+      <form-error [control]="form.controls.icon" />
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="gender-translation">
+        {{ 'configuration.genders.fields.translation' | translate }}
+      </label>
+      <input
+        id="gender-translation"
+        type="text"
+        class="module-modal__input"
+        formControlName="translation"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.translation" />
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.genders.update' : 'configuration.genders.add') | translate"
+    />
+  </div>
+</form>

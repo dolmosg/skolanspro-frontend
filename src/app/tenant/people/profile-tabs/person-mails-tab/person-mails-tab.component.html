@@ -1,0 +1,81 @@
+<div class="person-mails-tab">
+  <!-- Header -->
+  <div class="tab-header">
+    <div>
+      <h4 class="section-title">Correos registrados para la persona</h4>
+    </div>
+
+    @if (getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [label]="addOption.translation | translate"
+        [variant]="addOption.color"
+        size="sm"
+        [iconLeft]="addOption.icon"
+        (click)="onAdd()"
+      />
+    }
+  </div>
+
+  <!-- Default email -->
+  @if (defaultEmail()) {
+    <div class="mail-default">
+      <app-ui-icon name="check" size="md" tone="success"></app-ui-icon>
+
+      <div class="default-content">
+        <div class="default-email">
+          {{ defaultEmail() }}
+        </div>
+
+        <div class="default-label">Correo principal</div>
+      </div>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (mails().length === 0) {
+    <div class="empty-state">No hay correos registrados.</div>
+  } @else {
+    <!-- List -->
+    <div class="mail-list">
+      @for (mail of mails(); track mail.id) {
+        <div class="mail-item">
+          <!-- Left content -->
+          <div class="mail-main">
+            <div class="mail-value">
+              {{ mail.email }}
+            </div>
+
+            <div class="mail-type">
+              {{ mailTypeLabel(mail.mail_type_id) | translate }}
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="mail-actions">
+            @if (getScreenOption('update'); as updateOption) {
+              <app-ui-button
+                size="sm"
+                [variant]="updateOption.color"
+                [iconLeft]="updateOption.icon"
+                [iconOnly]="true"
+                [label]="updateOption.translation | translate"
+                (click)="onEdit(mail)"
+              />
+            }
+
+            @if (getScreenOption('delete'); as deleteOption) {
+              <app-ui-button
+                size="sm"
+                [variant]="deleteOption.color"
+                [iconLeft]="deleteOption.icon"
+                [iconOnly]="true"
+                [label]="deleteOption.translation | translate"
+                (click)="onDelete(mail)"
+              />
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

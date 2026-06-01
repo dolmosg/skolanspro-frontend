@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.upload-logo-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.upload-logo-modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.upload-logo-modal__current {
+  display: block;
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  padding: 1rem;
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: 1rem;
+  background: var(--color-surface, #ffffff);
+}
+
+.upload-logo-modal__error {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.upload-logo-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767.98px) {
+  .upload-logo-modal__actions {
+    justify-content: stretch;
+  }
+
+  .upload-logo-modal__actions > * {
+    flex: 1 1 auto;
+  }
+}

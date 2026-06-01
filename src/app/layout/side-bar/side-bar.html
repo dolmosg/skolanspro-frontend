@@ -1,0 +1,19 @@
+<nav class="sidebar-nav" aria-label="Navegación principal">
+  @if (loading()) {
+    <div class="sidebar-nav__state">
+      <span>Cargando navegación...</span>
+    </div>
+  } @else if (items().length) {
+    @for (item of items(); track item.id) {
+      <app-sidebar-nav-item
+        [item]="item"
+        [level]="0"
+        [collapsed]="collapsed()"
+      />
+    }
+  } @else {
+    <div class="sidebar-nav__state">
+      <span>{{ emptyMessage() }}</span>
+    </div>
+  }
+</nav>

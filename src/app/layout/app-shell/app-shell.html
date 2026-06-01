@@ -1,0 +1,46 @@
+<div class="shell" [ngClass]="shellClasses()">
+  @if (isMobile() && sidebarOpen()) {
+    <button
+      type="button"
+      class="shell__backdrop"
+      aria-label="Cerrar menú"
+      (click)="closeSidebar()"
+    ></button>
+  }
+
+  <aside class="shell__sidebar">
+    <div class="shell__brand">
+      <div class="shell__brand-mark">
+        <img [src]="brandLogo" [alt]="brandLogoAlt" />
+      </div>
+
+      @if (!sidebarCollapsed() || isMobile()) {
+        <div class="shell__brand-text">
+          <strong>{{ brandName() }}</strong>
+          <span>{{ brandSubtitle }}</span>
+        </div>
+      }
+    </div>
+
+    <app-side-bar
+      [items]="navItems()"
+      [collapsed]="sidebarCollapsed() && !isMobile()"
+      [loading]="navLoading()"
+    />
+  </aside>
+
+  <div class="shell__main">
+    <app-topbar (menuClick)="toggleSidebar()" (profileClick)="openProfile()" />
+
+    <main class="shell__content">
+      <div class="shell__content-body">
+        <router-outlet />
+      </div>
+    </main>
+    <app-skl-modal-host></app-skl-modal-host>
+    <footer class="shell__footer">
+      <span>Powered by Skolans</span>
+      <span *ngIf="appVersion()">v{{ appVersion() }}</span>
+    </footer>
+  </div>
+</div>

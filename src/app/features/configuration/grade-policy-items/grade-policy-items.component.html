@@ -1,0 +1,162 @@
+<section class="sk-page">
+  <div class="sk-page__panel grade-policy-items">
+    <header class="grade-policy-items__hero">
+      <div class="grade-policy-items__hero-content">
+        <span class="grade-policy-items__eyebrow">
+          {{ 'controllers.grade-policy-items' | translate }}
+        </span>
+
+        <h2>
+          {{ policy()?.translation ? (policy()?.translation | translate) : policy()?.name }}
+        </h2>
+
+        <p>
+          {{ 'configuration.grade-policy-items.messages.subtitle' | translate }}
+        </p>
+      </div>
+
+      <div class="grade-policy-items__summary">
+        <div class="grade-policy-items__summary-card">
+          <span>{{ 'configuration.grade-policy-items.fields.items' | translate }}</span>
+          <strong>{{ items().length }}</strong>
+        </div>
+
+        <div class="grade-policy-items__summary-card">
+          <span>{{ 'configuration.grade-policy-items.fields.defaults' | translate }}</span>
+          <strong>{{ defaultItems().length }}</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="grade-policy-items__table-card">
+      <div class="grade-policy-items__table-header">
+        <div class="grade-policy-items__table-title">
+          <h3>{{ 'configuration.grade-policy-items.fields.items' | translate }}</h3>
+          <p>{{ 'configuration.grade-policy-items.messages.table-description' | translate }}</p>
+        </div>
+
+        <div class="grade-policy-items__table-actions">
+          @if (!orderingMode()) {
+            @if (!hasSelection()) {
+              @if (getScreenOption('add'); as addOption) {
+                <app-ui-button
+                  [label]="addOption.translation | translate"
+                  [variant]="addOption.color"
+                  size="sm"
+                  [iconLeft]="addOption.icon"
+                  (click)="onAdd()"
+                />
+              }
+            }
+
+            @if (hasSingleSelection()) {
+              @if (getScreenOption('update'); as updateOption) {
+                <app-ui-button
+                  [iconLeft]="updateOption.icon"
+                  [variant]="updateOption.color"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="updateOption.translation | translate"
+                  (click)="onEdit()"
+                />
+              }
+
+              @if (getScreenOption('delete'); as deleteOption) {
+                <app-ui-button
+                  [iconLeft]="deleteOption.icon"
+                  [variant]="deleteOption.color"
+                  size="sm"
+                  [iconOnly]="true"
+                  [title]="deleteOption.translation | translate"
+                  (click)="onDelete()"
+                />
+              }
+            } @else {
+              @if (getScreenOption('order'); as orderOption) {
+                @if (items().length > 1) {
+                  <app-ui-button
+                    [iconLeft]="orderOption.icon"
+                    [variant]="orderOption.color"
+                    size="sm"
+                    [iconOnly]="true"
+                    [title]="orderOption.translation | translate"
+                    (click)="startOrdering()"
+                  />
+                }
+              }
+
+              @if (getScreenOption('restore'); as restoreOption) {
+                @if (defaultItems().length > 0) {
+                  <app-ui-button
+                    [iconLeft]="restoreOption.icon"
+                    [variant]="restoreOption.color"
+                    size="sm"
+                    [iconOnly]="true"
+                    [title]="restoreOption.translation | translate"
+                    (click)="onRestore()"
+                  />
+                }
+              }
+            }
+          } @else {
+            <app-ui-button
+              [label]="'common.cancel' | translate"
+              variant="secondary"
+              size="sm"
+              iconLeft="close"
+              [disabled]="savingOrder()"
+              (click)="cancelOrdering()"
+            />
+
+            <app-ui-button
+              [label]="'common.save' | translate"
+              variant="primary"
+              size="sm"
+              iconLeft="check"
+              [disabled]="savingOrder()"
+              (click)="saveOrder()"
+            />
+          }
+        </div>
+      </div>
+
+      @if (orderingMode() || hasSelection()) {
+        <div class="grade-policy-items__status">
+          @if (orderingMode()) {
+            <div class="sk-selection-inline">
+              <span class="sk-selection-badge">↕</span>
+              <strong>{{
+                'configuration.grade-policy-items.messages.ordering' | translate
+              }}</strong>
+            </div>
+          } @else if (hasSelection()) {
+            <div class="sk-selection-inline">
+              <span class="sk-selection-badge">1</span>
+              <strong>{{ selectedItems()[0].code }} — {{ selectedItems()[0].name }}</strong>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="sk-table-wrap">
+        <app-skolans-table
+          [columnDefs]="columnDefs()"
+          [rowData]="items()"
+          [loading]="loading() || savingOrder()"
+          selectionMode="single"
+          [emptyMessage]="'configuration.grade-policy-items.messages.empty' | translate"
+          height="fill"
+          [pagination]="tablePagination()"
+          [alwaysShowPagination]="tablePagination()"
+          [pageSize]="10"
+          [enableRowDrag]="orderingMode()"
+          [rowDragManaged]="true"
+          [suppressMoveWhenRowDragging]="true"
+          [getRowId]="getRowId"
+          (selectionChange)="onSelectionChange($event)"
+          (rowDragEnd)="onRowOrderChange($event)"
+        ></app-skolans-table>
+      </div>
+    </section>
+  </div>
+</section>

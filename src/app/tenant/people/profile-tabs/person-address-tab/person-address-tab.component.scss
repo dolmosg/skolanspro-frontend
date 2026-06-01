@@ -1,0 +1,140 @@
+.person-address-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  padding: 1.25rem;
+  border: 1px dashed var(--border-color);
+  border-radius: 0.85rem;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+}
+
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.address-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.address-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.address-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.address-badge {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  color: var(--primary-color);
+  background: var(--primary-soft);
+}
+
+.address-line {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.address-meta {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.address-country {
+  margin-top: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.address-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+
+  app-ui-button {
+    opacity: 0.9;
+    transition:
+      transform 0.15s ease,
+      opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .tab-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .address-item {
+    flex-direction: column;
+  }
+
+  .address-actions {
+    align-self: flex-end;
+  }
+}

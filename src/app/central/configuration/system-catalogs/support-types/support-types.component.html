@@ -1,0 +1,66 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        @if (!hasSelection()) {
+          <app-ui-button
+            type="button"
+            variant="primary"
+            size="sm"
+            [label]="'configuration.support-types.add' | translate"
+            iconLeft="add"
+            (click)="onAdd()"
+          />
+        }
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">1</span>
+            <strong>{{ selectedSupportTypes()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (hasSelection()) {
+          <app-ui-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="edit"
+            [title]="'configuration.support-types.update' | translate"
+            (click)="onEdit()"
+          />
+
+          <app-ui-button
+            type="button"
+            variant="danger"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="delete"
+            [title]="'configuration.support-types.delete' | translate"
+            (click)="onDelete()"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="supportTypes()"
+        [loading]="loading()"
+        [emptyMessage]="'configuration.support-types.messages.empty' | translate"
+        selectionMode="single"
+        height="fill"
+        [pagination]="true"
+        [alwaysShowPagination]="true"
+        [pageSize]="10"
+        (selectionChange)="onSelectionChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

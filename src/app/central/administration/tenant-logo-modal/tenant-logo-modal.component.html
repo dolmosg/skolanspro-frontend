@@ -1,0 +1,50 @@
+<div class="tenant-logo-modal">
+  <header class="tenant-logo-modal__header">
+    <div>
+      <h2>{{ 'administration.tenants.logo.title' | translate }}</h2>
+      <p>
+        {{ tenant()?.settings?.site_name || tenant()?.organization?.trade || tenant()?.id }}
+      </p>
+    </div>
+  </header>
+
+  <app-sk-file-upload
+    [label]="'administration.tenants.logo.label' | translate"
+    [helper]="'administration.tenants.logo.helper' | translate"
+    accept="image/png,image/jpeg,image/webp,image/svg+xml"
+    [multiple]="false"
+    [maxSizeMb]="2"
+    [placeholder]="'administration.tenants.logo.placeholder' | translate"
+    (filesChange)="onFilesChange($event)"
+    (uploadError)="onUploadError($event)"
+  />
+
+  @if (uploadErrorMessage()) {
+    <p class="tenant-logo-modal__error">
+      {{ uploadErrorMessage() }}
+    </p>
+  }
+
+  @if (selectedFiles().length > 0) {
+    <p class="tenant-logo-modal__ready">
+      {{ 'administration.tenants.logo.ready' | translate }}
+    </p>
+  }
+
+  <footer class="tenant-logo-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      [disabled]="selectedFiles().length === 0"
+      (click)="onSave()"
+    />
+  </footer>
+</div>

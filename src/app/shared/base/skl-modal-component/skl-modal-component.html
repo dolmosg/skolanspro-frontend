@@ -1,0 +1,35 @@
+<div class="skl-modal__backdrop" (click)="onBackdropClick()">
+  <div class="skl-modal__panel" [class]="'skl-modal__panel skl-modal__panel--' + size()" (click)="onPanelClick($event)">
+    <div class="skl-modal__header">
+      <div class="skl-modal__heading">
+        <h2 class="skl-modal__title" [id]="titleId()">{{ title() }}</h2>
+
+        @if (hasDescription()) {
+          <p class="skl-modal__description" [id]="descriptionId()">
+            {{ description() }}
+          </p>
+        }
+      </div>
+
+      @if (showCloseButton()) {
+        <button
+          type="button"
+          class="skl-modal__close"
+          [disabled]="busy()"
+          aria-label="Cerrar modal"
+          (click)="close()"
+        >
+          ×
+        </button>
+      }
+    </div>
+
+    <div class="skl-modal__body">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="skl-modal__footer">
+      <ng-content select="[modal-footer]"></ng-content>
+    </div>
+  </div>
+</div>

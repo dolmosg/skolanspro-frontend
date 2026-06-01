@@ -1,0 +1,2589 @@
+{
+	"academics": {
+		"learning-areas": {
+			"add": "Nueva Área de Aprendizaje",
+			"delete": "Eliminar Área de Aprendizaje",
+			"fields": {
+				"active": "Activo",
+				"color": "Color",
+				"name": "Nombre",
+				"translation": "Descripción"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar esta área de aprendizaje?",
+				"ordering": "Modo de ordenamiento activo"
+			},
+			"order": "Ordenar Áreas de Aprendizaje",
+			"title": "Áreas de Aprendizaje",
+			"update": "Editar Área de Aprendizaje"
+		},
+		"subject-classifications": {
+			"add": "Nueva Clasificación de Materia",
+			"delete": "Eliminar Clasificación de Materia",
+			"fields": {
+				"active": "Activo",
+				"color": "Color",
+				"name": "Nombre",
+				"translation": "Descripción"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar esta clasificación de materia?",
+				"ordering": "Modo de ordenamiento activo"
+			},
+			"order": "Ordenar Clasificaciones de Materias",
+			"title": "Clasificaciones de Materias",
+			"translation": {
+				"arts": "Artes",
+				"emotional": "Educación Socioemocional",
+				"language": "Lenguaje",
+				"mathematics": "Matemáticas",
+				"natural": "Ciencias Naturales",
+				"social": "Ciencias Sociales",
+				"sports": "Deportes",
+				"without": "Sin clasificación"
+			},
+			"update": "Editar Clasificación de Materia"
+		},
+		"subject-subcategories": {
+			"add": "Nueva Subcategoría de Materia",
+			"delete": "Eliminar Subcategoría de Materia",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"translation": "Descripción"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar esta subcategoría de materia?",
+				"ordering": "Modo de ordenamiento activo"
+			},
+			"order": "Ordenar Subcategorías de Materias",
+			"title": "Subcategorías de Materias",
+			"update": "Editar Subcategoría de Materia"
+		},
+		"subjects": {
+			"add": "Nueva Asignatura",
+			"delete": "Eliminar Asignatura",
+			"description": "Selecciona sección, nivel escolar y grado para consultar las asignaturas.",
+			"detail": {
+				"edit-info": "Editar Asignatura",
+				"empty-description": "El detalle aparecerá aquí cuando selecciones una fila.",
+				"empty-title": "Selecciona una asignatura",
+				"general-info": "Información general"
+			},
+			"empty-context": {
+				"description": "Las asignaturas se mostrarán hasta que selecciones sección, nivel escolar y grado.",
+				"title": "Selecciona el contexto académico"
+			},
+			"empty-results": "No hay asignaturas con estos filtros.",
+			"fields": {
+				"active": "Activa",
+				"classification": "Clasificación",
+				"code": "Código",
+				"grade": "Grado",
+				"learning-area": "Campo formativo",
+				"level": "Nivel escolar",
+				"name": "Nombre",
+				"official": "Oficial",
+				"section": "Sección",
+				"short-name": "Nombre corto",
+				"subcategory": "Subcategoría",
+				"weekly-blocks": "Bloques semanales"
+			},
+			"filters": {
+				"active": "Filtrar por activa",
+				"code": "Filtrar por código",
+				"official": "Filtrar por oficial"
+			},
+			"labels": {
+				"crossover": "Transversal",
+				"no-classification": "Sin clasificación",
+				"no-learning-area": "Sin Campo Formativo",
+				"no-subcategory": "Sin subcategoría",
+				"without-code": "Sin código"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar esta asignatura?"
+			},
+			"options": {
+				"active": "Activas",
+				"all": "Todas",
+				"inactive": "Inactivas",
+				"official": "Oficiales",
+				"unofficial": "No oficiales"
+			},
+			"placeholders": {
+				"classification": "Selecciona una clasificación",
+				"code": "Buscar código...",
+				"grade": "Selecciona un grado",
+				"learning-area": "Selecciona campo formativo",
+				"level": "Selecciona un nivel",
+				"section": "Selecciona una sección",
+				"subcategory": "Selecciona una subcategoría"
+			},
+			"summary": {
+				"filtered": "Asignaturas filtradas"
+			},
+			"title": "Asignaturas",
+			"update": "Actalizar Asigntura"
+		}
+	},
+	"administration": {
+		"families": {
+			"add": "Nueva familia",
+			"clean": "Limpiar búsqueda",
+			"fields": {
+				"code": "Código",
+				"email": "Correo",
+				"family-status": "Estado",
+				"lastname": "Paterno",
+				"mothername": "Materno",
+				"name": "Nombre",
+				"registered-at": "Fecha de registro"
+			},
+			"messages": {
+				"hasMore": "Se muestran solo los primeros 50 resultados. Refina tu búsqueda para ver resultados más específicos.",
+				"search-results": "Resultados de la búsqueda"
+			},
+			"modal": {
+				"title": "Agregar una nueva familia"
+			},
+			"search": "Buscar",
+			"search-by": {
+				"family": "Por familia",
+				"student": "Por Alumno"
+			},
+			"search-options": {
+				"emptyDescription": "No existe ninguna familia o alumno que coincida con los criterios de búsqueda capturados.",
+				"emptyResults": "No se encontraron Familias",
+				"empyInitial": "No hay búsqueda realizada",
+				"family": "Buscar por Familia",
+				"initialDescription": "Utiliza los filtros para localizar familias o alumnos relacionados.",
+				"students": "Buscar por Alumnos"
+			}
+		},
+		"family-address": {
+			"add": "Nueva dirección",
+			"delete": "Eliminar Dirección",
+			"fields": {
+				"city": "Ciudad",
+				"colony": "Colonia",
+				"country": "País",
+				"indoor": "Número interior",
+				"municipality": "Municipio",
+				"outdoor": "Número exterior",
+				"state": "Estado",
+				"street": "Calle",
+				"zip_code": "Código postal"
+			},
+			"subtitle": "Captura la información de la dirección principal de la familia",
+			"title": "Dirección de la familia",
+			"update": "Actualizar Dirección"
+		},
+		"family-general": {
+			"cancel": "Restablecer",
+			"delete": "Eliminar Familia",
+			"editable-information": "Información editable",
+			"fields": {
+				"canceled-at": "Fecha de cancelación",
+				"code": "Código",
+				"registered-at": "Fecha de registro"
+			},
+			"informative-information": "Información informativa",
+			"messages": {
+				"confirm-delete": "¿Estás seguro de que deseas eliminar esta familia? Esta acción puede afectar información relacionada.",
+				"delete-title": "Eliminar familia"
+			},
+			"subtitle": "Información general y administrativa de la familia.",
+			"summary": {
+				"active-students": "Alumnos activos",
+				"active-students-description": "Estudiantes activos relacionados a esta familia.",
+				"title": "Resumen Familiar",
+				"tutors": "Tutores",
+				"tutors-description": "Responsables registrados dentro de la familia."
+			},
+			"title": "Información Familiar",
+			"update": "Actualizar"
+		},
+		"family-members": {
+			"actions": {
+				"back-to-members": "Volver a miembros"
+			},
+			"add-student": "Nuevo alumno",
+			"add-tutor": "Nuevo tutor",
+			"badges": {
+				"main-contact": "Contacto principal"
+			},
+			"delete": "Eliminar miembro",
+			"detail": {
+				"student-placeholder": "Detalle del alumno en construcción.",
+				"tutor-placeholder": "Detalle del tutor en construcción."
+			},
+			"remove-photo": "Eliminar fotografía",
+			"student-detail": {
+				"current-academic": "Ciclo actual",
+				"enrollment": "Matrícula",
+				"role": "Role",
+				"subtitle": "Consulta y administra la información del alumno",
+				"title": "Detalles del alumno"
+			},
+			"students": {
+				"empty": "No hay alumnos registrados.",
+				"title": "Alumnos"
+			},
+			"tutor-detail": {
+				"subtitle": "Consulta y administra la información del tutor",
+				"title": "Detalle del tutor"
+			},
+			"tutors": {
+				"empty": "No hay tutores registrados.",
+				"title": "Tutores"
+			},
+			"update": "Actualizar miembro",
+			"upload-photo": "Cargar fotografía"
+		},
+		"family-profile": {
+			"general": {
+				"title": "Información General"
+			}
+		},
+		"family-students": {
+			"administration.family-students.photo.remove-confirm": "Esta acción eliminará la fotografía del alumno. ¿Deseas continuar?",
+			"administration.family-students.photo.remove-title": "Eliminar fotografía",
+			"administration.family-students.photo.title": "Actualizar fotografía",
+			"delete": "Eliminar Alumno",
+			"photo": {
+				"remove-confirm": "¿Deseas eliminar la fotografía del alumno?",
+				"remove-title": "Eliminar Fotografía"
+			},
+			"remove-photo": "Eliminar Foto",
+			"reset": "Cancelar",
+			"update": "Actualizar",
+			"upload-photo": "Cargar Foto"
+		},
+		"family-tutors": {
+			"delete": "Eliminar tutor",
+			"photo": {
+				"current": "Foto actual",
+				"remove-confirm": "¿Seguro que deseas eliminar la foto de perfil?",
+				"remove-title": "Eliminar foto",
+				"title": "Actualizar foto de perfil",
+				"upload-helper": "Formato permitido: JPG, PNG o WEBP. Tamaño máximo: 2 MB.",
+				"upload-label": "Subir imagen",
+				"upload-placeholder": "Arrastra una imagen aquí o haz clic para seleccionarla"
+			},
+			"remove-photo": "Eliminar fotografía",
+			"reset": "Cancelar",
+			"update": "Actualizar Perfil",
+			"upload-photo": "Cargar fotografía"
+		},
+		"person-addresses": {
+			"add": "Nueva dirección",
+			"delete": "Eliminar dirección",
+			"fields": {
+				"city": "Ciudad",
+				"colony": "Colonia",
+				"country": "País",
+				"indoor": "Interior",
+				"municipality": "Municipio",
+				"name": "Nombre",
+				"outdoor": "Exterior",
+				"state": "Estado",
+				"street": "Calle",
+				"type": "Tipo",
+				"zip_code": "Código postal"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Teléfono seleccionado ",
+				"create-description": "Define un nuevo Teléfono y sus características",
+				"registered": "Direcciones registradas",
+				"select_settlement": "Selecciona una colonia",
+				"update-description": "Actualiza la información del Teléfono seleccionado"
+			},
+			"update": "Actualizar dirección"
+		},
+		"person-communication": {
+			"index": "Comunicación"
+		},
+		"person-direct-communication": {
+			"fields": {
+				"direct": "Acepta comunicación directa",
+				"direct_type": "Tipos de comunicación directa"
+			},
+			"general": "Comunicación General",
+			"update": "Actualizar"
+		},
+		"person-levels": {
+			"update": "Actualizar"
+		},
+		"person-mails": {
+			"add": "Nuevo correo",
+			"delete": "Eliminar correo",
+			"fields": {
+				"active": "Activo",
+				"email": "Correo",
+				"type": "Tipo"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Correo seleccionado ",
+				"create-description": "Define un nuevo correo y sus características",
+				"update-description": "Actualiza la información del Correo seleccionado"
+			},
+			"update": "Actualizar correo"
+		},
+		"person-phones": {
+			"add": "Nuevo teléfono",
+			"delete": "Eliminar teléfono",
+			"fields": {
+				"country": "País",
+				"phone": "Teléfono",
+				"type": "Tipo de teléfono"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Teléfono seleccionado ",
+				"create-description": "Define un nuevo Teléfono y sus características",
+				"registered": "Teléfonos registrados",
+				"update-description": "Actualiza la información del Teléfono seleccionado"
+			},
+			"placeholders": {
+				"country": "País"
+			},
+			"update": "Actualizar teléfono"
+		},
+		"person-profile": {
+			"reset": "Cancelar",
+			"update": "Actualizar"
+		},
+		"person-sections": {
+			"update": "Actualizar"
+		},
+		"school-years": {
+			"add": "Nuevo ciclo",
+			"delete": "Eliminar Ciclo",
+			"fields": {
+				"current": "Actual",
+				"name": "Nombre",
+				"order": "Orden",
+				"visible": "Visible"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este ciclo escolar?",
+				"create-description": "Completa la información para crear un nuevo ciclo escolar",
+				"created": "Ciclo escolar creado correctamente",
+				"current-cannot-be-deleted": "No puedes eliminar el ciclo escolar actual",
+				"delete-title": "Eliminar ciclo escolar",
+				"deleted": "Ciclo escolar eliminado correctamente",
+				"empty": "No hay ciclos escolares registrados",
+				"loaded": "Ciclos escolares cargados correctamente",
+				"ordering": "Ordenando ciclos escolares",
+				"reordered": "El orden de los ciclos escolares se actualizó correctamente",
+				"update-description": "Actualiza la información del ciclo escolar seleccionado",
+				"updated": "Ciclo escolar actualizado correctamente"
+			},
+			"order": "Ordenar Ciclos escolares",
+			"subtitle": "Gestiona los ciclos académicos de la institución",
+			"title": "Ciclos escolares",
+			"update": "Actualizar ciclo"
+		},
+		"staff-users": {
+			"add": "Nuevo Personal",
+			"delete": "Eliminar Personal",
+			"delete-modal": {
+				"confirm": "¿Seguro que deseas eliminar este usuario de personal? Esta acción no se puede deshacer.",
+				"title": "Eliminar usuario"
+			},
+			"modal": {
+				"role": "Rol",
+				"title": "Agregar Nuevo Usuario"
+			},
+			"photo": {
+				"current": "Foto actual",
+				"remove-confirm": "¿Seguro que deseas eliminar la foto de perfil?",
+				"remove-title": "Eliminar foto",
+				"title": "Actualizar foto de perfil",
+				"upload-helper": "Formato permitido: JPG, PNG o WEBP. Tamaño máximo: 2 MB.",
+				"upload-label": "Subir imagen",
+				"upload-placeholder": "Arrastra una imagen aquí o haz clic para seleccionarla"
+			},
+			"profile": {
+				"subtitle": "Información general y configuración del usuario",
+				"title": "Perfil"
+			},
+			"remove-photo": "Eliminar fotografía",
+			"update": "Actualizar Personal",
+			"upload-photo": "Cargar fotografía"
+		},
+		"student-years": {
+			"add": "Nuevo Ciclo escolar",
+			"create-title": "Agregar ciclo escolar",
+			"delete": "Eliminar Ciclo",
+			"empty": "No hay ciclos escolares registrados",
+			"fields": {
+				"complements": "Complementos",
+				"grade": "Grado escolar",
+				"level": "Nivel escolar",
+				"school-year": "Ciclo escolar",
+				"special-education": "Educación especial"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar este ciclo escolar del alumno?"
+			},
+			"subtitle": "Historial académico del alumno por ciclo escolar",
+			"summary": {
+				"current-school-year": "Ciclo actual",
+				"registered-years": "Ciclos registrados",
+				"subtitle": "Información general del alumno en su ciclo actual",
+				"title": "Resumen académico"
+			},
+			"update": "Actualizar Ciclo",
+			"withdraw": "Dar de Baja"
+		},
+		"tenants": {
+			"actions": {
+				"reset-domain": "Restablecer"
+			},
+			"activate": "Activar institución",
+			"add": "Nueva institución",
+			"delete": "Eliminar institución",
+			"fields": {
+				"administrator_email": "Correo del administrador",
+				"billing_type_id": "Tipo de facturación",
+				"business": "Negocio",
+				"city": "Ciudad",
+				"colony": "Colonia",
+				"contact_lastname": "Apellido paterno",
+				"contact_mothername": "Apellido materno",
+				"contact_name": "Nombre",
+				"country_id": "País",
+				"created_at": "Creación",
+				"domain": "Dominio",
+				"google_login": "Inicio de sesión con Google",
+				"grades_health_record": "Historial médico en calificaciones",
+				"id": "Nombre",
+				"indoor": "Número interior",
+				"language": "Idioma",
+				"language_id": "Idioma",
+				"licenses": "Licencias",
+				"logo": "Logo",
+				"mailer_email": "Correo del sistema",
+				"mailer_name": "Nombre del remitente",
+				"maintenance_mode": "Modo mantenimiento",
+				"maintenance_until": "Disponible hasta",
+				"municipality": "Municipio",
+				"name_caption_id": "Formato de nombre",
+				"organization_theme_id": "Tema",
+				"outdoor": "Número exterior",
+				"password_type_id": "Tipo de contraseña",
+				"site_name": "Nombre del sitio",
+				"state": "Estado",
+				"status": "Estado",
+				"street": "Calle",
+				"support_type_id": "Tipo de soporte",
+				"tenant_status_id": "Estado",
+				"theme": "Tema",
+				"tin": "RFC",
+				"trade": "Comercial",
+				"zipcode": "Código postal"
+			},
+			"helpers": {
+				"administrator_email": "Correo principal para administración del sistema.",
+				"billing_type_id": "Define el tipo de facturación aplicado.",
+				"business": "Nombre legal o razón social de la institución.",
+				"country_id": "Selecciona el país al que pertenece la institución.",
+				"domain": "Este será el dominio de acceso a la plataforma.",
+				"google_login": "Permite a los usuarios iniciar sesión con su cuenta de Google.",
+				"grades_health_record": "Activa el registro de información médica en el módulo académico.",
+				"id": "Este identificador se utilizará para generar el dominio del sistema.",
+				"language_id": "Idioma principal del sistema.",
+				"logo": "URL del logotipo institucional.",
+				"mailer_email": "Correo desde el cual se enviarán las notificaciones.",
+				"mailer_name": "Nombre que aparecerá como remitente en los correos.",
+				"maintenance_mode": "Activa el modo mantenimiento en la plataforma.",
+				"maintenance_until": "Fecha y hora hasta la cual el sistema estará en mantenimiento.",
+				"name_caption_id": "Define cómo se mostrarán los nombres de los usuarios.",
+				"organization_theme_id": "Tema visual de la organización.",
+				"password_type_id": "Define el esquema de contraseñas utilizado.",
+				"site_name": "Nombre que se mostrará en la plataforma.",
+				"support_type_id": "Define el tipo de soporte asignado a la institución.",
+				"trade": "Nombre comercial con el que se mostrará la institución."
+			},
+			"logo": {
+				"helper": "Arrastra una imagen o haz clic para seleccionarla. Formatos permitidos: PNG, JPG, WEBP, SVG. Tamaño máximo: 2 MB.",
+				"label": "Logo",
+				"logo": {
+					"helper": "Arrastra una imagen o haz clic para seleccionarla. Formatos permitidos: PNG, JPG, WEBP, SVG. Tamaño máximo: 2 MB.",
+					"label": "Logo",
+					"placeholder": "Selecciona o arrastra el logo aquí",
+					"ready": "Archivo listo para subir",
+					"title": "Cargar logo del tenant"
+				},
+				"modules": {
+					"home": "Inicio"
+				},
+				"placeholder": "Selecciona o arrastra el logo aquí",
+				"ready": "Archivo listo para subir",
+				"title": "Cargar logo de la institución"
+			},
+			"messages": {
+				"confirm-activate": "Estás seguro de activar a la institución",
+				"confirm-delete": "Estas a punto de eliminar la institución",
+				"confirm-migrate-all": "¿Estás seguro de que deseas ejecutar las migraciones para todos las instituciones? Esta acción puede tardar varios minutos y afectará a todos los entornos.",
+				"confirm-provision": "¿Estás seguro de que deseas provisionar esta institución? Se crearán los recursos necesarios y esta acción no puede deshacerse.",
+				"confirm-suspend": "Estás seguro de suspender a la institución",
+				"create-description": "Define una nueva institución y sus características",
+				"created": "Se creó un nueva institución",
+				"deleted": "La Institución fue eliminada",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"updated": "La Institución fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"migrate-all": "Migrar todos",
+			"placeholders": {
+				"select-billing-type": "Seleccionar tipo de facturación",
+				"select-caption": "Selecciona el tipo de nombre",
+				"select-country": "Seleccionar país",
+				"select-language": "Seleccionar idioma",
+				"select-password-type": "Seleccionar tipo de contraseña",
+				"select-status": "Seleccionar estado",
+				"select-support-type": "Seleccionar tipo de soporte",
+				"select-theme": "Seleccionar tema"
+			},
+			"provision": "Provisionar",
+			"steps": {
+				"operation": {
+					"sections": {
+						"catalogs": "Catálogos",
+						"mailer": "Correo",
+						"preferences": "Preferencias"
+					},
+					"subtitle": "Define correo, preferencias y catálogos del sistema.",
+					"title": "Configuración operativa"
+				},
+				"organization": {
+					"sections": {
+						"address": "Dirección",
+						"identity": "Datos generales"
+					},
+					"subtitle": "Captura los datos generales y la dirección de la institución.",
+					"title": "Información de la institución"
+				},
+				"site": {
+					"sections": {
+						"configuration": "Configuración",
+						"contact": "Contacto",
+						"identity": "Identidad"
+					},
+					"subtitle": "Define la información general, contacto y configuración del sitio.",
+					"title": "Configuración del sitio"
+				},
+				"tenant": {
+					"subtitle": "Define el identificador y el dominio de la institución",
+					"title": "Información de la institución"
+				}
+			},
+			"suspend": "Suspender Institución",
+			"update": "Actualizar institución",
+			"upload-logo": "Cargar logo"
+		},
+		"user-security": {
+			"change-password": "Cambiar contraseña",
+			"fields": {
+				"active": "Activo",
+				"email": "Correo",
+				"role": "Rol",
+				"select-role": "Seleccionar rol"
+			},
+			"reset": "Cancelar",
+			"update": "Actualizar"
+		}
+	},
+	"common": {
+		"activate": "Activar",
+		"active": "Activo",
+		"all": "Todos",
+		"back": "Regresar",
+		"cancel": "Cancelar",
+		"capture": "Captura",
+		"clear": "Limpiar",
+		"create": "Crear",
+		"current": "Actual",
+		"dashboard": "Dashboard",
+		"default": "Predeterminado",
+		"delete": "Eliminar",
+		"inactive": "Inactivo",
+		"move-down": "Mover abajo",
+		"move-up": "Mover arriba",
+		"no": "No",
+		"no-data": "No hay datos disponibles",
+		"no-description": "Sin Descripción",
+		"no_type": "Seleccionar un tipo",
+		"order": "Orden",
+		"remove": "Eliminar",
+		"reports": "Reportes",
+		"reset": "Cancelar",
+		"run": "Ejecutar",
+		"save": "Guardar",
+		"search": "Búsqueda",
+		"select": "Seleccionar una opción",
+		"select-all": "Seleccionar todos",
+		"selected": "Elementos seleccionados",
+		"status": "Estado",
+		"submit": "Enviar",
+		"suspend": "Suspender",
+		"update": "Actualizar",
+		"upload": "Cargar",
+		"yes": "Sí"
+	},
+	"configuration": {
+		"academic-catalogs": {
+			"index": "Catálogos académicos"
+		},
+		"actions": {
+			"add": "Nueva acción",
+			"defaults": "Acciones predeterminadas",
+			"delete": "Eliminar acción",
+			"fields": {
+				"color": "Color",
+				"icon": "Ícono",
+				"name": "Nombre",
+				"priv": "Privado",
+				"translation": "Traducción"
+			},
+			"index": "Acciones",
+			"messages": {
+				"belongs-to-controller": "Acciones para",
+				"children-of": "Hijos de",
+				"confirm-defaults": "¿Estás seguro de agregar las acciones por defecto?",
+				"confirm-delete": "Estas a punto de eliminar la acción",
+				"create-description": "Define una nueva acción y sus características",
+				"created": "Se creó un nueva acción",
+				"deleted": "La Acción fue eliminada",
+				"empty": "No existen registros",
+				"ordering": "Ordenando acciones",
+				"ordering-help": "Arrastra y suelta las acciones para cambiar su orden. Los cambios se aplicarán al guardar.",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"updated": "La Acción fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"order": "Ordenar acciones",
+			"update": "Actualizar acción"
+		},
+		"activity-types": {
+			"add": "Nuevo Tipo de Actividad",
+			"delete": "Eliminar Tipo de Actividad",
+			"fields": {
+				"active": "Activo",
+				"configurable": "Configurable",
+				"gradeable": "Calificable",
+				"icon": "Ícono",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este tipo de actividad?",
+				"create-description": "Define un nuevo tipo de actividad disponible en el sistema.",
+				"ordering": "Ordenando tipos de actividad",
+				"update-description": "Modifica la información del tipo de actividad seleccionado."
+			},
+			"order": "Ordenar Tipos de Actividades",
+			"translation": {
+				"delivery": "Entrega",
+				"evaluation": "Evaluación",
+				"exam": "Examen",
+				"explanation": "Explicación",
+				"none": "Sin actividad",
+				"poll": "Encuesta"
+			},
+			"update": "Actualizar Tipo de Actividad"
+		},
+		"address-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"description": "Descripción",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Tipo seleccionado ",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"deleted": "El Tipo fue eliminado",
+				"empty": "No existen registros",
+				"retrieved": "La información de tipos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Tipo seleccionado",
+				"updated": "El Tipo fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"home": "Casa",
+				"office": "Oficina"
+			},
+			"update": "Actualizar tipo"
+		},
+		"aspect-modes": {
+			"add": "Agregar Modo de Aspectos",
+			"delete": "Eliminar Modo de Aspectos",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este modo de aspectos?",
+				"create-description": "Crea un nuevo modo de aspectos.",
+				"created": "Modo de aspectos creado correctamente",
+				"deleted": "Modo de aspectos eliminado correctamente",
+				"empty": "No hay modos de aspectos registrados",
+				"ordered": "Modos de aspectos ordenados correctamente",
+				"ordering": "Ordenando modos de aspectos",
+				"update-description": "Actualiza el modo de aspectos seleccionado.",
+				"updated": "Modo de aspectos actualizado correctamente"
+			},
+			"order": "Ordenar Modos de Aspectos",
+			"translation": {
+				"full": "Completo",
+				"stage": "Etapa",
+				"subject": "Materia",
+				"term": "Periodo"
+			},
+			"update": "Actualizar Modo de Aspectos"
+		},
+		"attendance-calculations": {
+			"add": "Agregar Método de Cálculo",
+			"delete": "Eliminar Método de Cálculo",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"created": "Método de cálculo creado correctamente",
+				"deleted": "Método de cálculo eliminado correctamente",
+				"ordered": "Métodos de cálculo ordenados correctamente",
+				"updated": "Método de cálculo actualizado correctamente"
+			},
+			"order": "Ordenar Métodos de Cálculo",
+			"translation": {
+				"executed": "Ejecutado",
+				"programmed": "Programado"
+			},
+			"update": "Actualizar Método de Cálculo"
+		},
+		"attendance-types": {
+			"add": "Nuevo Tipo de Asistencia",
+			"delete": "Eliminar Tipo de Asistencia",
+			"order": "Ordenar Tipos de Asistencia",
+			"translation": {
+				"group": "Asistencia por Grupo",
+				"group-scope": "Asistencia grupal por idioma",
+				"no": "Sin asistencia",
+				"subject": "Asistencia por Asignatura"
+			},
+			"update": "Actualizar Tipo de Asistencia"
+		},
+		"billing-catalogs": {
+			"index": "Catálogos de facturación"
+		},
+		"block-types": {
+			"add": "Nuevo Tipo de Bloque",
+			"delete": "Eliminar Tipo de Bloque",
+			"order": "Ordenar Tipos de Bloques",
+			"translation": {
+				"break": "Descanso",
+				"lessons": "Clases"
+			},
+			"update": "Actualizar Tipo de Bloque"
+		},
+		"blood-types": {
+			"add": "Nuevo tipo de sangre",
+			"delete": "Eliminar tipo de sangre",
+			"fields": {
+				"name": "Nombre"
+			},
+			"update": "Actualizar tipo de sangre"
+		},
+		"campuses": {
+			"add": "Nuevo campus",
+			"delete": "Eliminar campus",
+			"fields": {
+				"active": "Activo",
+				"city": "Ciudad",
+				"colony": "Colonia",
+				"css-class": "Color",
+				"description": "Descripción",
+				"indoor": "Interior",
+				"municipality": "Municipio",
+				"name": "Nombre",
+				"outdoor": "Exterior",
+				"state": "Estado",
+				"street": "Calle",
+				"translation": "Traducción",
+				"zip-code": "Código Postal"
+			},
+			"levels": "Asignar niveles",
+			"update": "Actualizar campus"
+		},
+		"catalogs": {
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar el registro seleccionado? Esto no puede deshacerse.",
+				"create-description": "Completa la información para crear un nuevo registro. Se agregará inmediatamente al catálogo.",
+				"delete-title": "Eliminar el registro seleccionado",
+				"edit-description": "Modifica los datos del registro seleccionado. Los cambios se reflejarán inmediatamente en el sistema.",
+				"empty": "No hay información disponible",
+				"ordering": "Reordenando"
+			}
+		},
+		"comment-types": {
+			"add": "Nuevo Tipo de Comentario",
+			"delete": "Eliminar Tipo de Comentario",
+			"order": "Ordenar Tipos de Comentario",
+			"translation": {
+				"catalog": "Por Catálogo",
+				"no": "Sin Comentarios",
+				"pairs": "Duplas",
+				"subject": "Por Asignatura",
+				"teacher": "Por Docente"
+			},
+			"update": "Actualizar Tipo de Comentario"
+		},
+		"community-catalogs": {
+			"fields": {
+				"active": "Activo",
+				"css-class": "Color",
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"index": "Catálogos de Comunidad",
+			"messages": {
+				"empty": "No hay datos disponibles"
+			}
+		},
+		"controllers": {
+			"add": "Nuevo controlador",
+			"children": "Ver hijos ",
+			"contexts": {
+				"both": "Ambos",
+				"central": "Central",
+				"tenant": "Tenant"
+			},
+			"delete": "Eliminar controlador",
+			"drill-down": "Ver acciones",
+			"fields": {
+				"context": "Contexto",
+				"icon": "Ícono",
+				"module": "Módulo",
+				"name": "Nombre",
+				"order": "Orden",
+				"priv": "Privado",
+				"translation": "Traducción",
+				"visible": "Visible"
+			},
+			"index": "Controladores",
+			"messages": {
+				"children-of": "Hijos de",
+				"confirm-delete": "Estas a punto de eliminar el Controlador seleccionado",
+				"create-description": "Define un nuevo controlador y sus características",
+				"created": "Se creó un nuevo controlador",
+				"deleted": "El controlador fue eliminado",
+				"empty": "No existen registros",
+				"module": "Módulo",
+				"ordering": "Ordenando controladores",
+				"ordering-help": "Arrastra y suelta los controladors para cambiar su orden. Los cambios se aplicarán al guardar.",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Controlador seleccionado",
+				"updated": "El controlador fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"order": "Ordenar controladores",
+			"ordering": "Ordenar módulos",
+			"update": "Actualizar controlador"
+		},
+		"countries": {
+			"add": "Agregar país",
+			"delete": "Eliminar país",
+			"fields": {
+				"iso_code": "Código ISO",
+				"language": "Idioma",
+				"name": "Nombre",
+				"phone_code": "Código telefónico"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este país?",
+				"create-description": "Completa la información del país.",
+				"empty": "No hay países registrados",
+				"selected": "Seleccionado",
+				"update-description": "Modifica la información del país."
+			},
+			"update": "Actualizar país"
+		},
+		"days": {
+			"translation": {
+				"friday": "Viernes",
+				"monday": "Lunes",
+				"saturday": "Sábado",
+				"sunday": "Domingo",
+				"thursday": "Jueves",
+				"tuesday": "Martes",
+				"wednesday": "Miércoles"
+			}
+		},
+		"diagnostic-types": {
+			"add": "Nuevo Tipo de Diagnóstico",
+			"delete": "Eliminar Tipo de Diagnóstico",
+			"order": "Ordenar Tipos de Diagnóstico",
+			"translation": {
+				"grouped": "Agrupado",
+				"list": "Lista",
+				"rubric": "Rúbrica"
+			},
+			"update": "Actualizar Tipo de Diagnóstico"
+		},
+		"evaluation-types": {
+			"add": "Nuevo Tipo de Evaluación",
+			"delete": "Eliminar Tipo de Evaluación",
+			"order": "Ordenar Tipos de Evaluación",
+			"translation": {
+				"activities": "Por Actividades",
+				"aspects": "Por Aspectos",
+				"colors": "Por Colores",
+				"grades": "Calificación directa",
+				"no": "Sin Evaluación",
+				"points": "Por Puntos",
+				"quantity": "Por Cantidad"
+			},
+			"update": "Actualizar Tipo de Evaluación"
+		},
+		"family-statuses": {
+			"add": "Nuevo status",
+			"delete": "Eliminar Estado",
+			"translation": {
+				"active": "Activa",
+				"applicant": "Solicitante",
+				"archived": "Archivada",
+				"exalumni": "Egresada",
+				"inactive": "Inactiva"
+			},
+			"update": "Actualizar Estado"
+		},
+		"feedback-types": {
+			"add": "Nuevo Tipo de Retroalimentación",
+			"delete": "Eliminar Tipo de Retroalimentación",
+			"order": "Ordenar Tipos de Retroalimentación",
+			"translation": {
+				"errors": "Solo Errores",
+				"full": "Comentarios Completos",
+				"none": "Sin Comentarios",
+				"summary": "Resumen General"
+			},
+			"update": "Actualizar Tipo de Retroalimentación"
+		},
+		"genders": {
+			"add": "Nuevo género",
+			"delete": "Eliminar género",
+			"fields": {
+				"icon": "Ícono",
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el género",
+				"create-description": "Define un nuevo género y sus características",
+				"created": "Se creó un nuevo género",
+				"deleted": "El género fue eliminado",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del género seleccionado",
+				"updated": "El género fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"female": "Femenino",
+				"male": "Masculino"
+			},
+			"update": "Actualizar género"
+		},
+		"grade-policies": {
+			"add": "Nueva política de calificación",
+			"configure": "Configurar política",
+			"delete": "Eliminar política de calificación",
+			"fields": {
+				"active": "Activo",
+				"configurable": "Configurable",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar esta política de calificación?",
+				"create-description": "Define cómo se transforman o presentan las calificaciones",
+				"delete-title": "Eliminar política de calificación",
+				"edit-description": "Modifica la política de calificación seleccionada",
+				"empty": "No hay políticas de calificación registradas",
+				"ordering": "Ordenando políticas de calificación"
+			},
+			"order": "Ordenar políticas de calificación",
+			"translation": {
+				"no-rounding": "Sin redondeo",
+				"performance-scale": "Escala de desempeño",
+				"round": "Redondeo estándar",
+				"sep-rounding": "Redondeo SEP",
+				"truncate": "Truncar"
+			},
+			"update": "Actualizar política de calificación"
+		},
+		"grade-policy-items": {
+			"add": "Nuevo umbral",
+			"delete": "Eliminar umbral",
+			"fields": {
+				"code": "Código",
+				"defaults": "Valores predeterminados",
+				"items": "Umbrales",
+				"name": "Nombre",
+				"order": "Orden",
+				"threshold": "Umbral"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar este umbral?",
+				"confirm-restore": "Esto reemplazará todos los umbrales con los valores predeterminados. ¿Deseas continuar?",
+				"empty": "No hay umbrales configurados",
+				"loaded": "Umbrales cargados correctamente",
+				"ordering": "Ordenando umbrales",
+				"reordered": "Orden actualizado correctamente",
+				"reset": "Umbrales restablecidos correctamente",
+				"subtitle": "Configura los rangos y valores de esta política de calificación",
+				"table-description": "Define el código, nombre y umbral mínimo para cada rango",
+				"updated": "Umbrales actualizados correctamente"
+			},
+			"order": "Ordenar umbrales",
+			"restore": "Restaurar valores predeterminados",
+			"update": "Actualizar umbral"
+		},
+		"grade-progressions": {
+			"index": "Progresión de grados",
+			"messages": {
+				"empty": "No hay grados disponibles",
+				"ordering": "Ordenando grados para progresión"
+			}
+		},
+		"gradebook-actions": {
+			"add": "Nueva Acción de Boleta",
+			"delete": "Eliminar Acción de Boleta",
+			"fields": {
+				"color": "Color",
+				"icon": "Ícono",
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de que deseas eliminar esta acción de boleta?",
+				"created": "Acción de boleta creada correctamente",
+				"deleted": "Acción de boleta eliminada correctamente",
+				"empty": "No hay acciones de boleta disponibles",
+				"loaded": "Acciones de boleta cargadas correctamente",
+				"not-found": "La acción de boleta no fue encontrada",
+				"ordering": "Modo de ordenamiento activo",
+				"reordered": "Orden actualizado correctamente",
+				"updated": "Acción de boleta actualizada correctamente"
+			},
+			"subtitle": "Configura las acciones disponibles para las boletas",
+			"title": "Acciones de Boleta",
+			"translation": {
+				"excel": "Exportar a Excel",
+				"execute": "Ejecutar",
+				"mail": "Enviar por correo",
+				"print": "Imprimir",
+				"print-group": "Imprimir grupo"
+			},
+			"update": "Actualizar Acción de Boleta"
+		},
+		"gradebook-options": {
+			"add": "Nueva Opción de Boleta",
+			"delete": "Eliminar Opción de Boleta",
+			"translation": {
+				"closed": "Periodos Cerrados",
+				"group": "Grupo",
+				"student": "Alumno",
+				"terms": "Periodos"
+			},
+			"update": "Actualizar Opción de Boleta"
+		},
+		"gradebook-section-types": {
+			"add": "Nuevo Tipo de Sección",
+			"delete": "Eliminar Tipo de Sección",
+			"fields": {
+				"active": "Activo",
+				"configurable": "Configurable",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este tipo de sección?",
+				"create": "Tipo de sección creado correctamente",
+				"create-description": "Crea un nuevo tipo de sección para la boleta.",
+				"delete": "Tipo de sección eliminado correctamente",
+				"delete-description": "Esta acción eliminará el tipo de sección seleccionado.",
+				"empty": "No hay tipos de sección disponibles",
+				"loaded": "Tipos de sección cargados correctamente",
+				"order-updated": "Orden actualizado correctamente",
+				"ordering": "Modo de ordenamiento activo",
+				"update": "Tipo de sección actualizado correctamente",
+				"update-description": "Actualiza la información del tipo de sección."
+			},
+			"order": "Ordenar Tipo de Sección",
+			"translation": {
+				"attendance": "Asistencia",
+				"attendance-discipline": "Asistencia y Disciplina",
+				"averages": "Promedios",
+				"comments": "Comentarios",
+				"discipline": "Disciplina",
+				"discipline-tutor": "Disciplina del Tutor",
+				"gradebook": "Boleta",
+				"language-comments": "Comentarios de Idioma",
+				"rubric": "Rúbrica",
+				"signature-slip": "Hoja de Firmas",
+				"signatures": "Firmas"
+			},
+			"update": "Actualizar Tipo de Sección"
+		},
+		"gradebook-types": {
+			"actions": {
+				"messages": {
+					"description": "Selecciona las acciones disponibles para este Tipo de Boleta.",
+					"updated": "Las acciones del Tipo de Boleta se actualizaron correctamente."
+				}
+			},
+			"add": "Nuevo Tipo de Boleta",
+			"configure-actions": "Establecer acciones",
+			"configure-options": "Opciones del Tipo de Boleta",
+			"delete": "Eliminar Tipo de Boleta",
+			"edit": "Editar Tipo de Boleta",
+			"fields": {
+				"aspects": "Aspectos",
+				"integrations": "Integraciones",
+				"name": "Nombre",
+				"rubrics": "Rúbricas",
+				"sections": "Secciones",
+				"subjects": "Materias",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de que deseas eliminar este tipo de boleta?",
+				"created": "Tipo de boleta creado correctamente",
+				"deleted": "Tipo de boleta eliminado correctamente",
+				"loaded": "Tipos de boleta cargados correctamente",
+				"not-found": "El tipo de boleta no fue encontrado",
+				"ordering": "Modo de ordenamiento activo",
+				"reordered": "Orden actualizado correctamente",
+				"updated": "Tipo de boleta actualizado correctamente"
+			},
+			"options": {
+				"messages": {
+					"description": "Selecciona las opciones disponibles para este tipo de boleta.",
+					"updated": "Las opciones del Tipo de Boleta se actualizaron correctamente."
+				}
+			},
+			"order": "Ordenar los tipos de Boleta",
+			"subtitle": "Configura los tipos de boleta disponibles en el sistema",
+			"title": "Tipos de Boleta",
+			"translation": {
+				"aspects": "Aspectos",
+				"attendance": "Asistencia",
+				"discipline": "Disciplina",
+				"rubric": "Rúbrica",
+				"rubric-sections": "Secciones de Rúbricas",
+				"sections": "Secciones",
+				"selected-aspects": "Aspectos Seleccionados",
+				"terms": "Periodos"
+			},
+			"update": "Actualizar Tipo de Boleta"
+		},
+		"grades": {
+			"add": "Nuevo Grado",
+			"delete": "Eliminar grado",
+			"fields": {
+				"active": "Activo",
+				"description": "Descripción",
+				"level": "Nivel",
+				"name": "Nombre"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Grado seleccionado ",
+				"create-description": "Define un nuevo Nivel y sus características",
+				"created": "Se creó un nuevo Grado",
+				"deleted": "El Grado fue eliminado",
+				"empty": "No hay grados para el nivel",
+				"retrieved": "La información de tipos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Grado seleccionado",
+				"updated": "El Grado fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"update": "Actualizar grado"
+		},
+		"grading-scales": {
+			"add": "Agregar Escala de Calificación",
+			"delete": "Eliminar Escala de Calificación",
+			"fields": {
+				"active": "Activo",
+				"maximum": "Máximo",
+				"minimum": "Mínimo",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar esta escala de calificación?",
+				"created": "Escala de calificación creada correctamente",
+				"deleted": "Escala de calificación eliminada correctamente",
+				"empty": "No hay escalas de calificación registradas",
+				"ordered": "Escalas de calificación ordenadas correctamente",
+				"ordering": "Ordenando escalas de calificación",
+				"updated": "Escala de calificación actualizada correctamente"
+			},
+			"order": "Ordenar Escalas de Calificación",
+			"translation": {
+				"zero-hundred": "0 a 100",
+				"zero-ten": "0 a 10"
+			},
+			"update": "Actualizar Escala de Calificación"
+		},
+		"group-types": {
+			"add": "Nuevo tipo de grupo",
+			"delete": "Eliminar tipo de grupo",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"requires-subject": "Requiere asignatura",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este tipo de grupo?",
+				"create-description": "Crea un nuevo tipo de grupo",
+				"delete-title": "Eliminar tipo de grupo",
+				"edit-description": "Edita el tipo de grupo seleccionado",
+				"empty": "No hay tipos de grupo registrados",
+				"ordering": "Ordenando tipos de grupo"
+			},
+			"order": "Ordenar tipos de grupo",
+			"translation": {
+				"crossover": "Transversal",
+				"normal": "Regular",
+				"subject": "Por asignatura"
+			},
+			"update": "Actualizar tipo de grupo"
+		},
+		"invoice-uses": {
+			"add": "Nuevo uso",
+			"delete": "Eliminar uso",
+			"fields": {
+				"code": "Código",
+				"name": "Nombre",
+				"tin-types": "Tipos de RFC"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Uso de CFDI seleccionado",
+				"create-description": "Define un nuevo uso y sus características",
+				"created": "Se creó un nuevo Uso de CFDI",
+				"deleted": "El Uso de CFDI fue eliminado",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"tin-types-description": "Selecciona los tipos de RFC permitidos para este uso de factura.",
+				"tin-types-updated": "Los tipos de RFC del Uso de CFDI se actualizaron correctamente.",
+				"update-description": "Actualiza la información del uso seleccionado",
+				"updated": "El Uso de CFDI fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"tin-types": "Seleccionar tipo de RFC",
+			"update": "Actualizar uso"
+		},
+		"languages": {
+			"add": "Nuevo idioma",
+			"delete": "Eliminar idioma",
+			"fields": {
+				"active": "¿Está activo?",
+				"code": "Código",
+				"direction": "Dirección",
+				"label": "Traducción",
+				"name": "Nombre",
+				"shorthand": "Abreviatura"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el idioma",
+				"create-description": "Define un nuevo idioma y sus características",
+				"created": "Se creó un nuevo idioma",
+				"delete": "Estás a punto de eliminar el idioma",
+				"deleted": "Se eliminó el idioma",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del idioma seleccionado",
+				"updated": "Se actualizó el estado civil",
+				"without-selection": "Sin selección"
+			},
+			"options": {
+				"direction": {
+					"ltr": "Izquierda a derecha",
+					"rtl": "Derecha a izquierda"
+				}
+			},
+			"translation": {
+				"english": "Inglés (US)",
+				"spanish": "Español (MX)"
+			},
+			"update": "Actualizar idioma"
+		},
+		"levels": {
+			"add": "Nuevo nivel",
+			"delete": "Eliminar nivel",
+			"fields": {
+				"billing": "Facturación",
+				"css-class": "Color",
+				"description": "Descripción",
+				"name": "Nombre",
+				"organization-logo": "Logo",
+				"registration": "Registro",
+				"revoe": "RVOE",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Nivel seleccionado ",
+				"create-description": "Define un nuevo Nivel y sus características",
+				"created": "Se creó un nuevo Nivel",
+				"deleted": "El Nivel fue eliminado",
+				"empty": "No existen registros",
+				"none": "Logo predeterminado",
+				"ordering": "Ordenando Niveles",
+				"retrieved": "La información de tipos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Nivel seleccionado",
+				"updated": "El Nivel fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"order": "Ordenar Niveles",
+			"update": "Actualizar nivel"
+		},
+		"localization-catalogs": {
+			"index": "Catálogos de localización"
+		},
+		"mail-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"description": "Descripción",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Tipo seleccionado ",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"deleted": "El Tipo fue eliminado",
+				"empty": "No existen registros",
+				"retrieved": "La información de tipos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Tipo seleccionado",
+				"updated": "El Tipo fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"personal": "Personal",
+				"work": "Trabajo"
+			},
+			"update": "Actualizar tipo"
+		},
+		"marital-statuses": {
+			"add": "Nuevo Estado Civil",
+			"delete": "Eliminar Estado Civil",
+			"fields": {
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el estado civil",
+				"create-description": "Define un nuevo estado civil y sus características",
+				"created": "Se creó un nuevo estado civil",
+				"delete": "Estás a punto de eliminar el estado civil",
+				"deleted": "Se eliminó el estado civil",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del estado civil seleccionado",
+				"updated": "Se actualizó el estado civil",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"divorced": "Divorciado",
+				"free-union": "Unión libre",
+				"married": "Casado",
+				"separated": "Separado",
+				"single-father": "Padre soltero",
+				"single-mother": "Madre soltera",
+				"widowed": "Viudo"
+			},
+			"update": "Actualizar Estado Civil"
+		},
+		"modules": {
+			"actions": "Ver acciones",
+			"add": "Nuevo módulo",
+			"contexts": {
+				"both": "Ambos",
+				"central": "Central",
+				"tenant": "Tenant"
+			},
+			"delete": "Eliminar el módulo",
+			"fields": {
+				"context": "Contexto",
+				"icon": "Ícono",
+				"name": "Nombre",
+				"order": "Orden",
+				"priv": "Privado",
+				"translation": "Traducción"
+			},
+			"index": "Index",
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Módulo seleccionado ",
+				"create-description": "Define un nuevo módulo y sus características",
+				"created": "Se creó un nuevo módulo",
+				"deleted": "El módulo fue eliminado",
+				"empty": "No existen registros",
+				"ordering": "Ordenando módulos",
+				"ordering-help": "Arrastra y suelta los módulos para cambiar su orden. Los cambios se aplicarán al guardar.",
+				"retrieved": "La información de módulos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Módulo seleccionado",
+				"updated": "El módulo fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"order": "Ordenar módulos",
+			"update": "Actualizar módulo"
+		},
+		"name-casings": {
+			"add": "Nuevo formato",
+			"delete": "Eliminar formato",
+			"fields": {
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"translation": {
+				"capital": "Inicial en mayúscula",
+				"normal": "Formato normal",
+				"uppercase": "Todo en mayúsculas"
+			},
+			"update": "Actualizar formato"
+		},
+		"organization-logos": {
+			"add": "Nuevo logo",
+			"badges": {
+				"default": "Por defecto"
+			},
+			"delete": "Eliminar logo",
+			"fields": {
+				"active": "Activo",
+				"default": "Logo por defecto",
+				"name": "Nombre"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Logo seleccionado ",
+				"create-description": "Define un nuevo Nivel y sus características",
+				"created": "Se creó un nuevo Logo",
+				"deleted": "El Grado fue eliminado",
+				"no-image": "Aún no se ha subido ninguna imagen.",
+				"update-description": "Actualiza la información del Logo seleccionado",
+				"updated": "El Grado fue actualizado"
+			},
+			"update": "Actualizar logo",
+			"upload": "Cargar archivo",
+			"upload-modal": {
+				"description": "Selecciona una imagen para reemplazar el logotipo actual.",
+				"helper": "Formatos permitidos: PNG, JPG, JPEG, WEBP y SVG.",
+				"label": "Archivo del logotipo",
+				"placeholder": "Arrastra una imagen aquí o haz clic para seleccionarla.",
+				"title": "Subir Logotipo"
+			}
+		},
+		"organization-themes": {
+			"add": "Nuevo tema",
+			"delete": "Eliminar tema",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el tema",
+				"create-description": "Define un nuevo tema y sus características",
+				"created": "Se creó un nuevo tema",
+				"delete": "Estás a punto de eliminar el tema",
+				"deleted": "Se eliminó el tema",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del tema seleccionado",
+				"updated": "Se actualizó el estado civil",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"blue": "Azul",
+				"green": "Verde",
+				"orange": "Naranja",
+				"purple": "Morado",
+				"teal": "Turquesa"
+			},
+			"update": "Actualizar tema"
+		},
+		"parent-fields": {
+			"reset": "Restaurar",
+			"save": "Guardar cambios"
+		},
+		"password-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"name": "Nombre",
+				"translation": "Traduccion"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el tipo",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"delete": "Estás a punto de eliminar el tipo",
+				"deleted": "Se eliminó el tipo",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del tipo seleccionado",
+				"updated": "Se actualizó el estado civil",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"random": "Contraseña aleatoria",
+				"site-name": "Nombre del sitio"
+			},
+			"update": "Actualizar tipo"
+		},
+		"people-catalogs": {
+			"index": "Catálogos de personas"
+		},
+		"person-fields": {
+			"context": {
+				"parent": "Padre de Familia",
+				"staff": "Personal",
+				"student": "Alumno"
+			},
+			"description": "Define qué información se solicitará para cada tipo de persona y qué campos serán obligatorios.",
+			"fields": {
+				"field": "Campo",
+				"protected": "Protegido",
+				"required": "Requerido",
+				"visible": "Visible"
+			},
+			"rules": "Los campos protegidos son obligatorios y no pueden modificarse. Si un campo no es visible, automáticamente deja de ser requerido.",
+			"save": "Guardar"
+		},
+		"person_fields": {
+			"translation": {
+				"birthdate": "Fecha de nacimiento",
+				"birthplace": "Lugar de nacimiento",
+				"blood_type_id": "Tipo de sangre",
+				"citizenship": "Nacionalidad",
+				"degree": "Grado de estudios",
+				"degree_title": "Título profesional",
+				"gender_id": "Género",
+				"idn": "CURP",
+				"job_description": "Descripción del trabajo",
+				"lastname": "Apellido",
+				"marital_status_id": "Estado civil",
+				"mothername": "Segundo apellido",
+				"name": "Nombre",
+				"occupation": "Ocupación",
+				"religion": "Religión",
+				"tin": "RFC",
+				"translation": "Nombre alternativo"
+			}
+		},
+		"phone-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"description": "Descripción",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el Tipo seleccionado ",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"deleted": "El Tipo fue eliminado",
+				"empty": "No existen registros",
+				"retrieved": "La información de tipos fue cargada correctamente",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del Tipo seleccionado",
+				"updated": "El Tipo fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"home": "Casa",
+				"mobile": "Móvil",
+				"office": "Oficina"
+			},
+			"update": "Actualizar tipo"
+		},
+		"postal-codes": {
+			"description": "Consulta e importación del catálogo nacional de códigos postales.",
+			"errors": {
+				"file-not-found": "No se encontró el archivo de importación.",
+				"file-not-readable": "El archivo de importación no puede ser leído.",
+				"invalid-format": "El archivo de códigos postales tiene un formato inválido."
+			},
+			"fields": {
+				"city": "Ciudad",
+				"municipality": "Municipio",
+				"postal-code": "Código postal",
+				"settlement": "Colonia",
+				"settlement-type": "Tipo",
+				"state": "Estado"
+			},
+			"import": "Importar catálogo",
+			"messages": {
+				"import-description": "Esto reemplazará el catálogo actual de códigos postales.",
+				"imported": "Catálogo de códigos postales importado correctamente.",
+				"loaded": "Catálogo de códigos postales cargado correctamente."
+			},
+			"stats": {
+				"total": "Registros"
+			},
+			"title": "Códigos postales"
+		},
+		"project-types": {
+			"add": "Nuevo Tipo de Proyecto",
+			"delete": "Eliminar Tipo de Proyecto",
+			"order": "Ordenar Tipos de Proyecto",
+			"translation": {
+				"group": "En Equipo",
+				"individual": "Individual"
+			},
+			"update": "Actualizar Tipo de Proyecto"
+		},
+		"question-input-types": {
+			"add": "Nuevo Tipo de Entrada",
+			"delete": "Eliminar Tipo de Entrada",
+			"fields": {
+				"active": "Activo",
+				"component": "Componente",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este tipo de entrada?",
+				"create-description": "Define un nuevo tipo de entrada para capturar respuestas.",
+				"edit-description": "Modifica la información del tipo de entrada seleccionado.",
+				"empty": "No hay tipos de entrada registrados.",
+				"ordering": "Ordenando tipos de entrada"
+			},
+			"order": "Ordenar Tipos de Entrada",
+			"translation": {
+				"checkbox": "Casilla de verificación",
+				"date": "Fecha",
+				"file": "Archivo",
+				"number": "Número",
+				"radio": "Selección única",
+				"select": "Lista desplegable",
+				"table": "Tabla",
+				"text": "Texto",
+				"textarea": "Texto largo"
+			},
+			"update": "Actualizar Tipo de Entrada"
+		},
+		"question-types": {
+			"add": "Nuevo Tipo de Pregunta",
+			"configure": "Configurar Tipo de Pregunta",
+			"configure-input-types": "Configurar tipos de entrada",
+			"delete": "Eliminar Tipo de Pregunta",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"show-instructions": "Mostrar instrucciones",
+				"show-question": "Mostrar pregunta",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Estás seguro de eliminar este tipo de pregunta?",
+				"create-description": "Define un nuevo tipo de pregunta disponible en el sistema.",
+				"edit-description": "Modifica la información del tipo de pregunta seleccionado.",
+				"empty": "No hay tipos de pregunta registrados.",
+				"invalid-input-type": "Uno o más tipos de entrada no son válidos.",
+				"one-default-input-type-required": "Debe seleccionar exactamente un tipo de entrada predeterminado.",
+				"ordering": "Ordenando tipos de pregunta"
+			},
+			"order": "Ordenar Tipos de Pregunta",
+			"translation": {
+				"boolean": "Verdadero / Falso",
+				"columns": "Columnas",
+				"delivery": "Entrega",
+				"multiple": "Opción múltiple",
+				"open": "Abierta",
+				"range": "Rango",
+				"result": "Resultado",
+				"rubric": "Rúbrica",
+				"scale": "Escala",
+				"simple": "Respuesta simple",
+				"spaces": "Espacios"
+			},
+			"update": "Actualizar Tipo de Pregunta"
+		},
+		"roles": {
+			"add": "Nuevo rol",
+			"delete": "Eliminar Rol",
+			"fields": {
+				"help": "Ayuda",
+				"id": "ID",
+				"internal": "Interno",
+				"name": "Nombre",
+				"path": "Ruta",
+				"translation": "Traducción"
+			},
+			"helpers": {
+				"admin": "Usuario administrador de la aplicación",
+				"coordinator": "Usuario coordinador",
+				"root": "Usuario principal de la aplicación"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el rol",
+				"create-description": "Define un nuevo rol y sus características",
+				"created": "Se creó un nuevo rol",
+				"deleted": "El rol fue eliminado",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"updated": "El rol fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"access-control": "Control de acceso",
+				"admin": "Administrador",
+				"administration-director": "Director administrativo",
+				"administrative": "Administrativo",
+				"admissions": "Admisiones",
+				"after-school": "After school",
+				"after-teacher": "Docente academias",
+				"applicant": "Solicitante",
+				"asistente-sep": "Asistente Sep",
+				"asistenteb": "Asistente B",
+				"asistented": "Asistente del director",
+				"assistant": "Asistente",
+				"cafeteria": "Cafetería",
+				"cashier": "Cajero",
+				"comunicacion": "Comunicación",
+				"config": "Configurador",
+				"consultas": "Consultas",
+				"coordinator": "Coordinador",
+				"deputy-director": "Sub director",
+				"director": "Director",
+				"director-assistant": "Asistente Dirección",
+				"hebrew-prefect": "Prefecto hebreo",
+				"internal-store": "Tienda interna",
+				"jutification-prefect": "Prefecto Justificación",
+				"kitchen": "Cocina",
+				"nursing": "Enfermería",
+				"parent": "Padre de familia",
+				"patronage": "Patronato",
+				"people-entry": "Entrada de personas",
+				"prefect": "Prefecto",
+				"preschool-tutor": "Tutor preescolar",
+				"principal": "Director general",
+				"psychologist": "Psicólogo",
+				"purchases": "Compras",
+				"root": "Root",
+				"sep": "Asistente Sep",
+				"skolans": "Skolans",
+				"student": "Alumno",
+				"support": "Soporte",
+				"teacher": "Docente",
+				"transport-admin": "Administrador de transportes",
+				"transports": "Transportes",
+				"tutor": "Tutor"
+			},
+			"update": "Actualizar rol"
+		},
+		"rubric-types": {
+			"add": "Nuevo Tipo de Rúbrica",
+			"delete": "Eliminar Tipo de Rúbrica",
+			"order": "Ordenar Tipos de Rúbrica",
+			"translation": {
+				"continuous": "Escala Continua",
+				"scale-less": "Escala por indicador",
+				"sectioned": "Captura por Sección",
+				"sep": "Formato Sep",
+				"stepped": "Escala por niveles"
+			},
+			"update": "Actualizar Tipo de Rúbrica"
+		},
+		"schedule-types": {
+			"add": "Nuevo Tipo de Horario",
+			"delete": "Eliminar Tipo de Horario",
+			"order": "Ordenar Tipos de Horario",
+			"translation": {
+				"stage": "Por Etapa",
+				"week": "Por Semana"
+			},
+			"update": "Actualizar Tipo de Horario"
+		},
+		"sections": {
+			"add": "Nueva sección",
+			"delete": "Eliminar Sección",
+			"fields": {
+				"active": "Activa",
+				"capital": "Mayúscula",
+				"css-class": "Color",
+				"description": "Descripción",
+				"gender": "Genero",
+				"gender-placeholder": "Seleccione un género o déjelo sin asignar",
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"order": "Ordenar secciones",
+			"update": "Actualizar Sección"
+		},
+		"staff-fields": {
+			"reset": "Restaurar",
+			"save": "Guardar cambios"
+		},
+		"student-fields": {
+			"reset": "Restaurar",
+			"save": "Guardar cambios"
+		},
+		"student-statuses": {
+			"add": "Nuevo status",
+			"delete": "Eliminar Estado",
+			"translation": {
+				"active": "Activo",
+				"graduated": "Graduado",
+				"inactive": "Inactivo",
+				"suspended": "Suspendido",
+				"withdrawn": "Retirado"
+			},
+			"update": "Actualizar Estado"
+		},
+		"student-year-statuses": {
+			"add": "Nuevo Estado",
+			"delete": "Eliminar Estado",
+			"translation": {
+				"active": "Activo",
+				"completed": "Completado",
+				"conditional": "Condicionado",
+				"suspended": "Suspendido",
+				"withdrawn": "Baja"
+			},
+			"update": "Actualizar Estado"
+		},
+		"studyplan-structures": {
+			"add": "Nueva Estructura",
+			"delete": "Eliminar Estructura",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"stage-name": "Nombre de etapa",
+				"stages": "Etapas",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar esta estructura?",
+				"create-description": "Define cómo se organiza el plan de estudios",
+				"empty": "No hay estructuras registradas",
+				"ordering": "Reordenando estructuras",
+				"update-description": "Modifica la estructura del plan de estudios"
+			},
+			"order": "Ordenar Estructuras",
+			"translation": {
+				"annual": "Anual",
+				"quarterly": "Cuatrimestral",
+				"semester": "Semestral",
+				"trimester": "Trimestral"
+			},
+			"update": "Actualizar Estructura"
+		},
+		"subject-types": {
+			"add": "Nuevo Tipo de Materia",
+			"delete": "Eliminar Tipo de Materia",
+			"description": "Define el comportamiento de las materias dentro del sistema.",
+			"fields": {
+				"active": "Activo",
+				"automatic": "Automática",
+				"can-create": "Crear",
+				"can-remove": "Eliminar",
+				"name": "Nombre",
+				"searchable": "Buscable",
+				"translation": "Traducción",
+				"uses-teams": "Equipos"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar este tipo de materia?",
+				"create-description": "Crea un nuevo tipo de materia.",
+				"empty": "No hay tipos de materia registrados.",
+				"ordering": "Modo de ordenamiento activo",
+				"update-description": "Modifica la configuración del tipo de materia."
+			},
+			"order": "Ordenar Tipos de Materia",
+			"title": "Tipos de Materia",
+			"translation": {
+				"areas": "Materia de área",
+				"crossovers": "Materia transversal",
+				"special": "Materia especial",
+				"subject": "Materia",
+				"teams": "Materia por equipos"
+			},
+			"update": "Editar Tipo de Materia"
+		},
+		"support-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"name": "Nombre",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el tipo",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"deleted": "El tipo fue eliminado",
+				"empty": "No existen registros",
+				"ordering": "Ordenando tipos",
+				"ordering-help": "Arrastra y suelta los módulos para cambiar su orden. Los cambios se aplicarán al guardar.",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del tipo seleccionado",
+				"updated": "El rol fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"administered": "Soporte administrado",
+				"free": "Soporte libre"
+			},
+			"update": "Actualizar tipo"
+		},
+		"survey-types": {
+			"add": "Nuevo Tipo de Encuesta",
+			"delete": "Eliminar Tipo de Encuesta",
+			"order": "Ordenar Tipos de Encuesta",
+			"translation": {
+				"family-multiple": "Para Familias por Alumno",
+				"family-unique": "Para Familias",
+				"staff": "Para Personal",
+				"student": "Para Alumnos"
+			},
+			"update": "Actualizar Tipo de Encuesta"
+		},
+		"system-catalogs": {
+			"index": "Catálogos del sistema"
+		},
+		"tax-regimes": {
+			"add": "Nuevo régimen",
+			"delete": "Eliminar régimen",
+			"fields": {
+				"code": "Código",
+				"name": "Nombre"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el régimen",
+				"create-description": "Define un nuevo régimen y sus características",
+				"created": "Se creó un nuevo régimen",
+				"deleted": "El régimen fue eliminado",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del régimen seleccionado",
+				"updated": "El rol fue actualizado",
+				"without-selection": "Sin selección"
+			},
+			"tin-types": "Seleccionar tipos de RFC",
+			"update": "Actualizar régimen"
+		},
+		"tenant-statuses": {
+			"translation": {
+				"active": "Activo",
+				"pending": "Pendiente",
+				"suspended": "Suspendido"
+			}
+		},
+		"term-statuses": {
+			"add": "Nuevo Estado de Periodo",
+			"delete": "Eliminar Estado de Periodo",
+			"fields": {
+				"active": "Activo",
+				"css_class": "Clase CSS",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar este estado de periodo?",
+				"create-description": "Crea un nuevo estado de periodo.",
+				"empty": "No hay estados de periodo registrados.",
+				"update-description": "Actualiza la información del estado de periodo seleccionado."
+			},
+			"ordering": "Ordenar Estados de Periodo",
+			"title": "Estados de Periodo",
+			"translation": {
+				"closed": "Cerrado",
+				"configuration": "Configuración",
+				"in-review": "En Revisión",
+				"open": "Abierto"
+			},
+			"update": "Editar Estado de Periodo"
+		},
+		"term-types": {
+			"add": "Nuevo Tipo de Periodo",
+			"delete": "Eliminar Tipo de Periodo",
+			"order": "Ordenar Tipos de Periodos",
+			"translation": {
+				"exam": "Exámenes",
+				"extraordinary": "Extraordinarios",
+				"holiday": "Vacaciones",
+				"lessons": "Clases"
+			},
+			"update": "Actualizar Tipo de Periodo"
+		},
+		"tin-types": {
+			"add": "Nuevo tipo",
+			"delete": "Eliminar tipo",
+			"fields": {
+				"country": "País",
+				"name": "Nombre",
+				"translation": "Traducción",
+				"validation": "Validación"
+			},
+			"messages": {
+				"confirm-delete": "Estas a punto de eliminar el tipo",
+				"create-description": "Define un nuevo tipo y sus características",
+				"created": "Se creó un nuevo tipo",
+				"delete": "Estás a punto de eliminar el tipo",
+				"deleted": "Se eliminó el tipo",
+				"empty": "No existen registros",
+				"select-record": "Seleccionar el registro con el que deseas trabajar",
+				"selected": "Registro seleccionado",
+				"update-description": "Actualiza la información del tipo seleccionado",
+				"updated": "Se actualizó el estado civil",
+				"without-selection": "Sin selección"
+			},
+			"translation": {
+				"ein": "Identificador del Empleador",
+				"moral": "Persona moral",
+				"physical": "Persona Física",
+				"ssn": "Número de Seguro Social"
+			},
+			"update": "Actualizar tipo"
+		},
+		"tutor-statuses": {
+			"add": "Nuevo Estado",
+			"delete": "Eliminar Estado",
+			"translation": {
+				"active": "Tutor activo",
+				"deceased": "Tutor Fallecido",
+				"inactive": "Tutor inactivo"
+			},
+			"update": "Actualizar Estado"
+		},
+		"tutor-types": {
+			"translation": {
+				"father": "Padre",
+				"mother": "Madre",
+				"tutor": "Tutor"
+			}
+		}
+	},
+	"context": {
+		"both": "Ambos",
+		"central": "Central",
+		"tenant": "Tenant"
+	},
+	"controllers": {
+		"academic-catalogs": "Catálogos académicos",
+		"actions": "Acciones",
+		"activity-types": "Tipos de Actividades",
+		"address-types": "Tipos de direcciones",
+		"aspect-modes": "Modo de aspectos",
+		"attendance-calculations": "Cálculos de asistencia",
+		"attendance-types": "Tipos de Asistencia",
+		"billing-types": "Tipos de Cobranza",
+		"block-types": "Tipos de Bloque",
+		"blood-types": "Tipos de sangre",
+		"campuses": "Campus",
+		"comment-types": "Tipos de Comentarios",
+		"community-catalogs": "Catálogos de Comunidad",
+		"controllers": "Controladores",
+		"countries": "Países",
+		"data-utilities": "Utilerías de Datos",
+		"diagnostic-types": "Tipos de Diagnósticos",
+		"evaluation-types": "Tipos de Evaluación",
+		"families": "Familias",
+		"family-address": "Dirección",
+		"family-collection": "Cobranza",
+		"family-contacts": "Contactos",
+		"family-finances": "Finanzas",
+		"family-general": "General",
+		"family-members": "Miembros",
+		"family-profile": "Perfil Familiar",
+		"family-statuses": "Estados de Familia",
+		"family-students": "Alumnos",
+		"family-tutors": "Padres de familia",
+		"feedback-types": "Tipos de Retroalimentación",
+		"finance-catalogs": "Catálogos Financieros",
+		"genders": "Géneros",
+		"general-configuration": "General",
+		"grade-policies": "Políticas de calificación",
+		"grade-policy-items": "Configurar política",
+		"grade-progressions": "Progresión de grados",
+		"gradebook-actions": "Acciones de Boleta",
+		"gradebook-options": "Opciones de Boleta",
+		"gradebook-section-types": "Tipos de Secciones de Boletas",
+		"gradebook-types": "Tipos de Boletas",
+		"grades": "Grados escolares",
+		"grading-scales": "Escalas de calificación",
+		"group-types": "Tipos de Grupos",
+		"home": "Inicio",
+		"invoice-uses": "Usos de CFDI",
+		"languages": "Idiomas",
+		"learning-areas": "Campos Formativos",
+		"levels": "Niveles",
+		"localization-catalogs": "Catálogos de localización",
+		"mail-types": "Tipos de correos",
+		"marital-statuses": "Estados civiles",
+		"modules": "Módulos",
+		"my-school": "Mi Escuela",
+		"name-casings": "Formatos de nombre",
+		"normalize-people-names": "Normalizar nombres de personas",
+		"organization-logos": "Logos institucionales",
+		"organization-themes": "Temas",
+		"parent-fields": "Campos de los Padres",
+		"password-types": "Tipos de contraseña",
+		"peerson-addresses": "Direcciones",
+		"people-catalogs": "Catálogos de personas",
+		"permissions": "Permisos",
+		"person-addresses": "Direcciones",
+		"person-attributes": "Atributos de Persona",
+		"person-communication": "Comunicación",
+		"person-direct-communication": "Comunicación Directa",
+		"person-fields": "Campos de Personas",
+		"person-levels": "Niveles",
+		"person-mails": "Correos",
+		"person-password": "Contraseña",
+		"person-phones": "Teléfonos",
+		"person-profile": "Perfil",
+		"person-sections": "Secciones",
+		"phone-types": "Tipos de teléfonos",
+		"postal-codes": "Códigos Postales",
+		"profile": "Mi Perfil",
+		"project-types": "Tipos de proyectos",
+		"question-input-types": "Tipos de Entrada",
+		"question-types": "Tipos de Preguntas",
+		"roles": "Roles",
+		"root-dashboard": "Panel",
+		"rubric-types": "Tipos de Rúbricas",
+		"schedule-types": "Tipos de Horario",
+		"school-years": "Ciclos escolares",
+		"sections": "Secciones",
+		"staff-detail": "Detalles del personal",
+		"staff-fields": "Campos del Saff",
+		"staff-users": "Personal",
+		"student-collection": "Cobranza",
+		"student-fields": "Campos del alumno",
+		"student-rfid": "Tarjetas Rfid",
+		"student-statuses": "Estados de Alumno",
+		"student-year-statuses": "Estados del Ciclo del Alumno",
+		"student-years": "Ciclos escolares",
+		"study-plan-academics": "Estructura Académica",
+		"study-plan-attendance": "Asistencia",
+		"study-plan-evaluation": "Evaluación y Seguimiento",
+		"study-plan-general": "Información general",
+		"study-plan-grading": "Calificaciones",
+		"study-plan-information": "Información",
+		"study-plan-lms": "LMS",
+		"study-plan-report-cards": "Boletas",
+		"study-plan-scheduling": "Organización y Horarios",
+		"study-plan-stage-terms": "periodos",
+		"study-plans": "Planes de Estudio",
+		"studyplan-structures": "Estructuras del Plan de Estudios",
+		"subject-classifications": "Clasificaciones",
+		"subject-subcategories": "Subcategorías",
+		"subject-types": "Tipos de Asignaturas",
+		"subjects": "Asignaturas",
+		"support-types": "Tipos de soporte",
+		"survey-types": "Tipos de Encuestas",
+		"system-catalogs": "Catálogos del sistema",
+		"tax-regimes": "Regímenes fiscales",
+		"tenants": "Instituciones",
+		"term-statuses": "Estados de Periodos",
+		"term-types": "Tipos de Periodos",
+		"tin-types": "Tipos de RFC",
+		"tutor-statuses": "Estados de Tutor",
+		"user-levles": "Niveles de usuario",
+		"user-roles": "Roles adicionales",
+		"user-security": "Seguridad",
+		"users": "Usuarios"
+	},
+	"forgot_password": {
+		"back": "Volver a iniciar sesión",
+		"submit": "Enviar instrucciones",
+		"subtitle": "Ingresa tu usuario o correo y te enviaremos las instrucciones para recuperar tu contraseña",
+		"title": "Recupera tu contraseña",
+		"user": "Usuario o correo"
+	},
+	"home": {
+		"person-addresses": {
+			"add": "Nueva dirección",
+			"delete": "Eliminar dirección",
+			"update": "Actualizar dirección"
+		},
+		"person-mails": {
+			"add": "Nuevo Correo",
+			"delete": "Eliminar Correo",
+			"update": "Actualizar Correo"
+		},
+		"person-password": {
+			"description": "Actualiza la contraseña de acceso del usuario.",
+			"fields": {
+				"password": "Contraseña nueva",
+				"password-confirmation": "Repetir contraseña"
+			},
+			"messages": {
+				"updated": "Se actualizó la contraseña"
+			},
+			"title": "Cambiar contraseña",
+			"validation": {
+				"password-confirmation-required": "Debes repetir la contraseña.",
+				"password-minlength": "La contraseña debe tener al menos 8 caracteres.",
+				"password-mismatch": "Las contraseñas no coinciden.",
+				"password-required": "La contraseña es obligatoria."
+			}
+		},
+		"person-phones": {
+			"add": "Nuevo teléfono",
+			"delete": "Eliminar Teléfono",
+			"update": "Actualizar Teléfono"
+		},
+		"profile": {
+			"index": "Mi Perfil",
+			"reset-photo": "Eliminar Fotografía",
+			"upload-photo": "Cargar Fotografía"
+		}
+	},
+	"layout": {
+		"sidebar": {
+			"academic": "Académico",
+			"dashboard": "Dashboard"
+		},
+		"topbar": {
+			"change_language": "Cambiar idioma",
+			"change_role": "Cambiar rol",
+			"notifications": "Notificaciones",
+			"profile": "Mi Perfil"
+		}
+	},
+	"login": {
+		"forgot": "¿Olvidaste tu contraseña?",
+		"loading": "Cargando, favor de esperar.....",
+		"password": "Contraseña",
+		"submit": "Iniciar sesión",
+		"subtitle": "Accede con tus credenciales para continuar",
+		"title": "Iniciar sesión",
+		"user": "Usuario o Correo",
+		"welcome": "Bienvenido de nuevo"
+	},
+	"modules": {
+		"academics": "Académico",
+		"administration": "Administración",
+		"configuration": "Configuración",
+		"home": "Inicio",
+		"planning": "Planeación",
+		"security": "Seguridad",
+		"utilities": "Utilerías"
+	},
+	"planning": {
+		"study-plan-academics": {
+			"actions": {
+				"manage": "Administrar"
+			},
+			"add-stage": "Nueva Etapa",
+			"description": "Define cómo está construida académicamente la estructura del plan de estudio.",
+			"index": "Estructura académica",
+			"integrations": {
+				"description": "Configura cómo se integran académicamente las asignaturas en boletas y promedios.",
+				"pending-description": "Define ponderaciones y agrupaciones entre asignaturas.",
+				"pending-title": "Integraciones académicas",
+				"title": "Integración de Asignaturas"
+			},
+			"stages": {
+				"description": "Configura las etapas académicas y los periodos asociados al plan de estudio.",
+				"distribution": "Distribución académica",
+				"empty": "No hay etapas registradas.",
+				"metrics": {
+					"closed-terms": "Cerrados",
+					"closes-in": "Cierra en {{days}} días",
+					"current": "Periodo vigente",
+					"last": "Último periodo",
+					"next": "Próximo periodo",
+					"no-current": "Sin periodo",
+					"no-current-description": "No se encontró un periodo vigente para este plan.",
+					"no-current-value": "No disponible",
+					"open-terms": "Activos",
+					"stages": "Etapas",
+					"terms": "Periodos"
+				},
+				"status": {
+					"pending": "Configuración pendiente",
+					"pending-description": "El plan todavía no tiene etapas registradas.",
+					"ready": "Estructura configurada",
+					"ready-description": "El plan ya cuenta con etapas académicas configuradas."
+				},
+				"title": "Etapas y Periodos"
+			},
+			"subjects": {
+				"description": "Administra las materias asociadas a cada grado académico.",
+				"pending-description": "Asigna materias y define la estructura académica por grado.",
+				"pending-title": "Configuración de asignaturas",
+				"title": "Asignaturas por Grado"
+			},
+			"title": "Estructura Académica"
+		},
+		"study-plan-attendance": {
+			"description": "Configura cómo se registra la asistencia y cuándo el alumno conserva derecho a presentar exámenes.",
+			"explanation": {
+				"main": "Se requiere al menos {{ percent }} de asistencia para que el alumno tenga derecho a presentar exámenes."
+			},
+			"fields": {
+				"attendance-calculation": "Cálculo de asistencia",
+				"attendance-delay": "Días permitidos para captura",
+				"attendance-details": "Detalle de asistencia",
+				"attendance-percent": "Asistencia mínima",
+				"attendance-type": "Tipo de asistencia",
+				"delay-absence-ratio": "Retardos por falta"
+			},
+			"messages": {
+				"updated": "La configuración de asistencia se actualizó correctamente."
+			},
+			"reset": "Restablecer configuración",
+			"save": "Guardar configuración",
+			"sections": {
+				"exam-right": "Derecho a examen",
+				"recording": "Registro de asistencia",
+				"system": "Operación del sistema"
+			},
+			"title": "Asistencia y derecho a examen",
+			"units": {
+				"days": "días"
+			},
+			"update": "Editar"
+		},
+		"study-plan-general": {
+			"description": "Configura los datos principales del plan de estudio",
+			"edit": "Editar información general",
+			"fields": {
+				"description": "Descripción",
+				"end": "Fin",
+				"level": "Nivel",
+				"name": "Nombre",
+				"period": "Periodo",
+				"schedule-type": "Tipo de horario",
+				"school-year": "Ciclo escolar",
+				"section": "Sección",
+				"start": "Inicio",
+				"structure": "Estructura"
+			},
+			"messages": {
+				"updated": "Se actualizó la información General"
+			},
+			"reset": "Cancelar",
+			"save": "Guardar",
+			"title": "Información general",
+			"update": "Editar"
+		},
+		"study-plan-grading": {
+			"context": "Define cómo se calculan y presentan las calificaciones finales del alumno.",
+			"description": "Configura la forma en que se calculan y presentan las calificaciones",
+			"explanation": {
+				"calculation": "La calificación final se calcula a partir de los promedios por periodo, dando un peso de {{ classPercent }} a los periodos de clase y {{ examPercent }} a los periodos de examen."
+			},
+			"fields": {
+				"aspect-mode": "Modo de aspectos",
+				"class-percent": "Porcentaje clase",
+				"comment-type": "Tipo de comentario",
+				"decimals": "Decimales",
+				"exam-percent": "Porcentaje examen",
+				"exemption-average": "Promedio mínimo",
+				"exemption-percent": "Porcentaje requerido",
+				"exemptions": "Exenciones",
+				"grade-policy": "Política de redondeo",
+				"grading-scale": "Escala de calificación",
+				"rounding": "Forma de redondeo"
+			},
+			"messages": {
+				"percentages-must-sum-one": "El porcentaje de clase y el porcentaje de examen deben sumar 100%.",
+				"updated": "La configuración de evaluación se actualizó correctamente."
+			},
+			"reset": "Restablecer configuración",
+			"save": "Guardar configuración",
+			"sections": {
+				"calculation": "Cálculo de la calificación",
+				"rules": "Reglas adicionales",
+				"scale": "Escala y formato"
+			},
+			"title": "Evaluación y seguimiento",
+			"update": "Editar"
+		},
+		"study-plan-stages": {
+			"add": "Nueva etapa",
+			"delete": "Eliminar etapa",
+			"description": "Consulta y configura la etapa académica seleccionada y sus periodos asociados.",
+			"empty": {
+				"description": "No fue posible cargar la información de la etapa seleccionada.",
+				"title": "Etapa no disponible"
+			},
+			"fields": {
+				"dates": "Fechas de la etapa",
+				"order": "Orden",
+				"terms": "Periodos"
+			},
+			"terms": {
+				"description": "Revisa los periodos definidos dentro de esta etapa académica.",
+				"empty": "Esta etapa todavía no tiene periodos registrados.",
+				"review-date": "Fecha de revisión",
+				"title": "Periodos de la etapa"
+			},
+			"title": "Etapas del plan de estudio",
+			"update": "Editar etapa"
+		},
+		"study-plans": {
+			"add": "Nuevo Plan de estudio",
+			"children": {
+				"academics": "Define la estructura académica del plan: etapas, grados y asignaturas.",
+				"evaluation": "Configura aspectos, captura de calificaciones y seguimiento académico.",
+				"information": "Consulta y ajusta la información general del plan de estudio.",
+				"report-cards": "Configura boletas, periodos y presentación de resultados académicos.",
+				"scheduling": "Organiza grupos, asignaciones y la configuración de horarios."
+			},
+			"configuration": {
+				"back": "Volver",
+				"description": "Configura los elementos clave del plan de estudio seleccionando una de las secciones disponibles.",
+				"title": "Configuración del plan"
+			},
+			"delete": "Eliminar Plan de estudio",
+			"fields": {
+				"dates": "Vigencia del plan",
+				"description": "Descripción",
+				"end": "Fecha de fin",
+				"level": "Nivel escolar",
+				"name": "Nombre",
+				"schedule-type": "Tipo de horario",
+				"school-year": "Ciclo escolar",
+				"section": "Sección",
+				"start": "Fecha de inicio",
+				"structure": "Estructura"
+			},
+			"messages": {
+				"already-exists": "Ya existe un plan de estudio para este nivel, ciclo escolar y sección.",
+				"confirm-delete": "¿Seguro que deseas eliminar este plan de estudio?",
+				"create-description": "Captura la información básica para crear un nuevo plan de estudio.",
+				"created": "Plan de estudio creado correctamente.",
+				"deleted": "Plan de estudio eliminado correctamente.",
+				"empty": "No hay planes de estudio disponibles.",
+				"loaded": "Planes de estudio cargados correctamente.",
+				"no-description": "Sin descripción",
+				"select-study-plan": "Selecciona un plan de estudio para ver su información."
+			},
+			"sections": {
+				"access": "Configuración del Plan",
+				"general-information": "Información general"
+			},
+			"update": "Actualizar Plan de estudio"
+		}
+	},
+	"security": {
+		"permissions": {
+			"edit": "Actualizar permisos",
+			"index": "Permisos"
+		},
+		"users": {
+			"change-password": "Cambiar Contraseña",
+			"fields": {
+				"email": "Correo",
+				"lastname": "Apellido paterno",
+				"mothername": "Apellido materno",
+				"name": "Nombre",
+				"role": "Rol"
+			},
+			"messages": {
+				"confirm-change-password": "Se generará una nueva contraseña para este usuario. ¿Deseas continuar?",
+				"email-already-exists": "El correo ya está registrado",
+				"no-results": "La búsqueda no arrojo ningún resultado",
+				"refine-search": "Hay más resultados disponibles. Refina tu búsqueda."
+			},
+			"profile": "Perfil del Usuario"
+		}
+	},
+	"sidebar": {
+		"academic": "Académico",
+		"admissions": "Admisiones",
+		"applicants": "Aspirantes",
+		"attendance": "Asistencias",
+		"banks": "Bancos",
+		"dashboard": "Dashboard",
+		"finance": "Finanzas",
+		"grades": "Calificaciones",
+		"mails": "Correos",
+		"parameters": "Parámetros",
+		"permissions": "Permisos",
+		"processes": "Procesos",
+		"report_cards": "Boletas",
+		"roles": "Roles",
+		"settings": "Configuración",
+		"statements": "Estados de cuenta",
+		"users": "Usuarios"
+	},
+	"utilities": {
+		"data-utilities": {
+			"index": "Utilerías de Datos"
+		},
+		"labels": {
+			"click-to-run": "Clic para ejecutar"
+		},
+		"messages": {
+			"confirm-execution": "Confirmar ejecución"
+		},
+		"normalize-people-names": {
+			"execute": "Ejecutar",
+			"messages": {
+				"executed": "Se ejecutó Normalizar Nombres de Personas"
+			}
+		}
+	},
+	"validation": {
+		"date": "Formato de fecha inválido",
+		"email": "Formato de correo inválido",
+		"invalid_selection": "Selección inválidaß",
+		"required": "Requerido"
+	}
+}

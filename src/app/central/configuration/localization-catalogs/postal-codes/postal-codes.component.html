@@ -1,0 +1,44 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left"></div>
+
+      <div class="sk-toolbar__center">
+        <div class="sk-selection-inline">
+          <span class="sk-selection-badge postal-codes__count-badge">
+            {{ totalPostalCodes() | number }}
+          </span>
+
+          <strong>
+            {{ 'configuration.postal-codes.stats.total' | translate }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (getScreenOption('import'); as importOption) {
+          <app-ui-button
+            [label]="importOption.translation | translate"
+            [variant]="importOption.color"
+            size="sm"
+            [iconLeft]="importOption.icon"
+            (click)="importPostalCodes()"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [rowData]="postalCodes()"
+        [columnDefs]="columnDefs()"
+        [loading]="loading()"
+        selectionMode="single"
+        height="fill"
+        [pagination]="true"
+        [pageSize]="100"
+        (selectionChange)="onSelectionChange($event)"
+      />
+    </div>
+  </div>
+</section>

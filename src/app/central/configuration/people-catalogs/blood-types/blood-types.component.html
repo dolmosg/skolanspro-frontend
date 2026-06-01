@@ -1,0 +1,64 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left">
+        <app-ui-button
+          type="button"
+          variant="primary"
+          size="sm"
+          [label]="'configuration.blood-types.add' | translate"
+          iconLeft="add"
+          (click)="onAdd()"
+        />
+      </div>
+
+      <div class="sk-toolbar__center">
+        @if (hasSelection()) {
+          <div class="sk-selection-inline">
+            <span class="sk-selection-badge">1</span>
+            <strong>{{ selectedBloodTypes()[0].name }}</strong>
+          </div>
+        }
+      </div>
+
+      <div class="sk-toolbar__right">
+        @if (hasSelection()) {
+          <app-ui-button
+            type="button"
+            variant="secondary"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="edit"
+            [title]="'configuration.blood-types.update' | translate"
+            (click)="onEdit()"
+          />
+
+          <app-ui-button
+            type="button"
+            variant="danger"
+            size="sm"
+            [iconOnly]="true"
+            iconLeft="delete"
+            [title]="'configuration.blood-types.delete' | translate"
+            (click)="onDelete()"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="bloodTypes()"
+        [loading]="loading()"
+        [emptyMessage]="'configuration.blood-types.messages.empty' | translate"
+        selectionMode="single"
+        height="fill"
+        [pagination]="true"
+        [alwaysShowPagination]="true"
+        [pageSize]="10"
+        (selectionChange)="onSelectionChange($event)"
+      ></app-skolans-table>
+    </div>
+  </div>
+</section>

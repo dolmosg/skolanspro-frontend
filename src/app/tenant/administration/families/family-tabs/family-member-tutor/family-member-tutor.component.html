@@ -1,0 +1,137 @@
+<section class="family-member-tutor">
+  <aside class="family-member-tutor__side">
+
+    <div class="family-member-tutor__avatar">
+      <img [src]="person()?.photo" [alt]="person()?.full_name || 'Tutor'" />
+    </div>
+
+    <h2 class="family-member-tutor__name">
+      {{ person()?.full_name }}
+    </h2>
+
+    @if (tutor().tutor_type) {
+      <p class="family-member-tutor__role">
+        {{ tutor().tutor_type?.translation | translate }}
+      </p>
+    }
+
+    <div class="family-member-tutor__status">
+      @if (tutor().tutor_status) {
+        <span [class]="'is-' + tutor().tutor_status?.css_class">
+          {{ tutor().tutor_status?.translation | translate }}
+        </span>
+      }
+    </div>
+
+    @if (tutor().main_contact) {
+      <div class="family-member-tutor__main-contact">
+        {{ 'administration.family-members.badges.main-contact' | translate }}
+      </div>
+    }
+
+    <div class="family-member-tutor__summary">
+      <label>{{ 'security.users.fields.email' | translate }}</label>
+      <p>{{ user()?.email || '-' }}</p>
+    </div>
+
+    <div class="family-member-tutor__actions">
+      @if (getScreenOption('upload-photo'); as uploadPhotoOption) {
+        <app-ui-button
+          [variant]="uploadPhotoOption.color"
+          [title]="uploadPhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="uploadPhotoOption.icon"
+          (click)="onUploadPhoto()"
+        />
+      }
+
+      @if (getScreenOption('remove-photo'); as removePhotoOption) {
+        <app-ui-button
+          [variant]="removePhotoOption.color"
+          [title]="removePhotoOption.translation | translate"
+          size="sm"
+          [iconLeft]="removePhotoOption.icon"
+          (click)="onRemovePhoto()"
+        />
+      }
+
+      @if (getScreenOption('delete'); as deleteOption) {
+        <app-ui-button
+          [variant]="deleteOption.color"
+          [title]="deleteOption.translation | translate"
+          size="sm"
+          [iconLeft]="deleteOption.icon"
+          (click)="onDelete()"
+        />
+      }
+    </div>
+  </aside>
+
+  <main class="family-member-tutor__main">
+    <header class="family-member-tutor__header">
+      <div>
+        <h1>{{ 'administration.family-members.tutor-detail.title' | translate }}</h1>
+        <p>{{ 'administration.family-members.tutor-detail.subtitle' | translate }}</p>
+      </div>
+    </header>
+
+    <nav class="family-member-tutor__tabs">
+      @for (child of children(); track child.id) {
+        <button
+          type="button"
+          [class.is-active]="activeTab() === child.name"
+          (click)="setTab(child.name)"
+        >
+          {{ child.translation | translate }}
+        </button>
+      }
+    </nav>
+
+    <section class="family-member-tutor__panel">
+      @switch (activeTab()) {
+        @case ('person-profile') {
+          <h2>{{ 'controllers.person-profile' | translate }}</h2>
+
+          <app-person-profile-tab
+            [person]="person()"
+            [fields]="personFields()"
+            [catalogs]="catalogs()?.person_profile ?? null"
+            [saveRoute]="profileSaveRoute()"
+            [route]="childRoute('person-profile')"
+            [context]="'parent'"
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @case ('user-security') {
+          <h2>{{ 'controllers.user-security' | translate }}</h2>
+
+          <app-user-security-tab
+            [user]="user()"
+            [roles]="catalogs()?.roles ?? []"
+            [route]="childRoute('user-security')"
+            (userUpdated)="onUserUpdated($event)"
+          />
+        }
+
+        @case ('person-communication') {
+          <h2>{{ 'controllers.person-communication' | translate }}</h2>
+
+          <app-person-communication-tab
+            [person]="person()"
+            [route]="childRoute('person-communication')"
+            [catalogs]="communicationCatalogs()"
+            
+            (personUpdated)="onPersonUpdated($event)"
+          />
+        }
+
+        @default {
+          <div class="family-member-tutor__empty">
+            {{ 'common.no-data' | translate }}
+          </div>
+        }
+      }
+    </section>
+  </main>
+</section>

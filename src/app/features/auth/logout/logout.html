@@ -1,0 +1,25 @@
+<section class="logout">
+  <div class="logout__card">
+    @if (processing) {
+      <div class="logout__state logout__state--processing">
+        <div class="logout__spinner" aria-hidden="true"></div>
+        <h1>Cerrando sesión</h1>
+        <p>Estamos cerrando tu sesión de forma segura.</p>
+      </div>
+    } @else {
+      <div class="logout__state logout__state--success">
+        <div class="logout__icon" aria-hidden="true">✓</div>
+        <h1>Sesión cerrada correctamente</h1>
+        <p>
+          Tu sesión fue finalizada correctamente. Ya puedes iniciar sesión de nuevo cuando lo necesites.
+        </p>
+
+        <div class="logout__actions">
+          <button type="button" class="logout__button" (click)="goToLogin()">
+            Ir a iniciar sesión
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</section>

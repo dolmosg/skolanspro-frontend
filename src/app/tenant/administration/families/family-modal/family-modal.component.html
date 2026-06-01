@@ -1,0 +1,75 @@
+<form class="family-modal" [formGroup]="form" (ngSubmit)="save()">
+  <div class="family-modal__grid">
+    <div class="family-modal__field">
+      <label class="family-modal__label family-modal__label--required">
+        {{ 'administration.families.fields.lastname' | translate }}
+      </label>
+
+      <input
+        type="text"
+        class="family-modal__input"
+        formControlName="lastname"
+        [skTextCase]="textCaseMode()"
+      />
+
+      <form-error [control]="form.controls.lastname" />
+    </div>
+
+    <div class="family-modal__field">
+      <label class="family-modal__label">
+        {{ 'administration.families.fields.mothername' | translate }}
+      </label>
+
+      <input
+        type="text"
+        class="family-modal__input"
+        formControlName="mothername"
+        [skTextCase]="textCaseMode()"
+      />
+
+      <form-error [control]="form.controls.mothername" />
+    </div>
+
+    <div class="family-modal__field">
+      <label class="family-modal__label">
+        {{ 'administration.families.fields.email' | translate }}
+      </label>
+
+      <input type="email" class="family-modal__input" formControlName="email" />
+
+      <form-error [control]="form.controls.email" />
+    </div>
+
+    <div class="family-modal__field">
+      <label class="family-modal__label family-modal__label--required">
+        {{ 'administration.families.fields.family-status' | translate }}
+      </label>
+
+      <app-sk-select
+        [items]="familyStatuses()"
+        bindLabel="translation"
+        bindValue="id"
+        [translateLabel]="true"
+        [clearable]="false"
+        [control]="form.controls.family_status_id"
+      />
+
+      <form-error [control]="form.controls.family_status_id" />
+    </div>
+  </div>
+
+  <div class="family-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="danger"
+      [label]="'common.cancel' | translate"
+      (clicked)="cancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      [label]="(isEdit() ? 'common.update' : 'common.save') | translate"
+    />
+  </div>
+</form>

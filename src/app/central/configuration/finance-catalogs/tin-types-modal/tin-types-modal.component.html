@@ -1,0 +1,80 @@
+
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="tin-type-name">
+        {{ 'configuration.tin-types.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="tin-type-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="45"
+        (input)="onNameChange($any($event.target).value)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="tin-type-translation">
+        {{ 'configuration.tin-types.fields.translation' | translate }}
+      </label>
+      <input
+        id="tin-type-translation"
+        type="text"
+        class="module-modal__input"
+        formControlName="translation"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.translation"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="tin-type-validation">
+        {{ 'configuration.tin-types.fields.validation' | translate }}
+      </label>
+      <input
+        id="tin-type-validation"
+        type="text"
+        class="module-modal__input"
+        formControlName="validation"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.validation"></form-error>
+    </div>
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="tin-type-country">
+        {{ 'configuration.tin-types.fields.country' | translate }}
+      </label>
+      <app-sk-select
+        [items]="countries()"
+        bindLabel="name"
+        bindValue="id"
+        [clearable]="false"
+        [searchable]="true"
+        [control]="form.controls.country_id"
+        [placeholder]="'configuration.tin-types.fields.country' | translate"
+      ></app-sk-select>
+      <form-error [control]="form.controls.country_id"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.tin-types.update' : 'configuration.tin-types.add') | translate"
+    ></app-ui-button>
+  </div>
+</form>

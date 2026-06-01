@@ -1,0 +1,76 @@
+<form class="catalog-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="catalog-modal__grid">
+
+    <!-- NAME -->
+    <div class="catalog-modal__field catalog-modal__field--full">
+      <label class="catalog-modal__label">
+        {{ 'configuration.catalogs.fields.name' | translate }}
+        <span>*</span>
+      </label>
+
+      <input
+        class="catalog-modal__input"
+        type="text"
+        formControlName="name"
+        maxlength="45"
+        autocomplete="off"
+        (input)="onNameChange($event)"
+      />
+
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="catalog-modal__error">
+          {{ 'validation.required' | translate }}
+        </small>
+      }
+    </div>
+
+    <!-- TRANSLATION -->
+    <div class="catalog-modal__field catalog-modal__field--full">
+      <label class="catalog-modal__label">
+        {{ 'configuration.catalogs.fields.translation' | translate }}
+      </label>
+
+      <input
+        class="catalog-modal__input"
+        type="text"
+        formControlName="translation"
+        maxlength="200"
+        autocomplete="off"
+      />
+
+      @if (form.controls.translation.touched && form.controls.translation.invalid) {
+        <small class="catalog-modal__error">
+          {{ 'validation.maxlength' | translate }}
+        </small>
+      }
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="catalog-modal__field catalog-modal__field--inline">
+      <label class="catalog-modal__checkbox">
+        <input type="checkbox" formControlName="active" />
+        <span>
+          {{ 'configuration.catalogs.fields.active' | translate }}
+        </span>
+      </label>
+    </div>
+
+  </div>
+
+  <footer class="catalog-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="danger"
+      iconLeft="reset"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      iconLeft="save"
+      [label]="'common.save' | translate"
+    />
+  </footer>
+</form>

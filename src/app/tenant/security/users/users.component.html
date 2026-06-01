@@ -1,0 +1,97 @@
+<form class="users" [formGroup]="form" (ngSubmit)="onSearch()">
+  <!-- SEARCH -->
+  <div class="users__search">
+    <div class="users__grid">
+      <div class="users__field">
+        <label>{{ 'security.users.fields.name' | translate }}</label>
+        <input type="text" formControlName="name" />
+      </div>
+
+      <div class="users__field">
+        <label>{{ 'security.users.fields.lastname' | translate }}</label>
+        <input type="text" formControlName="lastname" />
+      </div>
+
+      <div class="users__field">
+        <label>{{ 'security.users.fields.mothername' | translate }}</label>
+        <input type="text" formControlName="mothername" />
+      </div>
+
+      <div class="users__field">
+        <label>{{ 'security.users.fields.email' | translate }}</label>
+        <input type="text" formControlName="email" />
+      </div>
+
+      <div class="users__field">
+        <label>{{ 'security.users.fields.role' | translate }}</label>
+        <app-sk-select
+          [control]="form.controls.role_id"
+          [items]="roles()"
+          bindLabel="translation"
+          bindValue="id"
+          [clearable]="true"
+          [placeholder]="'common.all' | translate"
+        />
+      </div>
+    </div>
+
+    <div class="users__actions">
+      <app-ui-button type="submit" variant="primary" size="sm" label="Buscar" />
+
+      <app-ui-button type="button" variant="ghost" size="sm" label="Limpiar" (click)="onReset()" />
+    </div>
+  </div>
+</form>
+
+<!-- RESULTS -->
+@if (searched()) {
+  <div class="users__results">
+    @if (!users().length) {
+      <div class="users__empty">
+        {{ 'security.users.messages.no-results' | translate }}
+      </div>
+    }
+
+    @if (users().length && hasMore()) {
+      <div class="users__hint">
+        {{ 'security.users.messages.refine-search' | translate }}
+      </div>
+    }
+
+    @if (users().length) {
+      <div class="users__list">
+        @for (user of users(); track user.id) {
+          <div class="users__item">
+            <div class="users__item-name">
+              {{ user.person.lastname }} {{ user.person.mothername }} {{ user.person.name }}
+            </div>
+
+            <div class="users__item-email">
+              {{ user.email }}
+            </div>
+
+            <div class="users__item-role">
+              {{ user.role?.translation | translate }}
+            </div>
+
+            <div class="users__item-context">
+              {{ user.context }}
+            </div>
+
+            <div class="users__item-actions">
+              @for (option of options(); track option.id) {
+                <app-ui-button
+                  [iconLeft]="option.icon"
+                  [variant]="option.color || 'ghost'"
+                  [title]="option.translation | translate"
+                  size="sm"
+                  (click)="onAction(option, user)"
+                />
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

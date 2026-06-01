@@ -1,0 +1,49 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="invoice-use-code">
+        {{ 'configuration.invoice-uses.fields.code' | translate }}
+      </label>
+      <input
+        #codeInput
+        id="invoice-use-code"
+        type="text"
+        class="module-modal__input"
+        formControlName="code"
+        maxlength="5"
+      />
+      <form-error [control]="form.controls.code"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--full">
+      <label class="module-modal__label" for="invoice-use-name">
+        {{ 'configuration.invoice-uses.fields.name' | translate }}
+      </label>
+      <input
+        id="invoice-use-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.invoice-uses.update' : 'configuration.invoice-uses.add') | translate"
+    ></app-ui-button>
+  </div>
+</form>

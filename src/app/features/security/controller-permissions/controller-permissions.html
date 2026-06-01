@@ -1,0 +1,43 @@
+<article class="permission-controller-card" *ngIf="controller as currentController">
+  <div class="permission-controller-card__header">
+    <div class="permission-controller-card__heading">
+      <h2 class="permission-controller-card__title">
+        {{ (currentController.translation | translate) || currentController.translation }}
+      </h2>
+    </div>
+
+    <button
+      *ngIf="currentController.has_children"
+      type="button"
+      class="permission-controller-card__children"
+      (click)="onEnterChildren()"
+    >
+      Ver hijos
+    </button>
+  </div>
+
+  <ng-container *ngIf="currentController.actions as actions">
+    <div class="permission-controller-card__actions" *ngIf="actions.length > 0; else noActions">
+      <ul class="permission-controller-card__list">
+        <li class="permission-controller-card__item" *ngFor="let action of actions">
+          <label class="permission-controller-card__action">
+            <input
+              type="checkbox"
+              [checked]="action.assigned"
+              (change)="onToggleAction(action.id)"
+            />
+            <span>
+              {{ (action.translation | translate) || action.name }}
+            </span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+
+  <ng-template #noActions>
+    <div class="permission-controller-card__empty">
+      Este controlador no tiene acciones disponibles en este nivel.
+    </div>
+  </ng-template>
+</article>

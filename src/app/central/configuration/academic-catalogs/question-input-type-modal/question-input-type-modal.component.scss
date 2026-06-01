@@ -1,0 +1,122 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.catalog-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  gap: 1rem;
+}
+
+.catalog-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.catalog-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.catalog-modal__field--full {
+  grid-column: 1 / -1;
+}
+
+.catalog-modal__field--inline {
+  align-items: flex-start;
+}
+
+.catalog-modal__field > * {
+  min-width: 0;
+}
+
+.catalog-modal__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.catalog-modal__input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: 0.75rem;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text, #111827);
+  font: inherit;
+  padding: 0.75rem 0.875rem;
+  outline: none;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.catalog-modal__input:focus {
+  border-color: var(--color-primary, #fd7e14);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #fd7e14) 18%, transparent);
+}
+
+.catalog-modal__error {
+  font-size: 0.75rem;
+  color: var(--color-danger, #dc2626);
+}
+
+/* 🔥 pequeño refinamiento para campos tipo "component" */
+.catalog-modal__input[formControlName='component'] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.catalog-modal__checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  color: var(--color-text, #111827);
+  font-size: 0.9375rem;
+}
+
+.catalog-modal__checkbox input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.catalog-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+  .catalog-modal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-modal__actions {
+    justify-content: stretch;
+  }
+
+  .catalog-modal__actions > * {
+    flex: 1 1 auto;
+  }
+}

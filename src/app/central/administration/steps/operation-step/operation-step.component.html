@@ -1,0 +1,149 @@
+<div class="sk-step" [formGroup]="form()">
+  <div class="sk-step__header">
+    <h3 class="sk-step__title">{{ 'administration.tenants.steps.operation.title' | translate }}</h3>
+    <p class="sk-step__subtitle">
+      {{ 'administration.tenants.steps.operation.subtitle' | translate }}
+    </p>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.operation.sections.mailer' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--two">
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-mailer-email">
+          {{ 'administration.tenants.fields.mailer_email' | translate }}
+        </label>
+
+        <input
+          id="operation-mailer-email"
+          type="email"
+          class="sk-field__control"
+          formControlName="mailer_email"
+          autocomplete="email"
+          placeholder="no-reply@demoschool.com"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-mailer-name">
+          {{ 'administration.tenants.fields.mailer_name' | translate }}
+        </label>
+
+        <input
+          id="operation-mailer-name"
+          type="text"
+          class="sk-field__control"
+          formControlName="mailer_name"
+          autocomplete="organization"
+          placeholder="Demo School"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.operation.sections.preferences' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-checkbox-grid">
+      <label class="sk-checkbox-card">
+        <input type="checkbox" formControlName="google_login" />
+        <span class="sk-checkbox-card__content">
+          <strong>{{ 'administration.tenants.fields.google_login' | translate }}</strong>
+        </span>
+      </label>
+
+      <label class="sk-checkbox-card">
+        <input type="checkbox" formControlName="grades_health_record" />
+        <span class="sk-checkbox-card__content">
+          <strong>{{ 'administration.tenants.fields.grades_health_record' | translate }}</strong>
+        </span>
+      </label>
+
+      <label class="sk-checkbox-card">
+        <input type="checkbox" formControlName="maintenance_mode" />
+        <span class="sk-checkbox-card__content">
+          <strong>{{ 'administration.tenants.fields.maintenance_mode' | translate }}</strong>
+        </span>
+      </label>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--single">
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-maintenance-until">
+          {{ 'administration.tenants.fields.maintenance_until' | translate }}
+        </label>
+
+        <input
+          id="operation-maintenance-until"
+          type="datetime-local"
+          class="sk-field__control"
+          formControlName="maintenance_until"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-step__section">
+    <div class="sk-step__section-header">
+      <h4 class="sk-step__section-title">
+        {{ 'administration.tenants.steps.operation.sections.catalogs' | translate }}
+      </h4>
+    </div>
+
+    <div class="sk-form-grid sk-form-grid--three">
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-support-type-id">
+          {{ 'administration.tenants.fields.support_type_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="supportTypes()"
+          bindLabel="translation"
+          bindValue="id"
+          [translateLabel]="true"
+          [control]="$any(controls()['support_type_id'])"
+          placeholder="administration.tenants.placeholders.select-support-type"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-password-type-id">
+          {{ 'administration.tenants.fields.password_type_id' | translate }}
+        </label>
+
+        <app-sk-select
+          [items]="passwordTypes()"
+          bindLabel="translation"
+          bindValue="id"
+          [translateLabel]="true"
+          [control]="$any(controls()['password_type_id'])"
+          placeholder="administration.tenants.placeholders.select-password-type"
+        />
+      </div>
+
+      <div class="sk-field">
+        <label class="sk-field__label" for="operation-licenses">
+          {{ 'administration.tenants.fields.licenses' | translate }}
+        </label>
+
+        <input
+          id="operation-licenses"
+          type="number"
+          class="sk-field__control"
+          formControlName="licenses"
+          min="0"
+          placeholder="100"
+        />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <form class="families__search-card" [formGroup]="form" (ngSubmit)="search()">
+      <div class="families__search-header">
+        <div class="families__mode-selector">
+          <button
+            type="button"
+            class="families__mode-button"
+            [class.families__mode-button--active]="searchMode() === 'family'"
+            (click)="setSearchMode('family')"
+          >
+            {{ 'administration.families.search-options.family' | translate }}
+          </button>
+
+          <button
+            type="button"
+            class="families__mode-button"
+            [class.families__mode-button--active]="searchMode() === 'students'"
+            (click)="setSearchMode('students')"
+          >
+            {{ 'administration.families.search-options.students' | translate }}
+          </button>
+        </div>
+
+        <div class="families__header-actions">
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [variant]="addOption.color"
+              size="sm"
+              [iconLeft]="addOption.icon"
+              (click)="openCreateModal()"
+            />
+          }
+        </div>
+      </div>
+
+      <div class="families__search-body">
+        <div class="families__fields-grid">
+          @if (isStudentSearch()) {
+            <div class="families__field">
+              <label class="families__label">
+                {{ 'administration.families.fields.name' | translate }}
+              </label>
+
+              <input class="families__input" type="text" formControlName="name" />
+            </div>
+          }
+
+          <div class="families__field">
+            <label class="families__label">
+              {{ 'administration.families.fields.lastname' | translate }}
+            </label>
+
+            <input class="families__input" type="text" formControlName="lastname" />
+          </div>
+
+          <div class="families__field">
+            <label class="families__label">
+              {{ 'administration.families.fields.mothername' | translate }}
+            </label>
+
+            <input class="families__input" type="text" formControlName="mothername" />
+          </div>
+        </div>
+
+        <div class="families__filters-actions">
+          @if (getScreenOption('search'); as searchOption) {
+            <app-ui-button
+              type="submit"
+              [title]="searchOption.translation | translate"
+              [variant]="searchOption.color"
+              size="sm"
+              [iconLeft]="searchOption.icon"
+              [iconOnly]="true"
+            />
+          }
+
+          @if (getScreenOption('clean'); as cleanOption) {
+            <app-ui-button
+              type="button"
+              [title]="cleanOption.translation | translate"
+              [variant]="cleanOption.color"
+              size="sm"
+              [iconLeft]="cleanOption.icon"
+              [iconOnly]="true"
+              (click)="reset()"
+            />
+          }
+        </div>
+      </div>
+    </form>
+
+    @if (searched()) {
+      <div class="families__summary">
+        <span class="families__results-count">
+          {{ 'administration.families.messages.search-results' | translate: { total: families().length } }}
+        </span>
+
+        @if (hasMore()) {
+          <span class="families__has-more">
+            {{ 'administration.families.messages.hasMore' | translate }}
+          </span>
+        }
+      </div>
+    }
+
+    @if (hasResults()) {
+      <div class="families__results">
+        @for (family of families(); track trackByFamilyId($index, family)) {
+          <article
+            class="families__card"
+            [class.families__card--selected]="selectedFamily()?.id === family.id"
+            (click)="selectFamily(family)"
+          >
+            <div class="families__card-header">
+              <div class="families__card-info">
+                <h3 class="families__card-title">
+                  {{ family.family_name }}
+                </h3>
+
+                @if (family.code) {
+                  <p class="families__card-code">
+                    {{ family.code }}
+                  </p>
+                }
+              </div>
+
+              <div class="families__badges">
+                @if (family.status) {
+                  <span
+                    class="families__status"
+                    [class]="'families__status families__status--' + family.status.css_class"
+                  >
+                    {{ family.status.translation | translate }}
+                  </span>
+                }
+
+                <span
+                  class="families__match"
+                  [class.families__match--family]="family.matched_by === 'family'"
+                  [class.families__match--students]="family.matched_by === 'students'"
+                >
+                  {{ 'administration.families.search-by.' + family.matched_by | translate }}
+                </span>
+              </div>
+            </div>
+
+            @if (family.students?.length) {
+              <div class="families__students">
+                <div class="families__students-title">
+                  {{ 'administration.families.students.title' | translate }}
+                </div>
+
+                <div class="families__students-list">
+                  @for (student of family.students; track trackByStudentId($index, student)) {
+                    <div class="families__student" [class.families__student--match]="student.match">
+                      {{ student.full_name }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </article>
+        }
+      </div>
+    } @else if (searched()) {
+      <div class="families__empty">
+        <h3 class="families__empty-title">
+          {{ 'administration.families.search-options.emptyResults' | translate }}
+        </h3>
+
+        <p class="families__empty-description">
+          {{ 'administration.families.search.emptyDescription' | translate }}
+        </p>
+      </div>
+    } @else {
+      <div class="families__empty">
+        <h3 class="families__empty-title">
+          {{ 'administration.families.search-options.empyInitial' | translate }}
+        </h3>
+
+        <p class="families__empty-description">
+          {{ 'administration.families.search-options.initialDescription' | translate }}
+        </p>
+      </div>
+    }
+  </div>
+</section>

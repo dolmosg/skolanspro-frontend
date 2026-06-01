@@ -1,0 +1,79 @@
+<section class="sk-page">
+  <div class="sk-page__panel family-profile">
+    @if (family(); as familyData) {
+      <div class="family-profile__header">
+        <div class="family-profile__identity">
+          <div class="family-profile__titles">
+            <h1 class="family-profile__title">
+              {{ familyData.full_name }}
+            </h1>
+
+            <div class="family-profile__meta">
+              @if (familyData.code) {
+                <span class="family-profile__code">
+                  {{ familyData.code }}
+                </span>
+              }
+
+              @if (familyData.status) {
+                <span
+                  class="family-profile__status"
+                  [class]="
+                    'family-profile__status family-profile__status--' + familyData.status.css_class
+                  "
+                >
+                  {{ familyData.status.translation | translate }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @if (children().length) {
+        <div class="family-profile__tabs">
+          @for (child of children(); track child.id) {
+            <button
+              type="button"
+              class="family-profile__tab"
+              [class.family-profile__tab--active]="isActiveTab(child.name)"
+              (click)="selectTab(child.name)"
+            >
+              {{ child.translation | translate }}
+            </button>
+          }
+        </div>
+      }
+
+      <div class="family-profile__content">
+        @if (isGeneralTab()) {
+          <app-family-general
+            [family]="familyData"
+            [route]="childRoute('family-general')"
+            (familyUpdated)="family.set($event)"
+          />
+        }
+
+        @if (isMembersTab()) {
+          <app-family-members [family]="familyData" [route]="childRoute('family-members')" />
+        }
+
+        @if (isAddressTab()) {
+          <app-family-address [family]="family()" [route]="childRoute('family-address')" />
+        }
+
+        @if (isContactsTab()) {
+          <app-family-contacts />
+        }
+
+        @if (isFinancesTab()) {
+          <app-family-finances />
+        }
+
+        @if (isCollectionTab()) {
+          <app-family-collection />
+        }
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,76 @@
+<form class="grading-scale-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- NAME -->
+  <div class="grading-scale-modal__field">
+    <label>
+      {{ 'configuration.grading-scales.fields.name' | translate }}
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      formControlName="name"
+      (input)="onNameChange($event)"
+    />
+  </div>
+
+  <!-- TRANSLATION -->
+  <div class="grading-scale-modal__field">
+    <label>
+      {{ 'configuration.grading-scales.fields.translation' | translate }}
+    </label>
+
+    <input type="text" formControlName="translation" />
+  </div>
+
+  <!-- MINIMUM / MAXIMUM -->
+  <div class="grading-scale-modal__grid">
+    <div class="grading-scale-modal__field">
+      <label>
+        {{ 'configuration.grading-scales.fields.minimum' | translate }}
+        <span>*</span>
+      </label>
+
+      <input type="number" formControlName="minimum" min="0" max="255" />
+    </div>
+
+    <div class="grading-scale-modal__field">
+      <label>
+        {{ 'configuration.grading-scales.fields.maximum' | translate }}
+        <span>*</span>
+      </label>
+
+      <input type="number" formControlName="maximum" min="0" max="255" />
+    </div>
+  </div>
+
+  <!-- FLAGS -->
+  <div class="grading-scale-modal__grid">
+    <label>
+      <input type="checkbox" formControlName="active" />
+      {{ 'common.active' | translate }}
+    </label>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="grading-scale-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="
+        isEditMode()
+          ? ('configuration.grading-scales.update' | translate)
+          : ('configuration.grading-scales.add' | translate)
+      "
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="submit"
+    />
+  </div>
+</form>

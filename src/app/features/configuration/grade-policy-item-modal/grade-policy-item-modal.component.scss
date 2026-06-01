@@ -1,0 +1,71 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.grade-policy-item-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; // 👈 mejor aire general
+}
+
+.grade-policy-item-modal__grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.25rem 1rem; // separación vertical + horizontal
+}
+
+.grade-policy-item-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0; // 👈 evita desbordes
+
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text, #111827);
+
+    span {
+      color: var(--color-danger, #dc2626);
+    }
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box; // 👈 clave para que no se salga
+    min-height: 38px;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--color-border, #d1d5db);
+    border-radius: 10px;
+    background: var(--color-surface, #ffffff);
+    color: var(--color-text, #111827);
+    outline: none;
+
+    &:focus {
+      border-color: var(--color-primary, #f97316);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+    }
+  }
+}
+
+.grade-policy-item-modal__field--wide {
+  grid-column: 1 / -1; // 👈 ocupa todo el ancho correctamente
+}
+
+.grade-policy-item-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 720px) {
+  .grade-policy-item-modal__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grade-policy-item-modal__field--wide {
+    grid-column: auto; // 👈 reset en mobile
+  }
+}

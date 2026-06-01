@@ -1,0 +1,80 @@
+<div class="sk-wizard">
+
+  <!-- HEADER -->
+  <div class="sk-wizard__header">
+    @for (stepName of steps; track stepName; let i = $index) {
+      <div
+        class="sk-wizard__step"
+        [class.active]="step() === i"
+      >
+        {{ i + 1 }}
+      </div>
+    }
+  </div>
+
+  <!-- BODY -->
+  <div class="sk-wizard__body">
+
+    @if (step() === 0) {
+      <app-tenant-step [form]="tenantForm" [domainForm]="domainForm" />
+    }
+
+    @if (step() === 1) {
+      <app-organization-step
+        [form]="organizationForm"
+        [countries]="countriesOptions()"
+      />
+    }
+
+    @if (step() === 2) {
+      <app-site-step
+        [form]="settingsForm"
+        [themes]="themesOptions()"
+        [languages]="languagesOptions()"
+        [captions]="captionsOptions()"
+      />
+    }
+
+    @if (step() === 3) {
+      <app-operation-step
+        [form]="settingsForm"
+        [supportTypes]="supportTypesOptions()"
+        [passwordTypes]="passwordTypesOptions()"
+        [tenantStatuses]="tenantStatusesOptions()"
+      />
+    }
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sk-wizard__footer">
+
+    <app-ui-button
+      variant="secondary"
+      size="sm"
+      [label]="'Atrás'"
+      (click)="prevStep()"
+      [disabled]="isFirstStep()"
+    />
+
+    @if (!isLastStep()) {
+      <app-ui-button
+        variant="primary"
+        size="sm"
+        [label]="'Siguiente'"
+        (click)="nextStep()"
+        [disabled]="!isCurrentStepValid()"
+      />
+    } @else {
+      <app-ui-button
+        variant="primary"
+        size="sm"
+        [label]="'Crear Tenant'"
+        (click)="submit()"
+        [disabled]="!form.valid"
+      />
+    }
+
+  </div>
+
+</div>

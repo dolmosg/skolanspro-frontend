@@ -1,0 +1,124 @@
+<form class="sections-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="sections-modal__grid">
+    <!-- Row 1 -->
+
+    <div class="sections-modal__field">
+      <label class="sections-modal__label" for="section-name">
+        {{ 'configuration.sections.fields.name' | translate }}
+      </label>
+
+      <input
+        id="section-name"
+        class="sections-modal__input"
+        type="text"
+        formControlName="name"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="sections-modal__field">
+      <label class="sections-modal__label" for="section-capital">
+        {{ 'configuration.sections.fields.capital' | translate }}
+      </label>
+
+      <input
+        id="section-capital"
+        class="sections-modal__input"
+        type="text"
+        formControlName="capital"
+        maxlength="1"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 2 -->
+
+    <div class="sections-modal__field">
+      <label class="sections-modal__label" for="section-description">
+        {{ 'configuration.sections.fields.description' | translate }}
+      </label>
+
+      <input
+        id="section-description"
+        class="sections-modal__input"
+        type="text"
+        formControlName="description"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="sections-modal__field">
+      <label class="sections-modal__label" for="section-css-class">
+        {{ 'configuration.sections.fields.css-class' | translate }}
+      </label>
+
+      <input
+        id="section-css-class"
+        class="sections-modal__input"
+        type="text"
+        formControlName="css_class"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 3 -->
+
+    <div class="sections-modal__field">
+      <label class="sections-modal__label" for="section-translation">
+        {{ 'configuration.sections.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="section-translation"
+        class="sections-modal__input"
+        type="text"
+        formControlName="translation"
+        maxlength="128"
+        autocomplete="off"
+      />
+    </div>
+
+    <label class="sections-modal__check">
+      <input type="checkbox" formControlName="active" />
+      <span>{{ 'configuration.sections.fields.active' | translate }}</span>
+    </label>
+
+    <!-- Row 4 -->
+
+    <div class="sections-modal__field sections-modal__field--full">
+      <label class="sections-modal__label" for="section-gender">
+        {{ 'configuration.sections.fields.gender' | translate }}
+      </label>
+
+      <app-sk-select
+        [control]="form.controls.gender_id"
+        [items]="genders()"
+        bindValue="id"
+        bindLabel="translation"
+        [translateLabel]="true"
+        [placeholder]="'configuration.sections.fields.gender-placeholder' | translate"
+      />
+    </div>
+  </div>
+
+  <div class="sections-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="isEditMode() ? ('common.update' | translate) : ('common.save' | translate)"
+      [disabled]="form.invalid"
+    />
+  </div>
+</form>

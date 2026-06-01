@@ -1,0 +1,67 @@
+
+<div class="sk-step">
+  <div class="sk-step__header">
+    <h3 class="sk-step__title">{{ 'administration.tenants.steps.tenant.title' | translate }}</h3>
+    <p class="sk-step__subtitle">
+      {{ 'administration.tenants.steps.tenant.subtitle' | translate }}
+    </p>
+  </div>
+
+  <div class="sk-step__body" [formGroup]="form()">
+    <div class="sk-form-grid sk-form-grid--two">
+      <div class="sk-field">
+        <label class="sk-field__label" for="tenant-id">
+          {{ 'administration.tenants.fields.id' | translate }}
+        </label>
+
+        <input
+          id="tenant-id"
+          type="text"
+          class="sk-field__control"
+          formControlName="id"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="demo-school"
+        />
+
+        <div class="sk-field__help">
+          {{ 'administration.tenants.helpers.id' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sk-step__body" [formGroup]="domainForm()">
+    <div class="sk-form-grid sk-form-grid--two">
+      <div class="sk-field sk-field--domain">
+        <div class="sk-field__topline">
+          <label class="sk-field__label" for="tenant-domain">
+            {{ 'administration.tenants.fields.domain' | translate }}
+          </label>
+
+          <button
+            type="button"
+            class="sk-field__link"
+            (click)="resetDomainSuggestion()"
+          >
+            {{ 'administration.tenants.actions.reset-domain' | translate }}
+          </button>
+        </div>
+
+        <input
+          id="tenant-domain"
+          type="text"
+          class="sk-field__control"
+          formControlName="domain"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="demo-school.skolanspro.test"
+        />
+
+        <div class="sk-field__help">
+          {{ 'administration.tenants.helpers.domain' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

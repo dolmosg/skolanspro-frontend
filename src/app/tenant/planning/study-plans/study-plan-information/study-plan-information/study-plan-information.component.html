@@ -1,0 +1,26 @@
+<section class="study-plan-information">
+  <div class="study-plan-information__grid">
+    @if (hasScreenChild('study-plan-general')) {
+      <app-study-plan-general class="study-plan-information__item"
+      [studyPlan]="studyPlan()"
+      [route]="childRoute('study-plan-general')" />
+    }
+
+     @if (hasScreenChild('study-plan-grading')) {
+      <app-study-plan-grading class="study-plan-information__item"
+      [studyPlan]="studyPlan()"
+      [route]="childRoute('study-plan-grading')" />
+    }
+
+    @if (hasScreenChild('study-plan-attendance')) {
+      <app-study-plan-attendance class="study-plan-information__item"
+      [studyPlan]="studyPlan()"
+      [route]="childRoute('study-plan-attendance')" />
+    }
+
+
+    <!-- @if (hasScreenChild('study-plan-lms')) {
+      <app-study-plan-lms class="study-plan-information__item" />
+    } -->
+  </div>
+</section>

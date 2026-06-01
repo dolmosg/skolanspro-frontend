@@ -1,0 +1,130 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.learning-area-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    gap: 1rem;
+}
+
+.learning-area-modal__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.learning-area-modal__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.learning-area-modal__field>* {
+    min-width: 0;
+}
+
+.learning-area-modal__field label,
+.learning-area-modal__checks label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text, #111827);
+}
+
+.learning-area-modal__field input[type='text'] {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--color-border, #d1d5db);
+    border-radius: 0.75rem;
+    background: var(--color-surface, #ffffff);
+    color: var(--color-text, #111827);
+    font: inherit;
+    padding: 0.75rem 0.875rem;
+    outline: none;
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.learning-area-modal__field input[type='text']:focus {
+    border-color: var(--color-primary, #fd7e14);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #fd7e14) 18%, transparent);
+}
+
+.learning-area-modal__color {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.learning-area-modal__color input[type='color'] {
+    width: 3rem;
+    height: 2.5rem;
+    padding: 0.2rem;
+    border: 1px solid var(--color-border, #d1d5db);
+    border-radius: 0.75rem;
+    background: var(--color-surface, #ffffff);
+    cursor: pointer;
+}
+
+.learning-area-modal__color-clear {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-border, #d1d5db);
+    border-radius: 999px;
+    background: var(--color-surface, #ffffff);
+    color: var(--color-text-muted, #6b7280);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.learning-area-modal__checks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.875rem 1.25rem;
+    width: 100%;
+    padding-top: 0.25rem;
+}
+
+.learning-area-modal__checks label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+}
+
+.learning-area-modal__checks input[type='checkbox'] {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+}
+
+.learning-area-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+@media (max-width: 767.98px) {
+    .learning-area-modal__actions {
+        justify-content: stretch;
+    }
+
+    .learning-area-modal__actions>* {
+        flex: 1 1 auto;
+    }
+}

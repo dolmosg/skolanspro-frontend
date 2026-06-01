@@ -1,0 +1,82 @@
+<form class="gradebook-action-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- NAME -->
+  <div class="gradebook-action-modal__field">
+    <label>
+      {{ 'configuration.gradebook-actions.fields.name' | translate }}
+      <span>*</span>
+    </label>
+
+    <input
+      type="text"
+      formControlName="name"
+      (input)="onNameChange($event)"
+    />
+  </div>
+
+  <!-- TRANSLATION -->
+  <div class="gradebook-action-modal__field">
+    <label>
+      {{ 'configuration.gradebook-actions.fields.translation' | translate }}
+    </label>
+
+    <input type="text" formControlName="translation" />
+  </div>
+
+  <!-- ICON -->
+  <div class="gradebook-action-modal__field">
+    <label>
+      {{ 'configuration.gradebook-actions.fields.icon' | translate }}
+    </label>
+
+    <input type="text" formControlName="icon" />
+  </div>
+
+  <!-- COLOR -->
+  <div class="gradebook-action-modal__field">
+    <label>
+      {{ 'configuration.gradebook-actions.fields.color' | translate }}
+    </label>
+
+    <input type="text" formControlName="color" />
+  </div>
+
+  <!-- FLAGS -->
+  <div class="gradebook-action-modal__grid">
+    <label>
+      <input type="checkbox" formControlName="active" />
+      {{ 'common.active' | translate }}
+    </label>
+  </div>
+
+  <!-- ORDER -->
+  <div class="gradebook-action-modal__field">
+    <label>
+      {{ 'common.order' | translate }}
+    </label>
+
+    <input type="number" formControlName="order" min="0" />
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="gradebook-action-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="
+        isEditMode()
+          ? ('configuration.gradebook-actions.update' | translate)
+          : ('configuration.gradebook-actions.add' | translate)
+      "
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="submit"
+    />
+  </div>
+</form>

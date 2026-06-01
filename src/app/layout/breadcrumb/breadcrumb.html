@@ -1,0 +1,29 @@
+<div class="breadcrumb-header">
+  @if (title()) {
+    <h1 class="breadcrumb-header__title">{{ title()! | translate }}</h1>
+  }
+
+  @if (items().length) {
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ng-container *ngFor="let item of items(); let last = last">
+        <a
+          *ngIf="item.route && !last"
+          [routerLink]="item.route"
+          class="breadcrumb__link"
+        >
+          {{ item.label | translate }}
+        </a>
+
+        <span
+          *ngIf="!item.route || last"
+          class="breadcrumb__current"
+          aria-current="page"
+        >
+          {{ item.label | translate }}
+        </span>
+
+        <span *ngIf="!last" class="breadcrumb__separator">/</span>
+      </ng-container>
+    </nav>
+  }
+</div>

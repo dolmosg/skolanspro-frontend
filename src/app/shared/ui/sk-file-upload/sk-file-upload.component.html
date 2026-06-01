@@ -1,0 +1,74 @@
+<div class="sk-upload" [class.sk-upload--disabled]="disabled()">
+  @if (label()) {
+    <label class="sk-upload__label">
+      {{ label() }}
+    </label>
+  }
+
+  @if (helper()) {
+    <p class="sk-upload__helper">
+      {{ helper() }}
+    </p>
+  }
+
+  <label
+    class="sk-upload__dropzone"
+    [class.sk-upload__dropzone--dragging]="isDragging()"
+    [class.sk-upload__dropzone--has-file]="files().length > 0"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <input
+      class="sk-upload__input"
+      type="file"
+      [attr.accept]="accept()"
+      [multiple]="multiple()"
+      [disabled]="disabled()"
+      (change)="onInputChange($event)"
+    />
+
+    @if (previewUrl(); as preview) {
+      <div class="sk-upload__preview">
+        <img [src]="preview" alt="Preview" />
+      </div>
+    } @else {
+      <div class="sk-upload__icon" aria-hidden="true">
+        ↑
+      </div>
+    }
+
+    <div class="sk-upload__content">
+      <strong>
+        {{ files().length > 0 ? fileNames() : placeholder() }}
+      </strong>
+
+      <span>
+        {{ accept() }} · Máx. {{ maxSizeMb() }} MB
+      </span>
+    </div>
+  </label>
+
+  @if (files().length > 0) {
+    <div class="sk-upload__files">
+      @for (file of files(); track file.name) {
+        <div class="sk-upload__file">
+          <div class="sk-upload__file-info">
+            <strong>{{ file.name }}</strong>
+            <span>{{ file.size / 1024 / 1024 | number: '1.2-2' }} MB</span>
+          </div>
+
+          <button
+            type="button"
+            class="sk-upload__remove"
+            [disabled]="disabled()"
+            (click)="removeFile(file)"
+            aria-label="Quitar archivo"
+          >
+            ×
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

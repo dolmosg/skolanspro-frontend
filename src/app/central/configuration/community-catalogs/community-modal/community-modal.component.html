@@ -1,0 +1,87 @@
+<div class="community-modal">
+  <form
+    class="community-modal__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="community-modal__grid">
+      <div class="community-modal__field community-modal__field--full">
+        <label class="community-modal__label">
+          {{ 'configuration.community-catalogs.fields.name' | translate }}
+        </label>
+
+        <input
+          class="community-modal__input"
+          type="text"
+          formControlName="name"
+          maxlength="45"
+          (change)="onNameChange($event)"
+        />
+
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <small class="community-modal__error">
+            {{ 'validation.required' | translate }}
+          </small>
+        }
+      </div>
+
+      <div class="community-modal__field community-modal__field--full">
+        <label class="community-modal__label">
+          {{ 'configuration.community-catalogs.fields.translation' | translate }}
+        </label>
+
+        <input
+          class="community-modal__input"
+          type="text"
+          formControlName="translation"
+          maxlength="100"
+        />
+      </div>
+
+      <div class="community-modal__field">
+        <label class="community-modal__label">
+          {{ 'configuration.community-catalogs.fields.css-class' | translate }}
+        </label>
+
+        <input
+          class="community-modal__input"
+          type="text"
+          formControlName="css_class"
+          maxlength="45"
+        />
+      </div>
+
+      <div class="community-modal__field community-modal__field--inline">
+        <label class="community-modal__label">
+          {{ 'configuration.community-catalogs.fields.active' | translate }}
+        </label>
+
+        <label class="community-modal__checkbox">
+          <input
+            type="checkbox"
+            formControlName="active"
+          />
+
+          <span>
+            {{ 'common.active' | translate }}
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="community-modal__actions">
+      <app-ui-button
+        [label]="'common.cancel' | translate"
+        variant="secondary"
+        type="button"
+        (click)="onCancel()"
+      />
+
+      <app-ui-button
+        [label]="isEdit() ? ('common.save' | translate) : ('common.create' | translate)"
+        variant="primary"
+        type="submit"
+      />
+    </div>
+  </form>
+</div>

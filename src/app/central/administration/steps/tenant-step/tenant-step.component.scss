@@ -1,0 +1,36 @@
+.sk-field--domain {
+  grid-column: 1 / -1;
+}
+
+.sk-field__topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sk-field__topline .sk-field__label {
+  flex: 1;
+}
+
+.sk-field__link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary, #fd7e14);
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 768px) {
+  .sk-field__topline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

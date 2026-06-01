@@ -1,0 +1,104 @@
+<form class="module-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="module-modal__grid">
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="language-name">
+        {{ 'configuration.languages.fields.name' | translate }}
+      </label>
+      <input
+        #nameInput
+        id="language-name"
+        type="text"
+        class="module-modal__input"
+        formControlName="name"
+        maxlength="45"
+        (input)="onNameChange($any($event.target).value)"
+      />
+      <form-error [control]="form.controls.name"></form-error>
+    </div>
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="language-label">
+        {{ 'configuration.languages.fields.label' | translate }}
+      </label>
+      <input
+        id="language-label"
+        type="text"
+        class="module-modal__input"
+        formControlName="label"
+        maxlength="128"
+      />
+      <form-error [control]="form.controls.label"></form-error>
+    </div>
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="language-code">
+        {{ 'configuration.languages.fields.code' | translate }}
+      </label>
+      <input
+        id="language-code"
+        type="text"
+        class="module-modal__input"
+        formControlName="code"
+        maxlength="45"
+      />
+      <form-error [control]="form.controls.code"></form-error>
+    </div>
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="language-shorthand">
+        {{ 'configuration.languages.fields.shorthand' | translate }}
+      </label>
+      <input
+        id="language-shorthand"
+        type="text"
+        class="module-modal__input"
+        formControlName="shorthand"
+        maxlength="45"
+      />
+      <form-error [control]="form.controls.shorthand"></form-error>
+    </div>
+
+
+    <div class="module-modal__field">
+      <label class="module-modal__label" for="language-direction">
+        {{ 'configuration.languages.fields.direction' | translate }}
+      </label>
+      <app-sk-select
+        [items]="directionOptions"
+        bindLabel="label"
+        bindValue="id"
+        [translateLabel]="true"
+        [clearable]="false"
+        [searchable]="false"
+        [control]="form.controls.direction"
+        [placeholder]="'configuration.languages.fields.direction' | translate"
+      ></app-sk-select>
+      <form-error [control]="form.controls.direction"></form-error>
+    </div>
+
+    <div class="module-modal__field module-modal__field--inline">
+      <label class="module-modal__checkbox" for="language-active">
+        <input id="language-active" type="checkbox" formControlName="active" />
+        <span>{{ 'configuration.languages.fields.active' | translate }}</span>
+      </label>
+      <form-error [control]="form.controls.active"></form-error>
+    </div>
+  </div>
+
+  <div modal-footer class="module-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    ></app-ui-button>
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="(isEdit() ? 'configuration.languages.update' : 'configuration.languages.add') | translate"
+    ></app-ui-button>
+  </div>
+</form>

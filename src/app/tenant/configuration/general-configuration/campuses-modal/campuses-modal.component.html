@@ -1,0 +1,246 @@
+<form class="campuses-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="campuses-modal__grid">
+    <!-- Row 1 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-name">
+        {{ 'configuration.campuses.fields.name' | translate }}
+      </label>
+
+      <input
+        id="campus-name"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="name"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-description">
+        {{ 'configuration.campuses.fields.description' | translate }}
+      </label>
+
+      <input
+        id="campus-description"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="description"
+        maxlength="150"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 2 -->
+
+    <div class="campuses-modal__field campuses-modal__field--full">
+      <label class="campuses-modal__label" for="campus-street">
+        {{ 'configuration.campuses.fields.street' | translate }}
+      </label>
+
+      <input
+        id="campus-street"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="street"
+        maxlength="150"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 3 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-outdoor">
+        {{ 'configuration.campuses.fields.outdoor' | translate }}
+      </label>
+
+      <input
+        id="campus-outdoor"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="outdoor"
+        maxlength="20"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-indoor">
+        {{ 'configuration.campuses.fields.indoor' | translate }}
+      </label>
+
+      <input
+        id="campus-indoor"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="indoor"
+        maxlength="20"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 4 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-zip-code">
+        {{ 'configuration.campuses.fields.zip-code' | translate }}
+      </label>
+
+      <input
+        id="campus-zip-code"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="zip_code"
+        maxlength="10"
+        autocomplete="off"
+        (change)="onZipCodeChange()"
+      />
+    </div>
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-colony">
+        {{ 'configuration.campuses.fields.colony' | translate }}
+      </label>
+
+      <input
+        id="campus-colony"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="colony"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    @if (hasPostalCodeOptions()) {
+      <div class="postal-code-results">
+        <div class="postal-code-results__title">
+          {{ 'administration.person-addresses.messages.select_settlement' | translate }}
+        </div>
+
+        @for (settlement of postalCodeSettlements(); track settlement.id) {
+          <button
+            type="button"
+            class="postal-code-results__item"
+            (click)="selectSettlement(settlement)"
+          >
+            <span class="postal-code-results__name">
+              {{ settlement.settlement }}
+            </span>
+
+            <span class="postal-code-results__meta">
+              {{ settlement.settlement_type }}
+              · {{ settlement.municipality }} · {{ settlement.city }} · {{ settlement.state }}
+            </span>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Row 5 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-city">
+        {{ 'configuration.campuses.fields.city' | translate }}
+      </label>
+
+      <input
+        id="campus-city"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="city"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-municipality">
+        {{ 'configuration.campuses.fields.municipality' | translate }}
+      </label>
+
+      <input
+        id="campus-municipality"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="municipality"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 6 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-state">
+        {{ 'configuration.campuses.fields.state' | translate }}
+      </label>
+
+      <input
+        id="campus-state"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="state"
+        maxlength="100"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-css-class">
+        {{ 'configuration.campuses.fields.css-class' | translate }}
+      </label>
+
+      <input
+        id="campus-css-class"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="css_class"
+        maxlength="45"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 7 -->
+
+    <div class="campuses-modal__field">
+      <label class="campuses-modal__label" for="campus-translation">
+        {{ 'configuration.campuses.fields.translation' | translate }}
+      </label>
+
+      <input
+        id="campus-translation"
+        class="campuses-modal__input"
+        type="text"
+        formControlName="translation"
+        maxlength="128"
+        autocomplete="off"
+      />
+    </div>
+
+    <label class="campuses-modal__check">
+      <input type="checkbox" formControlName="active" />
+      <span>{{ 'configuration.campuses.fields.active' | translate }}</span>
+    </label>
+  </div>
+
+  <div class="campuses-modal__actions">
+    <app-ui-button
+      type="button"
+      variant="secondary"
+      size="sm"
+      [label]="'common.cancel' | translate"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      type="submit"
+      variant="primary"
+      size="sm"
+      [label]="isEditMode() ? ('common.update' | translate) : ('common.save' | translate)"
+      [disabled]="form.invalid"
+    />
+  </div>
+</form>
