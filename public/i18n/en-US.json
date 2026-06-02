@@ -941,6 +941,20 @@
 				"wednesday": "Wednesday"
 			}
 		},
+		"descriptive-sheet-types": {
+			"description": "Manage the descriptive sheet types available in the system.",
+			"fields": {
+				"active": "Active",
+				"name": "Name",
+				"order": "Order",
+				"translation": "Translation"
+			},
+			"title": "Descriptive Sheet Types",
+			"translation": {
+				"learning-areas": "By Learning Areas",
+				"subjects": "By Subjects"
+			}
+		},
 		"diagnostic-types": {
 			"add": "New Diagnostic Type",
 			"delete": "Remove Diagnostic Type",
@@ -2454,8 +2468,61 @@
 			"title": "Grading & tracking",
 			"update": "Edit"
 		},
+		"study-plan-stage-terms": {
+			"add": "New Term",
+			"configuration": {
+				"label": "Term configuration"
+			},
+			"delete": "Remove Term",
+			"description": "Configure the academic and operational settings of the term.",
+			"empty": {
+				"description": "The selected term information could not be loaded.",
+				"title": "Term unavailable"
+			},
+			"fields": {
+				"alternate-name": "Alternate name",
+				"attendance": "Track attendance",
+				"attendance-help": "Enables attendance tracking for this term.",
+				"code": "Code",
+				"comments": "Allow comments",
+				"comments-help": "Allows academic comments to be recorded during this term.",
+				"descriptive-sheet-type": "Descriptive sheet type",
+				"end-date": "End date",
+				"exemption": "Allow exemptions",
+				"exemption-help": "Allows exemptions to be registered during this term.",
+				"name": "Name",
+				"order": "Order",
+				"review-date": "Review date",
+				"start-date": "Start date",
+				"status": "Status",
+				"type": "Term type"
+			},
+			"messages": {
+				"created": "Term created successfully.",
+				"deleted": "Term deleted successfully.",
+				"loaded": "Term information loaded successfully.",
+				"not-found": "The requested term does not exist.",
+				"updated": "Term updated successfully."
+			},
+			"sections": {
+				"academic": "Academic configuration",
+				"academic-description": "Define the academic and administrative behavior of the term.",
+				"dates": "Dates",
+				"dates-description": "Configure the key dates of the term.",
+				"general": "General information",
+				"general-description": "Define the basic information used to identify the term."
+			},
+			"title": "Term",
+			"update": "Update Term"
+		},
 		"study-plan-stages": {
 			"add": "New Stage",
+			"configuration": {
+				"stage-help": "Define the validity period for this academic stage. Associated terms must be placed within this date range.",
+				"stage-label": "Stage configuration",
+				"term-label": "Term configuration",
+				"title": "Configuration"
+			},
 			"delete": "Delete Stage",
 			"description": "View and configure the selected academic stage and its associated terms.",
 			"empty": {
@@ -2463,8 +2530,10 @@
 				"title": "Stage Not Available"
 			},
 			"fields": {
-				"dates": "Stage Dates",
+				"end-date": "End date",
+				"name": "Name",
 				"order": "Order",
+				"start-date": "Start date",
 				"terms": "Terms"
 			},
 			"terms": {

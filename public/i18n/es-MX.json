@@ -941,6 +941,20 @@
 				"wednesday": "Miércoles"
 			}
 		},
+		"descriptive-sheet-types": {
+			"description": "Administra los tipos de hoja descriptiva disponibles en el sistema.",
+			"fields": {
+				"active": "Activo",
+				"name": "Nombre",
+				"order": "Orden",
+				"translation": "Traducción"
+			},
+			"title": "Tipos de hoja descriptiva",
+			"translation": {
+				"learning-areas": "Por áreas de aprendizaje",
+				"subjects": "Por asignaturas"
+			}
+		},
 		"diagnostic-types": {
 			"add": "Nuevo Tipo de Diagnóstico",
 			"delete": "Eliminar Tipo de Diagnóstico",
@@ -2454,8 +2468,62 @@
 			"title": "Evaluación y seguimiento",
 			"update": "Editar"
 		},
+		"study-plan-stage-terms": {
+			"add": "Nuevo Periodo",
+			"configuration": {
+				"label": "Configuración de periodo"
+			},
+			"delete": "Eliminar Periodo",
+			"description": "Configura la información académica y operativa del periodo.",
+			"empty": {
+				"description": "No fue posible cargar la información del periodo seleccionado.",
+				"title": "Periodo no disponible"
+			},
+			"fields": {
+				"alternate-name": "Nombre alternativo",
+				"attendance": "Capturar asistencia",
+				"attendance-help": "Habilita el registro de asistencia para este periodo.",
+				"code": "Código",
+				"comments": "Permitir comentarios",
+				"comments-help": "Permite capturar comentarios académicos en este periodo.",
+				"descriptive-sheet-type": "Tipo de hoja descriptiva",
+				"end-date": "Fecha de término",
+				"exemption": "Permitir exenciones",
+				"exemption-help": "Permite registrar exenciones durante este periodo.",
+				"name": "Nombre",
+				"order": "Orden",
+				"review-date": "Fecha de revisión",
+				"start-date": "Fecha de inicio",
+				"status": "Estado",
+				"type": "Tipo de periodo"
+			},
+			"messages": {
+				"created": "Periodo creado correctamente.",
+				"deleted": "Periodo eliminado correctamente.",
+				"loaded": "Información del periodo cargada correctamente.",
+				"not-found": "El periodo solicitado no existe.",
+				"updated": "Periodo actualizado correctamente."
+			},
+			"sections": {
+				"academic": "Configuración académica",
+				"academic-description": "Define el comportamiento académico y administrativo del periodo.",
+				"dates": "Fechas",
+				"dates-description": "Configura las fechas importantes del periodo.",
+				"general": "Información general",
+				"general-description": "Define la información básica que identifica al periodo."
+			},
+			"title": "Periodo",
+			"update": "Actualizar Periodo"
+		},
 		"study-plan-stages": {
 			"add": "Nueva etapa",
+			"configuration": {
+				"stage-help-line-1": "La etapa define el rango de fechas general del ciclo académico.",
+				"stage-help-line-2": "Todos los periodos asociados deberán encontrarse dentro de estas fechas.",
+				"stage-label": "Configuración de etapa",
+				"term-label": "Configuración de periodo",
+				"title": "Configuración"
+			},
 			"delete": "Eliminar etapa",
 			"description": "Consulta y configura la etapa académica seleccionada y sus periodos asociados.",
 			"empty": {
@@ -2463,8 +2531,10 @@
 				"title": "Etapa no disponible"
 			},
 			"fields": {
-				"dates": "Fechas de la etapa",
+				"end-date": "Fecha de término",
+				"name": "Nombre",
 				"order": "Orden",
+				"start-date": "Fecha de inicio",
 				"terms": "Periodos"
 			},
 			"terms": {

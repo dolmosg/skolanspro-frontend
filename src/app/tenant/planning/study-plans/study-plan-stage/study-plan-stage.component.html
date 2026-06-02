@@ -50,12 +50,13 @@
               {{ 'planning.study-plan-stages.terms.title' | translate }}
             </span>
 
-            @if (getScreenChild('study-plan-stage-terms'); as termsChild) {
+            @if (addTermOption(); as addOption) {
               <app-ui-button
-                [label]="termsChild.translation | translate"
-                [iconLeft]="termsChild.icon"
-                variant="secondary"
+                [label]="addOption.translation | translate"
+                [iconLeft]="addOption.icon"
+                [variant]="addOption.color"
                 size="sm"
+                (click)="createTerm()"
               />
             }
           </div>
@@ -112,131 +113,118 @@
               <h3>{{ currentStage.name }}</h3>
             </div>
 
-            @if (getScreenOption('update-stage'); as updateOption) {
-              <app-ui-button
-                [label]="updateOption.translation | translate"
-                [iconLeft]="updateOption.icon"
-                [variant]="getScreenOptionVariant('update-stage', 'primary')"
-                size="sm"
-              />
-            }
-          </header>
+            <div class="study-plan-stage__detail-actions">
+              @if (isStageViewMode()) {
+                @if (updateStageOption(); as updateOption) {
+                  <app-ui-button
+                    [label]="updateOption.translation | translate"
+                    [iconLeft]="updateOption.icon"
+                    [variant]="updateOption.color"
+                    size="sm"
+                    (click)="editStage()"
+                  />
+                }
 
-          <div class="study-plan-stage__detail-grid">
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.fields.name' | translate }}</span>
-              <strong>{{ currentStage.name }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.fields.dates' | translate }}</span>
-              <strong>
-                {{ currentStage.start_date | date: 'dd/MM/yyyy' }}
-                —
-                {{ currentStage.end_date | date: 'dd/MM/yyyy' }}
-              </strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.fields.terms' | translate }}</span>
-              <strong>{{ termsCount() }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.fields.order' | translate }}</span>
-              <strong>{{ currentStage.order + 1 }}</strong>
-            </div>
-          </div>
-        } @else if (selectedTerm(); as term) {
-          <header class="study-plan-stage__detail-header">
-            <div>
-              <span>{{ 'planning.study-plan-stages.configuration.term-label' | translate }}</span>
-              <h3>{{ term.code || term.name }}</h3>
-              <p>{{ term.name }}</p>
-            </div>
-
-            @if (getScreenOption('update-term'); as updateOption) {
-              <app-ui-button
-                [label]="updateOption.translation | translate"
-                [iconLeft]="updateOption.icon"
-                [variant]="getScreenOptionVariant('update-term', 'primary')"
-                size="sm"
-              />
-            }
-          </header>
-
-          <div class="study-plan-stage__detail-grid">
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.code' | translate }}</span>
-              <strong>{{ term.code }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.name' | translate }}</span>
-              <strong>{{ term.name }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.alternate-name' | translate }}</span>
-              <strong>{{ term.alternate_name || '—' }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.dates' | translate }}</span>
-              <strong>
-                {{ term.start_date | date: 'dd/MM/yyyy' }}
-                —
-                {{ term.end_date | date: 'dd/MM/yyyy' }}
-              </strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.review-date' | translate }}</span>
-              <strong>{{ term.review_date | date: 'dd/MM/yyyy' }}</strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.status' | translate }}</span>
-
-              @if (term.status; as status) {
-                <strong>{{ status.translation | translate }}</strong>
+                @if (deleteStageOption(); as deleteOption) {
+                  <app-ui-button
+                    [label]="deleteOption.translation | translate"
+                    [iconLeft]="deleteOption.icon"
+                    [variant]="deleteOption.color"
+                    size="sm"
+                    (click)="deleteStage()"
+                  />
+                }
               } @else {
-                <strong>—</strong>
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  variant="secondary"
+                  size="sm"
+                  (click)="cancelStageEdit()"
+                />
+
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  iconLeft="save"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="savingStage()"
+                  (click)="saveStage()"
+                />
               }
             </div>
+          </header>
 
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.exemption' | translate }}</span>
-              <strong>
-                {{
-                  (term.exemption ? 'common.yes' : 'common.no') | translate
-                }}
-              </strong>
-            </div>
+          <div class="study-plan-stage__context-note">
+            <app-ui-icon name="info" size="sm" />
 
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.attendance' | translate }}</span>
-              <strong>
-                {{
-                  (term.attendance ? 'common.yes' : 'common.no') | translate
-                }}
-              </strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.comments' | translate }}</span>
-              <strong>
-                {{
-                  (term.comments ? 'common.yes' : 'common.no') | translate
-                }}
-              </strong>
-            </div>
-
-            <div class="study-plan-stage__field">
-              <span>{{ 'planning.study-plan-stages.terms.fields.order' | translate }}</span>
-              <strong>{{ term.order + 1 }}</strong>
+            <div>
+              <p>
+                <strong>
+                  {{ 'planning.study-plan-stages.configuration.stage-help-line-1' | translate }}
+                </strong>
+              </p>
+              <p>
+                {{ 'planning.study-plan-stages.configuration.stage-help-line-2' | translate }}
+              </p>
             </div>
           </div>
+
+          @if (isStageViewMode()) {
+            <div class="study-plan-stage__detail-grid">
+              <div class="study-plan-stage__field">
+                <span>{{ 'planning.study-plan-stages.fields.name' | translate }}</span>
+                <strong>{{ currentStage.name }}</strong>
+              </div>
+
+              <div class="study-plan-stage__field">
+                <span>{{ 'planning.study-plan-stages.fields.start-date' | translate }}</span>
+                <strong>{{ currentStage.start_date | date: 'dd/MM/yyyy' }}</strong>
+              </div>
+
+              <div class="study-plan-stage__field">
+                <span>{{ 'planning.study-plan-stages.fields.end-date' | translate }}</span>
+                <strong>{{ currentStage.end_date | date: 'dd/MM/yyyy' }}</strong>
+              </div>
+
+              <div class="study-plan-stage__field">
+                <span>{{ 'planning.study-plan-stages.fields.terms' | translate }}</span>
+                <strong>{{ termsCount() }}</strong>
+              </div>
+            </div>
+          } @else {
+            <form class="study-plan-stage__form" [formGroup]="stageForm">
+              <div class="study-plan-stage__detail-grid">
+                <label class="study-plan-stage__field-control">
+                  <span>{{ 'planning.study-plan-stages.fields.name' | translate }}</span>
+                  <input type="text" formControlName="name" />
+                </label>
+
+                <label class="study-plan-stage__field-control">
+                  <span>{{ 'planning.study-plan-stages.fields.start-date' | translate }}</span>
+                  <input type="date" formControlName="start_date" />
+                </label>
+
+                <label class="study-plan-stage__field-control">
+                  <span>{{ 'planning.study-plan-stages.fields.end-date' | translate }}</span>
+                  <input type="date" formControlName="end_date" />
+                </label>
+              </div>
+            </form>
+          }
+        } @else {
+          <app-study-plan-term
+            [term]="selectedTerm()"
+            [stageId]="currentStage.id"
+            [creating]="creatingTerm()"
+            [route]="termRoute()"
+            [termOptions]="termOptions()"
+            [termStatuses]="termStatuses()"
+            [termTypes]="termTypes()"
+            [descriptiveSheetTypes]="descriptiveSheetTypes()"
+            (back)="closeTermPanel()"
+            (saved)="closeTermPanel()"
+          />
         }
       </section>
     </div>
