@@ -36,9 +36,9 @@
             <span class="study-plan-stage__nav-content">
               <strong>{{ currentStage.name }}</strong>
               <small>
-                {{ currentStage.start_date | date: 'dd/MM/yyyy' }}
+                {{ currentStage.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
                 —
-                {{ currentStage.end_date | date: 'dd/MM/yyyy' }}
+                {{ currentStage.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
               </small>
             </span>
           </button>
@@ -76,9 +76,9 @@
                 <span class="study-plan-stage__nav-content">
                   <strong>{{ term.name }}</strong>
                   <small>
-                    {{ term.start_date | date: 'dd/MM/yyyy' }}
+                    {{ term.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
                     —
-                    {{ term.end_date | date: 'dd/MM/yyyy' }}
+                    {{ term.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
                   </small>
                 </span>
 
@@ -179,12 +179,16 @@
 
               <div class="study-plan-stage__field">
                 <span>{{ 'planning.study-plan-stages.fields.start-date' | translate }}</span>
-                <strong>{{ currentStage.start_date | date: 'dd/MM/yyyy' }}</strong>
+                <strong>{{
+                  currentStage.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale()
+                }}</strong>
               </div>
 
               <div class="study-plan-stage__field">
                 <span>{{ 'planning.study-plan-stages.fields.end-date' | translate }}</span>
-                <strong>{{ currentStage.end_date | date: 'dd/MM/yyyy' }}</strong>
+                <strong>{{
+                  currentStage.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale()
+                }}</strong>
               </div>
 
               <div class="study-plan-stage__field">
@@ -197,19 +201,30 @@
               <div class="study-plan-stage__detail-grid">
                 <label class="study-plan-stage__field-control">
                   <span>{{ 'planning.study-plan-stages.fields.name' | translate }}</span>
+
                   <input type="text" formControlName="name" />
+
+                  <form-error [control]="stageForm.controls.name"></form-error>
                 </label>
 
                 <label class="study-plan-stage__field-control">
                   <span>{{ 'planning.study-plan-stages.fields.start-date' | translate }}</span>
+
                   <input type="date" formControlName="start_date" />
+
+                  <form-error [control]="stageForm.controls.start_date"></form-error>
                 </label>
 
                 <label class="study-plan-stage__field-control">
                   <span>{{ 'planning.study-plan-stages.fields.end-date' | translate }}</span>
+
                   <input type="date" formControlName="end_date" />
+
+                  <form-error [control]="stageForm.controls.end_date"></form-error>
                 </label>
               </div>
+
+              <form-error [control]="stageForm"></form-error>
             </form>
           }
         } @else {

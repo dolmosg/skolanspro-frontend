@@ -16,6 +16,10 @@ import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
+import { FormErrorComponent } from '@shared/ui/form-error/form-error';
+
+type TermTimelineStep = 'configuration' | 'capture' | 'review' | 'close';
+type TermTimelineStepState = 'done' | 'current' | 'pending';
 
 export interface IStudyPlanTermStatus {
   id: number;
@@ -68,7 +72,14 @@ type StudyPlanTermMode = 'view' | 'edit' | 'create';
 @Component({
   selector: 'app-study-plan-term',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, UiButtonComponent, UiIconComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    UiButtonComponent,
+    UiIconComponent,
+    FormErrorComponent,
+  ],
   templateUrl: './study-plan-term.component.html',
   styleUrl: './study-plan-term.component.scss',
 })
@@ -137,6 +148,68 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
   protected readonly deleteOption = computed(() => {
     return this.termOptions().find((option) => option.name === 'delete') ?? null;
   });
+
+  private readonly termStatusOrder: Record<string, number> = {
+    configuration: 0,
+    open: 1,
+    'in-review': 2,
+    closed: 3,
+  };
+
+  private readonly timelineStepOrder: Record<TermTimelineStep, number> = {
+    configuration: 0,
+    capture: 1,
+    review: 2,
+    close: 3,
+  };
+
+  protected timelineStepState(step: TermTimelineStep): TermTimelineStepState {
+    const statusName = this.term()?.status?.name ?? 'configuration';
+    const currentOrder = this.termStatusOrder[statusName] ?? 0;
+    const stepOrder = this.timelineStepOrder[step];
+
+    if (statusName === 'closed') {
+      return 'done';
+    }
+
+    if (currentOrder > stepOrder) {
+      return 'done';
+    }
+
+    if (currentOrder === stepOrder) {
+      return 'current';
+    }
+
+    return 'pending';
+  }
+
+  protected timelineStepIcon(step: TermTimelineStep): string {
+    const state = this.timelineStepState(step);
+
+    if (state === 'done') {
+      return 'check';
+    }
+
+    if (state === 'current') {
+      return 'clock';
+    }
+
+    return 'circle-help';
+  }
+
+  protected timelineStepLabel(step: TermTimelineStep): string {
+    const state = this.timelineStepState(step);
+
+    if (state === 'done') {
+      return 'planning.study-plan-stage-terms.timeline.completed';
+    }
+
+    if (state === 'current') {
+      return 'planning.study-plan-stage-terms.timeline.current';
+    }
+
+    return 'planning.study-plan-stage-terms.timeline.pending';
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['creating'] || changes['term'] || changes['stageId']) {
@@ -279,11 +352,20 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
     );
   }
 
-  protected remove(): void {
+  protected async remove(): Promise<void> {
     const route = this.route();
     const term = this.term();
 
     if (!route || !term || !this.canDelete()) {
+      return;
+    }
+
+    const confirmed = await this.confirmDelete(
+      'planning.study-plan-stage-terms.delete',
+      'planning.study-plan-stage-terms.messages.confirm-delete',
+    );
+
+    if (!confirmed) {
       return;
     }
 

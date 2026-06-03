@@ -14,7 +14,7 @@
             [iconLeft]="option.icon"
             [variant]="option.color"
             size="sm"
-            (clicked)="edit()"
+            (click)="edit()"
           />
         }
 
@@ -24,16 +24,16 @@
             [iconLeft]="option.icon"
             [variant]="option.color"
             size="sm"
-            (clicked)="remove()"
+            (click)="remove()"
           />
         }
       } @else {
         <app-ui-button
           [label]="'common.cancel' | translate"
-          iconLeft="x"
+          iconLeft="cancel"
           variant="secondary"
           size="sm"
-          (clicked)="cancel()"
+          (click)="cancel()"
         />
 
         <app-ui-button
@@ -42,139 +42,285 @@
           variant="primary"
           size="sm"
           [disabled]="saving()"
-          (clicked)="save()"
+          (click)="save()"
         />
       }
     </div>
   </header>
 
   @if (isViewMode() && term(); as currentTerm) {
-    <div class="study-plan-term__detail-grid">
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.code' | translate }}</span>
-        <strong>{{ currentTerm.code }}</strong>
-      </div>
+    <section class="study-plan-term__summary-grid">
+      <article class="study-plan-term__summary-card study-plan-term__summary-card--type">
+        <app-ui-icon name="info" size="sm" />
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.name' | translate }}</span>
-        <strong>{{ currentTerm.name }}</strong>
-      </div>
+        <div>
+          <span>{{ 'planning.study-plan-stage-terms.help.title' | translate }}</span>
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.alternate-name' | translate }}</span>
-        <strong>{{ currentTerm.alternate_name || '—' }}</strong>
-      </div>
+          <h4>
+            {{
+              'planning.study-plan-stage-terms.types-help.' +
+                (currentTerm.type?.name || 'classes') +
+                '.title' | translate
+            }}
+          </h4>
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.start-date' | translate }}</span>
-        <strong>{{ currentTerm.start_date | date: 'dd/MM/yyyy' }}</strong>
-      </div>
+          <p>
+            {{
+              'planning.study-plan-stage-terms.types-help.' +
+                (currentTerm.type?.name || 'classes') +
+                '.description' | translate
+            }}
+          </p>
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.end-date' | translate }}</span>
-        <strong>{{ currentTerm.end_date | date: 'dd/MM/yyyy' }}</strong>
-      </div>
+          <div class="study-plan-term__summary-capabilities">
+            <span>{{ 'planning.study-plan-stage-terms.help.available-actions' | translate }}</span>
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.review-date' | translate }}</span>
-        <strong>{{ currentTerm.review_date | date: 'dd/MM/yyyy' }}</strong>
-      </div>
+            <strong>
+              {{ 'planning.study-plan-stage-terms.fields.grades' | translate }}
+            </strong>
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.status' | translate }}</span>
-        <strong>{{ currentTerm.status?.translation | translate }}</strong>
-      </div>
+            @if (currentTerm.attendance) {
+              <strong>{{ 'planning.study-plan-stage-terms.fields.attendance' | translate }}</strong>
+            }
 
-      <div class="study-plan-term__field-card">
-        <span>{{ 'planning.study-plan-stage-terms.fields.order' | translate }}</span>
-        <strong>{{ currentTerm.order + 1 }}</strong>
+            @if (currentTerm.comments) {
+              <strong>{{ 'planning.study-plan-stage-terms.fields.comments' | translate }}</strong>
+            }
+
+            @if (currentTerm.exemption) {
+              <strong>{{ 'planning.study-plan-stage-terms.fields.exemption' | translate }}</strong>
+            }
+          </div>
+        </div>
+      </article>
+
+      <article class="study-plan-term__summary-card study-plan-term__summary-card--review">
+        <app-ui-icon name="calendar-check" size="sm" />
+
+        <div>
+          <span>{{ 'planning.study-plan-stage-terms.help.review-title' | translate }}</span>
+
+          <h4>
+            {{ currentTerm.review_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+          </h4>
+
+          <p>{{ 'planning.study-plan-stage-terms.help.review-description' | translate }}</p>
+        </div>
+      </article>
+
+      <article class="study-plan-term__summary-card study-plan-term__summary-card--status">
+        <app-ui-icon name="security" size="sm" />
+
+        <div>
+          <span>{{ 'planning.study-plan-stage-terms.help.status-title' | translate }}</span>
+
+          <h4 class="study-plan-term__status-badge">
+            {{ currentTerm.status?.translation | translate }}
+          </h4>
+
+          <p>
+            {{
+              'planning.study-plan-stage-terms.statuses-help.' +
+                (currentTerm.status?.name || 'configuration') | translate
+            }}
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="study-plan-term__detail-section">
+      <h4>{{ 'planning.study-plan-stage-terms.detail.general' | translate }}</h4>
+
+      <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="tag" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.code' | translate }}</span>
+            <strong>{{ currentTerm.code }}</strong>
+          </div>
+        </div>
+
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="file-text" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.name' | translate }}</span>
+            <strong>{{ currentTerm.name }}</strong>
+          </div>
+        </div>
+
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="layers" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.type' | translate }}</span>
+            <strong>
+              {{
+                currentTerm.type?.translation ? (currentTerm.type?.translation | translate) : '—'
+              }}
+            </strong>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section class="study-plan-term__detail-section">
+      <h4>{{ 'planning.study-plan-stage-terms.detail.dates' | translate }}</h4>
+
+      <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="calendar-days" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.start-date' | translate }}</span>
+            <strong>
+              {{ currentTerm.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="calendar-days" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.end-date' | translate }}</span>
+            <strong>
+              {{ currentTerm.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="calendar-check" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.review-date' | translate }}</span>
+            <strong>
+              {{ currentTerm.review_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+            </strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="study-plan-term__detail-section">
+      <h4>{{ 'planning.study-plan-stage-terms.detail.operation' | translate }}</h4>
+
+      <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="file-text" size="sm" />
+          <div>
+            <span>{{
+              'planning.study-plan-stage-terms.fields.descriptive-sheet-type' | translate
+            }}</span>
+            <strong>
+              {{
+                currentTerm.descriptive_sheet_type?.translation
+                  ? (currentTerm.descriptive_sheet_type?.translation | translate)
+                  : '—'
+              }}
+            </strong>
+          </div>
+        </div>
+
+        <div class="study-plan-term__field-card">
+          <app-ui-icon name="tag" size="sm" />
+          <div>
+            <span>{{ 'planning.study-plan-stage-terms.fields.alternate-name' | translate }}</span>
+            <strong>{{ currentTerm.alternate_name || '—' }}</strong>
+          </div>
+        </div>
+
+        <div
+          class="study-plan-term__field-card study-plan-term__field-card--compact-status"
+          [class.study-plan-term__field-card--enabled]="currentTerm.attendance"
+          [class.study-plan-term__field-card--disabled]="!currentTerm.attendance"
+        >
+          <app-ui-icon name="user-check" size="sm" />
+
+          <div>
+            <div class="study-plan-term__field-card-header">
+              <span>{{ 'planning.study-plan-stage-terms.fields.attendance' | translate }}</span>
+              <strong>{{
+                (currentTerm.attendance ? 'common.yes' : 'common.no') | translate
+              }}</strong>
+            </div>
+
+            <small>
+              {{
+                (currentTerm.attendance
+                  ? 'planning.study-plan-stage-terms.flags-help.attendance.enabled'
+                  : 'planning.study-plan-stage-terms.flags-help.attendance.disabled'
+                ) | translate
+              }}
+            </small>
+          </div>
+        </div>
+
+        <div
+          class="study-plan-term__field-card study-plan-term__field-card--compact-status"
+          [class.study-plan-term__field-card--enabled]="currentTerm.comments"
+          [class.study-plan-term__field-card--disabled]="!currentTerm.comments"
+        >
+          <app-ui-icon name="message-square" size="sm" />
+
+          <div>
+            <div class="study-plan-term__field-card-header">
+              <span>{{ 'planning.study-plan-stage-terms.fields.comments' | translate }}</span>
+              <strong>{{ (currentTerm.comments ? 'common.yes' : 'common.no') | translate }}</strong>
+            </div>
+
+            <small>
+              {{
+                (currentTerm.comments
+                  ? 'planning.study-plan-stage-terms.flags-help.comments.enabled'
+                  : 'planning.study-plan-stage-terms.flags-help.comments.disabled'
+                ) | translate
+              }}
+            </small>
+          </div>
+        </div>
+
+        <div
+          class="study-plan-term__field-card study-plan-term__field-card--compact-status"
+          [class.study-plan-term__field-card--enabled]="currentTerm.exemption"
+          [class.study-plan-term__field-card--disabled]="!currentTerm.exemption"
+        >
+          <app-ui-icon name="permissions" size="sm" />
+
+          <div>
+            <div class="study-plan-term__field-card-header">
+              <span>{{ 'planning.study-plan-stage-terms.fields.exemption' | translate }}</span>
+              <strong>{{
+                (currentTerm.exemption ? 'common.yes' : 'common.no') | translate
+              }}</strong>
+            </div>
+
+            <small>
+              {{
+                (currentTerm.exemption
+                  ? 'planning.study-plan-stage-terms.flags-help.exemption.enabled'
+                  : 'planning.study-plan-stage-terms.flags-help.exemption.disabled'
+                ) | translate
+              }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </section>
   }
 
   @if (isFormMode()) {
     <form class="study-plan-term__form" [formGroup]="form">
-      <section class="study-plan-term__section">
-        <header class="study-plan-term__section-header">
-          <app-ui-icon name="file-text" size="sm" />
+      <section class="study-plan-term__detail-section">
+        <h4>{{ 'planning.study-plan-stage-terms.detail.general' | translate }}</h4>
 
-          <div>
-            <h4>{{ 'planning.study-plan-stage-terms.sections.general' | translate }}</h4>
-            <p>{{ 'planning.study-plan-stage-terms.sections.general-description' | translate }}</p>
-          </div>
-        </header>
-
-        <div class="study-plan-term__grid">
+        <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
           <label class="study-plan-term__field">
             <span>{{ 'planning.study-plan-stage-terms.fields.code' | translate }}</span>
             <input type="text" formControlName="code" />
+            <form-error [control]="form.controls.code"></form-error>
           </label>
 
           <label class="study-plan-term__field">
             <span>{{ 'planning.study-plan-stage-terms.fields.name' | translate }}</span>
             <input type="text" formControlName="name" />
-          </label>
-
-          <label class="study-plan-term__field study-plan-term__field--wide">
-            <span>{{ 'planning.study-plan-stage-terms.fields.alternate-name' | translate }}</span>
-            <input type="text" formControlName="alternate_name" />
-          </label>
-        </div>
-      </section>
-
-      <section class="study-plan-term__section">
-        <header class="study-plan-term__section-header">
-          <app-ui-icon name="calendar-days" size="sm" />
-
-          <div>
-            <h4>{{ 'planning.study-plan-stage-terms.sections.dates' | translate }}</h4>
-            <p>{{ 'planning.study-plan-stage-terms.sections.dates-description' | translate }}</p>
-          </div>
-        </header>
-
-        <div class="study-plan-term__grid">
-          <label class="study-plan-term__field">
-            <span>{{ 'planning.study-plan-stage-terms.fields.start-date' | translate }}</span>
-            <input type="date" formControlName="start_date" />
-          </label>
-
-          <label class="study-plan-term__field">
-            <span>{{ 'planning.study-plan-stage-terms.fields.end-date' | translate }}</span>
-            <input type="date" formControlName="end_date" />
-          </label>
-
-          <label class="study-plan-term__field">
-            <span>{{ 'planning.study-plan-stage-terms.fields.review-date' | translate }}</span>
-            <input type="date" formControlName="review_date" />
-          </label>
-
-          <label class="study-plan-term__field">
-            <span>{{ 'planning.study-plan-stage-terms.fields.order' | translate }}</span>
-            <input type="number" min="0" formControlName="order" />
-          </label>
-        </div>
-      </section>
-
-      <section class="study-plan-term__section">
-        <header class="study-plan-term__section-header">
-          <app-ui-icon name="settings" size="sm" />
-
-          <div>
-            <h4>{{ 'planning.study-plan-stage-terms.sections.academic' | translate }}</h4>
-            <p>{{ 'planning.study-plan-stage-terms.sections.academic-description' | translate }}</p>
-          </div>
-        </header>
-
-        <div class="study-plan-term__grid">
-          <label class="study-plan-term__field">
-            <span>{{ 'planning.study-plan-stage-terms.fields.status' | translate }}</span>
-            <select formControlName="term_status_id">
-              <option [ngValue]="null">{{ 'common.select' | translate }}</option>
-
-              @for (status of termStatuses(); track status.id) {
-                <option [ngValue]="status.id">{{ status.translation | translate }}</option>
-              }
-            </select>
+            <form-error [control]="form.controls.name"></form-error>
           </label>
 
           <label class="study-plan-term__field">
@@ -186,10 +332,43 @@
                 <option [ngValue]="type.id">{{ type.translation | translate }}</option>
               }
             </select>
+            <form-error [control]="form.controls.term_type_id"></form-error>
+          </label>
+        </div>
+      </section>
+
+      <section class="study-plan-term__detail-section">
+        <h4>{{ 'planning.study-plan-stage-terms.detail.dates' | translate }}</h4>
+
+        <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
+          <label class="study-plan-term__field">
+            <span>{{ 'planning.study-plan-stage-terms.fields.start-date' | translate }}</span>
+            <input type="date" formControlName="start_date" />
+            <form-error [control]="form.controls.start_date"></form-error>
           </label>
 
-          <label class="study-plan-term__field study-plan-term__field--wide">
-            <span>{{ 'planning.study-plan-stage-terms.fields.descriptive-sheet-type' | translate }}</span>
+          <label class="study-plan-term__field">
+            <span>{{ 'planning.study-plan-stage-terms.fields.end-date' | translate }}</span>
+            <input type="date" formControlName="end_date" />
+            <form-error [control]="form.controls.end_date"></form-error>
+          </label>
+
+          <label class="study-plan-term__field">
+            <span>{{ 'planning.study-plan-stage-terms.fields.review-date' | translate }}</span>
+            <input type="date" formControlName="review_date" />
+            <form-error [control]="form.controls.review_date"></form-error>
+          </label>
+        </div>
+      </section>
+
+      <section class="study-plan-term__detail-section">
+        <h4>{{ 'planning.study-plan-stage-terms.detail.operation' | translate }}</h4>
+
+        <div class="study-plan-term__detail-grid study-plan-term__detail-grid--three">
+          <label class="study-plan-term__field">
+            <span>{{
+              'planning.study-plan-stage-terms.fields.descriptive-sheet-type' | translate
+            }}</span>
             <select formControlName="descriptive_sheet_type_id">
               <option [ngValue]="null">{{ 'common.none' | translate }}</option>
 
@@ -197,31 +376,54 @@
                 <option [ngValue]="type.id">{{ type.translation | translate }}</option>
               }
             </select>
-          </label>
-        </div>
-
-        <div class="study-plan-term__toggles">
-          <label class="study-plan-term__toggle">
-            <input type="checkbox" formControlName="exemption" />
-            <span>
-              <strong>{{ 'planning.study-plan-stage-terms.fields.exemption' | translate }}</strong>
-              <small>{{ 'planning.study-plan-stage-terms.fields.exemption-help' | translate }}</small>
-            </span>
+            <form-error [control]="form.controls.descriptive_sheet_type_id"></form-error>
           </label>
 
-          <label class="study-plan-term__toggle">
+          <label class="study-plan-term__field">
+            <span>{{ 'planning.study-plan-stage-terms.fields.alternate-name' | translate }}</span>
+            <input type="text" formControlName="alternate_name" />
+            <form-error [control]="form.controls.alternate_name"></form-error>
+          </label>
+
+          <label class="study-plan-term__field">
+            <span>{{ 'planning.study-plan-stage-terms.fields.status' | translate }}</span>
+            <select formControlName="term_status_id">
+              <option [ngValue]="null">{{ 'common.select' | translate }}</option>
+
+              @for (status of termStatuses(); track status.id) {
+                <option [ngValue]="status.id">{{ status.translation | translate }}</option>
+              }
+            </select>
+            <form-error [control]="form.controls.term_status_id"></form-error>
+          </label>
+
+          <label class="study-plan-term__toggle study-plan-term__toggle--compact">
             <input type="checkbox" formControlName="attendance" />
             <span>
               <strong>{{ 'planning.study-plan-stage-terms.fields.attendance' | translate }}</strong>
-              <small>{{ 'planning.study-plan-stage-terms.fields.attendance-help' | translate }}</small>
+              <small>{{
+                'planning.study-plan-stage-terms.fields.attendance-help' | translate
+              }}</small>
             </span>
           </label>
 
-          <label class="study-plan-term__toggle">
+          <label class="study-plan-term__toggle study-plan-term__toggle--compact">
             <input type="checkbox" formControlName="comments" />
             <span>
               <strong>{{ 'planning.study-plan-stage-terms.fields.comments' | translate }}</strong>
-              <small>{{ 'planning.study-plan-stage-terms.fields.comments-help' | translate }}</small>
+              <small>{{
+                'planning.study-plan-stage-terms.fields.comments-help' | translate
+              }}</small>
+            </span>
+          </label>
+
+          <label class="study-plan-term__toggle study-plan-term__toggle--compact">
+            <input type="checkbox" formControlName="exemption" />
+            <span>
+              <strong>{{ 'planning.study-plan-stage-terms.fields.exemption' | translate }}</strong>
+              <small>{{
+                'planning.study-plan-stage-terms.fields.exemption-help' | translate
+              }}</small>
             </span>
           </label>
         </div>

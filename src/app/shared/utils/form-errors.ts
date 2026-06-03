@@ -5,6 +5,11 @@ export const FORM_ERROR_MESSAGES: Record<string, (error?: any) => string> = {
   email: () => 'Correo no válido',
   minlength: (e) => `Mínimo ${e.requiredLength} caracteres`,
   maxlength: (e) => `Máximo ${e.requiredLength} caracteres`,
+
+  dateMinimum: (e) => `La fecha debe ser igual o posterior a ${e.requiredDate}`,
+  dateMaximum: (e) => `La fecha debe ser igual o anterior a ${e.requiredDate}`,
+  dateAfter: () => 'La fecha de término debe ser mayor que la fecha de inicio',
+
   server: (e) => e,
 };
 

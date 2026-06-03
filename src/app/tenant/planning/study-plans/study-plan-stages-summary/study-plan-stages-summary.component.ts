@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 
 import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
@@ -57,7 +58,7 @@ interface IStudyPlanCurrentTerm {
   templateUrl: './study-plan-stages-summary.component.html',
   styleUrl: './study-plan-stages-summary.component.scss',
 })
-export class StudyPlanStagesSummaryComponent {
+export class StudyPlanStagesSummaryComponent extends SkolansBaseComponent {
   readonly stages = input<IStudyPlanStage[]>([]);
   readonly child = input<ScreenChildItem | null>(null);
   readonly addStageOption = input<ScreenOptionItem | null>(null);

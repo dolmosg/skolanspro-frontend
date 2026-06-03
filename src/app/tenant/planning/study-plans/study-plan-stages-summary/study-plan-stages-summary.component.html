@@ -76,9 +76,9 @@
         </span>
 
         <span class="study-plan-stages-summary__term-dates">
-          {{ current.term.start_date | date: 'dd/MM/yyyy' }}
+          {{ current.term.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
           —
-          {{ current.term.end_date | date: 'dd/MM/yyyy' }}
+          {{ current.term.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
         </span>
 
         @if (daysToClose() !== null) {
@@ -114,9 +114,9 @@
             <strong>{{ stage.name }}</strong>
 
             <small>
-              {{ stage.start_date | date: 'dd/MM/yyyy' }}
+              {{ stage.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
               —
-              {{ stage.end_date | date: 'dd/MM/yyyy' }}
+              {{ stage.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
             </small>
           </span>
 

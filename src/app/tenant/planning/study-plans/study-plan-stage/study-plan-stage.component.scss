@@ -27,7 +27,7 @@
 .study-plan-stage__title {
   min-width: 0;
 
-  > span {
+  >span {
     display: block;
     margin-bottom: 0.25rem;
     font-size: 0.78rem;
@@ -224,7 +224,7 @@
   min-width: 0;
   gap: 1rem;
 
-  > div {
+  >div {
     min-width: 0;
   }
 
@@ -434,6 +434,18 @@
   color: var(--color-text-muted, #6b7280);
 }
 
+.study-plan-stage__field-error,
+.study-plan-stage__form-error {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.study-plan-stage__form-error {
+  margin-top: 0.85rem;
+}
+
 .study-plan-stage__context-note {
   display: flex;
   align-items: flex-start;
@@ -452,8 +464,8 @@
 
   p {
     margin: 0;
-    font-size: 0.92rem;      // antes 0.82
-    font-weight: 500;        // nuevo
+    font-size: 0.92rem; // antes 0.82
+    font-weight: 500; // nuevo
     line-height: 1.6;
     color: var(--color-text, #374151);
   }

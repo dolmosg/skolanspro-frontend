@@ -1,13 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { FormErrorComponent } from '@shared/ui/form-error/form-error';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { StudyPlanTermComponent } from '../study-plan-term/study-plan-term.component';
+import { DateValidators } from '@shared/validators/date.validators';
 
 export interface IStudyPlanStageStatus {
   id: number;
@@ -65,6 +74,8 @@ export interface IStudyPlanStagePlan {
   id: number;
   name: string;
   studyplan_structure_id: number;
+  start?: string | null;
+  end?: string | null;
   structure?: IStudyPlanStageStructure | null;
 }
 
@@ -109,6 +120,7 @@ type StudyPlanStageMode = 'view' | 'edit';
     UiButtonComponent,
     UiIconComponent,
     StudyPlanTermComponent,
+    FormErrorComponent,
   ],
   templateUrl: './study-plan-stage.component.html',
   styleUrl: './study-plan-stage.component.scss',
@@ -135,12 +147,17 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
   protected readonly termTypes = signal<IStudyPlanStageTermType[]>([]);
   protected readonly descriptiveSheetTypes = signal<IStudyPlanStageDescriptiveSheetType[]>([]);
 
-  protected readonly stageForm = this.fb.group({
-    name: ['', [Validators.required, Validators.maxLength(45)]],
-    start_date: ['', [Validators.required]],
-    end_date: ['', [Validators.required]],
-    order: [0, [Validators.required, Validators.min(0)]],
-  });
+  protected readonly stageForm = this.fb.group(
+    {
+      name: ['', [Validators.required, Validators.maxLength(45)]],
+      start_date: ['', [Validators.required]],
+      end_date: ['', [Validators.required]],
+      order: [0, [Validators.required, Validators.min(0)]],
+    },
+    {
+      validators: [DateValidators.after('start_date', 'stageEndBeforeStart')],
+    },
+  );
 
   protected readonly terms = computed(() => this.stage()?.terms ?? []);
   protected readonly termsCount = computed(() => this.terms().length);
@@ -165,7 +182,6 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
   });
 
   protected readonly isStageSelected = computed(() => this.selectedType() === 'stage');
-
   protected readonly isStageViewMode = computed(() => this.stageMode() === 'view');
   protected readonly isStageEditMode = computed(() => this.stageMode() === 'edit');
 
@@ -206,7 +222,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     this.loadStage();
   }
 
-  protected loadStage(): void {
+  protected loadStage(options?: { keepSelectedTermId?: number | null }): void {
     const route = this.route();
     const stageId = this.stageId();
 
@@ -218,6 +234,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
       this.api.get(`${route}/${stageId}`),
       (res) => {
         const loadedStage = res.data.study_plan_stage ?? null;
+        const keepSelectedTermId = options?.keepSelectedTermId ?? null;
 
         this.stage.set(loadedStage);
         this.setScreenOptions(res.data.options);
@@ -228,6 +245,18 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
         }
 
         this.loadTermContext();
+
+        if (
+          keepSelectedTermId &&
+          loadedStage?.terms?.some((term) => term.id === keepSelectedTermId)
+        ) {
+          this.selectedType.set('term');
+          this.selectedTermId.set(keepSelectedTermId);
+          this.creatingTerm.set(false);
+          this.stageMode.set('view');
+          return;
+        }
+
         this.selectStage();
       },
     );
@@ -287,8 +316,12 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
   }
 
   protected closeTermPanel(): void {
+    const selectedTermId = this.selectedTermId();
+
     this.creatingTerm.set(false);
-    this.loadStage();
+    this.loadStage({
+      keepSelectedTermId: selectedTermId,
+    });
   }
 
   protected editStage(): void {
@@ -320,8 +353,10 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
       return;
     }
 
+    this.stageForm.markAllAsTouched();
+    this.stageForm.updateValueAndValidity();
+
     if (this.stageForm.invalid) {
-      this.stageForm.markAllAsTouched();
       return;
     }
 
@@ -358,15 +393,34 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
   }
 
   private patchStageForm(stage: IStudyPlanStageDetail): void {
+    this.applyStageDateValidators(stage);
+
     this.stageForm.patchValue({
       name: stage.name,
       start_date: this.toDateInputValue(stage.start_date),
       end_date: this.toDateInputValue(stage.end_date),
       order: stage.order,
     });
+
+    this.stageForm.updateValueAndValidity();
   }
 
-  private toDateInputValue(value: string | null): string {
+  private applyStageDateValidators(stage: IStudyPlanStageDetail): void {
+    const planStart = this.toDateInputValue(stage.study_plan?.start ?? null);
+    const planEnd = this.toDateInputValue(stage.study_plan?.end ?? null);
+
+    this.stageForm.controls.start_date.setValidators([
+      Validators.required,
+      DateValidators.range(planStart, planEnd),
+    ]);
+
+    this.stageForm.controls.end_date.setValidators([
+      Validators.required,
+      DateValidators.range(planStart, planEnd),
+    ]);
+  }
+
+  private toDateInputValue(value: string | null | undefined): string {
     return value ? value.slice(0, 10) : '';
   }
 }

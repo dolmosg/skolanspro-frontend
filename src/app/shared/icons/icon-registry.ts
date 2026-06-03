@@ -104,6 +104,10 @@ import {
   LucideBrain,
   LucideTags,
   LucideCircleDot,
+  LucideTag,
+  LucideFileText,
+  LucideClock,
+  LucideCircleHelp,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -182,6 +186,10 @@ export const ICON_REGISTRY = {
   'calendar-days': {
     lucideName: 'calendar-days',
     icon: LucideCalendarDays,
+  },
+  clock: {
+    lucideName:'clock',
+    icon:LucideClock
   },
   'calendar-clock': {
     lucideName: 'calendar-clock',
@@ -303,6 +311,10 @@ export const ICON_REGISTRY = {
     lucideName: 'server-cog',
     icon: LucideServerCog,
   },
+  tag: {
+    lucideName: 'tag',
+    icon:LucideTag
+  },
   tags: {
     lucideName: 'tags',
     icon: LucideTags,
@@ -335,6 +347,10 @@ export const ICON_REGISTRY = {
   capture: {
     lucideName: 'square-pen',
     icon: LucideSquarePen,
+  },
+  'file-text': {
+    lucideName: 'file-text',
+    icon:LucideFileText
   },
   reports: {
     lucideName: 'file-bar-chart',
@@ -518,6 +534,10 @@ export const ICON_REGISTRY = {
   close: {
     lucideName: 'x',
     icon: LucideX,
+  },
+  'circle-question-mark': {
+    lucideName: 'circle-question-mark',
+    icon:LucideCircleQuestionMark
   },
   'check-circle': {
     lucideName: 'circle-check-big',

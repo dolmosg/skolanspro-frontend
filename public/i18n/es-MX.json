@@ -2473,6 +2473,7 @@
 			"configuration": {
 				"label": "Configuración de periodo"
 			},
+			"current":"Actual",
 			"delete": "Eliminar Periodo",
 			"description": "Configura la información académica y operativa del periodo.",
 			"empty": {
@@ -2490,6 +2491,7 @@
 				"end-date": "Fecha de término",
 				"exemption": "Permitir exenciones",
 				"exemption-help": "Permite registrar exenciones durante este periodo.",
+				"grades": "Calificaciones",
 				"name": "Nombre",
 				"order": "Orden",
 				"review-date": "Fecha de revisión",
@@ -2502,7 +2504,8 @@
 				"deleted": "Periodo eliminado correctamente.",
 				"loaded": "Información del periodo cargada correctamente.",
 				"not-found": "El periodo solicitado no existe.",
-				"updated": "Periodo actualizado correctamente."
+				"updated": "Periodo actualizado correctamente.",
+				"confirm-delete": "¿Seguro que deseas eliminar este periodo? Esta acción no se puede deshacer."
 			},
 			"sections": {
 				"academic": "Configuración académica",
@@ -2513,7 +2516,62 @@
 				"general-description": "Define la información básica que identifica al periodo."
 			},
 			"title": "Periodo",
-			"update": "Actualizar Periodo"
+			"update": "Actualizar Periodo",
+			"help": {
+				"title": "¿Cómo funciona este periodo?",
+				"review-title": "Fecha de revisión",
+				"review-description": "Indica cuándo los docentes deben haber terminado la captura. A partir de esta fecha, la información puede ser revisada y validada.",
+				"status-title": "Estado del periodo",
+				"available-actions": "¿Qué se puede hacer?"
+			},
+			"detail": {
+				"general": "Información general",
+				"dates": "Fechas del periodo",
+				"operation": "Operación académica"
+			},
+			"types-help": {
+				"lessons": {
+					"title": "Periodo de clases",
+					"description": "Se utiliza para capturar calificaciones ordinarias, asistencia y comentarios académicos."
+				},
+				"exam": {
+					"title": "Periodo de exámenes",
+					"description": "Se utiliza para capturar calificaciones de exámenes finales. Normalmente no debe capturar asistencia ni comentarios."
+				},
+				"extraordinary": {
+					"title": "Periodo extraordinario",
+					"description": "Se utiliza para capturar exámenes extraordinarios o procesos de regularización. Normalmente no debe capturar asistencia ni comentarios."
+				}
+			},
+			"statuses-help": {
+				"configuration": "El periodo está en preparación y todavía no debería usarse para captura académica.",
+				"open": "Los docentes pueden capturar la información académica permitida para este periodo.",
+				"in-review": "La captura docente debería estar terminada. Coordinación puede revisar y validar la información.",
+				"closed": "La información fue cerrada. Ya no se permiten modificaciones y las calificaciones están disponibles para las familias."
+			},
+			"flags-help": {
+				"attendance": {
+					"enabled": "Durante este periodo se permite registrar asistencia.",
+					"disabled": "Durante este periodo no se captura asistencia."
+				},
+				"comments": {
+					"enabled": "Los docentes pueden registrar comentarios académicos.",
+					"disabled": "Los docentes no pueden registrar comentarios académicos."
+				},
+				"exemption": {
+					"enabled": "Este periodo permite registrar exenciones cuando aplique.",
+					"disabled": "Las exenciones están deshabilitadas para este periodo."
+				}
+			},
+			"timeline": {
+				"title": "Línea de tiempo del periodo",
+				"configuration": "Configuración",
+				"capture": "Captura",
+				"review": "Revisión",
+				"close": "Cierre",
+				"completed": "Completado",
+				"pending": "Pendiente"
+			}
 		},
 		"study-plan-stages": {
 			"add": "Nueva etapa",
