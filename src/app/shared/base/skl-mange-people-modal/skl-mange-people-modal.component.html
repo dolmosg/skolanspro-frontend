@@ -1,0 +1,64 @@
+<form class="skl-manage-people-modal">
+  <div class="skl-manage-people-modal__picker">
+    <div class="skl-manage-people-modal__field">
+      <app-sk-select
+        [control]="personControl"
+        [items]="availablePeople()"
+        bindLabel="descriptor"
+        bindValue="id"
+        [placeholder]="placeholder()"
+      />
+    </div>
+
+    <app-ui-button
+      label="Agregar"
+      variant="primary"
+      size="sm"
+      type="button"
+      [disabled]="!canAddPerson()"
+      (click)="addSelectedPerson()"
+    />
+  </div>
+
+  <section class="skl-manage-people-modal__selected">
+    <h4 class="skl-manage-people-modal__subtitle">
+      {{ selectedTitle() }}
+    </h4>
+
+    @if (selectedPeople().length) {
+      <div class="skl-manage-people-modal__list">
+        @for (person of selectedPeople(); track person.id) {
+          <label class="skl-manage-people-modal__person">
+            <input type="checkbox" checked (change)="onPersonChecked(person.id, $event)" />
+
+            @if (person.photo) {
+              <img
+                class="skl-manage-people-modal__photo"
+                [src]="person.photo"
+                [alt]="person.descriptor"
+              />
+            } @else {
+              <span class="skl-manage-people-modal__avatar">
+                {{ person.descriptor.charAt(0) }}
+              </span>
+            }
+
+            <span class="skl-manage-people-modal__name">
+              {{ person.descriptor }}
+            </span>
+          </label>
+        }
+      </div>
+    } @else {
+      <p class="skl-manage-people-modal__empty">
+        {{ emptyMessage() }}
+      </p>
+    }
+  </section>
+
+  <div modal-footer class="skl-manage-people-modal__actions">
+    <app-ui-button label="Cancelar" variant="ghost" size="sm" type="button" (click)="onCancel()" />
+
+    <app-ui-button label="Aceptar" variant="primary" size="sm" type="button" (click)="onSubmit()" />
+  </div>
+</form>

@@ -1,5 +1,13 @@
 <section class="study-plan-academics">
-  @if (selectedStageId()) {
+  @if (selectedSubjectStageId()) {
+    <app-study-plan-stage-subjects
+      class="study-plan-academics__stage-view"
+      [stageId]="selectedSubjectStageId()"
+      [initialGradeId]="selectedSubjectGradeId()"
+      [route]="childRoute(subjectsChild()?.name)"
+      (back)="closeStageSubjects()"
+    />
+  } @else if (selectedStageId()) {
     <app-study-plan-stage
       class="study-plan-academics__stage-view"
       [stageId]="selectedStageId()"
@@ -24,35 +32,13 @@
         (addStage)="openAddStage()"
       />
 
-      <article class="study-plan-academics__card">
-        <header class="study-plan-academics__card-header">
-          <div>
-            <h4>{{ 'planning.study-plan-academics.subjects.title' | translate }}</h4>
-            <p>{{ 'planning.study-plan-academics.subjects.description' | translate }}</p>
-          </div>
-
-          @if (subjectsChild(); as child) {
-            <app-ui-button
-              [label]="'planning.study-plan-academics.actions.manage' | translate"
-              [iconLeft]="child.icon"
-              variant="secondary"
-              size="sm"
-              (clicked)="openSubjects()"
-            />
-          }
-        </header>
-
-        <button
-          class="study-plan-academics__placeholder study-plan-academics__placeholder--action"
-          type="button"
-          [disabled]="!subjectsChild()"
-          (click)="openSubjects()"
-        >
-          <app-ui-icon name="book-open" size="lg" />
-          <strong>{{ 'planning.study-plan-academics.subjects.pending-title' | translate }}</strong>
-          <span>{{ 'planning.study-plan-academics.subjects.pending-description' | translate }}</span>
-        </button>
-      </article>
+      <app-study-plan-subjects-summary
+        [stages]="stages()"
+        [grades]="grades()"
+        [child]="subjectsChild()"
+        (stageGradeSelected)="openStageGradeSubjects($event)"
+        (stageCrossoversSelected)="openStageCrossovers($event)"
+      />
 
       <article class="study-plan-academics__card">
         <header class="study-plan-academics__card-header">
@@ -79,12 +65,8 @@
           (click)="openIntegrations()"
         >
           <app-ui-icon name="puzzle" size="lg" />
-          <strong>
-            {{ 'planning.study-plan-academics.integrations.pending-title' | translate }}
-          </strong>
-          <span>
-            {{ 'planning.study-plan-academics.integrations.pending-description' | translate }}
-          </span>
+          <strong>{{ 'planning.study-plan-academics.integrations.pending-title' | translate }}</strong>
+          <span>{{ 'planning.study-plan-academics.integrations.pending-description' | translate }}</span>
         </button>
       </article>
     </div>

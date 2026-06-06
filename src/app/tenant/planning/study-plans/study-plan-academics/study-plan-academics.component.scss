@@ -2,6 +2,7 @@
   display: block;
   width: 100%;
   min-width: 0;
+  min-height: 0;
 }
 
 .study-plan-academics {
@@ -9,6 +10,7 @@
   flex-direction: column;
   width: 100%;
   min-width: 0;
+  min-height: 0;
   gap: 1.5rem;
 }
 
@@ -36,6 +38,7 @@
   display: block;
   width: 100%;
   min-width: 0;
+  min-height: 0;
 }
 
 .study-plan-academics__grid {
@@ -71,7 +74,7 @@
   align-items: flex-start;
   gap: 1rem;
 
-  > div {
+  >div {
     min-width: 0;
   }
 
@@ -100,11 +103,9 @@
   padding: 1.5rem;
   border: 1px dashed var(--color-border, #d1d5db);
   border-radius: 1.25rem;
-  background: linear-gradient(
-    180deg,
-    rgb(124 58 237 / 0.02) 0%,
-    rgb(124 58 237 / 0.04) 100%
-  );
+  background: linear-gradient(180deg,
+      rgb(124 58 237 / 0.02) 0%,
+      rgb(124 58 237 / 0.04) 100%);
   text-align: center;
   gap: 0.85rem;
 

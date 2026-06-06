@@ -16,6 +16,7 @@ export class UiButtonComponent {
   label = input<string>('');
   title = input<string | null>(null);
   type = input<'button' | 'submit' | 'reset'>('button');
+  tooltipPosition = input<'top' | 'bottom'>('top');
 
   variant = input<'primary' | 'secondary' | 'ghost' | 'danger'>('secondary');
   size = input<'sm' | 'md' | 'lg'>('md');

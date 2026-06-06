@@ -1,0 +1,95 @@
+:host {
+  display: inline-flex;
+}
+
+.ui-meta-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #6b7280);
+  cursor: default;
+}
+
+.ui-meta-item--muted {
+  color: #9ca3af;
+}
+
+.ui-meta-item[data-tooltip]:not([data-tooltip='']) {
+  cursor: help;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(107 114 128 / 0.55);
+}
+
+.ui-meta-item[data-tooltip]:not([data-tooltip='']):hover {
+  text-decoration-color: rgb(107 114 128 / 0.9);
+}
+
+.ui-meta-item[data-tooltip]:not([data-tooltip=''])::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  min-width: 180px;
+  max-width: 320px;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: center;
+  box-shadow: 0 10px 25px rgb(0 0 0 / 0.28);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 9999;
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+}
+
+.ui-meta-item[data-tooltip]:not([data-tooltip=''])::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #111827;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 9999;
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+}
+
+.ui-meta-item[data-tooltip]:not([data-tooltip='']):hover::after,
+.ui-meta-item[data-tooltip]:not([data-tooltip='']):hover::before,
+.ui-meta-item[data-tooltip]:not([data-tooltip='']):focus-visible::after,
+.ui-meta-item[data-tooltip]:not([data-tooltip='']):focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ui-meta-item--bottom[data-tooltip]:not([data-tooltip=''])::after {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
+.ui-meta-item--bottom[data-tooltip]:not([data-tooltip=''])::before {
+  top: calc(100% + 3px);
+  bottom: auto;
+  border-top: none;
+  border-bottom: 5px solid #111827;
+}

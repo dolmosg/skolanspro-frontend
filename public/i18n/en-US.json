@@ -606,6 +606,7 @@
 		"cancel": "Cancel",
 		"capture": "Capture",
 		"clear": "Clear",
+		"context": "Context",
 		"create": "Create",
 		"current": "Current",
 		"dashboard": "Dashboard",
@@ -617,6 +618,7 @@
 		"no": "No",
 		"no-data": "No data available",
 		"no-description": "No Description",
+		"no-subjects": "Without subjects",
 		"no_type": "Select a type",
 		"order": "Order",
 		"remove": "Remove",
@@ -624,11 +626,14 @@
 		"reset": "Reset",
 		"run": "Run",
 		"save": "Save",
+		"saving-order": "Saving order...",
 		"search": "Search",
 		"select": "Select an option",
 		"select-all": "Select all",
 		"selected": "Selected items",
+		"stages": "Stages",
 		"status": "Status",
+		"subjects": "Subjects",
 		"submit": "Submit",
 		"suspend": "Suspend",
 		"update": "Update",
@@ -969,6 +974,13 @@
 		"evaluation-types": {
 			"add": "New Evaluation Type",
 			"delete": "Remove Evaluation Type",
+			"help": {
+				"activities": "Evaluation is based on activities grouped within aspects. Activities generate aspect grades, and aspect grades generate the final grade.",
+				"aspects": "Evaluation is performed by assigning grades directly to each aspect. The final grade is calculated from the evaluated aspects.",
+				"grades": "Evaluation is performed by entering only a final grade, without aspects or activities.",
+				"no": "The subject does not use any evaluation scheme.",
+				"points": "Evaluation is based on points earned out of a possible total. For example: 3 out of 8 points."
+			},
 			"order": "Order Evaluation Types",
 			"translation": {
 				"activities": "By Activities",
@@ -1013,6 +1025,13 @@
 				"name": "Name",
 				"translation": "Translation"
 			},
+			"help": {
+				"discipline": "Converts the grade using a configurable performance scale.",
+				"no-rounding": "Keeps the calculated value without applying rounding.",
+				"round": "Rounds the grade using standard mathematical rules.",
+				"round-zero": "Rounds the grade to the nearest whole number.",
+				"truncate": "Removes decimal places without rounding."
+			},
 			"messages": {
 				"confirm-delete": "You are about to remove the gender",
 				"create-description": "Define a new gender and its properties",
@@ -1041,6 +1060,13 @@
 				"name": "Name",
 				"order": "Order",
 				"translation": "Translation"
+			},
+			"help": {
+				"discipline": "",
+				"no-rounding": "",
+				"round": "",
+				"round-zero": "",
+				"truncate": ""
 			},
 			"messages": {
 				"confirm-delete": "Are you sure you want to delete this grade policy?",
@@ -1954,6 +1980,13 @@
 				"translation": "Translation",
 				"uses-teams": "Teams"
 			},
+			"help": {
+				"areas": "Subject that allows working with a specific selection of academic groups.",
+				"crossovers": "Crossover subject that can be shared across multiple grades and uses its own groups.",
+				"special": "Subject that uses its own groups independent from the academic groups.",
+				"subject": "Standard subject that uses the academic groups assigned to the grade.",
+				"teams": "Subject that allows subdividing academic groups into work teams."
+			},
 			"messages": {
 				"confirm-delete": "Are you sure you want to delete this subject type?",
 				"create-description": "Create a new subject type.",
@@ -2239,6 +2272,7 @@
 		"study-plan-report-cards": "Report Cards",
 		"study-plan-scheduling": "Scheduling & Timetable",
 		"study-plan-stage-terms": "Terms",
+		"study-plan-subjects": "Subjects",
 		"study-plans": "Study Plans",
 		"studyplan-structures": "Study Plan Structures",
 		"subject-classifications": "Classification",
@@ -2376,10 +2410,20 @@
 				"title": "Stages and Terms"
 			},
 			"subjects": {
+				"by-stage-grade": "Subjects by stage and grade",
+				"configured-grades": "Configured grades",
+				"crossover-description": "Subjects not associated with a specific grade at this stage",
+				"crossovers": "Crossovers",
 				"description": "Manage the subjects assigned to each academic grade.",
+				"empty-grades": "There are grades without subjects",
+				"empty-stages": "One or more stages have grades without configured subjects.",
+				"grade-subjects": "Grades with configured subjects",
+				"grades-with-subjects": "grades with subjects",
+				"in-stage": "subjects in the stage",
 				"pending-description": "Assign subjects and define the academic structure by grade.",
 				"pending-title": "Subject configuration",
-				"title": "Subjects by Grade"
+				"title": "Subjects by Grade",
+				"within-grade": "All stages have subjects in each grade."
 			},
 			"title": "Academic Structure"
 		},
@@ -2473,9 +2517,14 @@
 			"configuration": {
 				"label": "Term Configuration"
 			},
-			"current":"Current",
+			"current": "Current",
 			"delete": "Remove Term",
 			"description": "Configure the academic and operational settings of the term.",
+			"detail": {
+				"dates": "Term dates",
+				"general": "General information",
+				"operation": "Academic operation"
+			},
 			"empty": {
 				"description": "The selected term information could not be loaded.",
 				"title": "Term unavailable"
@@ -2499,13 +2548,34 @@
 				"status": "Status",
 				"type": "Term type"
 			},
+			"flags-help": {
+				"attendance": {
+					"disabled": "Attendance is not recorded during this term.",
+					"enabled": "Attendance can be recorded during this term."
+				},
+				"comments": {
+					"disabled": "Teachers cannot enter academic comments.",
+					"enabled": "Teachers can enter academic comments."
+				},
+				"exemption": {
+					"disabled": "Exemptions are disabled for this term.",
+					"enabled": "This term allows exemptions to be recorded when applicable."
+				}
+			},
+			"help": {
+				"available-actions": "What can be done?",
+				"review-description": "Indicates when teachers should have finished data entry. From this date, the information can be reviewed and validated.",
+				"review-title": "Review date",
+				"status-title": "Term status",
+				"title": "How does this term work?"
+			},
 			"messages": {
+				"confirm-delete": "Are you sure you want to delete this term? This action cannot be undone.",
 				"created": "Term created successfully.",
 				"deleted": "Term deleted successfully.",
 				"loaded": "Term information loaded successfully.",
 				"not-found": "The requested term does not exist.",
-				"updated": "Term updated successfully.",
-				"confirm-delete": "Are you sure you want to delete this term? This action cannot be undone."
+				"updated": "Term updated successfully."
 			},
 			"sections": {
 				"academic": "Academic configuration",
@@ -2515,68 +2585,44 @@
 				"general": "General information",
 				"general-description": "Define the basic information used to identify the term."
 			},
-			"title": "Term",
-			"update": "Update Term",
-			"help": {
-				"title": "How does this term work?",
-				"review-title": "Review date",
-				"review-description": "Indicates when teachers should have finished data entry. From this date, the information can be reviewed and validated.",
-				"status-title": "Term status",
-				"available-actions": "What can be done?"
-			},
-			"detail": {
-				"general": "General information",
-				"dates": "Term dates",
-				"operation": "Academic operation"
-			},
-			"types-help": {
-				"lessons": {
-					"title": "Class term",
-					"description": "Used to enter regular grades, attendance, and academic comments."
-				},
-				"exam": {
-					"title": "Exam term",
-					"description": "Used to enter final exam grades. It normally should not include attendance or comments."
-				},
-				"extraordinary": {
-					"title": "Extraordinary term",
-					"description": "Used to enter extraordinary exams or remediation processes. It normally should not include attendance or comments."
-				}
-			},
 			"statuses-help": {
+				"closed": "The information has been closed. No further changes are allowed and grades are available to families.",
 				"configuration": "The term is being prepared and should not yet be used for academic entry.",
-				"open": "Teachers can enter the academic information allowed for this term.",
 				"in-review": "Teacher entry should be complete. Coordinators can review and validate the information.",
-				"closed": "The information has been closed. No further changes are allowed and grades are available to families."
-			},
-			"flags-help": {
-				"attendance": {
-					"enabled": "Attendance can be recorded during this term.",
-					"disabled": "Attendance is not recorded during this term."
-				},
-				"comments": {
-					"enabled": "Teachers can enter academic comments.",
-					"disabled": "Teachers cannot enter academic comments."
-				},
-				"exemption": {
-					"enabled": "This term allows exemptions to be recorded when applicable.",
-					"disabled": "Exemptions are disabled for this term."
-				}
+				"open": "Teachers can enter the academic information allowed for this term."
 			},
 			"timeline": {
-				"title": "Term timeline",
-				"configuration": "Configuration",
 				"capture": "Entry",
-				"review": "Review",
 				"close": "Close",
 				"completed": "Completed",
-				"pending": "Pending"
-			}
+				"configuration": "Configuration",
+				"pending": "Pending",
+				"review": "Review",
+				"title": "Term timeline"
+			},
+			"title": "Term",
+			"types-help": {
+				"exam": {
+					"description": "Used to enter final exam grades. It normally should not include attendance or comments.",
+					"title": "Exam term"
+				},
+				"extraordinary": {
+					"description": "Used to enter extraordinary exams or remediation processes. It normally should not include attendance or comments.",
+					"title": "Extraordinary term"
+				},
+				"lessons": {
+					"description": "Used to enter regular grades, attendance, and academic comments.",
+					"title": "Class term"
+				}
+			},
+			"update": "Update Term"
 		},
 		"study-plan-stages": {
 			"add": "New Stage",
 			"configuration": {
 				"stage-help": "Define the validity period for this academic stage. Associated terms must be placed within this date range.",
+				"stage-help-line-1": "",
+				"stage-help-line-2": "",
 				"stage-label": "Stage configuration",
 				"term-label": "Term configuration",
 				"title": "Configuration"
@@ -2602,6 +2648,63 @@
 			},
 			"title": "Study Plan Stages",
 			"update": "Edit Stage"
+		},
+		"study-plan-subjects": {
+			"add": "Add subjects",
+			"assign-evaluation-type": "Assign evaluation type",
+			"assign-grading-strategy": "Assign grading policy",
+			"assign-subject-type": "Assign subject type",
+			"bulk": {
+				"assign-evaluation-type": {
+					"title": "Assign evaluation type"
+				},
+				"assign-grading-strategy": {
+					"title": "Assign grading policy"
+				},
+				"assign-subject-type": {
+					"title": "Assign subject type"
+				},
+				"description": "{{count}} subjects will be updated.",
+				"manage-coordinators": {
+					"title": "Manage coordinators"
+				},
+				"placeholder": "Select an option"
+			},
+			"coordinators": {
+				"none": "Without coordinator"
+			},
+			"crossovers": "Crossovers",
+			"delete": "Delete subject",
+			"fields": {
+				"evaluation-type": "Evaluation Type",
+				"grade-policy": "Grade Policy",
+				"subject-type": "Subject Type"
+			},
+			"grade-policy": {
+				"none": "Without grading policy"
+			},
+			"manage": {
+				"coordinators": {
+					"assigned": "Assigned Coordinators",
+					"empty": "No coordinators assigned.",
+					"placeholder": "Select a coordinator",
+					"title": "Manage Coordinators"
+				}
+			},
+			"manage-coordinators": "Manage coordinators",
+			"search-by": "Search by code or name...",
+			"select-grade": "Select a grade to review its subjects.",
+			"settings": {
+				"coordinates": "Coordinates:",
+				"descriptive-sheet": "Descriptive sheet",
+				"descriptive-sheet-full": "Full descriptive sheet",
+				"extra-points": "Extra points",
+				"how-it-works": "How it works:",
+				"no-subjects": "No Subjects",
+				"no-subjects-description": "There are no subjects yet configured for this selection.",
+				"settings": "Settings:"
+			},
+			"update": "Edit subject"
 		},
 		"study-plans": {
 			"add": "New Study Plan",

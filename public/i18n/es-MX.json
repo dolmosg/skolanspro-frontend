@@ -606,6 +606,7 @@
 		"cancel": "Cancelar",
 		"capture": "Captura",
 		"clear": "Limpiar",
+		"context": "Contexto",
 		"create": "Crear",
 		"current": "Actual",
 		"dashboard": "Dashboard",
@@ -617,6 +618,7 @@
 		"no": "No",
 		"no-data": "No hay datos disponibles",
 		"no-description": "Sin Descripción",
+		"no-subjects": "Sin asignaturas",
 		"no_type": "Seleccionar un tipo",
 		"order": "Orden",
 		"remove": "Eliminar",
@@ -624,11 +626,14 @@
 		"reset": "Cancelar",
 		"run": "Ejecutar",
 		"save": "Guardar",
+		"saving-order": "Guardando orden...",
 		"search": "Búsqueda",
 		"select": "Seleccionar una opción",
 		"select-all": "Seleccionar todos",
 		"selected": "Elementos seleccionados",
+		"stages": "Etapas",
 		"status": "Estado",
+		"subjects": "Asignaturas",
 		"submit": "Enviar",
 		"suspend": "Suspender",
 		"update": "Actualizar",
@@ -969,6 +974,13 @@
 		"evaluation-types": {
 			"add": "Nuevo Tipo de Evaluación",
 			"delete": "Eliminar Tipo de Evaluación",
+			"help": {
+				"activities": "Se evalúa mediante actividades agrupadas dentro de aspectos. Las actividades generan la calificación de cada aspecto y los aspectos generan la calificación final.",
+				"aspects": "Se evalúa asignando una calificación directamente a cada aspecto. La calificación final se obtiene a partir de los aspectos evaluados.",
+				"grades": "Se evalúa capturando únicamente una calificación final, sin aspectos ni actividades intermedias.",
+				"no": "La asignatura no utiliza ningún esquema de evaluación.",
+				"points": "Se evalúa mediante puntos obtenidos respecto a un total posible. Por ejemplo: 3 de 8 puntos."
+			},
 			"order": "Ordenar Tipos de Evaluación",
 			"translation": {
 				"activities": "Por Actividades",
@@ -1013,6 +1025,13 @@
 				"name": "Nombre",
 				"translation": "Traducción"
 			},
+			"help": {
+				"discipline": "",
+				"no-rounding": "",
+				"round": "",
+				"round-zero": "",
+				"truncate": ""
+			},
 			"messages": {
 				"confirm-delete": "Estas a punto de eliminar el género",
 				"create-description": "Define un nuevo género y sus características",
@@ -1041,6 +1060,13 @@
 				"name": "Nombre",
 				"order": "Orden",
 				"translation": "Traducción"
+			},
+			"help": {
+				"discipline": "Convierte la calificación utilizando una escala de desempeño configurable.",
+				"no-rounding": "Conserva el valor calculado sin aplicar redondeo.",
+				"round": "Redondea la calificación utilizando las reglas matemáticas estándar.",
+				"round-zero": "Redondea la calificación al entero más cercano.",
+				"truncate": "Elimina los decimales sin aplicar redondeo."
 			},
 			"messages": {
 				"confirm-delete": "¿Estás seguro de eliminar esta política de calificación?",
@@ -1954,6 +1980,13 @@
 				"translation": "Traducción",
 				"uses-teams": "Equipos"
 			},
+			"help": {
+				"areas": "Asignatura que permite trabajar con una selección específica de grupos académicos.",
+				"crossovers": "Asignatura transversal que puede compartirse entre varios grados y utiliza sus propios grupos.",
+				"special": "Asignatura que utiliza sus propios grupos independientes de los grupos académicos.",
+				"subject": "Asignatura estándar que utiliza los grupos académicos del grado.",
+				"teams": "Asignatura que permite subdividir los grupos académicos en equipos de trabajo."
+			},
 			"messages": {
 				"confirm-delete": "¿Deseas eliminar este tipo de materia?",
 				"create-description": "Crea un nuevo tipo de materia.",
@@ -2239,6 +2272,7 @@
 		"study-plan-report-cards": "Boletas",
 		"study-plan-scheduling": "Organización y Horarios",
 		"study-plan-stage-terms": "periodos",
+		"study-plan-subjects": "Asignaturas",
 		"study-plans": "Planes de Estudio",
 		"studyplan-structures": "Estructuras del Plan de Estudios",
 		"subject-classifications": "Clasificaciones",
@@ -2376,10 +2410,20 @@
 				"title": "Etapas y Periodos"
 			},
 			"subjects": {
+				"by-stage-grade": "Asignaturas por etapa y grado",
+				"configured-grades": "Grados configurados",
+				"crossover-description": "Asignaturas no asociadas a un grado específico en esta etapa",
+				"crossovers": "Transversales",
 				"description": "Administra las materias asociadas a cada grado académico.",
+				"empty-grades": "Hay grados sin asignaturas",
+				"empty-stages": "Una o más etapas tienen grados sin materias configuradas.",
+				"grade-subjects": "Grados con asignaturas configuradas",
+				"grades-with-subjects": "grados con materias",
+				"in-stage": "asignaturas en la etapa",
 				"pending-description": "Asigna materias y define la estructura académica por grado.",
 				"pending-title": "Configuración de asignaturas",
-				"title": "Asignaturas por Grado"
+				"title": "Asignaturas por Grado",
+				"within-grade": "Todas las etapas tienen materias en cada grado."
 			},
 			"title": "Estructura Académica"
 		},
@@ -2473,9 +2517,14 @@
 			"configuration": {
 				"label": "Configuración de periodo"
 			},
-			"current":"Actual",
+			"current": "Actual",
 			"delete": "Eliminar Periodo",
 			"description": "Configura la información académica y operativa del periodo.",
+			"detail": {
+				"dates": "Fechas del periodo",
+				"general": "Información general",
+				"operation": "Operación académica"
+			},
 			"empty": {
 				"description": "No fue posible cargar la información del periodo seleccionado.",
 				"title": "Periodo no disponible"
@@ -2499,13 +2548,34 @@
 				"status": "Estado",
 				"type": "Tipo de periodo"
 			},
+			"flags-help": {
+				"attendance": {
+					"disabled": "Durante este periodo no se captura asistencia.",
+					"enabled": "Durante este periodo se permite registrar asistencia."
+				},
+				"comments": {
+					"disabled": "Los docentes no pueden registrar comentarios académicos.",
+					"enabled": "Los docentes pueden registrar comentarios académicos."
+				},
+				"exemption": {
+					"disabled": "Las exenciones están deshabilitadas para este periodo.",
+					"enabled": "Este periodo permite registrar exenciones cuando aplique."
+				}
+			},
+			"help": {
+				"available-actions": "¿Qué se puede hacer?",
+				"review-description": "Indica cuándo los docentes deben haber terminado la captura. A partir de esta fecha, la información puede ser revisada y validada.",
+				"review-title": "Fecha de revisión",
+				"status-title": "Estado del periodo",
+				"title": "¿Cómo funciona este periodo?"
+			},
 			"messages": {
+				"confirm-delete": "¿Seguro que deseas eliminar este periodo? Esta acción no se puede deshacer.",
 				"created": "Periodo creado correctamente.",
 				"deleted": "Periodo eliminado correctamente.",
 				"loaded": "Información del periodo cargada correctamente.",
 				"not-found": "El periodo solicitado no existe.",
-				"updated": "Periodo actualizado correctamente.",
-				"confirm-delete": "¿Seguro que deseas eliminar este periodo? Esta acción no se puede deshacer."
+				"updated": "Periodo actualizado correctamente."
 			},
 			"sections": {
 				"academic": "Configuración académica",
@@ -2515,67 +2585,42 @@
 				"general": "Información general",
 				"general-description": "Define la información básica que identifica al periodo."
 			},
-			"title": "Periodo",
-			"update": "Actualizar Periodo",
-			"help": {
-				"title": "¿Cómo funciona este periodo?",
-				"review-title": "Fecha de revisión",
-				"review-description": "Indica cuándo los docentes deben haber terminado la captura. A partir de esta fecha, la información puede ser revisada y validada.",
-				"status-title": "Estado del periodo",
-				"available-actions": "¿Qué se puede hacer?"
-			},
-			"detail": {
-				"general": "Información general",
-				"dates": "Fechas del periodo",
-				"operation": "Operación académica"
-			},
-			"types-help": {
-				"lessons": {
-					"title": "Periodo de clases",
-					"description": "Se utiliza para capturar calificaciones ordinarias, asistencia y comentarios académicos."
-				},
-				"exam": {
-					"title": "Periodo de exámenes",
-					"description": "Se utiliza para capturar calificaciones de exámenes finales. Normalmente no debe capturar asistencia ni comentarios."
-				},
-				"extraordinary": {
-					"title": "Periodo extraordinario",
-					"description": "Se utiliza para capturar exámenes extraordinarios o procesos de regularización. Normalmente no debe capturar asistencia ni comentarios."
-				}
-			},
 			"statuses-help": {
+				"closed": "La información fue cerrada. Ya no se permiten modificaciones y las calificaciones están disponibles para las familias.",
 				"configuration": "El periodo está en preparación y todavía no debería usarse para captura académica.",
-				"open": "Los docentes pueden capturar la información académica permitida para este periodo.",
 				"in-review": "La captura docente debería estar terminada. Coordinación puede revisar y validar la información.",
-				"closed": "La información fue cerrada. Ya no se permiten modificaciones y las calificaciones están disponibles para las familias."
-			},
-			"flags-help": {
-				"attendance": {
-					"enabled": "Durante este periodo se permite registrar asistencia.",
-					"disabled": "Durante este periodo no se captura asistencia."
-				},
-				"comments": {
-					"enabled": "Los docentes pueden registrar comentarios académicos.",
-					"disabled": "Los docentes no pueden registrar comentarios académicos."
-				},
-				"exemption": {
-					"enabled": "Este periodo permite registrar exenciones cuando aplique.",
-					"disabled": "Las exenciones están deshabilitadas para este periodo."
-				}
+				"open": "Los docentes pueden capturar la información académica permitida para este periodo."
 			},
 			"timeline": {
-				"title": "Línea de tiempo del periodo",
-				"configuration": "Configuración",
 				"capture": "Captura",
-				"review": "Revisión",
 				"close": "Cierre",
 				"completed": "Completado",
-				"pending": "Pendiente"
-			}
+				"configuration": "Configuración",
+				"pending": "Pendiente",
+				"review": "Revisión",
+				"title": "Línea de tiempo del periodo"
+			},
+			"title": "Periodo",
+			"types-help": {
+				"exam": {
+					"description": "Se utiliza para capturar calificaciones de exámenes finales. Normalmente no debe capturar asistencia ni comentarios.",
+					"title": "Periodo de exámenes"
+				},
+				"extraordinary": {
+					"description": "Se utiliza para capturar exámenes extraordinarios o procesos de regularización. Normalmente no debe capturar asistencia ni comentarios.",
+					"title": "Periodo extraordinario"
+				},
+				"lessons": {
+					"description": "Se utiliza para capturar calificaciones ordinarias, asistencia y comentarios académicos.",
+					"title": "Periodo de clases"
+				}
+			},
+			"update": "Actualizar Periodo"
 		},
 		"study-plan-stages": {
 			"add": "Nueva etapa",
 			"configuration": {
+				"stage-help": "",
 				"stage-help-line-1": "La etapa define el rango de fechas general del ciclo académico.",
 				"stage-help-line-2": "Todos los periodos asociados deberán encontrarse dentro de estas fechas.",
 				"stage-label": "Configuración de etapa",
@@ -2603,6 +2648,63 @@
 			},
 			"title": "Etapas del plan de estudio",
 			"update": "Editar etapa"
+		},
+		"study-plan-subjects": {
+			"add": "Agregar asignaturas",
+			"assign-evaluation-type": "Asignar tipo de evaluación",
+			"assign-grading-strategy": "Asignar política de calificación",
+			"assign-subject-type": "Asignar tipo de asignatura",
+			"bulk": {
+				"assign-evaluation-type": {
+					"title": "Asignar tipo de evaluación"
+				},
+				"assign-grading-strategy": {
+					"title": "Asignar política de calificación"
+				},
+				"assign-subject-type": {
+					"title": "Asignar tipo de asignatura"
+				},
+				"description": "Se actualizarán {{count}} materias.",
+				"manage-coordinators": {
+					"title": "Administrar coordinadores"
+				},
+				"placeholder": "Selecciona una opción"
+			},
+			"coordinators": {
+				"none": "Sin coordinador"
+			},
+			"crossovers": "Transversales",
+			"delete": "Eliminar asignatura",
+			"fields": {
+				"evaluation-type": "Tipo de Evaluación",
+				"grade-policy": "Política de calificación",
+				"subject-type": "Tipo de Asignatura"
+			},
+			"grade-policy": {
+				"none": "Sin política de calificaciones"
+			},
+			"manage": {
+				"coordinators": {
+					"assigned": "Coordinadores Asignados",
+					"empty": "No hay coordinadores asignados.",
+					"placeholder": "Seleccionar un coordinador",
+					"title": "Administrar Coordinadores"
+				}
+			},
+			"manage-coordinators": "Administrar coordinadores",
+			"search-by": "Buscar por código o nombre...",
+			"select-grade": "Selecciona un grado para revisar sus asignaturas.",
+			"settings": {
+				"coordinates": "Coordina:",
+				"descriptive-sheet": "Ficha descriptivaß",
+				"descriptive-sheet-full": "Ficha descriptiva completa",
+				"extra-points": "Puntos extra",
+				"how-it-works": "Cómo funciona:",
+				"no-subjects": "Sin asignaturas",
+				"no-subjects-description": "Todavía no hay asignaturas configuradas para esta selección.",
+				"settings": "Configuración:"
+			},
+			"update": "Editar asignatura"
 		},
 		"study-plans": {
 			"add": "Nuevo Plan de estudio",

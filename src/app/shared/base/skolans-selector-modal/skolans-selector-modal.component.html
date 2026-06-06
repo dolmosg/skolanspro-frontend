@@ -1,0 +1,29 @@
+<form class="skolans-selector-modal" (ngSubmit)="onSubmit()">
+  @if (title()) {
+    <div class="skolans-selector-modal__header">
+      <h3>{{ title() }}</h3>
+
+      @if (description()) {
+        <p>{{ description() }}</p>
+      }
+    </div>
+  }
+
+  <div class="skolans-selector-modal__field">
+    <app-sk-select
+      [control]="selectedIdControl"
+      [items]="items()"
+      bindLabel="descriptor"
+      bindValue="id"
+      [placeholder]="placeholder()"
+    />
+
+    <form-error [control]="selectedIdControl"></form-error>
+  </div>
+
+  <div modal-footer class="skolans-selector-modal__actions">
+    <app-ui-button label="Cancelar" variant="ghost" size="sm" type="button" (click)="onCancel()" />
+
+    <app-ui-button label="Aceptar" variant="primary" size="sm" type="button" (click)="onSubmit()" />
+  </div>
+</form>

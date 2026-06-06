@@ -1,7 +1,8 @@
 <button
   class="ui-button__control"
   [attr.type]="type()"
-  [attr.title]="resolvedTitle()"
+  [attr.data-tooltip]="resolvedTitle()"
+  [attr.data-tooltip-position]="tooltipPosition()"
   [attr.aria-label]="isIconOnly() ? resolvedTitle() || label() : null"
   [disabled]="disabled()"
 >

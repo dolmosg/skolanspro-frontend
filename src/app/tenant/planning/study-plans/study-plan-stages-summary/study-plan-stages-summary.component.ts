@@ -12,25 +12,15 @@ export interface IStudyPlanTermStatus {
   name: string;
   translation: string;
   css_class: string | null;
-  active: boolean;
-  order: number;
 }
 
 export interface IStudyPlanTerm {
   id: number;
   study_plan_stage_id: number;
   code: string;
-  name: string;
-  alternate_name: string | null;
   start_date: string;
   end_date: string;
-  review_date: string | null;
-  exemption: boolean;
-  attendance: boolean;
-  comments: boolean;
   term_status_id: number;
-  term_type_id: number;
-  descriptive_sheet_type_id: number | null;
   order: number;
   status?: IStudyPlanTermStatus | null;
 }
@@ -65,7 +55,6 @@ export class StudyPlanStagesSummaryComponent extends SkolansBaseComponent {
   readonly expectedStagesCount = input<number | null>(null);
 
   readonly addStage = output<void>();
-
   readonly stageSelected = output<number>();
 
   protected readonly stagesCount = computed(() => this.stages().length);
@@ -125,7 +114,11 @@ export class StudyPlanStagesSummaryComponent extends SkolansBaseComponent {
       return '';
     }
 
-    return `${current.stage.name} · ${current.term.code || current.term.name}`;
+    return `${current.stage.name} · ${current.term.code}`;
+  });
+
+  protected readonly currentTermStatus = computed(() => {
+    return this.currentTerm()?.term.status ?? null;
   });
 
   protected readonly currentTermStartDate = computed(() => {

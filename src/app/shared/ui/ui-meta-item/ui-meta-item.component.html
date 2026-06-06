@@ -1,0 +1,8 @@
+<span
+  class="ui-meta-item"
+  [class.ui-meta-item--muted]="muted()"
+  [class.ui-meta-item--bottom]="tooltipPosition() === 'bottom'"
+  [attr.data-tooltip]="resolvedHelp()"
+>
+  {{ label() }}
+</span>

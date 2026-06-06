@@ -1,0 +1,67 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.skolans-selector-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  gap: 1rem;
+}
+
+.skolans-selector-modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.skolans-selector-modal__header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.skolans-selector-modal__header p {
+  margin: 0;
+  color: var(--color-muted, var(--bs-secondary-color, #6b7280));
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.skolans-selector-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.skolans-selector-modal__field > * {
+  min-width: 0;
+}
+
+.skolans-selector-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+  .skolans-selector-modal__actions {
+    justify-content: stretch;
+  }
+
+  .skolans-selector-modal__actions > * {
+    flex: 1 1 auto;
+  }
+}

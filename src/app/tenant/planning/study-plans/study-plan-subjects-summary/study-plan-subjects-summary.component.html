@@ -1,0 +1,133 @@
+<article class="study-plan-subjects-summary">
+  <header class="study-plan-subjects-summary__header">
+    <div>
+      <h4>{{ 'planning.study-plan-academics.subjects.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-academics.subjects.description' | translate }}</p>
+    </div>
+  </header>
+
+  @if (summary().hasSubjects) {
+    <div class="study-plan-subjects-summary__stats">
+      <div class="study-plan-subjects-summary__stat">
+        <strong>{{ summary().stages }}</strong>
+        <span>{{'common.stages' | translate}}</span>
+      </div>
+
+      <div class="study-plan-subjects-summary__stat">
+        <strong>{{ summary().configuredGradeSlots }}/{{ summary().totalGradeSlots }}</strong>
+        <span>{{'planning.study-plan-academics.subjects.configured-grades' | translate}}</span>
+      </div>
+
+      <div class="study-plan-subjects-summary__stat">
+        <strong>{{ summary().totalSubjects }}</strong>
+        <span>{{'planning.study-plan-academics.subjects.in-stage' | translate}}</span>
+      </div>
+    </div>
+
+    <section class="study-plan-subjects-summary__section">
+      <div class="study-plan-subjects-summary__section-title">
+        <span></span>
+        <strong>{{'planning.study-plan-academics.subjects.by-stage-grade' | translate}}</strong>
+      </div>
+
+      <div class="study-plan-subjects-summary__stage-list">
+        @for (stage of summary().stageItems; track stage.stageId) {
+          <section class="study-plan-subjects-summary__stage">
+            <header class="study-plan-subjects-summary__stage-header">
+              <div>
+                <strong>{{ stage.stageName }}</strong>
+                <span> {{ stage.totalSubjects }} {{'planning.study-plan-academics.subjects.in-stage' | translate}} </span>
+              </div>
+
+              <span
+                class="study-plan-subjects-summary__stage-status"
+                [class.study-plan-subjects-summary__stage-status--success]="stage.completed"
+                [class.study-plan-subjects-summary__stage-status--warning]="!stage.completed"
+              >
+                {{ stage.configuredGrades }}/{{ stage.totalGrades }} {{'planning.study-plan-academics.subjects.grades-with-subjects' | translate}}
+              </span>
+            </header>
+
+            <div class="study-plan-subjects-summary__items">
+              @for (item of stage.gradeItems; track item.stageId + '-' + item.gradeId) {
+                <button
+                  class="study-plan-subjects-summary__item"
+                  type="button"
+                  [disabled]="disabled()"
+                  [class.study-plan-subjects-summary__item--pending]="item.pending"
+                  (click)="onStageGradeSelected(item.stageId, item.gradeId)"
+                >
+                  <div class="study-plan-subjects-summary__item-main">
+                    <span class="study-plan-subjects-summary__dot"></span>
+                    <strong>{{ item.label }}</strong>
+                  </div>
+
+                  @if (item.pending) {
+                    <span
+                      class="study-plan-subjects-summary__item-count study-plan-subjects-summary__item-count--pending"
+                    >
+                      {{'common.no-subjects' | translate}}
+                    </span>
+                  } @else {
+                    <span class="study-plan-subjects-summary__item-count">
+                      {{ item.count }} {{'common.subjects' | translate}}
+                    </span>
+                  }
+
+                  <app-ui-icon name="drilldown" size="sm" />
+                </button>
+              }
+            </div>
+
+            @if (stage.hasCrossovers) {
+              <button
+                class="study-plan-subjects-summary__crossovers"
+                type="button"
+                [disabled]="disabled()"
+                (click)="onStageCrossoversSelected(stage.stageId)"
+              >
+                <div class="study-plan-subjects-summary__crossovers-icon">
+                  <app-ui-icon name="share-2" size="sm" />
+                </div>
+
+                <div class="study-plan-subjects-summary__crossovers-text">
+                  <strong>{{'planning.study-plan-academics.subjects.crossovers' | translate}}</strong>
+                  <span>{{'planning.study-plan-academics.subjects.crossover-description' | translate}}</span>
+                </div>
+
+                <strong class="study-plan-subjects-summary__crossovers-count">
+                  {{ stage.crossovers }} {{'common.subjects' | translate}}
+                </strong>
+
+                <app-ui-icon name="drilldown" size="sm" />
+              </button>
+            }
+          </section>
+        }
+      </div>
+    </section>
+
+    <footer
+      class="study-plan-subjects-summary__status"
+      [class.study-plan-subjects-summary__status--warning]="!summary().completed"
+    >
+      <app-ui-icon [name]="summary().completed ? 'check' : 'alert-circle'" size="sm" />
+
+      <div>
+        @if (summary().completed) {
+          <strong>{{'planning.study-plan-academics.subjects.grade-subjects' | translate}}</strong>
+          <span>{{'planning.study-plan-academics.subjects.within-grade' | translate}}</span>
+        } @else {
+          <strong>{{'planning.study-plan-academics.subjects.empty-grades' | translate}}</strong>
+          <span>{{'planning.study-plan-academics.subjects.empty-stages' | translate}}</span>
+        }
+      </div>
+    </footer>
+  } @else {
+    <button class="study-plan-subjects-summary__empty" type="button" [disabled]="disabled()">
+      <app-ui-icon name="book-open" size="lg" />
+      <strong>{{ 'planning.study-plan-academics.subjects.pending-title' | translate }}</strong>
+      <span>{{ 'planning.study-plan-academics.subjects.pending-description' | translate }}</span>
+    </button>
+  }
+</article>

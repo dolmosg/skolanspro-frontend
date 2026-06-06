@@ -1,0 +1,104 @@
+<form class="stage-subject-editor" [formGroup]="form" (ngSubmit)="onSave()">
+  <header class="stage-subject-editor__header">
+    <div class="stage-subject-editor__title">
+      <strong>{{ subject().subject?.name }}</strong>
+      <span>{{ subject().subject?.code }}</span>
+    </div>
+
+    <div class="stage-subject-editor__actions stage-subject-editor__actions--top">
+      <app-ui-button
+        [label]="'common.cancel' | translate"
+        variant="secondary"
+        size="sm"
+        type="button"
+        (click)="onCancel()"
+      />
+
+      <app-ui-button
+        [label]="'common.save' | translate"
+        variant="primary"
+        size="sm"
+        type="submit"
+      />
+    </div>
+  </header>
+
+  <div class="stage-subject-editor__body">
+    <section class="stage-subject-editor__selects" aria-label="Configuración académica">
+      <label class="stage-subject-editor__field">
+        <span>{{ 'planning.study-plan-subjects.fields.subject-type' | translate }}</span>
+
+        <app-sk-select
+          [items]="catalogs().subject_types"
+          bindValue="id"
+          bindLabel="translation"
+          [translateLabel]="true"
+          [control]="form.controls.subject_type_id"
+        />
+      </label>
+
+      <label class="stage-subject-editor__field">
+        <span>{{ 'planning.study-plan-subjects.fields.evaluation-type' | translate }}</span>
+
+        <app-sk-select
+          [items]="catalogs().evaluation_types"
+          bindValue="id"
+          bindLabel="translation"
+          [translateLabel]="true"
+          [control]="form.controls.evaluation_type_id"
+        />
+      </label>
+
+      <label class="stage-subject-editor__field">
+        <span>{{ 'planning.study-plan-subjects.fields.grade-policy' | translate }}</span>
+
+        <app-sk-select
+          [items]="catalogs().grade_policies"
+          bindValue="id"
+          bindLabel="translation"
+          [translateLabel]="true"
+          [clearable]="true"
+          [control]="form.controls.grade_policy_id"
+        />
+      </label>
+    </section>
+
+    <section class="stage-subject-editor__checks" aria-label="Opciones de asignatura">
+      <label class="stage-subject-editor__check">
+        <input type="checkbox" formControlName="extra" />
+        <span>{{ 'planning.study-plan-subjects.settings.extra-points' | translate }}</span>
+      </label>
+
+      <label class="stage-subject-editor__check">
+        <input type="checkbox" formControlName="descriptive_show" />
+        <span>{{ 'planning.study-plan-subjects.settings.descriptive-sheet' | translate }}</span>
+      </label>
+
+      <label class="stage-subject-editor__check">
+        <input
+          type="checkbox"
+          formControlName="descriptive_full"
+          [disabled]="!form.controls.descriptive_show.value"
+        />
+        <span>{{ 'planning.study-plan-subjects.settings.descriptive-sheet-full' | translate }}</span>
+      </label>
+    </section>
+  </div>
+
+  <footer class="stage-subject-editor__actions stage-subject-editor__actions--bottom">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      type="submit"
+    />
+  </footer>
+</form>

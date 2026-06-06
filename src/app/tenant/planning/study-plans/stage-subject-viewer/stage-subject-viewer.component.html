@@ -1,0 +1,110 @@
+<div class="study-plan-stage-subjects__subject-main">
+  <div class="study-plan-stage-subjects__subject-heading">
+    <div class="study-plan-stage-subjects__subject-title">
+      <strong>{{ subject().subject?.name }}</strong>
+      <span>{{ subject().subject?.code }}</span>
+    </div>
+
+    <div class="study-plan-stage-subjects__subject-actions">
+      @if (updateOption(); as option) {
+        <app-ui-button
+          [title]="option.translation | translate"
+          [iconLeft]="option.icon"
+          variant="ghost"
+          size="sm"
+          tooltipPosition="bottom"
+          [iconOnly]="true"
+          [disabled]="disabled()"
+          (click)="edit.emit()"
+        />
+      }
+
+      @if (manageCoordinatorsOption(); as option) {
+        <app-ui-button
+          [title]="option.translation | translate"
+          [iconLeft]="option.icon"
+          variant="ghost"
+          size="sm"
+          tooltipPosition="bottom"
+          [iconOnly]="true"
+          [disabled]="disabled()"
+          (click)="manageCoordinators.emit()"
+        />
+      }
+
+      @if (deleteOption(); as option) {
+        <app-ui-button
+          [title]="option.translation | translate"
+          [iconLeft]="option.icon"
+          variant="ghost"
+          size="sm"
+          tooltipPosition="bottom"
+          [iconOnly]="true"
+          [disabled]="disabled()"
+          (click)="delete.emit()"
+        />
+      }
+    </div>
+  </div>
+
+  <div class="study-plan-stage-subjects__subject-meta">
+    <div class="study-plan-stage-subjects__meta-row">
+      <span class="study-plan-stage-subjects__meta-label">
+        {{ 'planning.study-plan-subjects.settings.how-it-works' | translate }}
+      </span>
+
+      <div class="study-plan-stage-subjects__meta-content">
+        @if (subjectTypeLabel()) {
+          <app-ui-meta-item
+            [label]="subjectTypeLabel() | translate"
+            [help]="subjectTypeHelp() | translate"
+            tooltipPosition="bottom"
+          />
+        }
+
+        @if (evaluationTypeLabel()) {
+          <app-ui-meta-item
+            [label]="evaluationTypeLabel() | translate"
+            [help]="evaluationTypeHelp() | translate"
+            tooltipPosition="bottom"
+          />
+        }
+
+        @if (gradePolicyLabel()) {
+          <app-ui-meta-item
+            [label]="gradePolicyLabel() | translate"
+            [help]="gradePolicyHelp() | translate"
+            tooltipPosition="bottom"
+          />
+        }
+      </div>
+    </div>
+
+    <div class="study-plan-stage-subjects__meta-row">
+      <span class="study-plan-stage-subjects__meta-label">
+        {{ 'planning.study-plan-subjects.settings.coordinates' | translate }}
+      </span>
+
+      <div class="study-plan-stage-subjects__meta-content">
+        <app-ui-meta-item
+          [label]="coordinatorsLabel()"
+          [muted]="!hasCoordinators()"
+        />
+      </div>
+    </div>
+
+    @if (settingsLabel()) {
+      <div class="study-plan-stage-subjects__meta-row">
+        <span class="study-plan-stage-subjects__meta-label">
+          {{ 'planning.study-plan-subjects.settings.settings' | translate }}
+        </span>
+
+        <div class="study-plan-stage-subjects__meta-content">
+          <span class="study-plan-stage-subjects__subject-settings">
+            {{ settingsLabel() }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

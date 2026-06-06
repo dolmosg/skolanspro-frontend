@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.stage-subject-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 1px solid rgb(124 58 237 / 0.18);
+  border-radius: 1rem;
+  background: rgb(124 58 237 / 0.025);
+}
+
+.stage-subject-editor__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stage-subject-editor__title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-bottom: 0.25rem;
+
+  strong {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text, #111827);
+  }
+
+  span {
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.stage-subject-editor__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.stage-subject-editor__actions--bottom {
+  display: none;
+  justify-content: flex-end;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding-top: 1rem;
+}
+
+.stage-subject-editor__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.stage-subject-editor__selects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stage-subject-editor__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-text-muted, #6b7280);
+  }
+}
+
+.stage-subject-editor__checks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  gap: 0.65rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.85rem;
+  background: var(--color-background-soft, #fafafa);
+}
+
+.stage-subject-editor__check {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary, #7c3aed);
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: var(--color-text, #111827);
+  }
+}
+
+@media (max-width: 992px) {
+  .stage-subject-editor__header {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .stage-subject-editor__actions--top {
+    display: none;
+  }
+
+  .stage-subject-editor__actions--bottom {
+    display: flex;
+  }
+
+  .stage-subject-editor__body {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .stage-subject-editor__checks {
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+}

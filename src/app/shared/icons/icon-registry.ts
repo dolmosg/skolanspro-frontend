@@ -108,6 +108,9 @@ import {
   LucideFileText,
   LucideClock,
   LucideCircleHelp,
+  LucideShare2,
+  LucideUserRoundCheck,
+  LucideListChecks,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -135,6 +138,10 @@ export const ICON_REGISTRY = {
     lucideName: 'chart-no-axes-column',
     icon: LucideChartNoAxesColumn,
   },
+  'share-2': {
+    lucideName: 'share-2',
+    icon: LucideShare2,
+  },
   delivery: {
     lucideName: 'inbox',
     icon: LucideInbox,
@@ -142,6 +149,10 @@ export const ICON_REGISTRY = {
   evaluation: {
     lucideName: 'calculator',
     icon: LucideCalculator,
+  },
+  'list-checks': {
+    lucideName: 'list-checks',
+    icon: LucideListChecks,
   },
   up: {
     lucideName: 'chevron-up',
@@ -188,8 +199,8 @@ export const ICON_REGISTRY = {
     icon: LucideCalendarDays,
   },
   clock: {
-    lucideName:'clock',
-    icon:LucideClock
+    lucideName: 'clock',
+    icon: LucideClock,
   },
   'calendar-clock': {
     lucideName: 'calendar-clock',
@@ -313,7 +324,7 @@ export const ICON_REGISTRY = {
   },
   tag: {
     lucideName: 'tag',
-    icon:LucideTag
+    icon: LucideTag,
   },
   tags: {
     lucideName: 'tags',
@@ -350,7 +361,7 @@ export const ICON_REGISTRY = {
   },
   'file-text': {
     lucideName: 'file-text',
-    icon:LucideFileText
+    icon: LucideFileText,
   },
   reports: {
     lucideName: 'file-bar-chart',
@@ -363,6 +374,10 @@ export const ICON_REGISTRY = {
   'chart-spline': {
     lucideName: 'chart-spline',
     icon: LucideChartSpline,
+  },
+  'user-round-check': {
+    lucideName: 'user-round-check',
+    icon: LucideUserRoundCheck,
   },
   'user-round-pen': {
     lucideName: 'user-round-pen',
@@ -535,9 +550,13 @@ export const ICON_REGISTRY = {
     lucideName: 'x',
     icon: LucideX,
   },
+  'circle-help': {
+    lucideName: 'circle-help',
+    icon: LucideCircleQuestionMark
+  },
   'circle-question-mark': {
     lucideName: 'circle-question-mark',
-    icon:LucideCircleQuestionMark
+    icon: LucideCircleQuestionMark,
   },
   'check-circle': {
     lucideName: 'circle-check-big',
