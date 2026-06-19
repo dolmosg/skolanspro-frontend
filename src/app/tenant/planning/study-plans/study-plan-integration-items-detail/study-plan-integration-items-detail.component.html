@@ -1,0 +1,290 @@
+<article
+  class="study-plan-integration-items-detail"
+  [class.study-plan-integration-items-detail--editing]="editing()"
+>
+  <header
+    class="study-plan-integration-items-detail__header"
+    role="button"
+    tabindex="0"
+    (click)="toggleExpanded()"
+    (keydown.enter)="toggleExpanded()"
+    (keydown.space)="toggleExpanded()"
+  >
+    <div class="study-plan-integration-items-detail__title">
+      <app-ui-icon
+        [name]="expanded() ? 'up' : 'drilldown'"
+        size="sm"
+        class="study-plan-integration-items-detail__toggle-icon"
+      />
+      <span class="study-plan-integration-items-detail__icon">
+        <app-ui-icon [name]="icon()" size="sm" />
+      </span>
+
+      <strong>{{ title() }}</strong>
+    </div>
+
+    <div class="study-plan-integration-items-detail__actions">
+      @if (hasWeightIssues()) {
+        <span
+          class="study-plan-integration-items-detail__badge study-plan-integration-items-detail__badge--warning"
+        >
+          <app-ui-icon name="warning" size="sm" />
+          @for (issue of weightIssues(); track issue.id; let last = $last) {
+            @if (issue.translation; as translation) {
+              {{ translation | translate }}
+            } @else {
+              {{ issue.label }}
+            }
+            : {{ issue.total | percent: '1.0-0' }}
+            @if (!last) {
+              ·
+            }
+          }
+        </span>
+      }
+
+      <span class="study-plan-integration-items-detail__badge">
+        {{ 'planning.study-plan-integration-items.subjects-count' | translate: { count: subjectsCount() } }}
+      </span>
+
+      @if (!actionsLocked() && (expanded() || !hasItems())) {
+        @if (canAdd()) {
+          @if (option('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              [variant]="addOption.color"
+              size="sm"
+              [disabled]="loadingAvailableSubjects() || savingSubjects()"
+              (click)="openAddSubjectsModal($event)"
+            />
+          }
+        }
+      }
+
+      @if (!actionsLocked() && expanded() && canUpdate()) {
+        @if (option('update'); as updateOption) {
+          <app-ui-button
+            [label]="updateOption.translation | translate"
+            [iconLeft]="updateOption.icon"
+            [variant]="updateOption.color"
+            size="sm"
+            (click)="startEditing($event)"
+          />
+        }
+      }
+
+      @if (editing()) {
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          variant="secondary"
+          size="sm"
+          (click)="cancelEditing($event)"
+        />
+
+        <app-ui-button
+          [label]="'planning.study-plan-integration-items.save-calculation' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          [disabled]="hasWeightIssues() || savingCalculation()"
+          (click)="saveCalculation($event)"
+        />
+      }
+    </div>
+  </header>
+
+  @if (expanded()) {
+    <div class="study-plan-integration-items-detail__body">
+      @if (displayItems().length > 0) {
+        <div class="study-plan-integration-items-detail__table">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ 'planning.study-plan-integration-items.subject' | translate }}</th>
+                <th>{{ 'planning.study-plan-integration-items.rules' | translate }}</th>
+                <th
+                  [class.study-plan-integration-items-detail__weight-error]="
+                    showWeightValidation() && hasInvalidWeightTotal(getTotalWeight('final_weight'))
+                  "
+                >
+                  {{ 'planning.study-plan-integration-items.weight' | translate }}
+                </th>
+                @for (term of terms(); track term.id) {
+                  <th
+                    [class.study-plan-integration-items-detail__weight-error]="
+                      showWeightValidation() && hasInvalidWeightTotal(getTotalWeight(term.id))
+                    "
+                  >
+                    {{ term.code }}
+                  </th>
+                }
+                <th>{{ 'common.actions' | translate }}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (row of displayItems(); track row.item.id) {
+                <tr
+                  [class.study-plan-integration-items-detail__row--locked]="row.locked"
+                  [class.study-plan-integration-items-detail__row--editing]="canEditRow(row)"
+                >
+                  <td>
+                    <div class="study-plan-integration-items-detail__subject">
+                      <strong>{{ subjectName(row.item) }}</strong>
+
+                      @if (subjectCode(row.item); as code) {
+                        <small class="study-plan-integration-items-detail__code">{{ code }}</small>
+                      }
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="study-plan-integration-items-detail__rules">
+                      @if (row.crossover) {
+                        <span class="study-plan-integration-items-detail__pill">
+                          {{ 'planning.study-plan-integration-items.crossover' | translate }}
+                        </span>
+                      }
+
+                      <label
+                        class="study-plan-integration-items-detail__rule-checkbox"
+                        [class.study-plan-integration-items-detail__rule-checkbox--disabled]="
+                          !canEditRow(row)
+                        "
+                      >
+                        <input
+                          type="checkbox"
+                          [checked]="row.item.enrollment_dependent"
+                          [disabled]="!canEditRow(row)"
+                          (change)="updateBooleanRule(row.item, 'enrollment_dependent', $event)"
+                        />
+                        <span>
+                          {{
+                            'planning.study-plan-integration-items.enrollment-dependent' | translate
+                          }}
+                        </span>
+                      </label>
+
+                      <label
+                        class="study-plan-integration-items-detail__rule-checkbox"
+                        [class.study-plan-integration-items-detail__rule-checkbox--disabled]="
+                          !canEditRow(row)
+                        "
+                      >
+                        <input
+                          type="checkbox"
+                          [checked]="row.item.failure_blocking"
+                          [disabled]="!canEditRow(row)"
+                          (change)="updateBooleanRule(row.item, 'failure_blocking', $event)"
+                        />
+                        <span>
+                          {{ 'planning.study-plan-integration-items.failure-blocking' | translate }}
+                        </span>
+                      </label>
+                    </div>
+                  </td>
+
+                  <td class="study-plan-integration-items-detail__weight-cell">
+                    @if (canEditRow(row)) {
+                      <input
+                        class="study-plan-integration-items-detail__number-input"
+                        type="number"
+                        inputmode="decimal"
+                        step="0.01"
+                        [value]="row.item.final_weight"
+                        (input)="updateNumericValue(row.item, 'final_weight', $event)"
+                        (blur)="normalizeNumericValue(row.item, 'final_weight', $event)"
+                      />
+                    } @else {
+                      <span
+                        class="study-plan-integration-items-detail__value study-plan-integration-items-detail__weight-display"
+                      >
+                        {{ row.item.final_weight | percent: '1.0-0' }}
+                      </span>
+                    }
+                  </td>
+
+                  @for (term of terms(); track term.id) {
+                    <td class="study-plan-integration-items-detail__weight-cell">
+                      @if (getItemTermWeightEntry(row.item, term.id); as termWeight) {
+                        @if (canEditRow(row)) {
+                          <input
+                            class="study-plan-integration-items-detail__number-input"
+                            type="number"
+                            inputmode="decimal"
+                            step="0.01"
+                            [value]="termWeight.weight"
+                            (input)="updateTermWeight(termWeight, $event)"
+                            (blur)="normalizeTermWeight(termWeight, $event)"
+                          />
+                        } @else {
+                          <span
+                            class="study-plan-integration-items-detail__value study-plan-integration-items-detail__weight-display"
+                          >
+                            {{ termWeight.weight | percent: '1.0-0' }}
+                          </span>
+                        }
+                      } @else {
+                        <span class="study-plan-integration-items-detail__muted">—</span>
+                      }
+                    </td>
+                  }
+
+                  <td>
+                    @if (!actionsLocked() && !row.locked && canDelete()) {
+                      @if (option('delete'); as deleteOption) {
+                        <app-ui-button
+                          [iconLeft]="deleteOption.icon"
+                          variant="danger"
+                          size="sm"
+                          [iconOnly]="true"
+                          [title]="deleteOption.translation | translate"
+                          [disabled]="removingItemId() === row.item.id"
+                          (click)="removeItem(row.item, $event)"
+                        />
+                      }
+                    } @else {
+                      <span class="study-plan-integration-items-detail__muted">—</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+
+            @if (showWeightValidation()) {
+              <tfoot>
+                <tr class="study-plan-integration-items-detail__totals-row">
+                  <td colspan="2">{{ 'planning.study-plan-integration-items.total' | translate }}</td>
+                  <td
+                    [class.study-plan-integration-items-detail__weight-error]="
+                      hasInvalidWeightTotal(getTotalWeight('final_weight'))
+                    "
+                  >
+                    {{ getTotalWeight('final_weight') | percent: '1.0-0' }}
+                  </td>
+                  @for (term of terms(); track term.id) {
+                    <td
+                      [class.study-plan-integration-items-detail__weight-error]="
+                        hasInvalidWeightTotal(getTotalWeight(term.id))
+                      "
+                    >
+                      {{ getTotalWeight(term.id) | percent: '1.0-0' }}
+                    </td>
+                  }
+                  <td></td>
+                </tr>
+              </tfoot>
+            }
+          </table>
+        </div>
+      } @else {
+        <div class="study-plan-integration-items-detail__empty">
+          <app-ui-icon [name]="icon()" size="md" />
+          <strong>{{ 'planning.study-plan-integration-items.empty-title' | translate }}</strong>
+          <p>{{ 'planning.study-plan-integration-items.empty-description' | translate }}</p>
+        </div>
+      }
+    </div>
+  }
+</article>

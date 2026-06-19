@@ -195,14 +195,14 @@ export const ACADEMIC_CATALOGS_ROUTES: Routes = [
           ),
       },
       {
-        path: 'studyplan-structures',
+        path: 'study_plan-structures',
         data: {
-          breadcrumb: 'controllers.studyplan-structures',
-          title: 'controllers.studyplan-structures',
-          collectionKey: 'studyplan-structures',
-          itemKey: 'studyplan-structures',
+          breadcrumb: 'controllers.study_plan-structures',
+          title: 'controllers.study_plan-structures',
+          collectionKey: 'study_plan-structures',
+          itemKey: 'study_plan-structures',
           api: {
-            route: 'configuration/studyplan-structures',
+            route: 'configuration/study_plan-structures',
           },
         },
         loadComponent: () =>

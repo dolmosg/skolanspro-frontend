@@ -41,7 +41,14 @@ interface LoginData {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, RouterLink, UiIconComponent, FormErrorComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+    RouterLink,
+    UiIconComponent,
+    FormErrorComponent,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -55,8 +62,8 @@ export class Login {
   protected readonly site = this.siteState.siteState;
   protected readonly hasSiteState = this.siteState.hasState;
 
-  protected readonly brandTitle = computed(() =>
-    this.siteState.title() || this.siteState.tradename() || 'Skolans Pro',
+  protected readonly brandTitle = computed(
+    () => this.siteState.title() || this.siteState.tradename() || 'Skolans Pro',
   );
 
   protected readonly brandMessage = computed(() => this.siteState.message());
@@ -172,6 +179,7 @@ export class Login {
       this.authState.setSession(response.data);
 
       const redirectUrl = this.buildRedirectUrl(response.data);
+      console.log(redirectUrl);
       await this.router.navigateByUrl(redirectUrl);
     } catch (error) {
       console.error('[LoginError]', error);

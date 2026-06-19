@@ -1,114 +1,493 @@
-<section class="study-plan-configuration">
+<section
+  class="study-plan-configuration"
+  [class.study-plan-configuration--embedded]="selectedStudyPlanId()"
+  [class.study-plan-configuration--full]="!selectedStudyPlanId()"
+>
   @if (studyPlan(); as plan) {
-    <header class="study-plan-configuration__header">
-      <div>
-        <h2>{{ 'planning.study-plans.configuration.title' | translate }}</h2>
-        <p>{{ 'planning.study-plans.configuration.description' | translate }}</p>
-      </div>
+    @if (editMode()) {
+      <form class="study-plan-configuration__edit" [formGroup]="form">
+        <header class="study-plan-configuration__edit-header">
+          <div>
+            <span>{{ plan.name }}</span>
+            <h3>{{ 'planning.study-plans.update' | translate }}</h3>
+            <p>{{ 'planning.study-plans.configuration.edit-description' | translate }}</p>
+          </div>
 
-      <app-ui-button
-        type="button"
-        variant="secondary"
-        iconLeft="back"
-        [label]="'planning.study-plans.configuration.back' | translate"
-        (click)="goBack()"
-      />
-    </header>
+          <div class="study-plan-configuration__edit-actions">
+            <app-ui-button
+              type="button"
+              variant="secondary"
+              iconLeft="close"
+              [label]="'common.cancel' | translate"
+              size="sm"
+              (click)="cancelEditMode()"
+            />
 
-    <section class="study-plan-configuration__summary">
-      <div class="study-plan-configuration__summary-item">
-        <app-ui-icon name="book-open" size="md" />
-        <span>{{ 'planning.study-plans.fields.name' | translate }}</span>
-        <strong>{{ plan.name }}</strong>
-      </div>
+            <app-ui-button
+              type="button"
+              variant="primary"
+              iconLeft="save"
+              [label]="'common.save' | translate"
+              size="sm"
+              [disabled]="form.invalid"
+            />
+          </div>
+        </header>
 
-      <div class="study-plan-configuration__summary-item">
-        <app-ui-icon name="graduation-cap" size="md" />
-        <span>{{ 'planning.study-plans.fields.level' | translate }}</span>
-        <strong>{{ plan.level?.description || plan.level?.name || '—' }}</strong>
-      </div>
+        <section class="study-plan-configuration__edit-section" formGroupName="study_plan">
+          <h4>{{ 'planning.study-plans.sections.general-information' | translate }}</h4>
 
-      <div class="study-plan-configuration__summary-item">
-        <app-ui-icon name="calendar" size="md" />
-        <span>{{ 'planning.study-plans.fields.school-year' | translate }}</span>
-        <strong>{{ plan.school_year?.name || '—' }}</strong>
-      </div>
+          <div class="study-plan-configuration__edit-grid">
+            <label
+              class="study-plan-configuration__edit-field study-plan-configuration__edit-field--wide"
+            >
+              <span>{{ 'planning.study-plans.fields.name' | translate }}</span>
+              <input type="text" formControlName="name" />
+            </label>
 
-      <div class="study-plan-configuration__summary-item">
-        <app-ui-icon name="layout-template" size="md" />
-        <span>{{ 'planning.study-plans.fields.section' | translate }}</span>
-        <strong>{{ plan.section?.description || plan.section?.name || '—' }}</strong>
-      </div>
+            <label
+              class="study-plan-configuration__edit-field study-plan-configuration__edit-field--wide"
+            >
+              <span>{{ 'planning.study-plans.fields.description' | translate }}</span>
+              <input type="text" formControlName="description" />
+            </label>
 
-      <div class="study-plan-configuration__summary-item">
-        <app-ui-icon name="calendar-range" size="md" />
-        <span>{{ 'planning.study-plans.fields.dates' | translate }}</span>
-        <strong>
-          {{ plan.start | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
-          -
-          {{ plan.end | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
-        </strong>
-      </div>
-    </section>
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.start' | translate }}</span>
+              <input type="date" formControlName="start" />
+            </label>
 
-    <section class="study-plan-configuration__sections">
-      <h3>{{ 'planning.study-plans.configuration.title' | translate }}</h3>
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.end' | translate }}</span>
+              <input type="date" formControlName="end" />
+            </label>
 
-      <div class="study-plan-configuration__cards">
-        @for (child of getScreenChildren(); track child.id) {
-          <button
-            type="button"
-            class="study-plan-configuration__card"
-            [class.study-plan-configuration__card--active]="activeSection() === child.name"
-            (click)="changeSection(child.name)"
-          >
-            <app-ui-icon [name]="child.icon" size="md" />
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.level' | translate }}</span>
+              <select formControlName="level_id">
+                @for (level of catalogs().levels ?? []; track level.id) {
+                  <option [ngValue]="level.id">
+                    {{ level.description || level.name }}
+                  </option>
+                }
+              </select>
+            </label>
 
-            <strong>{{ child.translation | translate }}</strong>
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.school-year' | translate }}</span>
+              <select formControlName="school_year_id">
+                @for (schoolYear of catalogs().school_years ?? []; track schoolYear.id) {
+                  <option [ngValue]="schoolYear.id">
+                    {{ schoolYear.name }}
+                  </option>
+                }
+              </select>
+            </label>
 
-            <small>
-              {{ getStudyPlanChildDescription(child.name) | translate }}
-            </small>
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.section' | translate }}</span>
+              <select formControlName="section_id">
+                @for (section of catalogs().sections ?? []; track section.id) {
+                  <option [ngValue]="section.id">
+                    {{ section.description || section.name }}
+                  </option>
+                }
+              </select>
+            </label>
 
-            <app-ui-icon name="drilldown" size="md" />
-          </button>
-        }
-      </div>
-    </section>
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.structure' | translate }}</span>
+              <select formControlName="studyplan_structure_id">
+                @for (structure of catalogs().studyplan_structures ?? []; track structure.id) {
+                  <option [ngValue]="structure.id">
+                    {{ structure.translation || structure.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
 
-    <section class="study-plan-configuration__workspace">
-      @switch (activeSection()) {
-        @case ('study-plan-information') {
-          <app-study-plan-information
-            [studyPlan]="studyPlan()"
-            [route]="childRoute('study-plan-information')"
-          />
-        }
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.schedule-type' | translate }}</span>
+              <select formControlName="schedule_type_id">
+                @for (scheduleType of catalogs().schedule_types ?? []; track scheduleType.id) {
+                  <option [ngValue]="scheduleType.id">
+                    {{ scheduleType.translation || scheduleType.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
+          </div>
+        </section>
 
-        @case ('study-plan-academics') {
-          <app-study-plan-academics
-            [studyPlan]="studyPlan()"
-            [route]="childRoute('study-plan-academics')"
-          />
-        }
+        <section class="study-plan-configuration__edit-section" formGroupName="grading_settings">
+          <h4>{{ 'planning.study-plans.sections.grading' | translate }}</h4>
 
-        @case ('study-plan-scheduling') {
-          <p>Organización y horarios</p>
-        }
+          <div class="study-plan-configuration__edit-grid">
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.grading-scale' | translate }}</span>
+              <select formControlName="grading_scale_id">
+                @for (gradingScale of catalogs().grading_scales ?? []; track gradingScale.id) {
+                  <option [ngValue]="gradingScale.id">
+                    {{ gradingScale.translation || gradingScale.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
 
-        @case ('study-plan-evaluation') {
-          <p>Evaluación y seguimiento</p>
-        }
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.grade-policy' | translate }}</span>
+              <select formControlName="grade_policy_id">
+                @for (gradePolicy of catalogs().grade_policies ?? []; track gradePolicy.id) {
+                  <option [ngValue]="gradePolicy.id">
+                    {{ gradePolicy.translation || gradePolicy.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
 
-        @case ('study-plan-report-cards') {
-          <p>Boletas</p>
-        }
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.aspect-mode' | translate }}</span>
+              <select formControlName="aspect_mode_id">
+                @for (aspectMode of catalogs().aspect_modes ?? []; track aspectMode.id) {
+                  <option [ngValue]="aspectMode.id">
+                    {{ aspectMode.translation || aspectMode.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
 
-        @default {
-          <p>{{ 'planning.study-plans.configuration.select-section' | translate }}</p>
-        }
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.comment-type' | translate }}</span>
+              <select formControlName="comment_type_id">
+                @for (commentType of catalogs().comment_types ?? []; track commentType.id) {
+                  <option [ngValue]="commentType.id">
+                    {{ commentType.translation || commentType.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.decimals' | translate }}</span>
+              <input type="number" min="0" formControlName="decimals" />
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.class-percent' | translate }}</span>
+              <input type="number" min="0" max="100" step="0.01" formControlName="class_percent" />
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.exam-percent' | translate }}</span>
+              <input type="number" min="0" max="100" step="0.01" formControlName="exam_percent" />
+            </label>
+
+            <label class="study-plan-configuration__edit-check">
+              <input type="checkbox" formControlName="exemptions" />
+              <span>{{ 'planning.study-plans.fields.exemptions' | translate }}</span>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.exemption-average' | translate }}</span>
+              <input type="number" min="0" step="0.01" formControlName="exemption_average" />
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.exemption-percent' | translate }}</span>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="0.01"
+                formControlName="exemption_percent"
+              />
+            </label>
+          </div>
+        </section>
+
+        <section class="study-plan-configuration__edit-section" formGroupName="attendance_settings">
+          <h4>{{ 'planning.study-plans.sections.attendance' | translate }}</h4>
+
+          <div class="study-plan-configuration__edit-grid">
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.attendance-type' | translate }}</span>
+              <select formControlName="attendance_type_id">
+                @for (
+                  attendanceType of catalogs().attendance_types ?? [];
+                  track attendanceType.id
+                ) {
+                  <option [ngValue]="attendanceType.id">
+                    {{ attendanceType.translation || attendanceType.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.attendance-calculation' | translate }}</span>
+              <select formControlName="attendance_calculation_id">
+                @for (
+                  attendanceCalculation of catalogs().attendance_calculations ?? [];
+                  track attendanceCalculation.id
+                ) {
+                  <option [ngValue]="attendanceCalculation.id">
+                    {{
+                      attendanceCalculation.translation || attendanceCalculation.name | translate
+                    }}
+                  </option>
+                }
+              </select>
+            </label>
+
+            <label class="study-plan-configuration__edit-check">
+              <input type="checkbox" formControlName="attendance_details" />
+              <span>{{ 'planning.study-plans.fields.attendance-details' | translate }}</span>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.delay-absence-ratio' | translate }}</span>
+              <input type="number" min="0" formControlName="delay_absence_ratio" />
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.attendance-delay' | translate }}</span>
+              <input type="number" min="0" formControlName="attendance_delay" />
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.attendance-percent' | translate }}</span>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="0.01"
+                formControlName="attendance_percent"
+              />
+            </label>
+          </div>
+        </section>
+
+        <section class="study-plan-configuration__edit-section" formGroupName="lms_settings">
+          <h4>{{ 'planning.study-plans.sections.lms' | translate }}</h4>
+
+          <div class="study-plan-configuration__edit-grid">
+            <label class="study-plan-configuration__edit-check">
+              <input type="checkbox" formControlName="enabled" />
+              <span>{{ 'planning.study-plans.fields.lms-enabled' | translate }}</span>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.skills-scale' | translate }}</span>
+              <select formControlName="skills_scale_id">
+                <option [ngValue]="null">—</option>
+                @for (skillScale of catalogs().skill_scales ?? []; track skillScale.id) {
+                  <option [ngValue]="skillScale.id">
+                    {{ skillScale.translation || skillScale.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
+
+            <label class="study-plan-configuration__edit-field">
+              <span>{{ 'planning.study-plans.fields.performance-scale' | translate }}</span>
+              <select formControlName="performance_scale_id">
+                <option [ngValue]="null">—</option>
+                @for (
+                  performanceScale of catalogs().performance_scales ?? [];
+                  track performanceScale.id
+                ) {
+                  <option [ngValue]="performanceScale.id">
+                    {{ performanceScale.translation || performanceScale.name | translate }}
+                  </option>
+                }
+              </select>
+            </label>
+          </div>
+        </section>
+      </form>
+    } @else {
+      <header class="study-plans__detail-header">
+        <div class="study-plans__detail-title">
+          <span class="study-plans__detail-icon">
+            <app-ui-icon name="layout-template" size="md" />
+          </span>
+
+          <div class="study-plans__detail-title-content">
+            <h3>{{ plan.name }}</h3>
+
+            <p>
+              {{ plan.description || ('planning.study-plans.messages.no-description' | translate) }}
+            </p>
+
+            <div class="study-plans__badges">
+              <span>{{ plan.level?.description || plan.level?.name || '—' }}</span>
+              <span>{{ plan.school_year?.name || '—' }}</span>
+              <span>{{ plan.section?.description || plan.section?.name || '—' }}</span>
+              <span>{{ 'common.active' | translate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="study-plans__detail-actions">
+          @if (!selectedStudyPlanId()) {
+            <app-ui-button
+              type="button"
+              variant="secondary"
+              iconLeft="back"
+              [label]="'planning.study-plans.configuration.back' | translate"
+              size="sm"
+              (click)="goBack()"
+            />
+          } @else {
+            @if (getScreenOption('update'); as updateOption) {
+              <app-ui-button
+                [label]="updateOption.translation | translate"
+                [iconLeft]="updateOption.icon"
+                [variant]="getScreenOptionVariant('update', 'primary')"
+                size="sm"
+                (click)="enterEditMode()"
+              />
+            }
+
+            @if (getScreenOption('delete'); as deleteOption) {
+              <app-ui-button
+                [label]="deleteOption.translation | translate"
+                [iconLeft]="deleteOption.icon"
+                [variant]="getScreenOptionVariant('delete', 'danger')"
+                size="sm"
+              />
+            }
+          }
+        </div>
+      </header>
+
+      <section class="study-plans__summary">
+        <article class="study-plans__summary-card">
+          <app-ui-icon name="calendar-days" size="md" />
+
+          <div>
+            <span>{{ 'planning.study-plans.fields.dates' | translate }}</span>
+            <strong>
+              {{ plan.start | date: 'longDate' : 'UTC' : siteState.locale() }}
+              →
+              {{ plan.end | date: 'longDate' : 'UTC' : siteState.locale() }}
+            </strong>
+          </div>
+        </article>
+
+        <article class="study-plans__summary-card">
+          <app-ui-icon name="layout-grid" size="md" />
+
+          <div>
+            <span>{{ 'planning.study-plans.fields.structure' | translate }}</span>
+            <strong>{{
+              plan.structure?.translation || plan.structure?.name || '—' | translate
+            }}</strong>
+          </div>
+        </article>
+      </section>
+
+      @if (selectedStudyPlanId()) {
+        <section class="study-plans__info">
+          <h4>{{ 'planning.study-plans.sections.general-information' | translate }}</h4>
+
+          <div class="study-plans__info-grid">
+            <div class="study-plans__info-item">
+              <app-ui-icon name="graduation-cap" size="md" />
+              <span>{{ 'planning.study-plans.fields.level' | translate }}</span>
+              <strong>{{ plan.level?.description || plan.level?.name || '—' }}</strong>
+            </div>
+
+            <div class="study-plans__info-item">
+              <app-ui-icon name="calendar" size="md" />
+              <span>{{ 'planning.study-plans.fields.school-year' | translate }}</span>
+              <strong>{{ plan.school_year?.name || '—' }}</strong>
+            </div>
+
+            <div class="study-plans__info-item">
+              <app-ui-icon name="users" size="md" />
+              <span>{{ 'planning.study-plans.fields.section' | translate }}</span>
+              <strong>{{ plan.section?.description || plan.section?.name || '—' }}</strong>
+            </div>
+
+            <div class="study-plans__info-item">
+              <app-ui-icon name="layout-grid" size="md" />
+              <span>{{ 'planning.study-plans.fields.structure' | translate }}</span>
+              <strong>{{
+                plan.structure?.translation || plan.structure?.name || '—' | translate
+              }}</strong>
+            </div>
+
+            <div class="study-plans__info-item">
+              <app-ui-icon name="clock" size="md" />
+              <span>{{ 'planning.study-plans.fields.schedule-type' | translate }}</span>
+              <strong>{{
+                plan.schedule_type?.translation || plan.schedule_type?.name || '—' | translate
+              }}</strong>
+            </div>
+
+            <div class="study-plans__info-item">
+              <app-ui-icon name="file-text" size="md" />
+              <span>{{ 'planning.study-plans.fields.description' | translate }}</span>
+              <strong>{{ plan.description || '—' }}</strong>
+            </div>
+          </div>
+        </section>
       }
-    </section>
+
+      <section class="study-plan-configuration__sections">
+        <h3>{{ 'planning.study-plans.configuration.title' | translate }}</h3>
+
+        <div class="study-plan-configuration__cards">
+          @for (child of getScreenChildren(); track child.id) {
+            <button
+              type="button"
+              class="study-plan-configuration__card"
+              [class.study-plan-configuration__card--active]="activeSection() === child.name"
+              (click)="selectStudyPlanChild(child)"
+            >
+              <app-ui-icon [name]="child.icon" size="md" />
+
+              <strong>{{ child.translation | translate }}</strong>
+
+              <small>
+                {{ getStudyPlanChildDescription(child.name) | translate }}
+              </small>
+
+              <app-ui-icon name="drilldown" size="md" />
+            </button>
+          }
+        </div>
+      </section>
+    }
+    @if (!selectedStudyPlanId()) {
+      <section class="study-plan-configuration__workspace">
+        @switch (activeSection()) {
+          @case ('study-plan-academics') {
+            <app-study-plan-academics
+              [studyPlan]="studyPlan()"
+              [route]="childRoute('study-plan-academics')"
+            />
+          }
+
+          @case ('study-plan-scheduling') {
+            <p>Organización y horarios</p>
+          }
+
+          @case ('study-plan-evaluation') {
+            <p>Evaluación y seguimiento</p>
+          }
+
+          @case ('study-plan-report-cards') {
+            <p>Boletas</p>
+          }
+
+          @default {
+            <p>{{ 'planning.study-plans.configuration.select-section' | translate }}</p>
+          }
+        }
+      </section>
+    }
   } @else {
     <div class="study-plan-configuration__empty">
       {{ 'planning.study-plans.messages.not-found' | translate }}

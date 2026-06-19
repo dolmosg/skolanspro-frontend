@@ -5,7 +5,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem, ScreenChildItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem, ScreenChildItem } from '@shared/interfaces/access.interfaces';
+import type { ISchoolYear, ISection } from '@shared/interfaces/administration.interfaces';
+import type {
+  ILevel,
+  IScheduleType,
+  IStudyPlanStructure,
+} from '@shared/interfaces/configuration.interfaces';
+import type { IStudyPlan } from '@shared/interfaces/study-plan-interfaces';
 import { SkSelectComponent } from '@shared/ui/sk-select/sk-select.component';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
@@ -15,51 +22,19 @@ import {
   StudyPlanModalComponent,
 } from '../study-plan-modal/study-plan-modal.component';
 import { Router } from '@angular/router';
+import { StudyPlanConfigurationComponent } from '../study-plan-configuration/study-plan-configuration.component';
 
-export interface StudyPlanListItem {
-  id: number;
-  name: string;
-  description?: string | null;
-  start: string;
-  end: string;
-  level_id: number;
-  school_year_id: number;
-  section_id: number;
-  studyplan_structure_id: number;
-  schedule_type_id: number;
-  level?: unknown;
-  school_year?: unknown;
-  section?: unknown;
-}
-
-export interface StudyPlansCatalogItem {
-  id: number;
-  name: string;
-  description?: string | null;
-  translation?: string | null;
-  order?: number | null;
-  active?: boolean;
-}
-
-export interface SchoolYearCatalogItem {
-  id: number;
-  name: string;
-  current?: boolean;
-  visible?: boolean;
-  order?: number | null;
-}
-
-export interface StudyPlanStructureCatalogItem extends StudyPlansCatalogItem {
-  stages?: number | null;
-  stage_name?: string | null;
-}
+export interface StudyPlanListItem extends Omit<
+  IStudyPlan,
+  'stages' | 'grading_settings' | 'attendance_settings' | 'lms_settings'
+> {}
 
 export interface StudyPlansCatalogs {
-  levels: StudyPlansCatalogItem[];
-  school_years: SchoolYearCatalogItem[];
-  sections: StudyPlansCatalogItem[];
-  studyplan_structures: StudyPlanStructureCatalogItem[];
-  schedule_types: StudyPlansCatalogItem[];
+  levels: ILevel[];
+  school_years: ISchoolYear[];
+  sections: ISection[];
+  studyplan_structures: IStudyPlanStructure[];
+  schedule_types: IScheduleType[];
 }
 
 export interface StudyPlansIndexData {
@@ -79,6 +54,7 @@ export interface StudyPlansIndexData {
     UiButtonComponent,
     UiIconComponent,
     DatePipe,
+    StudyPlanConfigurationComponent,
   ],
   templateUrl: './study-plans.component.html',
   styleUrl: './study-plans.component.scss',
@@ -163,6 +139,7 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
 
   ngOnInit(): void {
     this.initRouteMeta();
+    this.setStudyPlansListContext();
     this.watchFilters();
     this.reloadStudyPlans();
   }
@@ -193,15 +170,18 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
 
       this.applyDefaultFilters();
       this.selectedStudyPlan.set(null);
+      this.setStudyPlansListContext();
     });
   }
 
   protected selectStudyPlan(studyPlan: StudyPlanListItem): void {
     this.selectedStudyPlan.set(studyPlan);
+    this.setSelectedStudyPlanContext(studyPlan);
   }
 
   protected clearSelectedStudyPlan(): void {
     this.selectedStudyPlan.set(null);
+    this.assistantContext.clearFromLevel('selection');
   }
 
   private watchFilters(): void {
@@ -210,6 +190,7 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
       .subscribe((sectionId) => {
         this.selectedSectionId.set(sectionId);
         this.selectedStudyPlan.set(null);
+        this.setStudyPlansListContext();
       });
 
     this.schoolYearControl.valueChanges
@@ -217,6 +198,7 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
       .subscribe((schoolYearId) => {
         this.selectedSchoolYearId.set(schoolYearId);
         this.selectedStudyPlan.set(null);
+        this.setStudyPlansListContext();
       });
   }
 
@@ -235,7 +217,72 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
     }
   }
 
-  private mapCatalogLabel<T extends StudyPlansCatalogItem>(item: T): T & { label: string } {
+  private setStudyPlansListContext(): void {
+    const sectionId = this.selectedSectionId();
+    const schoolYearId = this.selectedSchoolYearId();
+
+    this.setAssistantContext({
+      contextType: 'route',
+      contextId: 'planning.study-plans',
+      feature: 'study-plans',
+      title: 'planning.study-plans.title',
+      subtitle: 'planning.study-plans.description',
+      entity: 'StudyPlan',
+      mode: 'list',
+      data: {
+        sectionId,
+        sectionName: sectionId ? this.findCatalogLabel(this.catalogs().sections, sectionId) : null,
+        schoolYearId,
+        schoolYearName: schoolYearId
+          ? this.findCatalogLabel(this.catalogs().school_years, schoolYearId)
+          : null,
+        totalStudyPlans: this.studyPlans().length,
+        filteredStudyPlans: this.filteredStudyPlans().length,
+        canCreateStudyPlan: this.canCreateStudyPlan(),
+        hasSelection: false,
+        selectedStudyPlanId: null,
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+      },
+    });
+  }
+
+  private setSelectedStudyPlanContext(studyPlan: StudyPlanListItem): void {
+    this.setAssistantContext({
+      contextType: 'selection',
+      contextId: 'planning.study-plans',
+      feature: 'study-plans',
+      title: studyPlan.name,
+      subtitle: 'planning.study-plans.messages.selected-plan',
+      entity: 'StudyPlan',
+      mode: 'selected',
+      data: {
+        studyPlanId: studyPlan.id,
+        studyPlanName: studyPlan.name,
+        studyPlanDescription: studyPlan.description ?? null,
+        start: studyPlan.start,
+        end: studyPlan.end,
+        levelId: studyPlan.level_id,
+        levelName: this.getLevelName(studyPlan),
+        schoolYearId: studyPlan.school_year_id,
+        schoolYearName: this.getSchoolYearName(studyPlan),
+        sectionId: studyPlan.section_id,
+        sectionName: this.getSectionName(studyPlan),
+        hasSelection: true,
+        selectedStudyPlanId: studyPlan.id,
+        studyPlanStructureId: studyPlan.study_plan_structure_id,
+        studyPlanStructureName: this.getStructureName(studyPlan),
+        scheduleTypeId: studyPlan.schedule_type_id,
+        scheduleTypeName: this.getScheduleTypeName(studyPlan),
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+      },
+    });
+  }
+
+  private mapCatalogLabel<T extends { name: string | null; translation?: string | null }>(
+    item: T,
+  ): T & { label: string | null } {
     return {
       ...item,
       label: item.translation || item.name,
@@ -259,22 +306,10 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
     return schoolYear?.name || '-';
   }
 
-  protected getStudyPlanChildDescription(name: string): string {
-    const descriptions: Record<string, string> = {
-      'study-plan-information': 'planning.study-plans.children.information',
-      'study-plan-academics': 'planning.study-plans.children.academics',
-      'study-plan-scheduling': 'planning.study-plans.children.scheduling',
-      'study-plan-evaluation': 'planning.study-plans.children.evaluation',
-      'study-plan-report-cards': 'planning.study-plans.children.report-cards',
-    };
-
-    return descriptions[name] ?? 'planning.study-plans.messages.open-section';
-  }
-
   protected getStructureName(studyPlan: StudyPlanListItem): string {
     return this.findCatalogLabel(
       this.catalogs().studyplan_structures,
-      studyPlan.studyplan_structure_id,
+      studyPlan.study_plan_structure_id,
     );
   }
 
@@ -282,12 +317,20 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
     return this.findCatalogLabel(this.catalogs().schedule_types, studyPlan.schedule_type_id);
   }
 
-  private findCatalogLabel(items: StudyPlansCatalogItem[], id: number): string {
+  private findCatalogLabel(
+    items: Array<{
+      id: number;
+      name: string | null;
+      description?: string | null;
+      translation?: string | null;
+    }>,
+    id: number,
+  ): string {
     const item = items.find((catalogItem) => catalogItem.id === id);
     return item?.translation || item?.description || item?.name || '-';
   }
 
-  protected openStudyPlanChild(child: ScreenChildItem, plan: StudyPlanListItem): void {
+  protected openStudyPlanChild(child: ScreenChildItem, plan: { id: number } | null): void {
     if (!plan?.id || !child?.name) {
       return;
     }
@@ -344,6 +387,7 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
 
         this.studyPlans.update((current) => [...current, created]);
         this.selectedStudyPlan.set(created);
+        this.setSelectedStudyPlanContext(created);
       },
     );
   }
@@ -368,6 +412,7 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
     this.executeMutationRequest<null>(this.api.delete(`${route}/${studyPlan.id}`), () => {
       this.studyPlans.update((current) => current.filter((item) => item.id !== studyPlan.id));
       this.selectedStudyPlan.set(null);
+      this.setStudyPlansListContext();
     });
   }
 }

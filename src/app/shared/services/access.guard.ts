@@ -12,15 +12,18 @@ export const accessGuard: CanActivateFn = (_route, state) => {
   const router = inject(Router);
   const toast = inject(ToastService);
 
-  const buildFallback = () => {
-    const fallback = authState.activeRole()?.path ?? '/auth/login';
-    const context = authState.context();
-
-    if (!context) {
-      return router.createUrlTree(['/auth/login']);
+  const normalizeRoute = (route: string | null | undefined): string => {
+    if (!route) {
+      return '/auth/login';
     }
 
-    return router.createUrlTree([`/${context}${fallback}`]);
+    return route.startsWith('/') ? route : `/${route}`;
+  };
+
+  const buildFallback = () => {
+    const fallback = normalizeRoute(authState.activeRole()?.path);
+
+    return router.createUrlTree([fallback]);
   };
 
   const resolveAccess = () => {
@@ -32,7 +35,7 @@ export const accessGuard: CanActivateFn = (_route, state) => {
 
     const accessRoute = currentRoute.data?.['access']?.route ?? currentRoute.data?.['api']?.route;
 
-    const accessKey = accessRoute ? `/${accessRoute}` : null;
+    const accessKey = accessRoute ? normalizeRoute(accessRoute) : null;
 
     const hasAccess = accessKey
       ? authState.hasAccess(accessKey)

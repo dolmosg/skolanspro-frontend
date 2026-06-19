@@ -3,7 +3,7 @@ import { Component, computed, input, output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 
-import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 

@@ -9,6 +9,7 @@ import { SideBarComponent } from '../side-bar/side-bar';
 import { NavigationService } from '../../shared/services/navigation-service';
 import { SiteStateService } from '../../shared/services/site-state';
 import { AppContextService } from '@shared/services/app-context-service';
+import { AssistantLauncherComponent } from '../assistant-launcher/assistant-launcher.component';
 
 const MOBILE_BREAKPOINT = 992;
 
@@ -22,7 +23,14 @@ const MOBILE_BREAKPOINT = 992;
 @Component({
   selector: 'app-app-shell',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, Topbar, SklModalHostComponent, SideBarComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    Topbar,
+    SklModalHostComponent,
+    SideBarComponent,
+    AssistantLauncherComponent,
+  ],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
 })
@@ -148,6 +156,6 @@ export class AppShell {
    * using the current application context as route prefix.
    */
   protected openProfile(): void {
-    this.router.navigate(['/', this.appContext.type, 'home','profile']);
+    this.router.navigate(['/', this.appContext.type, 'home', 'profile']);
   }
 }

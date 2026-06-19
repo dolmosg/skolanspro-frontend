@@ -117,10 +117,6 @@
     overflow: hidden;
   }
 
-  /* =========================
-     TOPBAR (YA CORREGIDO)
-  ========================= */
-
   &__topbar {
     height: 60px;
     flex: 0 0 60px;
@@ -169,7 +165,6 @@
     flex: 0 0 auto;
   }
 
-  /* 🔥 AQUÍ ESTÁ EL CAMBIO IMPORTANTE */
   &__menu-btn {
     display: inline-flex;
     width: 36px;
@@ -216,10 +211,6 @@
     padding: 0;
     border-radius: 50%;
   }
-
-  /* =========================
-     CONTENT
-  ========================= */
 
   &__content {
     flex: 1;

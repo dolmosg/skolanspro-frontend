@@ -1,0 +1,166 @@
+@if (integration(); as currentIntegration) {
+  <section class="study-plan-integration-detail">
+    <header class="study-plan-integration-detail__header">
+      @if (!editingIntegration()) {
+        <div class="study-plan-integration-detail__identity">
+          <span class="study-plan-integration-detail__code">{{ currentIntegration.monogram }}</span>
+
+          <div>
+            <h3>{{ currentIntegration.name }}</h3>
+
+            @if (currentIntegration.active) {
+              <p
+                class="study-plan-integration-detail__status study-plan-integration-detail__status--active"
+              >
+                <span></span>
+                {{ 'common.active' | translate }}
+              </p>
+            } @else {
+              <p
+                class="study-plan-integration-detail__status study-plan-integration-detail__status--inactive"
+              >
+                <span></span>
+                {{ 'common.inactive' | translate }}
+              </p>
+            }
+          </div>
+        </div>
+
+        <div class="study-plan-integration-detail__header-actions">
+          @if (getScreenOption('update'); as updateOption) {
+            <app-ui-button
+              [label]="updateOption.translation | translate"
+              [iconLeft]="updateOption.icon"
+              [variant]="updateOption.color"
+              size="sm"
+              type="button"
+              (click)="editIntegration()"
+            />
+          }
+
+          @if (getScreenOption('delete'); as deleteOption) {
+            <app-ui-button
+              [label]="deleteOption.translation | translate"
+              [iconLeft]="deleteOption.icon"
+              [variant]="deleteOption.color"
+              size="sm"
+              type="button"
+              [disabled]="deletingIntegration()"
+              (click)="deleteIntegration()"
+            />
+          }
+        </div>
+      } @else {
+        <form class="study-plan-integration-detail__edit-form" [formGroup]="integrationForm">
+          <div class="study-plan-integration-detail__edit-grid">
+            <label class="study-plan-integration-detail__field">
+              <span>Código</span>
+              <input type="text" formControlName="code" [skTextCase]="'uppercase'" />
+              <form-error [control]="integrationForm.controls.code"></form-error>
+            </label>
+
+            <label class="study-plan-integration-detail__field">
+              <span>Nombre</span>
+              <input type="text" formControlName="name" />
+              <form-error [control]="integrationForm.controls.name"></form-error>
+            </label>
+          </div>
+
+          <div class="study-plan-integration-detail__edit-actions">
+            <label class="study-plan-integration-detail__check">
+              <input type="checkbox" formControlName="active" />
+              <span>{{ 'common.active' | translate }}</span>
+            </label>
+
+            <app-ui-button
+              [label]="'common.cancel' | translate"
+              iconLeft="cancel"
+              variant="secondary"
+              size="sm"
+              type="button"
+              (click)="cancelIntegrationEdit()"
+            />
+
+            <app-ui-button
+              [label]="'common.save' | translate"
+              iconLeft="save"
+              variant="primary"
+              size="sm"
+              type="button"
+              [disabled]="savingIntegration()"
+              (click)="saveIntegration()"
+            />
+          </div>
+        </form>
+      }
+    </header>
+
+    <section class="study-plan-integration-detail__section">
+      <div class="study-plan-integration-detail__section-header">
+        <span class="study-plan-integration-detail__section-icon">
+          <app-ui-icon name="route" size="sm" />
+        </span>
+
+        <div>
+          <h4>{{ 'planning.study-plan-integration-items.crossovers-title' | translate }}</h4>
+          <p>{{ 'planning.study-plan-integration-items.crossovers-description' | translate }}</p>
+        </div>
+      </div>
+
+      <app-study-plan-integration-items-detail
+        [title]="'planning.study-plan-integration-items.crossover' | translate"
+        icon="route"
+        mode="crossover"
+        [route]="route()"
+        [stageId]="currentIntegration.study_plan_stage_id"
+        [integrationId]="currentIntegration.id"
+        [gradeId]="null"
+        [items]="crossoverItems()"
+        [crossovers]="[]"
+        [terms]="terms()"
+        [options]="integrationItemOptions()"
+        (itemsChanged)="onIntegrationItemsAdded($event)"
+        (itemRemoved)="onIntegrationItemRemoved($event)"
+      />
+    </section>
+
+    <section class="study-plan-integration-detail__section">
+      <div class="study-plan-integration-detail__section-header">
+        <span class="study-plan-integration-detail__section-icon">
+          <app-ui-icon name="settings" size="sm" />
+        </span>
+
+        <div>
+          <h4>
+            {{ 'planning.study-plan-integration-items.grade-configuration-title' | translate }}
+          </h4>
+          <p>
+            {{
+              'planning.study-plan-integration-items.grade-configuration-description' | translate
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div class="study-plan-integration-detail__grade-list">
+        @for (group of gradeGroups(); track group.grade?.id ?? 0) {
+          <app-study-plan-integration-items-detail
+            [title]="group.grade.name ?? '—'"
+            icon="graduation-cap"
+            mode="grade"
+            [route]="route()"
+            [stageId]="currentIntegration.study_plan_stage_id"
+            [integrationId]="currentIntegration.id"
+            [gradeId]="group.grade.id"
+            [items]="group.items"
+            [crossovers]="crossoverItems()"
+            [terms]="terms()"
+            [options]="integrationItemOptions()"
+            (itemsChanged)="onIntegrationItemsAdded($event)"
+            (itemRemoved)="onIntegrationItemRemoved($event)"
+          />
+        }
+      </div>
+    </section>
+  </section>
+}

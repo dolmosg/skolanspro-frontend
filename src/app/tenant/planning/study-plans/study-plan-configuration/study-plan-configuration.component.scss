@@ -12,55 +12,268 @@
   min-width: 0;
 }
 
-/* ===== HEADER ===== */
-.study-plan-configuration__header {
+.study-plan-configuration--full {
+  gap: 0.75rem;
+
+  .study-plans__detail-header {
+    align-items: center;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .study-plans__detail-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 0.75rem;
+  }
+
+  .study-plans__detail-title-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.65rem;
+
+    h3 {
+      font-size: 1rem;
+    }
+
+    p {
+      display: none;
+    }
+  }
+
+  .study-plans__badges {
+    margin-top: 0;
+  }
+
+  .study-plans__summary {
+    gap: 0.6rem;
+  }
+
+  .study-plans__summary-card {
+    padding: 0.65rem 0.75rem;
+    grid-template-columns: 30px 1fr;
+
+    app-ui-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 0.7rem;
+    }
+
+    strong {
+      font-size: 0.82rem;
+    }
+  }
+
+  .study-plan-configuration__sections {
+    gap: 0.4rem;
+  }
+
+  .study-plan-configuration__cards {
+    gap: 0.6rem;
+  }
+
+  .study-plan-configuration__card {
+    min-height: 112px;
+    padding: 0.8rem;
+
+    app-ui-icon:first-child {
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0.55rem;
+      border-radius: 0.75rem;
+    }
+
+    strong {
+      font-size: 0.84rem;
+    }
+
+    small {
+      margin-top: 0.25rem;
+      font-size: 0.72rem;
+      line-height: 1.25;
+    }
+  }
+}
+
+/* ===== PLAN DETAIL HEADER ===== */
+.study-plans__detail-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--color-primary, #6d4aff) 8%, #ffffff),
+      #ffffff 58%);
+}
 
-  h2 {
+.study-plans__detail-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.study-plans__detail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  color: var(--color-primary, #6d4aff);
+  background: color-mix(in srgb, var(--color-primary, #6d4aff) 13%, #ffffff);
+  border-radius: 0.9rem;
+}
+
+.study-plans__detail-title-content {
+  min-width: 0;
+
+  h3 {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: var(--sk-heading, #1f2937);
   }
 
   p {
     margin: 0.25rem 0 0 0;
     font-size: 0.85rem;
+    line-height: 1.4;
     color: var(--sk-muted, #64748b);
   }
 }
 
-/* ===== SUMMARY ===== */
-.study-plan-configuration__summary {
+.study-plans__detail-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.study-plans__badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-primary, #6d4aff);
+    background: color-mix(in srgb, var(--color-primary, #6d4aff) 10%, #ffffff);
+    border-radius: 999px;
+  }
+}
+
+/* ===== PLAN SUMMARY ===== */
+.study-plans__summary {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
-.study-plan-configuration__summary-item {
+.study-plans__summary-card {
   display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 0.15rem 0.6rem;
+  grid-template-columns: 36px 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0.9rem;
+  background: var(--sk-surface, #ffffff);
+
+  app-ui-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--color-primary, #6d4aff);
+    background: color-mix(in srgb, var(--color-primary, #6d4aff) 10%, #ffffff);
+    border-radius: 0.8rem;
+  }
+
+  div {
+    min-width: 0;
+  }
+
+  span {
+    display: block;
+    min-width: 0;
+    font-size: 0.72rem;
+    color: var(--sk-muted, #64748b);
+  }
+
+  strong {
+    display: block;
+    min-width: 0;
+    margin-top: 0.15rem;
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: var(--sk-text, #334155);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ===== GENERAL INFORMATION ===== */
+.study-plans__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1rem;
+  background: var(--sk-surface, #ffffff);
+
+  h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--sk-heading, #1f2937);
+  }
+}
+
+.study-plans__info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.study-plans__info-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 0.1rem 0.65rem;
   align-items: center;
   min-width: 0;
   padding: 0.75rem;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 0.75rem;
-  background: var(--sk-surface, #ffffff);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--sk-surface, #ffffff) 88%, #f8fafc);
 
   app-ui-icon {
     grid-row: 1 / span 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    color: var(--color-primary);
-    background: color-mix(in srgb, var(--color-primary, #6d4aff) 10%, #ffffff);
-    border-radius: 0.65rem;
+    width: 32px;
+    height: 32px;
+    color: var(--color-primary, #6d4aff);
+    background: color-mix(in srgb, var(--color-primary, #6d4aff) 9%, #ffffff);
+    border-radius: 0.75rem;
   }
 
   span {
@@ -72,7 +285,7 @@
   strong {
     min-width: 0;
     font-size: 0.82rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--sk-text, #334155);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -96,7 +309,7 @@
 
 .study-plan-configuration__cards {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
@@ -111,11 +324,9 @@
   text-align: left;
   color: inherit;
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       color-mix(in srgb, var(--color-primary, #6d4aff) 8%, #ffffff),
-      #ffffff 58%
-    );
+      #ffffff 58%);
   border: 1px solid color-mix(in srgb, var(--color-primary, #6d4aff) 18%, transparent);
   border-radius: 1rem;
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
@@ -201,11 +412,9 @@
   &--active {
     border-color: var(--color-primary, #6d4aff);
     background:
-      linear-gradient(
-        135deg,
+      linear-gradient(135deg,
         color-mix(in srgb, var(--color-primary, #6d4aff) 14%, #ffffff),
-        #ffffff 58%
-      );
+        #ffffff 58%);
     box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
 
     strong {
@@ -237,20 +446,160 @@
   text-align: center;
 }
 
+/* ===== EDIT MODE ===== */
+.study-plan-configuration__edit {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.study-plan-configuration__edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+
+  h3 {
+    margin: 0.2rem 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 0;
+    color: var(--sk-muted, #64748b);
+    font-size: 0.82rem;
+  }
+
+  span {
+    font-size: 0.72rem;
+    color: var(--color-primary, #6d4aff);
+    font-weight: 700;
+  }
+}
+
+.study-plan-configuration__edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.study-plan-configuration__edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem;
+  background: var(--sk-surface, #fff);
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 1rem;
+
+  h4 {
+    margin: 0;
+    font-size: .9rem;
+    font-weight: 700;
+  }
+}
+
+.study-plan-configuration__edit-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: .9rem;
+  align-items: start;
+
+  >* {
+    grid-column: span 4;
+    min-width: 0;
+  }
+}
+
+.study-plan-configuration__edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+
+  &--wide {
+    grid-column: 1 / -1;
+  }
+
+  span {
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--sk-muted, #64748b);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    height: 42px;
+    padding: .55rem .7rem;
+    border: 1px solid rgba(15, 23, 42, .12);
+    border-radius: .65rem;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    min-height: 90px;
+    height: auto;
+    resize: vertical;
+  }
+}
+
+.study-plan-configuration__edit-check {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  gap: .5rem;
+  height: 42px;
+  margin: 0;
+  font-size: .82rem;
+  font-weight: 600;
+
+  input {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .study-plan-configuration__edit-grid {
+    grid-template-columns: 1fr;
+
+    >* {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .study-plan-configuration__edit-header {
+    flex-direction: column;
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1200px) {
-  .study-plan-configuration__summary,
+
+  .study-plans__info-grid,
   .study-plan-configuration__cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
-  .study-plan-configuration__header {
+  .study-plans__detail-header {
     flex-direction: column;
   }
 
-  .study-plan-configuration__summary,
+  .study-plans__detail-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .study-plans__summary,
+  .study-plans__info-grid,
   .study-plan-configuration__cards {
     grid-template-columns: 1fr;
   }

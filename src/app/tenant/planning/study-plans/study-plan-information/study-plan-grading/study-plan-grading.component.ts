@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { SkSelectComponent } from '@shared/ui/sk-select/sk-select.component';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { StudyPlanConfigurationItem } from '../../study-plan-configuration/study-plan-configuration.component';

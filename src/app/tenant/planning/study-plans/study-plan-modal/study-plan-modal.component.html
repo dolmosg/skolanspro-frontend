@@ -1,6 +1,5 @@
 <form class="catalog-modal" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="catalog-modal__grid">
-
     <!-- NAME -->
     <div class="catalog-modal__field catalog-modal__field--full">
       <label class="catalog-modal__label">
@@ -77,12 +76,15 @@
         [items]="structures()"
         bindLabel="translation"
         bindValue="id"
-        [control]="form.controls.studyplan_structure_id"
+        [control]="form.controls.study_plan_structure_id"
         [clearable]="false"
         [translateLabel]="true"
       />
 
-      @if (form.controls.studyplan_structure_id.touched && form.controls.studyplan_structure_id.invalid) {
+      @if (
+        form.controls.study_plan_structure_id.touched &&
+        form.controls.study_plan_structure_id.invalid
+      ) {
         <small class="catalog-modal__error">
           {{ 'validation.required' | translate }}
         </small>
@@ -119,11 +121,7 @@
         <span>*</span>
       </label>
 
-      <input
-        class="catalog-modal__input"
-        type="date"
-        formControlName="start"
-      />
+      <input class="catalog-modal__input" type="date" formControlName="start" />
 
       @if (form.controls.start.touched && form.controls.start.invalid) {
         <small class="catalog-modal__error">
@@ -139,11 +137,7 @@
         <span>*</span>
       </label>
 
-      <input
-        class="catalog-modal__input"
-        type="date"
-        formControlName="end"
-      />
+      <input class="catalog-modal__input" type="date" formControlName="end" />
 
       @if (form.controls.end.touched && form.controls.end.invalid) {
         <small class="catalog-modal__error">
@@ -151,7 +145,6 @@
         </small>
       }
     </div>
-
   </div>
 
   <footer class="catalog-modal__actions">

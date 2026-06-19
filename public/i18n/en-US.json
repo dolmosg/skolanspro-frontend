@@ -599,6 +599,7 @@
 		}
 	},
 	"common": {
+		"actions": "Actions",
 		"activate": "Activate",
 		"active": "Active",
 		"all": "All",
@@ -1939,7 +1940,7 @@
 			},
 			"update": "Update Status"
 		},
-		"studyplan-structures": {
+		"study-plan-structures": {
 			"add": "New Structure",
 			"delete": "Delete Structure",
 			"fields": {
@@ -2268,13 +2269,15 @@
 		"study-plan-general": "General information",
 		"study-plan-grading": "Grading",
 		"study-plan-information": "Information",
+		"study-plan-integration-items": "Integration Items",
+		"study-plan-integrations": "Subject Integration",
 		"study-plan-lms": "LMS",
 		"study-plan-report-cards": "Report Cards",
 		"study-plan-scheduling": "Scheduling & Timetable",
 		"study-plan-stage-terms": "Terms",
 		"study-plan-subjects": "Subjects",
 		"study-plans": "Study Plans",
-		"studyplan-structures": "Study Plan Structures",
+		"study_plan-structures": "Study Plan Structures",
 		"subject-classifications": "Classification",
 		"subject-subcategories": "Subcategories",
 		"subject-types": "Subject Types",
@@ -2512,6 +2515,65 @@
 			"title": "Grading & tracking",
 			"update": "Edit"
 		},
+		"study-plan-integration-items": {
+			"add": "Add subjects",
+			"add-subjects": "Add subjects",
+			"available-subjects": "Available subjects",
+			"confirm-remove": {
+				"confirm": "Remove",
+				"message": "Do you want to remove this subject from the integration? This action will delete its configured weights.",
+				"title": "Remove subject"
+			},
+			"crossover": "Crossover",
+			"crossovers-description": "These subjects are used across all grades. Their configuration is global.",
+			"crossovers-title": "Crossovers",
+			"delete": "Remove subject",
+			"empty-description": "Add subjects to this integration to start configuring its calculation.",
+			"empty-title": "No subjects configured",
+			"enrollment-dependent": "Optional",
+			"failure-blocking": "Conditional",
+			"global": "Global",
+			"global-configuration": "Configured once for the entire integration.",
+			"grade-configuration-description": "Select a grade to manage its subjects and calculation settings.",
+			"grade-configuration-title": "Grade configuration",
+			"initial-weight": "Initial weight",
+			"messages": {
+				"add-subjects-description": "Select the subjects to add to this integration and set the initial weight for each one."
+			},
+			"no-available-subjects": "There are no subjects available to add.",
+			"order": "Order",
+			"period-weights": "Period weights",
+			"rules": "Rules",
+			"save-calculation": "Save calculation",
+			"selected-subjects": "{{count}} selected",
+			"subject": "Subject",
+			"subjects-count": "{{count}} subjects",
+			"total": "Total",
+			"update": "Configure calculation",
+			"weight": "Weight"
+		},
+		"study-plan-integrations": {
+			"active": "Active",
+			"add": "New integration",
+			"configured": "configured integrations",
+			"delete": "Delete integration",
+			"description": "Configure how subjects are academically combined for report cards and grade calculations.",
+			"empty": "There are no subject integrations configured for this study plan.",
+			"empty-description": "Create a new integration to start configuring academic grade calculations.",
+			"empty-title": "No integrations available",
+			"inactive": "Inactive",
+			"integrations": "Integrations",
+			"messages": {
+				"confirm-delete": "Do you want to delete this academic integration? This action will also remove its related configuration.",
+				"delete-title": "Delete integration"
+			},
+			"select-description": "Select an integration from the left panel to review or modify its configuration.",
+			"select-title": "Select an integration",
+			"stage": "Stage",
+			"subjects": "subjects",
+			"title": "Subject Integrations",
+			"update": "Update integration"
+		},
 		"study-plan-stage-terms": {
 			"add": "New Term",
 			"configuration": {
@@ -2718,18 +2780,39 @@
 			"configuration": {
 				"back": "Back",
 				"description": "Configure the key elements of the study plan by selecting one of the available sections.ß",
+				"edit-description": "Editing Study Plan",
 				"title": "Study Plan Configuration"
 			},
 			"delete": "Delete Study Plan",
 			"fields": {
+				"aspect-mode": "Aspect mode",
+				"attendance-calculation": "Attendance calculation",
+				"attendance-delay": "Allowed capture delay",
+				"attendance-details": "Attendance details",
+				"attendance-percent": "Minimum attendance",
+				"attendance-type": "Attendance type",
+				"class-percent": "Class percentage",
+				"comment-type": "Comment type",
 				"dates": "Plan duration",
+				"decimals": "Decimals",
+				"delay-absence-ratio": "Delays per absence",
 				"description": "Description",
 				"end": "End date",
+				"exam-percent": "Exam percentage",
+				"exemption-average": "Minimum average",
+				"exemption-percent": "Required percentage",
+				"exemptions": "Exemptions",
+				"grade-policy": "Rounding policy",
+				"grading-scale": "Grading scale",
 				"level": "Academic level",
+				"lms-enabled": "Lms Enabled",
 				"name": "Name",
+				"performance-scale": "Performance scale",
+				"rounding": "Rounding method",
 				"schedule-type": "Schedule type",
 				"school-year": "School year",
 				"section": "Section",
+				"skills-scale": "Skills Scale",
 				"start": "Start date",
 				"structure": "Structure"
 			},
@@ -2746,7 +2829,10 @@
 			},
 			"sections": {
 				"access": "Plan configuration",
-				"general-information": "General information"
+				"attendance": "Attendance ",
+				"general-information": "General information",
+				"grading": "Grading",
+				"lms": "Lms"
 			},
 			"update": "Update Study Plan"
 		}

@@ -2,7 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { AuthPerson, AuthRole, AuthSession, AuthUser } from '../interfaces/auth-session';
 import { ApiService } from './api-service';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
 
 /**
  * Authentication session state service.
@@ -44,6 +44,14 @@ export class AuthStateSevice {
    * Flat list of backend-approved route/resource keys used by access guards.
    */
   private readonly allowedRoutesState = signal<string[]>([]);
+
+  /**
+   * In-flight `/me` validation request shared by concurrent guards.
+   *
+   * This does not cache successful validations. It only prevents duplicate
+   * simultaneous `/me` calls while a validation request is already pending.
+   */
+  private sessionValidationRequest: Observable<boolean> | null = null;
 
   /**
    * Raw session accessors.
@@ -129,6 +137,18 @@ export class AuthStateSevice {
   }
 
   /**
+   * Clears the current list of backend-approved route/resource keys.
+   *
+   * This must be used whenever the authorization context changes, such as
+   * switching between central and tenant, changing tenant, changing user, or
+   * changing active role.
+   */
+  clearAllowedRoutes(): void {
+    this.allowedRoutesState.set([]);
+    this.persistAllowedRoutes([]);
+  }
+
+  /**
    * Returns true when the provided resource key is explicitly allowed.
    */
   hasAccess(route: string | null | undefined): boolean {
@@ -154,29 +174,46 @@ export class AuthStateSevice {
       return of(false);
     }
 
-    return this.api.get<{ user: AuthUser | null; context: 'central' | 'tenant' | null; tenant?: string | null; allowedRoutes?: string[] | null }>('me').pipe(
-      tap((response) => {
-        const payload = this.extractMePayload(response.data);
+    if (this.sessionValidationRequest) {
+      return this.sessionValidationRequest;
+    }
 
-        if (!response.success || !payload?.user) {
+    this.sessionValidationRequest = this.api
+      .get<{
+        user: AuthUser | null;
+        context: 'central' | 'tenant' | null;
+        tenant?: string | null;
+        allowedRoutes?: string[] | null;
+      }>('me')
+      .pipe(
+        tap((response) => {
+          const payload = this.extractMePayload(response.data);
+
+          if (!response.success || !payload?.user) {
+            this.clear();
+            return;
+          }
+
+          // IMPORTANT:
+          // Do NOT update allowedRoutes, user, role, navigation, or session data here.
+          // The `/me` endpoint is intentionally used only to validate the token.
+          // Role switching will refresh allowedRoutes explicitly through its own flow.
+        }),
+        map((response) => {
+          const payload = this.extractMePayload(response.data);
+          return !!response.success && !!payload?.user;
+        }),
+        catchError(() => {
           this.clear();
-          return;
-        }
+          return of(false);
+        }),
+        finalize(() => {
+          this.sessionValidationRequest = null;
+        }),
+        shareReplay(1),
+      );
 
-        // IMPORTANT:
-        // Do NOT update allowedRoutes, user, role, navigation, or session data here.
-        // The `/me` endpoint is intentionally used only to validate the token.
-        // Role switching will refresh allowedRoutes explicitly through its own flow.
-      }),
-      map((response) => {
-        const payload = this.extractMePayload(response.data);
-        return !!response.success && !!payload?.user;
-      }),
-      catchError(() => {
-        this.clear();
-        return of(false);
-      })
-    );
+    return this.sessionValidationRequest;
   }
 
   /**
@@ -191,14 +228,22 @@ export class AuthStateSevice {
   /**
    * Safely narrows the `me` endpoint payload coming from ApiService.
    */
-  private extractMePayload(
-    data: unknown
-  ): { user: AuthUser | null; context: 'central' | 'tenant' | null; tenant?: string | null; allowedRoutes?: string[] | null } | null {
+  private extractMePayload(data: unknown): {
+    user: AuthUser | null;
+    context: 'central' | 'tenant' | null;
+    tenant?: string | null;
+    allowedRoutes?: string[] | null;
+  } | null {
     if (!data || typeof data !== 'object' || !('user' in data) || !('context' in data)) {
       return null;
     }
 
-    return data as { user: AuthUser | null; context: 'central' | 'tenant' | null; tenant?: string | null; allowedRoutes?: string[] | null };
+    return data as {
+      user: AuthUser | null;
+      context: 'central' | 'tenant' | null;
+      tenant?: string | null;
+      allowedRoutes?: string[] | null;
+    };
   }
 
   /**
@@ -223,12 +268,23 @@ export class AuthStateSevice {
       token: data.token ?? null,
       tokenType: data.token_type ?? null,
       context,
-      tenant: context === 'tenant' ? data.tenant ?? null : null,
+      tenant: context === 'tenant' ? (data.tenant ?? null) : null,
       user,
     };
 
+    const previous = this.state();
+    const authorizationContextChanged =
+      previous.context !== session.context ||
+      previous.tenant !== session.tenant ||
+      previous.user?.id !== session.user?.id ||
+      previous.user?.role?.id !== session.user?.role?.id;
+
     this.state.set(session);
     this.persistToStorage(session);
+
+    if (authorizationContextChanged) {
+      this.clearAllowedRoutes();
+    }
   }
 
   /**
@@ -241,7 +297,8 @@ export class AuthStateSevice {
     const tokenType = localStorage.getItem('token_type');
     const rawContext = localStorage.getItem('app_context');
     const tenant = localStorage.getItem('tenant');
-    const context: AuthSession['context'] = rawContext === 'tenant' ? 'tenant' : rawContext === 'central' ? 'central' : null;
+    const context: AuthSession['context'] =
+      rawContext === 'tenant' ? 'tenant' : rawContext === 'central' ? 'central' : null;
     const rawUser = localStorage.getItem('user');
     const rawAllowedRoutes = localStorage.getItem('allowed_routes');
 
@@ -261,7 +318,9 @@ export class AuthStateSevice {
       try {
         const parsedAllowedRoutes = JSON.parse(rawAllowedRoutes);
         allowedRoutes = Array.isArray(parsedAllowedRoutes)
-          ? parsedAllowedRoutes.filter((route): route is string => typeof route === 'string' && !!route.trim())
+          ? parsedAllowedRoutes.filter(
+              (route): route is string => typeof route === 'string' && !!route.trim(),
+            )
           : [];
       } catch {
         allowedRoutes = [];
@@ -302,6 +361,7 @@ export class AuthStateSevice {
       };
 
       this.persistToStorage(next);
+      this.clearAllowedRoutes();
       return next;
     });
   }
@@ -318,6 +378,7 @@ export class AuthStateSevice {
       user: null,
     });
     this.allowedRoutesState.set([]);
+    this.sessionValidationRequest = null;
 
     localStorage.removeItem('token');
     localStorage.removeItem('token_type');
@@ -340,11 +401,7 @@ export class AuthStateSevice {
       return null;
     }
 
-    const parts = name
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2);
+    const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
 
     if (!parts.length) {
       return null;
@@ -362,7 +419,10 @@ export class AuthStateSevice {
    * @param user Full authenticated user.
    * @returns Reduced user payload or null when no user exists.
    */
-  private serializeUser(user: AuthUser | null | undefined, context: AuthSession['context'] = this.context()): AuthUser | null {
+  private serializeUser(
+    user: AuthUser | null | undefined,
+    context: AuthSession['context'] = this.context(),
+  ): AuthUser | null {
     if (!user) {
       return null;
     }
@@ -377,7 +437,11 @@ export class AuthStateSevice {
       id: user.id,
       name: user.person?.full_name || user.name,
       email: user.email ?? undefined,
-      initials: user.person?.initials ?? user.initials ?? this.buildInitials(user.person?.full_name || user.name) ?? undefined,
+      initials:
+        user.person?.initials ??
+        user.initials ??
+        this.buildInitials(user.person?.full_name || user.name) ??
+        undefined,
       role_id: user.role_id ?? user.role?.id,
       photo: user.photo ?? undefined,
       person: serializedPerson ?? null,
@@ -392,14 +456,17 @@ export class AuthStateSevice {
    * @param person Related person data.
    * @returns Minimal persisted person payload or null.
    */
-  private serializePerson(person: AuthPerson | null | undefined, context: AuthSession['context'] = this.context()): AuthPerson | null {
+  private serializePerson(
+    person: AuthPerson | null | undefined,
+    context: AuthSession['context'] = this.context(),
+  ): AuthPerson | null {
     if (!person) {
       return null;
     }
 
     return {
       picture: person.picture ?? null,
-      photo: context === 'tenant' ? person.photo ?? null : null,
+      photo: context === 'tenant' ? (person.photo ?? null) : null,
       initials: person.initials ?? null,
       full_name: person.full_name ?? null,
     } as AuthPerson;

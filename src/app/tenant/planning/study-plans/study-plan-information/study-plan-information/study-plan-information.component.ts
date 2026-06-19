@@ -3,17 +3,11 @@ import { StudyPlanConfigurationItem } from '../../study-plan-configuration/study
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 import { StudyPlanGeneralComponent } from '../study-plan-general/study-plan-general.component';
 import { StudyPlanGradingComponent } from '../study-plan-grading/study-plan-grading.component';
-import { StudyPlanLmsComponent } from '../study-plan-lms/study-plan-lms.component';
 import { StudyPlanAttendanceComponent } from '../study-plan-attendance/study-plan-attendance.component';
 
 @Component({
   selector: 'app-study-plan-information',
-  imports: [
-    StudyPlanGeneralComponent,
-    StudyPlanGradingComponent,
-    StudyPlanLmsComponent,
-    StudyPlanAttendanceComponent,
-  ],
+  imports: [StudyPlanGeneralComponent, StudyPlanGradingComponent, StudyPlanAttendanceComponent],
   templateUrl: './study-plan-information.component.html',
   styleUrl: './study-plan-information.component.scss',
 })

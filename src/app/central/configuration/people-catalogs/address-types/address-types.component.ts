@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { BaseCrud } from '@shared/base/base-crud';
 import { SkolansTable } from '@shared/ui/skolans-table/skolans-table';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 
 import {
   AddressTypesModalComponent,

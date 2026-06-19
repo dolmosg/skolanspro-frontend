@@ -3,7 +3,7 @@ import { Component, computed, input, OnInit, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { PhoneFormatPipe } from '@shared/pipes/phone-format-pipe';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';

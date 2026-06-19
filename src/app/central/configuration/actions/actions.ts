@@ -17,7 +17,7 @@ import { SklConfirmModal } from '../../../shared/base/skl-confirm-modal/skl-conf
 import {
   ActionListItem,
   ModuleListItem,
-} from '../../../shared/interfaces/configuration.interfaces';
+} from '../../../shared/interfaces/access.interfaces';
 
 type ActionModalData = Partial<ActionListItem> & {
   moduleName?: string | null;

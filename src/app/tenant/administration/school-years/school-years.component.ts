@@ -6,7 +6,7 @@ import { ColDef, GetRowIdParams } from 'ag-grid-community';
 import { SkolansTable } from '@shared/ui/skolans-table/skolans-table';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { BaseCrud } from '@shared/base/base-crud';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import {
   SchoolYearModalComponent,
   ISchoolYearModalResult,

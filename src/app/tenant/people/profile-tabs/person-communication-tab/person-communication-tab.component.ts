@@ -17,7 +17,7 @@ import { PersonPhonesTabComponent } from '../person-phones-tab/person-phones-tab
 import { PersonAddressTabComponent } from '../person-address-tab/person-address-tab.component';
 
 import { IPersonCommunicationCatalogs } from '../person-communication.interfaces';
-import { ScreenChildItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenChildItem } from '@shared/interfaces/access.interfaces';
 
 interface PersonCommunicationsResponse {
   children?: ScreenChildItem[];

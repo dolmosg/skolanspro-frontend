@@ -38,7 +38,7 @@ export interface AuthUser {
   photo?: string | null;
   person?: AuthPerson | null;
   roles?: AuthRole[];
-  role?: AuthRole;
+  role?: AuthRole | null;
 }
 
 export interface AuthSession {

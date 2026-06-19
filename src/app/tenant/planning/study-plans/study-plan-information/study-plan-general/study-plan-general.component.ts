@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 
 import { StudyPlanConfigurationItem } from '../../study-plan-configuration/study-plan-configuration.component';
@@ -29,7 +29,7 @@ interface StudyPlanGeneralItem {
   level_id: number;
   school_year_id: number;
   section_id: number;
-  studyplan_structure_id: number;
+  study_plan_structure_id: number;
   schedule_type_id: number;
   created_at: string;
   updated_at: string;
@@ -51,7 +51,7 @@ interface StudyPlanGeneralCatalogs {
   years: CatalogItem[];
   levels: CatalogItem[];
   sections: CatalogItem[];
-  'studyplan-structures': CatalogItem[];
+  'study-plan-structures': CatalogItem[];
   'schedule-types': CatalogItem[];
 }
 
@@ -184,7 +184,7 @@ export class StudyPlanGeneralComponent extends SkolansBaseComponent implements O
       level_id: item.level_id,
       school_year_id: item.school_year_id,
       section_id: item.section_id,
-      studyplan_structure_id: item.studyplan_structure_id,
+      studyplan_structure_id: item.study_plan_structure_id,
       schedule_type_id: item.schedule_type_id,
     });
   }
@@ -224,7 +224,7 @@ export class StudyPlanGeneralComponent extends SkolansBaseComponent implements O
       years: [],
       levels: [],
       sections: [],
-      'studyplan-structures': [],
+      'study-plan-structures': [],
       'schedule-types': [],
     };
   }

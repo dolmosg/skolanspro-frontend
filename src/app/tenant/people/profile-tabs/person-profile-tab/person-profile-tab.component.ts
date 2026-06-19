@@ -12,7 +12,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { UiButtonComponent } from '../../../../shared/ui/ui-button/ui-button';
 import { SkSelectComponent } from '../../../../shared/ui/sk-select/sk-select.component';
 import { SkolansBaseComponent } from '../../../../shared/base/skolans-base-component';
-import { ScreenOptionItem } from '../../../../shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '../../../../shared/interfaces/access.interfaces';
 import { SkTextCaseDirective } from '@shared/directives/sk-text-mode-case';
 import { NameCasingMode } from '@shared/interfaces/central.interfaces';
 

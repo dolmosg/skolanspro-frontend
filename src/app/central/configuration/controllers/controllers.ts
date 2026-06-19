@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ColDef, GetRowIdParams, ICellRendererParams } from 'ag-grid-community';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ControllerStackService } from '../../../shared/services/controller-stack-service';
-import { ControllerListItem, ModuleListItem } from '../../../shared/interfaces/configuration.interfaces';
+import { ControllerListItem, ModuleListItem } from '../../../shared/interfaces/access.interfaces';
 
 import { SkolansBaseComponent } from '../../../shared/base/skolans-base-component';
 import { UiButtonComponent } from '../../../shared/ui/ui-button/ui-button';

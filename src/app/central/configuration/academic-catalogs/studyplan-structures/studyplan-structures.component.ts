@@ -14,17 +14,17 @@ import {
 } from '../study-plan-strucuture-modal/study-plan-strucuture-modal.component';
 
 interface StudyplanStructuresIndexData {
-  'studyplan-structures'?: StudyplanStructure[];
+  'study_plan-structures'?: StudyplanStructure[];
   options?: Parameters<SkolansBaseComponent['setScreenOptions']>[0];
 }
 
 interface StudyplanStructureMutationData {
   'studyplan-structure'?: StudyplanStructure;
-  'studyplan-structures'?: StudyplanStructure[];
+  'study_plan-structures'?: StudyplanStructure[];
 }
 
 interface StudyplanStructuresOrderData {
-  'studyplan-structures'?: StudyplanStructure[];
+  'study_plan-structures'?: StudyplanStructure[];
 }
 
 export interface StudyplanStructure {
@@ -38,7 +38,7 @@ export interface StudyplanStructure {
 }
 
 @Component({
-  selector: 'app-studyplan-structures',
+  selector: 'app-study_plan-structures',
   standalone: true,
   imports: [TranslateModule, TranslatePipe, UiButtonComponent, SkolansTable],
   templateUrl: './studyplan-structures.component.html',
@@ -65,7 +65,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'name',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.name'),
+          this.translate.instant('configuration.study_plan-structures.fields.name'),
         flex: 1,
         minWidth: 180,
         sortable: !ordering,
@@ -75,7 +75,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'translation',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.translation'),
+          this.translate.instant('configuration.study_plan-structures.fields.translation'),
         flex: 1,
         minWidth: 260,
         sortable: !ordering,
@@ -89,7 +89,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'stages',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.stages'),
+          this.translate.instant('configuration.study_plan-structures.fields.stages'),
         width: 120,
         minWidth: 120,
         sortable: !ordering,
@@ -99,7 +99,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'stage_name',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.stage-name'),
+          this.translate.instant('configuration.study_plan-structures.fields.stage-name'),
         flex: 1,
         minWidth: 180,
         sortable: !ordering,
@@ -109,7 +109,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'active',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.active'),
+          this.translate.instant('configuration.study_plan-structures.fields.active'),
         width: 130,
         minWidth: 130,
         sortable: !ordering,
@@ -123,7 +123,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       {
         field: 'order',
         headerValueGetter: () =>
-          this.translate.instant('configuration.studyplan-structures.fields.order'),
+          this.translate.instant('configuration.study_plan-structures.fields.order'),
         width: 110,
         minWidth: 110,
         sortable: !ordering,
@@ -205,14 +205,14 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
     >({
       component: StudyPlanStructureModalComponent,
       data: {
-        title: 'controllers.studyplan-structures',
-        collectionKey: 'studyplan-structures',
+        title: 'controllers.study_plan-structures',
+        collectionKey: 'study_plan-structures',
         item: null,
         order: this.structures().length,
       },
-      title: this.translate.instant('configuration.studyplan-structures.add'),
+      title: this.translate.instant('configuration.study_plan-structures.add'),
       description: this.translate.instant(
-        'configuration.studyplan-structures.messages.create-description',
+        'configuration.study_plan-structures.messages.create-description',
       ),
       size: 'md',
       closeOnBackdrop: true,
@@ -254,14 +254,14 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
     >({
       component: StudyPlanStructureModalComponent,
       data: {
-        title: 'controllers.studyplan-structures',
-        collectionKey: 'studyplan-structures',
+        title: 'controllers.study_plan-structures',
+        collectionKey: 'study_plan-structures',
         item: selected,
         order: selected.order,
       },
-      title: this.translate.instant('configuration.studyplan-structures.update'),
+      title: this.translate.instant('configuration.study_plan-structures.update'),
       description: this.translate.instant(
-        'configuration.studyplan-structures.messages.update-description',
+        'configuration.study_plan-structures.messages.update-description',
       ),
       size: 'md',
       closeOnBackdrop: true,
@@ -286,9 +286,7 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
           return;
         }
 
-        const fallback = this.structures().map((item) =>
-          item.id === updated.id ? updated : item,
-        );
+        const fallback = this.structures().map((item) => (item.id === updated.id ? updated : item));
 
         this.structures.set(this.extractStructures(response.data, fallback));
         this.selectedItems.set([updated]);
@@ -308,13 +306,13 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
       component: SklConfirmModal as Type<unknown>,
       data: {
         message: this.translate.instant(
-          'configuration.studyplan-structures.messages.confirm-delete',
+          'configuration.study_plan-structures.messages.confirm-delete',
         ),
         confirmLabel: this.translate.instant('common.delete'),
         cancelLabel: this.translate.instant('common.cancel'),
         type: 'danger',
       },
-      title: this.translate.instant('configuration.studyplan-structures.delete'),
+      title: this.translate.instant('configuration.study_plan-structures.delete'),
       size: 'sm',
       closeOnBackdrop: false,
       closeOnEscape: true,
@@ -400,14 +398,18 @@ export class StudyplanStructuresComponent extends SkolansBaseComponent implement
   }
 
   private extractStructures(
-    data: StudyplanStructuresIndexData | StudyplanStructuresOrderData | StudyplanStructure[] | undefined,
+    data:
+      | StudyplanStructuresIndexData
+      | StudyplanStructuresOrderData
+      | StudyplanStructure[]
+      | undefined,
     fallback: StudyplanStructure[] = [],
   ): StudyplanStructure[] {
     if (Array.isArray(data)) {
       return this.sortStructures(data);
     }
 
-    const structures = data?.['studyplan-structures'];
+    const structures = data?.['study_plan-structures'];
 
     if (!Array.isArray(structures)) {
       return this.sortStructures(fallback);

@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SklConfirmModal } from '@shared/base/skl-confirm-modal/skl-confirm-modal';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { SkSelectComponent } from '@shared/ui/sk-select/sk-select.component';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';

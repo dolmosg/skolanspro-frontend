@@ -111,6 +111,7 @@ import {
   LucideShare2,
   LucideUserRoundCheck,
   LucideListChecks,
+  LucideRoute,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -545,6 +546,10 @@ export const ICON_REGISTRY = {
   'eye-off': {
     lucideName: 'eye-off',
     icon: LucideEyeOff,
+  },
+  route:{
+    lucideName:'route',
+    icon:LucideRoute
   },
   close: {
     lucideName: 'x',

@@ -80,8 +80,8 @@
               <strong>
                 {{
                   getCatalogLabel(
-                    catalogs()['studyplan-structures'],
-                    studyPlan.studyplan_structure_id
+                    catalogs()['study-plan-structures'],
+                    studyPlan.study_plan_structure_id
                   ) | translate
                 }}
               </strong>
@@ -91,10 +91,8 @@
               <span>{{ 'planning.study-plan-general.fields.schedule-type' | translate }}</span>
               <strong>
                 {{
-                  getCatalogLabel(
-                    catalogs()['schedule-types'],
-                    studyPlan.schedule_type_id
-                  ) | translate
+                  getCatalogLabel(catalogs()['schedule-types'], studyPlan.schedule_type_id)
+                    | translate
                 }}
               </strong>
             </div>
@@ -165,7 +163,7 @@
           <div class="study-plan-general__field">
             <label>{{ 'planning.study-plan-general.fields.structure' | translate }}</label>
             <app-sk-select
-              [items]="catalogs()['studyplan-structures']"
+              [items]="catalogs()['study-plan-structures']"
               bindLabel="translation"
               bindValue="id"
               [translateLabel]="true"

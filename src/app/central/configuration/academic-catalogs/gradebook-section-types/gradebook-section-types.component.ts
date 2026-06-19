@@ -10,7 +10,7 @@ import {
   GradebookSectionTypeModalData,
   GradebookSectionTypeModalResult,
 } from '../gradebook-section-type-modal/gradebook-section-type-modal.component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 
 export interface IGradebookSectionType {
   id: number;

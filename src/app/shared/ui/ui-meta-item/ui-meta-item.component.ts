@@ -1,10 +1,9 @@
 import { Component, computed, input } from '@angular/core';
-import { UiIconComponent } from "../ui-icon/ui-icon";
 
 @Component({
   selector: 'app-ui-meta-item',
   standalone: true,
-  imports: [UiIconComponent],
+  imports: [],
   templateUrl: './ui-meta-item.component.html',
   styleUrl: './ui-meta-item.component.scss',
 })

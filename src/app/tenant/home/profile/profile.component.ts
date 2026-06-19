@@ -1,7 +1,7 @@
 import { Component, OnInit, Type, computed, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { AuthStateSevice } from '@shared/services/auth-state-sevice';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { PersonCommunicationTabComponent } from 'app/tenant/people/profile-tabs/person-communication-tab/person-communication-tab.component';

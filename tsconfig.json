@@ -3,11 +3,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src",
     "paths": {
-      "@shared/*": ["app/shared/*"],
-      "@core/*": ["app/core/*"],
-      "@features/*": ["app/features/*"]
+      "app/*": ["./src/app/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@features/*": ["./src/app/features/*"]
     },
     "ignoreDeprecations": "5.0",
     "strict": true,

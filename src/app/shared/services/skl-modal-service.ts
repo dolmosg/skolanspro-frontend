@@ -1,4 +1,5 @@
-import { Injectable, Type, signal } from '@angular/core';
+import { Injectable, Type, inject, signal } from '@angular/core';
+import { AssistantUiStateService } from './assistant-ui-state-service';
 
 /**
  * Options used to open a modal instance.
@@ -65,6 +66,8 @@ const DEFAULT_STATE: ISklModalState = {
   providedIn: 'root',
 })
 export class SklModalService {
+  private readonly assistantUi = inject(AssistantUiStateService);
+
   /**
    * Internal reactive state of the modal.
    */
@@ -74,6 +77,7 @@ export class SklModalService {
    * Resolver function for the current modal promise.
    */
   private pendingResolve: ((value: unknown | null) => void) | null = null;
+  private activeModalCount = 0;
 
   /**
    * Read-only signal exposed to consumers for rendering purposes.
@@ -97,8 +101,12 @@ export class SklModalService {
   open<TData = unknown, TResult = unknown>(
     options: ISklModalOpenOptions<TData>,
   ): Promise<TResult | null> {
-    // cerrar cualquier modal previo
-    this.close(null);
+    if (this.modalState().open) {
+      this.resolvePendingModal(null);
+      this.modalState.set({ ...DEFAULT_STATE });
+    } else {
+      this.registerModalOpen();
+    }
 
     this.modalState.set({
       open: true,
@@ -124,12 +132,14 @@ export class SklModalService {
    * @param result Optional result returned to the caller.
    */
   close<TResult = unknown>(result: TResult | null = null): void {
-    const resolver = this.pendingResolve;
-    this.pendingResolve = null;
+    const wasOpen = this.modalState().open;
 
+    this.resolvePendingModal(result);
     this.modalState.set({ ...DEFAULT_STATE });
 
-    resolver?.(result);
+    if (wasOpen) {
+      this.registerModalClose();
+    }
   }
 
   /**
@@ -144,5 +154,28 @@ export class SklModalService {
       ...current,
       ...partial,
     }));
+  }
+
+  private resolvePendingModal<TResult = unknown>(result: TResult | null): void {
+    const resolver = this.pendingResolve;
+    this.pendingResolve = null;
+
+    resolver?.(result);
+  }
+
+  private registerModalOpen(): void {
+    this.activeModalCount += 1;
+
+    if (this.activeModalCount === 1) {
+      this.assistantUi.enterModalMode();
+    }
+  }
+
+  private registerModalClose(): void {
+    this.activeModalCount = Math.max(0, this.activeModalCount - 1);
+
+    if (this.activeModalCount === 0) {
+      this.assistantUi.leaveModalMode();
+    }
   }
 }

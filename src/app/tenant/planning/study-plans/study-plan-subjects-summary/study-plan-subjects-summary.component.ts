@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ScreenChildItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenChildItem } from '@shared/interfaces/access.interfaces';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 
 import type {

@@ -11,7 +11,7 @@ import {
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { FormErrorComponent } from '@shared/ui/form-error/form-error';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
@@ -73,7 +73,7 @@ export interface IStudyPlanStageStructure {
 export interface IStudyPlanStagePlan {
   id: number;
   name: string;
-  studyplan_structure_id: number;
+  study_plan_structure_id: number;
   start?: string | null;
   end?: string | null;
   structure?: IStudyPlanStageStructure | null;
@@ -254,6 +254,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
           this.selectedTermId.set(keepSelectedTermId);
           this.creatingTerm.set(false);
           this.stageMode.set('view');
+          this.setStudyPlanStageAssistantContext();
           return;
         }
 
@@ -277,6 +278,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
       this.termStatuses.set(catalogs.term_statuses ?? []);
       this.termTypes.set(catalogs.term_types ?? []);
       this.descriptiveSheetTypes.set(catalogs.descriptive_sheet_types ?? []);
+      this.setStudyPlanStageAssistantContext();
     });
   }
 
@@ -285,12 +287,17 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     this.termStatuses.set([]);
     this.termTypes.set([]);
     this.descriptiveSheetTypes.set([]);
+
+    if (this.stage()) {
+      this.setStudyPlanStageAssistantContext();
+    }
   }
 
   protected selectStage(): void {
     this.selectedType.set('stage');
     this.selectedTermId.set(null);
     this.creatingTerm.set(false);
+    this.setStudyPlanStageAssistantContext();
   }
 
   protected selectTerm(term: IStudyPlanStageTerm): void {
@@ -298,6 +305,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     this.selectedTermId.set(term.id);
     this.creatingTerm.set(false);
     this.stageMode.set('view');
+    this.setStudyPlanStageAssistantContext();
   }
 
   protected isTermSelected(term: IStudyPlanStageTerm): boolean {
@@ -313,6 +321,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     this.selectedTermId.set(null);
     this.creatingTerm.set(true);
     this.stageMode.set('view');
+    this.setStudyPlanStageAssistantContext();
   }
 
   protected closeTermPanel(): void {
@@ -333,6 +342,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
 
     this.patchStageForm(stage);
     this.stageMode.set('edit');
+    this.setStudyPlanStageAssistantContext();
   }
 
   protected cancelStageEdit(): void {
@@ -343,6 +353,65 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     }
 
     this.stageMode.set('view');
+    this.setStudyPlanStageAssistantContext();
+  }
+
+  private setStudyPlanStageAssistantContext(): void {
+    const stage = this.stage();
+
+    if (!stage) {
+      return;
+    }
+
+    const selectedType = this.selectedType();
+    const stageMode = this.stageMode();
+    const creatingTerm = this.creatingTerm();
+    const selectedTerm = this.selectedTerm();
+    const studyPlan = stage.study_plan ?? null;
+
+    this.setAssistantContext({
+      contextType: stageMode === 'edit' ? 'editor' : 'component',
+      contextId: 'planning.study-plans.academics.stages',
+      feature: 'study-plans',
+      title: stage.name,
+      subtitle: studyPlan?.name ?? 'planning.study-plan-stages.title',
+      entity: 'StudyPlanStage',
+      mode:
+        stageMode === 'edit'
+          ? 'stage-editing'
+          : creatingTerm
+            ? 'term-creating'
+            : selectedType === 'term'
+              ? 'term-selected'
+              : 'stage-overview',
+      data: {
+        studyPlanId: studyPlan?.id ?? stage.study_plan_id,
+        studyPlanName: studyPlan?.name ?? null,
+        stageId: stage.id,
+        stageName: stage.name,
+        stageStartDate: stage.start_date,
+        stageEndDate: stage.end_date,
+        stageOrder: stage.order,
+        structureId: studyPlan?.study_plan_structure_id ?? null,
+        structureName: studyPlan?.structure?.translation ?? studyPlan?.structure?.name ?? null,
+        termsCount: this.termsCount(),
+        selectedType,
+        selectedTermId: this.selectedTermId(),
+        selectedTermName: selectedTerm?.name ?? null,
+        creatingTerm,
+        stageMode,
+        canUpdateStage: Boolean(this.updateStageOption()),
+        canDeleteStage: Boolean(this.deleteStageOption()),
+        canAddTerm: Boolean(this.addTermOption()),
+        hasTermsChild: Boolean(this.termsChild()),
+        hasTermRoute: Boolean(this.termRoute()),
+        termStatusesCount: this.termStatuses().length,
+        termTypesCount: this.termTypes().length,
+        descriptiveSheetTypesCount: this.descriptiveSheetTypes().length,
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+      },
+    });
   }
 
   protected saveStage(): void {

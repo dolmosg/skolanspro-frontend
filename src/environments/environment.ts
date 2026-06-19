@@ -10,7 +10,7 @@ export const environment = {
   // },
 
   // CUANDO CORREMOS LOS TENANTS
- 
+
   appContextOverride: {
     enabled: true,
     type: 'tenant' as 'central' | 'tenant',

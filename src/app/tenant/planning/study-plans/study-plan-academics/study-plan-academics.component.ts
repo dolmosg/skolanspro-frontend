@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, input, OnInit, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
-import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
-import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
+import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 
 import type { StudyPlanConfigurationItem } from '../study-plan-configuration/study-plan-configuration.component';
 import { StudyPlanStagesSummaryComponent } from '../study-plan-stages-summary/study-plan-stages-summary.component';
@@ -15,6 +13,8 @@ import {
   type StudyPlanStageGradeSelection,
 } from '../study-plan-subjects-summary/study-plan-subjects-summary.component';
 import { StudyPlanStageSubjectsComponent } from '../study-plan-stage-subjects/study-plan-stage-subjects.component';
+import { StudyPlanIntegrationsSummaryComponent } from '../study-plan-integrations-summary/study-plan-integrations-summary.component';
+import { StageIntegrationsComponent } from '../stage-integrations/stage-integrations.component';
 
 export interface IStudyPlanTermStatus {
   id: number;
@@ -67,6 +67,16 @@ export interface IStudyPlanStageSubjectsSummary {
   grades: IStudyPlanStageSubjectsSummaryGrade[];
 }
 
+export interface IStudyPlanStageIntegration {
+  id: number;
+  study_plan_stage_id: number;
+  code: string;
+  name: string;
+  monogram: string;
+  active: boolean;
+  order: number;
+}
+
 export interface IStudyPlanStage {
   id: number;
   study_plan_id: number;
@@ -76,6 +86,7 @@ export interface IStudyPlanStage {
   order: number;
   terms?: IStudyPlanTerm[];
   subjects_summary?: IStudyPlanStageSubjectsSummary | null;
+  integrations?: IStudyPlanStageIntegration[];
 }
 
 export interface IStudyPlanStructure {
@@ -100,12 +111,12 @@ type StudyPlanAcademicsPlan = StudyPlanConfigurationItem & {
   imports: [
     CommonModule,
     TranslatePipe,
-    UiButtonComponent,
-    UiIconComponent,
     StudyPlanStagesSummaryComponent,
     StudyPlanStageComponent,
     StudyPlanSubjectsSummaryComponent,
     StudyPlanStageSubjectsComponent,
+    StudyPlanIntegrationsSummaryComponent,
+    StageIntegrationsComponent,
   ],
   templateUrl: './study-plan-academics.component.html',
   styleUrl: './study-plan-academics.component.scss',
@@ -114,11 +125,20 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
   readonly studyPlan = input<StudyPlanConfigurationItem | null>(null);
   readonly route = input<string | null>(null);
 
+  constructor() {
+    super();
+
+    effect(() => {
+      this.setStudyPlanAcademicsAssistantContext(this.academicPlan());
+    });
+  }
+
   protected readonly loadedStudyPlan = signal<StudyPlanAcademicsPlan | null>(null);
 
   protected readonly selectedStageId = signal<number | null>(null);
   protected readonly selectedSubjectStageId = signal<number | null>(null);
   protected readonly selectedSubjectGradeId = signal<number | null>(null);
+  protected readonly selectedIntegrationStageId = signal<number | null>(null);
 
   protected readonly academicPlan = computed(() => {
     return (this.loadedStudyPlan() ?? this.studyPlan()) as StudyPlanAcademicsPlan | null;
@@ -158,6 +178,58 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
       this.setScreenOptions(res.data.options);
       this.setScreenChildren(res.data.children);
       this.loadedStudyPlan.set(res.data['study-plan'] ?? null);
+      this.setStudyPlanAcademicsAssistantContext(res.data['study-plan'] ?? null);
+    });
+  }
+
+  private setStudyPlanAcademicsAssistantContext(studyPlan: StudyPlanAcademicsPlan | null): void {
+    if (!studyPlan) {
+      return;
+    }
+
+    const stages = studyPlan.stages ?? [];
+    const termsCount = stages.reduce((total, stage) => total + (stage.terms?.length ?? 0), 0);
+    const totalSubjects = stages.reduce(
+      (total, stage) => total + (stage.subjects_summary?.total_subjects ?? 0),
+      0,
+    );
+    const totalIntegrations = stages.reduce(
+      (total, stage) => total + (stage.integrations?.length ?? 0),
+      0,
+    );
+
+    this.setAssistantContext({
+      contextType: 'section',
+      contextId: 'planning.study-plans.academics',
+      feature: 'study-plans',
+      title: 'controllers.study-plan-academics',
+      subtitle: 'planning.study-plan-academics.description',
+      entity: 'StudyPlan',
+      mode: 'academics',
+      data: {
+        studyPlanId: studyPlan.id,
+        studyPlanName: studyPlan.name,
+        levelId: studyPlan.level_id,
+        levelName: studyPlan.level?.description ?? studyPlan.level?.name ?? null,
+        schoolYearId: studyPlan.school_year_id,
+        sectionId: studyPlan.section_id,
+        structureId: studyPlan.studyplan_structure_id,
+        structureName: studyPlan.structure?.translation ?? studyPlan.structure?.name ?? null,
+        stagesCount: stages.length,
+        termsCount,
+        gradesCount: studyPlan.level?.grades?.length ?? 0,
+        totalSubjects,
+        totalIntegrations,
+        selectedStageId: this.selectedStageId(),
+        selectedSubjectStageId: this.selectedSubjectStageId(),
+        selectedSubjectGradeId: this.selectedSubjectGradeId(),
+        selectedIntegrationStageId: this.selectedIntegrationStageId(),
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+        canManageStages: Boolean(this.stagesChild()),
+        canManageSubjects: Boolean(this.subjectsChild()),
+        canManageIntegrations: Boolean(this.integrationsChild()),
+      },
     });
   }
 
@@ -177,6 +249,7 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
   }
 
   protected openStage(stageId: number): void {
+    this.closeIntegrations();
     this.closeStageSubjects();
     this.selectedStageId.set(stageId);
   }
@@ -186,12 +259,14 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
   }
 
   protected openStageGradeSubjects(selection: StudyPlanStageGradeSelection): void {
+    this.closeIntegrations();
     this.selectedStageId.set(null);
     this.selectedSubjectStageId.set(selection.stageId);
     this.selectedSubjectGradeId.set(selection.gradeId);
   }
 
   protected openStageCrossovers(stageId: number): void {
+    this.closeIntegrations();
     this.selectedStageId.set(null);
     this.selectedSubjectStageId.set(stageId);
     this.selectedSubjectGradeId.set(null);
@@ -202,12 +277,20 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
     this.selectedSubjectGradeId.set(null);
   }
 
-  protected openIntegrations(): void {
+  protected openIntegrations(stageId: number): void {
     const child = this.integrationsChild();
 
     if (!child) {
       return;
     }
+
+    this.selectedStageId.set(null);
+    this.closeStageSubjects();
+    this.selectedIntegrationStageId.set(stageId);
+  }
+
+  protected closeIntegrations(): void {
+    this.selectedIntegrationStageId.set(null);
   }
 
   protected openAddStage(): void {}

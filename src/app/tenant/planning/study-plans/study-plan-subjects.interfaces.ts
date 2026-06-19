@@ -1,5 +1,22 @@
-import { ScreenChildItem, ScreenOptionItem } from "@shared/interfaces/configuration.interfaces";
-import { IStudyPlanGrade } from "./study-plan-academics/study-plan-academics.component";
+/**
+ * DTOs and ViewModels for the Study Plan Stage Subjects screen.
+ *
+ * These types are based on partial projections returned by StudyPlanSubjects@index:
+ * subject only includes id, code, and name; coordinators include partial Person data;
+ * catalogs.coordinators is a selector DTO. Full Laravel model contracts live in
+ * shared/interfaces and are imported here when the payload matches them.
+ */
+import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
+import type {
+  IEvaluationType,
+  IGrade,
+  IGradePolicy,
+  ISubjectType,
+} from '@shared/interfaces/configuration.interfaces';
+import type {
+  IStudyPlanStage as SharedStudyPlanStage,
+  IStudyPlanStageSubject as SharedStudyPlanStageSubject,
+} from '@shared/interfaces/study-plan-interfaces';
 
 export interface IStudyPlanSubjectCoordinator {
   id: number;
@@ -18,52 +35,14 @@ export interface IStudyPlanSubjectItem {
   name: string;
 }
 
-export interface IStudyPlanStageSubject {
-  id: number;
-  study_plan_stage_id: number;
-  subject_id: number;
-  grade_id: number | null;
-  subject_type_id: number;
-  evaluation_type_id: number;
-  grade_policy_id: number | null;
-  order: number;
-  extra: boolean;
-  descriptive_show: boolean;
-  descriptive_full: boolean;
+export interface IStudyPlanStageSubject
+  extends Omit<SharedStudyPlanStageSubject, 'subject' | 'coordinators'> {
   subject?: IStudyPlanSubjectItem | null;
   coordinators?: IStudyPlanSubjectCoordinator[];
 }
 
-export interface IStudyPlanStageSubjectsStage {
-  id: number;
-  study_plan_id: number;
-  name: string;
-  start_date: string;
-  end_date: string;
-  order: number;
+export interface IStudyPlanStageSubjectsStage extends Omit<SharedStudyPlanStage, 'subjects'> {
   subjects?: IStudyPlanStageSubject[];
-}
-
-export interface IStudyPlanCatalogItem {
-  id: number;
-  name: string;
-  translation: string;
-  help_translation?: string | null;
-  active: boolean;
-  order: number;
-}
-
-export interface IStudyPlanSubjectType extends IStudyPlanCatalogItem {
-  help_translation?: string | null;
-  can_create: boolean;
-  can_remove: boolean;
-  automatic: boolean;
-  searchable: boolean;
-  uses_teams: boolean;
-}
-
-export interface IStudyPlanGradePolicy extends IStudyPlanCatalogItem {
-  configurable: boolean;
 }
 
 export interface IStudyPlanCoordinator {
@@ -74,9 +53,9 @@ export interface IStudyPlanCoordinator {
 }
 
 export interface IStudyPlanStageSubjectsCatalogs {
-  subject_types: IStudyPlanSubjectType[];
-  evaluation_types: IStudyPlanCatalogItem[];
-  grade_policies: IStudyPlanGradePolicy[];
+  subject_types: ISubjectType[];
+  evaluation_types: IEvaluationType[];
+  grade_policies: IGradePolicy[];
   coordinators: IStudyPlanCoordinator[];
 }
 
@@ -89,7 +68,7 @@ export interface StageSubjectGradeItem {
 
 export interface StudyPlanStageSubjectsData {
   stage?: IStudyPlanStageSubjectsStage | null;
-  grades?: IStudyPlanGrade[];
+  grades?: IGrade[];
   options?: ScreenOptionItem[];
   children?: ScreenChildItem[];
   catalogs?: Partial<IStudyPlanStageSubjectsCatalogs>;

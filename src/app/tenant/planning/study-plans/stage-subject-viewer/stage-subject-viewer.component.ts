@@ -3,13 +3,12 @@ import { IStudyPlanStageSubject } from '../study-plan-subjects.interfaces';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
-import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { UiMetaItemComponent } from '@shared/ui/ui-meta-item/ui-meta-item.component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 
 @Component({
   selector: 'app-stage-subject-viewer',
-  imports: [CommonModule, TranslatePipe, UiButtonComponent, UiIconComponent, UiMetaItemComponent],
+  imports: [CommonModule, TranslatePipe, UiButtonComponent, UiMetaItemComponent],
   templateUrl: './stage-subject-viewer.component.html',
   styleUrl: './stage-subject-viewer.component.scss',
 })

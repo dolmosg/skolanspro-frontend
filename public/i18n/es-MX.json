@@ -599,6 +599,7 @@
 		}
 	},
 	"common": {
+		"actions": "Acciones",
 		"activate": "Activar",
 		"active": "Activo",
 		"all": "Todos",
@@ -1939,7 +1940,7 @@
 			},
 			"update": "Actualizar Estado"
 		},
-		"studyplan-structures": {
+		"study-plan-structures": {
 			"add": "Nueva Estructura",
 			"delete": "Eliminar Estructura",
 			"fields": {
@@ -2268,13 +2269,15 @@
 		"study-plan-general": "Información general",
 		"study-plan-grading": "Calificaciones",
 		"study-plan-information": "Información",
+		"study-plan-integration-items": "Elementos de la integración",
+		"study-plan-integrations": "Integración de Asignaturas",
 		"study-plan-lms": "LMS",
 		"study-plan-report-cards": "Boletas",
 		"study-plan-scheduling": "Organización y Horarios",
 		"study-plan-stage-terms": "periodos",
 		"study-plan-subjects": "Asignaturas",
 		"study-plans": "Planes de Estudio",
-		"studyplan-structures": "Estructuras del Plan de Estudios",
+		"study_plan-structures": "Estructuras del Plan de Estudios",
 		"subject-classifications": "Clasificaciones",
 		"subject-subcategories": "Subcategorías",
 		"subject-types": "Tipos de Asignaturas",
@@ -2512,6 +2515,65 @@
 			"title": "Evaluación y seguimiento",
 			"update": "Editar"
 		},
+		"study-plan-integration-items": {
+			"add": "Agregar asignaturas",
+			"add-subjects": "Agregar asignaturas",
+			"available-subjects": "Asignaturas disponibles",
+			"confirm-remove": {
+				"confirm": "Quitar",
+				"message": "¿Deseas quitar esta asignatura de la integración? Esta acción eliminará sus pesos configurados.",
+				"title": "Quitar asignatura"
+			},
+			"crossover": "Crossover",
+			"crossovers-description": "Estas materias se utilizan en todos los grados. Su configuración es global.",
+			"crossovers-title": "Materias transversales",
+			"delete": "Eliminar asignatura",
+			"empty-description": "Agrega asignaturas a esta integración para comenzar a configurar su cálculo.",
+			"empty-title": "No hay materias configuradas",
+			"enrollment-dependent": "Optativa",
+			"failure-blocking": "Condicionante",
+			"global": "Global",
+			"global-configuration": "Se configura una sola vez para toda la integración.",
+			"grade-configuration-description": "Selecciona un grado para administrar sus asignaturas y ponderaciones.",
+			"grade-configuration-title": "Configuración por grado",
+			"initial-weight": "Peso inicial",
+			"messages": {
+				"add-subjects-description": "Selecciona las asignaturas que se agregarán a esta integración y define el peso inicial para cada una."
+			},
+			"no-available-subjects": "No hay asignaturas disponibles para agregar.",
+			"order": "Orden",
+			"period-weights": "Ponderación por período",
+			"rules": "Reglas",
+			"save-calculation": "Guardar cálculo",
+			"selected-subjects": "{{count}} seleccionadas",
+			"subject": "Asignatura",
+			"subjects-count": "{{count}} materias",
+			"total": "Total",
+			"update": "Configurar cálculo",
+			"weight": "Peso"
+		},
+		"study-plan-integrations": {
+			"active": "Activas",
+			"add": "Nueva integración",
+			"configured": "integraciones configuradas",
+			"delete": "Eliminar integración",
+			"description": "Configura cómo se integran académicamente las asignaturas en boletas y promedios.",
+			"empty": "No existen integraciones configuradas para este plan de estudio.",
+			"empty-description": "Agrega una nueva integración para comenzar a configurar el cálculo académico.",
+			"empty-title": "No hay integraciones disponibles",
+			"inactive": "Inactiva",
+			"integrations": "Integraciones",
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar esta integración académica? Esta acción también eliminará su configuración asociada.",
+				"delete-title": "Eliminar integración"
+			},
+			"select-description": "Selecciona una integración del panel izquierdo para consultar o modificar su configuración.",
+			"select-title": "Selecciona una integración",
+			"stage": "Etapa",
+			"subjects": "materias",
+			"title": "Integración de asignaturas",
+			"update": "Actualizar integración"
+		},
 		"study-plan-stage-terms": {
 			"add": "Nuevo Periodo",
 			"configuration": {
@@ -2718,18 +2780,39 @@
 			"configuration": {
 				"back": "Volver",
 				"description": "Configura los elementos clave del plan de estudio seleccionando una de las secciones disponibles.",
+				"edit-description": "Editando Plan de Estudio",
 				"title": "Configuración del plan"
 			},
 			"delete": "Eliminar Plan de estudio",
 			"fields": {
+				"aspect-mode": "Modo de aspectos",
+				"attendance-calculation": "Cálculo de asistencia",
+				"attendance-delay": "Días permitidos para captura",
+				"attendance-details": "Detalle de asistencia",
+				"attendance-percent": "Asistencia mínima",
+				"attendance-type": "Tipo de asistencia",
+				"class-percent": "Porcentaje clase",
+				"comment-type": "Tipo de comentario",
 				"dates": "Vigencia del plan",
+				"decimals": "Decimales",
+				"delay-absence-ratio": "Retardos por falta",
 				"description": "Descripción",
 				"end": "Fecha de fin",
+				"exam-percent": "Porcentaje examen",
+				"exemption-average": "Promedio mínimo",
+				"exemption-percent": "Porcentaje requerido",
+				"exemptions": "Exenciones",
+				"grade-policy": "Política de redondeo",
+				"grading-scale": "Escala de calificación",
 				"level": "Nivel escolar",
+				"lms-enabled": "LMS habilitado",
 				"name": "Nombre",
+				"performance-scale": "Escala de Desempeño",
+				"rounding": "Forma de redondeo",
 				"schedule-type": "Tipo de horario",
 				"school-year": "Ciclo escolar",
 				"section": "Sección",
+				"skills-scale": "Escala de habilidades",
 				"start": "Fecha de inicio",
 				"structure": "Estructura"
 			},
@@ -2746,7 +2829,10 @@
 			},
 			"sections": {
 				"access": "Configuración del Plan",
-				"general-information": "Información general"
+				"attendance": "Asistencia",
+				"general-information": "Información general",
+				"grading": "Calificaciones",
+				"lms": "Lms"
 			},
 			"update": "Actualizar Plan de estudio"
 		}

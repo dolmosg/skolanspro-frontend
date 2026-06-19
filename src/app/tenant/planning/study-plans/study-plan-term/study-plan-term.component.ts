@@ -13,7 +13,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { FormErrorComponent } from '@shared/ui/form-error/form-error';
@@ -212,8 +212,20 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['creating'] || changes['term'] || changes['stageId']) {
+    const shouldSyncState = changes['creating'] || changes['term'] || changes['stageId'];
+
+    if (shouldSyncState) {
       this.syncState();
+    }
+
+    if (
+      !shouldSyncState &&
+      (changes['termOptions'] ||
+        changes['termStatuses'] ||
+        changes['termTypes'] ||
+        changes['descriptiveSheetTypes'])
+    ) {
+      this.setStudyPlanTermAssistantContext();
     }
   }
 
@@ -221,6 +233,7 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
     if (this.creating()) {
       this.mode.set('create');
       this.resetFormForCreate();
+      this.setStudyPlanTermAssistantContext();
       return;
     }
 
@@ -229,6 +242,7 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
     if (term) {
       this.mode.set('view');
       this.patchForm(term);
+      this.setStudyPlanTermAssistantContext();
       return;
     }
 
@@ -280,6 +294,7 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
     }
 
     this.mode.set('edit');
+    this.setStudyPlanTermAssistantContext();
   }
 
   protected cancel(): void {
@@ -289,6 +304,7 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
       if (term) {
         this.patchForm(term);
         this.mode.set('view');
+        this.setStudyPlanTermAssistantContext();
         return;
       }
     }
@@ -380,6 +396,80 @@ export class StudyPlanTermComponent extends SkolansBaseComponent implements OnCh
 
   protected isFormMode(): boolean {
     return this.mode() === 'edit' || this.mode() === 'create';
+  }
+
+  private setStudyPlanTermAssistantContext(): void {
+    const mode = this.mode();
+    const term = this.term();
+
+    if (mode === 'create') {
+      this.setAssistantContext({
+        contextType: 'editor',
+        contextId: 'planning.study-plans.academics.stages.terms',
+        feature: 'study-plans',
+        title: 'planning.study-plan-stage-terms.add',
+        subtitle: 'planning.study-plan-stage-terms.description',
+        entity: 'StudyPlanTerm',
+        mode: 'term-creating',
+        data: {
+          stageId: this.stageId(),
+          termId: null,
+          termName: null,
+          termCode: null,
+          termMode: 'create',
+          isCreatingTerm: true,
+          canCreateTerm: this.canCreate(),
+          canUpdateTerm: this.canUpdate(),
+          canDeleteTerm: this.canDelete(),
+          termStatusesCount: this.termStatuses().length,
+          termTypesCount: this.termTypes().length,
+          descriptiveSheetTypesCount: this.descriptiveSheetTypes().length,
+        },
+      });
+      return;
+    }
+
+    if (!term) {
+      return;
+    }
+
+    this.setAssistantContext({
+      contextType: mode === 'edit' ? 'editor' : 'component',
+      contextId: 'planning.study-plans.academics.stages.terms',
+      feature: 'study-plans',
+      title: term.name,
+      subtitle: term.code,
+      entity: 'StudyPlanTerm',
+      mode: mode === 'edit' ? 'term-editing' : 'term-overview',
+      data: {
+        stageId: term.study_plan_stage_id,
+        termId: term.id,
+        termName: term.name,
+        termCode: term.code,
+        termAlternateName: term.alternate_name,
+        termStartDate: term.start_date,
+        termEndDate: term.end_date,
+        termReviewDate: term.review_date,
+        termOrder: term.order,
+        termStatusId: term.term_status_id,
+        termStatusName: term.status?.name ?? null,
+        termStatusTranslation: term.status?.translation ?? null,
+        termTypeId: term.term_type_id,
+        termTypeName: term.type?.name ?? null,
+        termTypeTranslation: term.type?.translation ?? null,
+        descriptiveSheetTypeId: term.descriptive_sheet_type_id,
+        descriptiveSheetTypeName: term.descriptive_sheet_type?.name ?? null,
+        descriptiveSheetTypeTranslation: term.descriptive_sheet_type?.translation ?? null,
+        exemption: term.exemption,
+        attendance: term.attendance,
+        comments: term.comments,
+        termMode: mode,
+        isCreatingTerm: false,
+        canCreateTerm: this.canCreate(),
+        canUpdateTerm: this.canUpdate(),
+        canDeleteTerm: this.canDelete(),
+      },
+    });
   }
 
   private toDateInputValue(value: string | null): string {

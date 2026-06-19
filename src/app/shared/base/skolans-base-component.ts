@@ -1,4 +1,4 @@
-import { computed, inject, signal } from '@angular/core';
+import { computed, Directive, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api-service';
 import { RouteMetaService } from '../services/route-meta-service';
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SklModalService } from '../services/skl-modal-service';
 import { ToastService } from '../services/toast-service';
-import { ScreenOptionItem, ScreenChildItem } from '../interfaces/configuration.interfaces';
+import { ScreenOptionItem, ScreenChildItem } from '../interfaces/access.interfaces';
 import { SklConfirmModal } from './skl-confirm-modal/skl-confirm-modal';
 import {
   ApiFailResponse,
@@ -17,6 +17,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiConfigService } from '@shared/services/api-config-service';
 import { SiteStateService } from '../services/site-state';
 import { NameCasingMode } from '../interfaces/central.interfaces';
+import {
+  AssistantContextPayload,
+  AssistantContextService,
+} from '../services/assistant-context-service';
 
 /**
  * Base class for Skolans UI components.
@@ -30,6 +34,8 @@ import { NameCasingMode } from '../interfaces/central.interfaces';
  * - Expose a shared loading signal for request lifecycles.
  * - Store and query dynamic screen options provided by the backend.
  * - Provide shared API envelope handling helpers.
+ * - Provide assistant context helpers for components that publish functional
+ *   context to the global assistant button.
  *
  * Error strategy:
  * - HTTP and transport errors are normalized and notified globally by ApiService.
@@ -37,8 +43,38 @@ import { NameCasingMode } from '../interfaces/central.interfaces';
  *   `handleApiFailure()`.
  * - Components should generally avoid direct `console.error` calls and use this
  *   shared handling flow instead.
+ *
+ * Assistant context strategy:
+ * - Components extending this base class can publish their current functional
+ *   context through `setAssistantContext()`.
+ * - Each published context layer is tagged with a unique owner id generated for
+ *   the current component instance.
+ * - When the component is destroyed, only the context layers owned by that
+ *   instance are removed, preventing accidental cleanup of parent contexts.
+ * - Presentational components that only receive inputs and emit events should
+ *   not publish assistant context directly; their parent should do it when the
+ *   visible functional state changes.
  */
-export abstract class SkolansBaseComponent {
+
+@Directive()
+export abstract class SkolansBaseComponent implements OnDestroy {
+  /**
+   * Internal sequence used to generate stable owner ids for assistant context.
+   *
+   * A component instance can publish one or more assistant context layers. Those
+   * layers must be removable without affecting contexts created by parent or
+   * sibling components. The sequence avoids relying on browser APIs such as
+   * `crypto.randomUUID()` and keeps the id deterministic enough for debugging.
+   */
+  private static assistantContextOwnerSequence = 0;
+  /**
+   * Unique owner id assigned to the current component instance.
+   *
+   * This id is attached automatically to assistant context layers published via
+   * `setAssistantContext()` and is later used by `clearAssistantContext()`.
+   */
+  private readonly assistantContextOwnerId = `${this.constructor.name}-${++SkolansBaseComponent.assistantContextOwnerSequence}`;
+
   /** Shared services available to all components extending this base class. */
   protected readonly translate = inject(TranslateService);
   protected readonly activatedRoute = inject(ActivatedRoute);
@@ -46,7 +82,18 @@ export abstract class SkolansBaseComponent {
   protected readonly api = inject(ApiService);
   protected readonly toast = inject(ToastService);
   protected readonly siteState = inject(SiteStateService);
+  /**
+   * Global assistant context service.
+   *
+   * Components normally should not call this service directly. Use
+   * `setAssistantContext()` and `clearAssistantContext()` so the base component
+   * can attach the owner id and clean up safely on destroy.
+   */
+  protected readonly assistantContext = inject(AssistantContextService);
 
+  /**
+   * Current name casing preference used by shared UI helpers.
+   */
   protected readonly nameCasing = computed<NameCasingMode>(() => {
     return this.siteState.nameCasing();
   });
@@ -62,9 +109,50 @@ export abstract class SkolansBaseComponent {
   public readonly options = signal<ScreenOptionItem[]>([]);
   public readonly children = signal<ScreenChildItem[]>([]);
 
+  /**
+   * API configuration service used to resolve the active router/API prefix.
+   */
   public readonly apiConfig = inject(ApiConfigService);
 
+  /**
+   * Current router context prefix resolved by ApiConfigService.
+   *
+   * This is useful for components that need to understand whether their requests
+   * are being generated under the tenant, central, or another configured routing
+   * context.
+   */
   protected readonly routerContext = computed(() => this.apiConfig.routerPrefix);
+
+  /**
+   * Publishes assistant context owned by the current component instance.
+   *
+   * Use this when a component represents or changes the real functional context
+   * visible to the user, especially when the browser URL does not change.
+   * Examples include selecting a stage, opening subjects for a grade, opening a
+   * drawer, entering edit mode, or selecting a student profile.
+   *
+   * The method automatically injects the component owner id before delegating to
+   * AssistantContextService. This allows context cleanup to be safe and local to
+   * the component instance.
+   */
+  protected setAssistantContext(context: AssistantContextPayload): void {
+    this.assistantContext.setLayer({
+      ...context,
+      ownerId: this.assistantContextOwnerId,
+      component: this.constructor.name,
+    } as AssistantContextPayload);
+  }
+
+  /**
+   * Clears all assistant context layers created by the current component instance.
+   *
+   * This should be used when a component intentionally exits its functional
+   * context before it is destroyed. It is also called automatically from
+   * `ngOnDestroy()` as a final cleanup safety net.
+   */
+  protected clearAssistantContext(): void {
+    this.assistantContext.clearOwner(this.assistantContextOwnerId);
+  }
 
   /**
    * Replaces the current screen options collection.
@@ -127,6 +215,24 @@ export abstract class SkolansBaseComponent {
       default:
         return fallback;
     }
+  }
+
+  protected getAssistantAvailableOptions(): Array<{
+    id: number;
+    name: string;
+    translation: string;
+    icon: string;
+    color: 'primary' | 'secondary' | 'ghost' | 'danger';
+    controller_id?: number;
+  }> {
+    return this.getScreenOptions().map((option) => ({
+      id: option.id,
+      name: option.name,
+      translation: option.translation,
+      icon: option.icon,
+      color: option.color,
+      controller_id: option.controller_id,
+    }));
   }
 
   /**
@@ -343,6 +449,30 @@ export abstract class SkolansBaseComponent {
     return this.children() ?? [];
   }
 
+  protected getAssistantAvailableChildren(): Array<{
+    id: number;
+    name: string;
+    translation: string;
+    icon: string | null;
+    color: 'primary' | 'secondary' | 'ghost' | 'danger';
+    route?: string;
+    parent_id?: number;
+    module_id?: number;
+    has_children?: boolean;
+  }> {
+    return this.getScreenChildren().map((child) => ({
+      id: child.id,
+      name: child.name,
+      translation: child.translation,
+      icon: child.icon,
+      color: child.color,
+      route: child.route,
+      parent_id: child.parent_id,
+      module_id: child.module_id,
+      has_children: child.has_children,
+    }));
+  }
+
   /**
    * Returns a single child controller by route or name.
    */
@@ -359,5 +489,16 @@ export abstract class SkolansBaseComponent {
    */
   protected hasScreenChild(identifier: string): boolean {
     return !!this.getScreenChild(identifier);
+  }
+
+  /**
+   * Lifecycle cleanup for context owned by this component instance.
+   *
+   * This method only clears assistant context layers tagged with this component's
+   * owner id. It does not reset the global context stack and does not remove
+   * parent contexts.
+   */
+  ngOnDestroy(): void {
+    this.clearAssistantContext();
   }
 }

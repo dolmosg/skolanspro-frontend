@@ -4,12 +4,16 @@ import { Component, computed, effect, input, output, signal } from '@angular/cor
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
-import { ScreenOptionItem } from '@shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
+import type {
+  IEvaluationType,
+  IGrade,
+  IGradePolicy,
+  ISubjectType,
+} from '@shared/interfaces/configuration.interfaces';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
-import { UiMetaItemComponent } from '@shared/ui/ui-meta-item/ui-meta-item.component';
 
-import type { IStudyPlanGrade } from '../study-plan-academics/study-plan-academics.component';
 import {
   SkolansSelectorModalComponent,
   SkolansSelectorModalData,
@@ -25,9 +29,6 @@ import {
 import {
   IStudyPlanStageSubject,
   IStudyPlanStageSubjectsStage,
-  IStudyPlanCatalogItem,
-  IStudyPlanSubjectType,
-  IStudyPlanGradePolicy,
   IStudyPlanStageSubjectsCatalogs,
   StageSubjectGradeItem,
   StudyPlanStageSubjectsData,
@@ -38,6 +39,14 @@ import {
   StageSubjectEditorResult,
 } from '../stage-subject-editor/stage-subject-editor.component';
 
+type BulkSelectionItem = {
+  id: number | null;
+  name?: string | null;
+  translation?: string | null;
+  helpTranslation?: string | null;
+  order?: number | null;
+};
+
 @Component({
   selector: 'app-study-plan-stage-subjects',
   standalone: true,
@@ -47,7 +56,6 @@ import {
     TranslatePipe,
     UiButtonComponent,
     UiIconComponent,
-    UiMetaItemComponent,
     StageSubjectViewerComponent,
     StageSubjectEditorComponent,
   ],
@@ -62,7 +70,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   readonly back = output<void>();
 
   protected readonly stage = signal<IStudyPlanStageSubjectsStage | null>(null);
-  protected readonly grades = signal<IStudyPlanGrade[]>([]);
+  protected readonly grades = signal<IGrade[]>([]);
   protected readonly selectedGradeId = signal<number | null>(null);
   protected readonly selectedSubjectIds = signal<number[]>([]);
   protected readonly subjectSearch = signal('');
@@ -129,7 +137,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
 
       return {
         gradeId: grade.id,
-        label: grade.description || grade.name,
+        label: grade.description || grade.name || '—',
         count,
         selected: this.selectedGradeId() === grade.id,
       };
@@ -139,10 +147,12 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   protected startEditingSubject(subject: IStudyPlanStageSubject): void {
     this.clearSubjectSelection();
     this.editingSubjectId.set(subject.id);
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected cancelEditingSubject(): void {
     this.editingSubjectId.set(null);
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected isEditingSubject(subjectId: number): boolean {
@@ -243,6 +253,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         this.selectedGradeId.set(this.initialGradeId());
         this.clearSubjectSearch();
         this.clearSubjectSelection();
+        this.setStudyPlanStageSubjectsAssistantContext();
       },
     );
   }
@@ -250,6 +261,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   protected updateSubjectSearch(value: string): void {
     this.subjectSearch.set(value);
     this.clearSubjectSelection();
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected clearSubjectSearch(): void {
@@ -265,26 +277,155 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
 
     if (selected.includes(subjectId)) {
       this.selectedSubjectIds.set(selected.filter((id) => id !== subjectId));
+      this.setStudyPlanStageSubjectsAssistantContext();
       return;
     }
 
     this.selectedSubjectIds.set([...selected, subjectId]);
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected clearSubjectSelection(): void {
     this.selectedSubjectIds.set([]);
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected selectGrade(gradeId: number): void {
     this.selectedGradeId.set(gradeId);
     this.clearSubjectSearch();
     this.clearSubjectSelection();
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   protected selectCrossovers(): void {
     this.selectedGradeId.set(null);
     this.clearSubjectSearch();
     this.clearSubjectSelection();
+    this.setStudyPlanStageSubjectsAssistantContext();
+  }
+  private setStudyPlanStageSubjectsAssistantContext(): void {
+    const stage = this.stage();
+
+    if (!stage) {
+      return;
+    }
+
+    const selectedGrade = this.selectedGrade();
+    const editingSubjectId = this.editingSubjectId();
+    const editingSubject = editingSubjectId
+      ? (this.stageSubjects().find((subject) => subject.id === editingSubjectId) ?? null)
+      : null;
+    const selectedSubjectIds = this.selectedSubjectIds();
+    const hasSelectedSubjects = selectedSubjectIds.length > 0;
+    const isCrossoversSelected = this.isCrossoversSelected();
+
+    this.setAssistantContext({
+      contextType: editingSubjectId ? 'editor' : 'component',
+      contextId: 'planning.study-plans.academics.subjects',
+      feature: 'study-plans',
+      title: this.title(),
+      subtitle: this.subtitle(),
+      entity: 'StudyPlanStageSubject',
+      mode: editingSubjectId
+        ? 'subject-editing'
+        : hasSelectedSubjects
+          ? 'subjects-selected'
+          : isCrossoversSelected
+            ? 'crossovers-overview'
+            : 'grade-subjects-overview',
+      data: {
+        stageId: stage.id,
+        stageName: stage.name,
+        selectedGradeId: this.selectedGradeId(),
+        selectedGradeName: selectedGrade?.description ?? selectedGrade?.name ?? null,
+        isCrossoversSelected,
+        totalGrades: this.grades().length,
+        totalSubjects: this.stageSubjects().length,
+        selectedGradeSubjectsCount: this.totalSelectedGradeSubjectsCount(),
+        visibleSubjectsCount: this.visibleSubjectsCount(),
+        crossoverSubjectsCount: this.crossoverSubjects().length,
+        selectedSubjectIds,
+        selectedSubjectsCount: selectedSubjectIds.length,
+        editingSubjectId,
+        editingSubjectName: editingSubject?.subject?.name ?? null,
+        editingSubjectCode: editingSubject?.subject?.code ?? null,
+        editingSubjectGradeId: editingSubject?.grade_id ?? null,
+        editingSubjectSubjectTypeId: editingSubject?.subject_type_id ?? null,
+        editingSubjectEvaluationTypeId: editingSubject?.evaluation_type_id ?? null,
+        editingSubjectGradePolicyId: editingSubject?.grade_policy_id ?? null,
+        hasActiveSearch: this.hasActiveSearch(),
+        subjectSearch: this.subjectSearch(),
+        canReorder: this.canReorder(),
+        savingOrder: this.savingOrder(),
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+        availableActions: this.footerActions().map((action) => ({
+          id: action.id,
+          name: action.name,
+          translation: action.translation,
+          icon: action.icon,
+          color: action.color,
+        })),
+        catalogs: {
+          subjectTypesCount: this.catalogs().subject_types.length,
+          evaluationTypesCount: this.catalogs().evaluation_types.length,
+          gradePoliciesCount: this.catalogs().grade_policies.length,
+          coordinatorsCount: this.catalogs().coordinators.length,
+        },
+      },
+    });
+  }
+
+  private setBulkActionAssistantContext(
+    action: ScreenOptionItem,
+    selectionItems?: BulkSelectionItem[],
+  ): void {
+    const stage = this.stage();
+
+    if (!stage) {
+      return;
+    }
+
+    const selectedGrade = this.selectedGrade();
+    const selectedSubjectIds = this.selectedSubjectIds();
+
+    this.setAssistantContext({
+      contextType: 'overlay',
+      contextId: 'planning.study-plans.academics.subjects',
+      feature: 'study-plans',
+      title: action.translation,
+      subtitle: this.bulkActionDescription(),
+      entity: 'StudyPlanStageSubject',
+      mode: `bulk-${action.name}`,
+      data: {
+        stageId: stage.id,
+        stageName: stage.name,
+        selectedGradeId: this.selectedGradeId(),
+        selectedGradeName: selectedGrade?.description ?? selectedGrade?.name ?? null,
+        isCrossoversSelected: this.isCrossoversSelected(),
+        selectedSubjectIds,
+        selectedSubjectsCount: selectedSubjectIds.length,
+        bulkAction: action.name,
+        bulkActionTitle: action.translation,
+        bulkSelectionItems: selectionItems ?? [],
+        bulkSelectionItemsCount: selectionItems?.length ?? 0,
+        availableChildren: this.getAssistantAvailableChildren(),
+        availableOptions: this.getAssistantAvailableOptions(),
+        availableActions: this.footerActions().map((footerAction) => ({
+          id: footerAction.id,
+          name: footerAction.name,
+          translation: footerAction.translation,
+          icon: footerAction.icon,
+          color: footerAction.color,
+        })),
+        catalogs: {
+          subjectTypesCount: this.catalogs().subject_types.length,
+          evaluationTypesCount: this.catalogs().evaluation_types.length,
+          gradePoliciesCount: this.catalogs().grade_policies.length,
+          coordinatorsCount: this.catalogs().coordinators.length,
+        },
+      },
+    });
   }
 
   protected onBack(): void {
@@ -311,7 +452,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     return settings.join(' | ');
   }
 
-  protected subjectType(id: number | null): IStudyPlanSubjectType | null {
+  protected subjectType(id: number | null): ISubjectType | null {
     if (!id) {
       return null;
     }
@@ -319,7 +460,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     return this.catalogs().subject_types.find((item) => item.id === id) ?? null;
   }
 
-  protected evaluationType(id: number | null): IStudyPlanCatalogItem | null {
+  protected evaluationType(id: number | null): IEvaluationType | null {
     if (!id) {
       return null;
     }
@@ -327,7 +468,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     return this.catalogs().evaluation_types.find((item) => item.id === id) ?? null;
   }
 
-  protected gradePolicy(id: number | null): IStudyPlanGradePolicy | null {
+  protected gradePolicy(id: number | null): IGradePolicy | null {
     if (!id) {
       return null;
     }
@@ -440,12 +581,14 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     };
 
     this.savingOrder.set(true);
+    this.setStudyPlanStageSubjectsAssistantContext();
 
     this.executeSilentRequest(
       this.api.put(`${route}/reorder/${stageId}`, payload),
       (res) => {
         this.handleApiSuccess(res);
         this.savingOrder.set(false);
+        this.setStudyPlanStageSubjectsAssistantContext();
       },
       () => {
         const currentStage = this.stage();
@@ -458,6 +601,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         }
 
         this.savingOrder.set(false);
+        this.setStudyPlanStageSubjectsAssistantContext();
       },
     );
   }
@@ -487,140 +631,204 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   }
 
   protected async assignEvaluationType(): Promise<void> {
-    const evaluationTypeId = await this.selectCatalogValue(
-      this.translate.instant('planning.study-plan-subjects.bulk.assign-evaluation-type.title'),
-      this.bulkActionDescription(),
-      this.catalogs().evaluation_types.map((item) => ({
+    try {
+      const selectionItems: BulkSelectionItem[] = this.catalogs().evaluation_types.map((item) => ({
         id: item.id,
-        descriptor: this.translate.instant(item.translation),
-      })),
-    );
+        name: item.name,
+        translation: this.translate.instant(item.translation),
+        helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+        order: item.order ?? null,
+      }));
+      const action = this.getScreenOption('assign-evaluation-type');
 
-    if (!evaluationTypeId) {
-      return;
+      if (action) {
+        this.setBulkActionAssistantContext(action, selectionItems);
+      }
+
+      const evaluationTypeId = await this.selectCatalogValue(
+        this.translate.instant('planning.study-plan-subjects.bulk.assign-evaluation-type.title'),
+        this.bulkActionDescription(),
+        selectionItems.map((item) => ({
+          id: item.id,
+          descriptor: item.translation ?? '',
+        })),
+      );
+
+      if (!evaluationTypeId) {
+        return;
+      }
+
+      const route = this.route();
+
+      if (!route) {
+        return;
+      }
+
+      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+        this.api.put(`${route}/bulk-evaluation-type`, {
+          subject_ids: this.selectedSubjectIds(),
+          evaluation_type_id: evaluationTypeId,
+        }),
+        (res) => {
+          this.replaceStageSubjects(res.data.subjects ?? []);
+          this.clearSubjectSelection();
+        },
+      );
+    } finally {
+      this.setStudyPlanStageSubjectsAssistantContext();
     }
-
-    const route = this.route();
-
-    if (!route) {
-      return;
-    }
-
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
-      this.api.put(`${route}/bulk-evaluation-type`, {
-        subject_ids: this.selectedSubjectIds(),
-        evaluation_type_id: evaluationTypeId,
-      }),
-      (res) => {
-        this.replaceStageSubjects(res.data.subjects ?? []);
-        this.clearSubjectSelection();
-      },
-    );
   }
 
   protected async assignSubjectType(): Promise<void> {
-    const subjectTypeId = await this.selectCatalogValue(
-      this.translate.instant('planning.study-plan-subjects.bulk.assign-subject-type.title'),
-      this.bulkActionDescription(),
-      this.catalogs().subject_types.map((item) => ({
+    try {
+      const selectionItems: BulkSelectionItem[] = this.catalogs().subject_types.map((item) => ({
         id: item.id,
-        descriptor: this.translate.instant(item.translation),
-      })),
-    );
+        name: item.name,
+        translation: this.translate.instant(item.translation),
+        helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+        order: item.order ?? null,
+      }));
+      const action = this.getScreenOption('assign-subject-type');
 
-    if (!subjectTypeId) {
-      return;
+      if (action) {
+        this.setBulkActionAssistantContext(action, selectionItems);
+      }
+
+      const subjectTypeId = await this.selectCatalogValue(
+        this.translate.instant('planning.study-plan-subjects.bulk.assign-subject-type.title'),
+        this.bulkActionDescription(),
+        selectionItems.map((item) => ({
+          id: item.id,
+          descriptor: item.translation ?? '',
+        })),
+      );
+
+      if (!subjectTypeId) {
+        return;
+      }
+
+      const route = this.route();
+
+      if (!route) {
+        return;
+      }
+
+      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+        this.api.put(`${route}/bulk-subject-type`, {
+          subject_ids: this.selectedSubjectIds(),
+          subject_type_id: subjectTypeId,
+        }),
+        (res) => {
+          this.replaceStageSubjects(res.data.subjects ?? []);
+          this.clearSubjectSelection();
+        },
+      );
+    } finally {
+      this.setStudyPlanStageSubjectsAssistantContext();
     }
-
-    const route = this.route();
-
-    if (!route) {
-      return;
-    }
-
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
-      this.api.put(`${route}/bulk-subject-type`, {
-        subject_ids: this.selectedSubjectIds(),
-        subject_type_id: subjectTypeId,
-      }),
-      (res) => {
-        this.replaceStageSubjects(res.data.subjects ?? []);
-        this.clearSubjectSelection();
-      },
-    );
   }
 
   protected async assignGradePolicy(): Promise<void> {
-    const result = await this.openSelector(
-      this.translate.instant('planning.study-plan-subjects.bulk.assign-grading-strategy.title'),
-      this.bulkActionDescription(),
-      [
+    try {
+      const selectionItems: BulkSelectionItem[] = [
         {
           id: null,
-          descriptor: this.translate.instant('planning.study-plan-subjects.grade-policy.none'),
+          name: 'none',
+          translation: this.translate.instant('planning.study-plan-subjects.grade-policy.none'),
+          helpTranslation: null,
+          order: null,
         },
         ...this.catalogs().grade_policies.map((item) => ({
           id: item.id,
-          descriptor: this.translate.instant(item.translation),
+          name: item.name,
+          translation: this.translate.instant(item.translation),
+          helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+          order: item.order ?? null,
         })),
-      ],
-      false,
-    );
+      ];
+      const action = this.getScreenOption('assign-grading-strategy');
 
-    if (!result?.confirmed) {
-      return;
+      if (action) {
+        this.setBulkActionAssistantContext(action, selectionItems);
+      }
+
+      const result = await this.openSelector(
+        this.translate.instant('planning.study-plan-subjects.bulk.assign-grading-strategy.title'),
+        this.bulkActionDescription(),
+        selectionItems.map((item) => ({
+          id: item.id,
+          descriptor: item.translation ?? '',
+        })),
+        false,
+      );
+
+      if (!result?.confirmed) {
+        return;
+      }
+
+      const gradePolicyId = result.selectedId;
+
+      const route = this.route();
+
+      if (!route) {
+        return;
+      }
+
+      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+        this.api.put(`${route}/bulk-grade-policy`, {
+          subject_ids: this.selectedSubjectIds(),
+          grade_policy_id: gradePolicyId,
+        }),
+        (res) => {
+          this.replaceStageSubjects(res.data.subjects ?? []);
+          this.clearSubjectSelection();
+        },
+      );
+    } finally {
+      this.setStudyPlanStageSubjectsAssistantContext();
     }
-
-    const gradePolicyId = result.selectedId;
-
-    const route = this.route();
-
-    if (!route) {
-      return;
-    }
-
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
-      this.api.put(`${route}/bulk-grade-policy`, {
-        subject_ids: this.selectedSubjectIds(),
-        grade_policy_id: gradePolicyId,
-      }),
-      (res) => {
-        this.replaceStageSubjects(res.data.subjects ?? []);
-        this.clearSubjectSelection();
-      },
-    );
   }
 
   protected async assignCoordinator(): Promise<void> {
-    const coordinatorId = await this.selectCatalogValue(
-      this.translate.instant('planning.study-plan-subjects.bulk.manage-coordinators.title'),
-      this.bulkActionDescription(),
-      this.catalogs().coordinators.map((item) => ({
-        id: item.id,
-        descriptor: item.full_name || item.full,
-      })),
-    );
+    try {
+      const action = this.getScreenOption('manage-coordinators');
 
-    if (!coordinatorId) {
-      return;
+      if (action) {
+        this.setBulkActionAssistantContext(action);
+      }
+
+      const coordinatorId = await this.selectCatalogValue(
+        this.translate.instant('planning.study-plan-subjects.bulk.manage-coordinators.title'),
+        this.bulkActionDescription(),
+        this.catalogs().coordinators.map((item) => ({
+          id: item.id,
+          descriptor: item.full_name || item.full,
+        })),
+      );
+
+      if (!coordinatorId) {
+        return;
+      }
+
+      const route = this.route();
+
+      if (!route) {
+        return;
+      }
+
+      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+        this.api.put(`${route}/bulk-coordinator`, {
+          subject_ids: this.selectedSubjectIds(),
+          coordinator_id: coordinatorId,
+        }),
+        (res) => {
+          this.replaceStageSubjects(res.data.subjects ?? []);
+          this.clearSubjectSelection();
+        },
+      );
+    } finally {
+      this.setStudyPlanStageSubjectsAssistantContext();
     }
-
-    const route = this.route();
-
-    if (!route) {
-      return;
-    }
-
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
-      this.api.put(`${route}/bulk-coordinator`, {
-        subject_ids: this.selectedSubjectIds(),
-        coordinator_id: coordinatorId,
-      }),
-      (res) => {
-        this.replaceStageSubjects(res.data.subjects ?? []);
-        this.clearSubjectSelection();
-      },
-    );
   }
 
   protected onEditSubject(subject: IStudyPlanStageSubject): void {
@@ -684,10 +892,17 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   }
 
   protected deleteSelectedSubjects(): void {
+    const action = this.getScreenOption('delete');
+
+    if (action) {
+      this.setBulkActionAssistantContext(action);
+    }
+
     console.log({
       action: 'delete',
       selectedSubjects: this.selectedSubjectIds(),
     });
+    this.setStudyPlanStageSubjectsAssistantContext();
   }
 
   private bulkActionDescription(): string {

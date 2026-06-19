@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '../../../../shared/base/skolans-base-component';
-import { ScreenOptionItem } from '../../../../shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '../../../../shared/interfaces/access.interfaces';
 import { UiButtonComponent } from '../../../../shared/ui/ui-button/ui-button';
 
 interface StaffPerson {

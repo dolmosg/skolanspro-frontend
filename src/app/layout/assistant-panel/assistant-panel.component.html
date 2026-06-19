@@ -1,0 +1,64 @@
+<section
+  class="assistant-panel"
+  [class.assistant-panel--modal-safe]="ui.isModalActive()"
+  role="dialog"
+  aria-label="Asistente Skolans"
+  [ngStyle]="panelStyle()"
+>
+  <header class="assistant-panel__header" (pointerdown)="startDrag($event)">
+    <div class="assistant-panel__identity">
+      <img src="assistant-avatar.png" alt="Daniel, asistente de Skolans" draggable="false" />
+
+      <div>
+        <strong>Daniel</strong>
+        <span>{{ headerTitle() }}</span>
+      </div>
+    </div>
+
+    <div class="assistant-panel__drag-handle" aria-hidden="true" title="Arrastra para mover">
+      ⋮⋮
+    </div>
+    <div class="assistant-panel__actions">
+      <button
+        type="button"
+        class="assistant-panel__action"
+        aria-label="Minimizar asistente"
+        title="Minimizar"
+        (click)="minimize()"
+      >
+        −
+      </button>
+
+      <button
+        type="button"
+        class="assistant-panel__action"
+        aria-label="Cerrar asistente"
+        title="Cerrar"
+        (click)="close()"
+      >
+        ×
+      </button>
+    </div>
+  </header>
+
+  <div class="assistant-panel__body">
+    <div class="assistant-panel__welcome">
+      <strong>Hola, soy Daniel.</strong>
+      <p>Puedo ayudarte con la pantalla actual de Skolans.</p>
+    </div>
+    <div class="assistant-panel__welcome-context">
+      <small>{{ headerDescription() }}</small>
+    </div>
+    <pre>{{ assistantContext.mergedContext() | json }}</pre>
+  </div>
+
+  <footer class="assistant-panel__footer">
+    <textarea
+      rows="2"
+      placeholder="Pregúntame algo sobre esta pantalla..."
+      aria-label="Mensaje para Daniel"
+    ></textarea>
+
+    <button type="button" class="assistant-panel__send">Enviar</button>
+  </footer>
+</section>

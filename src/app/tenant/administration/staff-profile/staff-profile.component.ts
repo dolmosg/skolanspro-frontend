@@ -6,7 +6,7 @@ import { SkolansBaseComponent } from '../../../shared/base/skolans-base-componen
 import {
   ScreenChildItem,
   ScreenOptionItem,
-} from '../../../shared/interfaces/configuration.interfaces';
+} from '../../../shared/interfaces/access.interfaces';
 import { PersonProfileTabComponent } from '../../people/profile-tabs/person-profile-tab/person-profile-tab.component';
 import { PersonCommunicationTabComponent } from '../../people/profile-tabs/person-communication-tab/person-communication-tab.component';
 import { UserRolesTabComponent } from '../../people/profile-tabs/user-roles-tab/user-roles-tab.component';

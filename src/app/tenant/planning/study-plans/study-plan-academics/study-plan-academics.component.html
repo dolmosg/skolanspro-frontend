@@ -1,5 +1,12 @@
 <section class="study-plan-academics">
-  @if (selectedSubjectStageId()) {
+  @if (selectedIntegrationStageId()) {
+    <app-stage-integrations
+      class="study-plan-academics__stage-view"
+      [stageId]="selectedIntegrationStageId()"
+      [route]="childRoute(integrationsChild()?.name)"
+      (back)="closeIntegrations()"
+    />
+  } @else if (selectedSubjectStageId()) {
     <app-study-plan-stage-subjects
       class="study-plan-academics__stage-view"
       [stageId]="selectedSubjectStageId()"
@@ -40,35 +47,10 @@
         (stageCrossoversSelected)="openStageCrossovers($event)"
       />
 
-      <article class="study-plan-academics__card">
-        <header class="study-plan-academics__card-header">
-          <div>
-            <h4>{{ 'planning.study-plan-academics.integrations.title' | translate }}</h4>
-            <p>{{ 'planning.study-plan-academics.integrations.description' | translate }}</p>
-          </div>
-
-          @if (integrationsChild(); as child) {
-            <app-ui-button
-              [label]="'planning.study-plan-academics.actions.manage' | translate"
-              [iconLeft]="child.icon"
-              variant="secondary"
-              size="sm"
-              (clicked)="openIntegrations()"
-            />
-          }
-        </header>
-
-        <button
-          class="study-plan-academics__placeholder study-plan-academics__placeholder--action"
-          type="button"
-          [disabled]="!integrationsChild()"
-          (click)="openIntegrations()"
-        >
-          <app-ui-icon name="puzzle" size="lg" />
-          <strong>{{ 'planning.study-plan-academics.integrations.pending-title' | translate }}</strong>
-          <span>{{ 'planning.study-plan-academics.integrations.pending-description' | translate }}</span>
-        </button>
-      </article>
+      <app-study-plan-integrations-summary
+        [stages]="stages()"
+        (openStageIntegrations)="openIntegrations($event.stageId)"
+      />
     </div>
   }
 </section>

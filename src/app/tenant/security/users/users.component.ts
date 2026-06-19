@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { UiButtonComponent } from '../../../shared/ui/ui-button/ui-button';
 import { SkolansBaseComponent } from '../../../shared/base/skolans-base-component';
-import { ScreenOptionItem } from '../../../shared/interfaces/configuration.interfaces';
+import { ScreenOptionItem } from '../../../shared/interfaces/access.interfaces';
 import { SkSelectComponent } from '../../../shared/ui/sk-select/sk-select.component';
 import { SklConfirmModal } from '../../../shared/base/skl-confirm-modal/skl-confirm-modal';
 

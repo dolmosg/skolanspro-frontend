@@ -1,0 +1,16 @@
+@if (showLauncher()) {
+  <button
+    type="button"
+    class="assistant-launcher"
+    [class.assistant-launcher--modal-active]="launcherOverModalBackdrop()"
+    aria-label="Abrir asistente"
+    title="Abrir asistente"
+    (click)="openAssistant()"
+  >
+    <img src="assistant-avatar.png" alt="Asistente Skolans" draggable="false" />
+  </button>
+}
+
+@if (showPanel()) {
+  <app-assistant-panel />
+}

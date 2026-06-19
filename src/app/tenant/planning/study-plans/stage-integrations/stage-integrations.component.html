@@ -1,0 +1,166 @@
+<section class="stage-integrations">
+  <header class="stage-integrations__header">
+    <div class="stage-integrations__title">
+      <span>{{ 'planning.study-plan-integrations.title' | translate }}</span>
+      <h2>{{ stage()?.name ?? ('planning.study-plan-integrations.stage' | translate) }}</h2>
+      <p>{{ 'planning.study-plan-integrations.description' | translate }}</p>
+    </div>
+
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  <div class="stage-integrations__layout">
+    <aside class="stage-integrations__sidebar">
+      <section class="stage-integrations__panel">
+        <div class="stage-integrations__panel-header">
+          <div>
+            <span>{{ 'planning.study-plan-integrations.integrations' | translate }}</span>
+            <strong>{{ integrations().length }}</strong>
+          </div>
+
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              [variant]="getScreenOptionVariant('add', 'primary')"
+              size="sm"
+              [disabled]="addingIntegration()"
+              (click)="startAddingIntegration()"
+            />
+          }
+        </div>
+
+        <div class="stage-integrations__list">
+          @for (integration of integrations(); track integration.id) {
+            <button
+              type="button"
+              class="stage-integrations__item"
+              [class.stage-integrations__item--selected]="
+                selectedIntegration()?.id === integration.id
+              "
+              [class.stage-integrations__item--disabled]="!canOpenIntegrationDetails()"
+              [disabled]="!canOpenIntegrationDetails()"
+              (click)="selectIntegration(integration)"
+            >
+              <span class="stage-integrations__item-code">{{ integration.code }}</span>
+
+              <span class="stage-integrations__item-body">
+                <strong>{{ integration.name }}</strong>
+                <small>
+                  {{ integration.items_count }}
+                  {{ 'planning.study-plan-integrations.subjects' | translate }}
+                </small>
+              </span>
+
+              @if (integration.active) {
+                <span class="stage-integrations__status stage-integrations__status--active">
+                  {{ 'common.active' | translate }}
+                </span>
+              } @else {
+                <span class="stage-integrations__status stage-integrations__status--inactive">
+                  {{ 'common.inactive' | translate }}
+                </span>
+              }
+            </button>
+          } @empty {
+            <div class="stage-integrations__empty-list">
+              <app-ui-icon name="layers" size="md" />
+              <strong>{{ 'planning.study-plan-integrations.empty-title' | translate }}</strong>
+              <p>{{ 'planning.study-plan-integrations.empty-description' | translate }}</p>
+            </div>
+          }
+        </div>
+      </section>
+    </aside>
+
+    <section class="stage-integrations__workspace">
+      <div class="stage-integrations__workspace-card">
+        @if (addingIntegration()) {
+          <form
+            class="stage-integrations__create"
+            [formGroup]="integrationForm"
+            (ngSubmit)="saveIntegration()"
+          >
+            <header class="stage-integrations__create-header">
+              <div class="stage-integrations__create-title">
+                <span class="stage-integrations__create-icon">
+                  <app-ui-icon name="add" size="sm" />
+                </span>
+
+                <div>
+                  <h3>{{ 'planning.study-plan-integrations.add' | translate }}</h3>
+                  <p>Configura una nueva integración académica para esta etapa.</p>
+                </div>
+              </div>
+
+              <div class="stage-integrations__create-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  variant="danger"
+                  size="sm"
+                  type="button"
+                  (click)="cancelAddingIntegration()"
+                />
+
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  iconLeft="save"
+                  variant="primary"
+                  size="sm"
+                  type="submit"
+                  [disabled]="savingIntegration()"
+                />
+              </div>
+            </header>
+
+            <section class="stage-integrations__create-body">
+              <div class="stage-integrations__create-grid">
+                <label class="stage-integrations__create-field">
+                  <span>{{ 'academics.subjects.fields.code' | translate }}</span>
+                  <input type="text" formControlName="code" [skTextCase]="'uppercase'" />
+                  <form-error [control]="integrationForm.controls.code"></form-error>
+                </label>
+
+                <label class="stage-integrations__create-field">
+                  <span>{{ 'academics.subjects.fields.name' | translate }}</span>
+                  <input type="text" formControlName="name" />
+                  <form-error [control]="integrationForm.controls.name"></form-error>
+                </label>
+
+                <div class="stage-integrations__create-options">
+                  <label class="stage-integrations__create-check">
+                    <input type="checkbox" formControlName="active" />
+                    <span>{{ 'common.active' | translate }}</span>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </form>
+        } @else if (selectedIntegration(); as currentIntegration) {
+          <app-study-plan-integration-detail
+            [route]="itemsRoute()"
+            [integrationRoute]="route()"
+            [integrationId]="currentIntegration.id"
+            [integrationSummary]="currentIntegration"
+            [integrationOptions]="options()"
+            (integrationUpdated)="onIntegrationUpdated($event)"
+            (integrationDeleted)="onIntegrationDeleted($event)"
+          />
+        } @else {
+          <div class="stage-integrations__workspace-empty">
+            <app-ui-icon name="layers" size="lg" />
+            <h3>{{ 'planning.study-plan-integrations.select-title' | translate }}</h3>
+            <p>{{ 'planning.study-plan-integrations.select-description' | translate }}</p>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</section>

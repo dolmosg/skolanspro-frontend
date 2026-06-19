@@ -2,39 +2,41 @@ import { Component, computed, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
+import type {
+  ILevel,
+  IScheduleType,
+  IStudyPlanStructure,
+} from '@shared/interfaces/configuration.interfaces';
+import type { IStudyPlan } from '@shared/interfaces/study-plan-interfaces';
 import { SklModalService } from '@shared/services/skl-modal-service';
 import { SkSelectComponent } from '@shared/ui/sk-select/sk-select.component';
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
-
-import {
-  StudyPlansCatalogItem,
-  StudyPlanStructureCatalogItem,
-} from '../study-plans/study-plans.component';
 
 export interface IStudyPlanModalData {
   school_year_id: number;
   section_id: number;
   catalogs: {
-    levels: StudyPlansCatalogItem[];
-    studyplan_structures: StudyPlanStructureCatalogItem[];
-    schedule_types: StudyPlansCatalogItem[];
+    levels: ILevel[];
+    studyplan_structures: IStudyPlanStructure[];
+    schedule_types: IScheduleType[];
   };
 }
 
 export interface IStudyPlanModalResult {
   saved: boolean;
   mode: 'create';
-  payload: {
-    name: string;
-    description: string | null;
-    start: string;
-    end: string;
-    level_id: number;
-    school_year_id: number;
-    section_id: number;
-    studyplan_structure_id: number;
-    schedule_type_id: number;
-  };
+  payload: Pick<
+    IStudyPlan,
+    | 'name'
+    | 'description'
+    | 'start'
+    | 'end'
+    | 'level_id'
+    | 'school_year_id'
+    | 'section_id'
+    | 'study_plan_structure_id'
+    | 'schedule_type_id'
+  >;
 }
 
 @Component({
@@ -60,7 +62,7 @@ export class StudyPlanModalComponent {
     start: ['', [Validators.required]],
     end: ['', [Validators.required]],
     level_id: [null as number | null, [Validators.required]],
-    studyplan_structure_id: [null as number | null, [Validators.required]],
+    study_plan_structure_id: [null as number | null, [Validators.required]],
     schedule_type_id: [null as number | null, [Validators.required]],
   });
 
@@ -92,7 +94,7 @@ export class StudyPlanModalComponent {
       level_id: Number(value.level_id),
       school_year_id: this.data().school_year_id,
       section_id: this.data().section_id,
-      studyplan_structure_id: Number(value.studyplan_structure_id),
+      study_plan_structure_id: Number(value.study_plan_structure_id),
       schedule_type_id: Number(value.schedule_type_id),
     };
   }
