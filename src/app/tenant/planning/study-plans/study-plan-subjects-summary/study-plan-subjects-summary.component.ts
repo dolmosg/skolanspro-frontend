@@ -140,6 +140,7 @@ export class StudyPlanSubjectsSummaryComponent {
       coverage,
       completed: totalGradeSlots > 0 && configuredGradeSlots === totalGradeSlots,
       hasSubjects: totalSubjects > 0,
+      hasAcademicStructure: totalGradeSlots > 0,
       stageItems: stages,
     };
   });

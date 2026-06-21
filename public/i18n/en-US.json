@@ -2378,11 +2378,13 @@
 			"actions": {
 				"manage": "Manage"
 			},
-			"add-stage": "New Stage",
+			"add-stage": "Reset Stages",
 			"description": "Define how the academic structure of the study plan is organized.",
 			"index": "Study Plan Academics",
 			"integrations": {
 				"description": "Configure how subjects are academically integrated in report cards and grade calculations.",
+				"no-stages-description": "Subject integrations will be available after configuring the academic terms for each stage and assigning subjects to each grade.",
+				"no-stages-title": "Pending configuration",
 				"pending-description": "Define weight distributions and subject groupings.",
 				"pending-title": "Academic integrations",
 				"title": "Subject Integrations"
@@ -2404,7 +2406,13 @@
 					"stages": "Stages",
 					"terms": "Terms"
 				},
+				"recovery-missing-plural": "{{ missing }} remain to be generated.",
+				"recovery-missing-singular": "{{ missing }} remains to be generated.",
+				"recovery-required-plural": "The plan requires {{ expected }} stages.",
+				"recovery-required-singular": "The plan requires {{ expected }} stage.",
 				"status": {
+					"missing-terms": "Pending configuration",
+					"missing-terms-description": "The study plan already has stages configured, but no academic terms exist yet.",
 					"pending": "Configuration Pending",
 					"pending-description": "The study plan does not have any stages configured yet.",
 					"ready": "Structure Configured",
@@ -2423,8 +2431,8 @@
 				"grade-subjects": "Grades with configured subjects",
 				"grades-with-subjects": "grades with subjects",
 				"in-stage": "subjects in the stage",
-				"pending-description": "Assign subjects and define the academic structure by grade.",
-				"pending-title": "Subject configuration",
+				"pending-description": "Subjects will be available after configuring the academic stages of the study plan.",
+				"pending-title": "Pending configuration",
 				"title": "Subjects by Grade",
 				"within-grade": "All stages have subjects in each grade."
 			},
@@ -2567,6 +2575,7 @@
 				"confirm-delete": "Do you want to delete this academic integration? This action will also remove its related configuration.",
 				"delete-title": "Delete integration"
 			},
+			"no-integrations": "No integrations configured",
 			"select-description": "Select an integration from the left panel to review or modify its configuration.",
 			"select-title": "Select an integration",
 			"stage": "Stage",
@@ -2680,7 +2689,7 @@
 			"update": "Update Term"
 		},
 		"study-plan-stages": {
-			"add": "New Stage",
+			"add": "Reset",
 			"configuration": {
 				"stage-help": "Define the validity period for this academic stage. Associated terms must be placed within this date range.",
 				"stage-help-line-1": "",
@@ -2716,6 +2725,15 @@
 			"assign-evaluation-type": "Assign evaluation type",
 			"assign-grading-strategy": "Assign grading policy",
 			"assign-subject-type": "Assign subject type",
+			"assignment": {
+				"assign": "Assign subjects",
+				"description": "Select the subjects to add to this stage and grade.",
+				"no-available": "No subjects available",
+				"no-available-description": "All subjects available for this selection have already been assigned, or no compatible active subjects exist.",
+				"no-results": "No subjects found",
+				"search": "Search subject by code or name...",
+				"selected": "selected"
+			},
 			"bulk": {
 				"assign-evaluation-type": {
 					"title": "Assign evaluation type"
@@ -2737,6 +2755,14 @@
 			},
 			"crossovers": "Crossovers",
 			"delete": "Delete subject",
+			"delete-modal": {
+				"title": "Delete subject",
+				"description": "Do you want to delete this subject?",
+				"bulk-title": "Delete subjects",
+				"bulk-description": "{{count}} subjects will be deleted.",
+				"confirm": "Delete",
+				"cancel": "Cancel"
+			},
 			"fields": {
 				"evaluation-type": "Evaluation Type",
 				"grade-policy": "Grade Policy",
@@ -2819,13 +2845,17 @@
 			"messages": {
 				"already-exists": "A study plan already exists for this level, school year, and section.",
 				"confirm-delete": "Are you sure you want to delete this study plan?",
+				"confirm-restructure": "Changing the structure will recalculate stages, names, order, and dates. The generated dates are an initial baseline and the coordinator can adjust them later stage by stage.",
+				"confirm-restructure-title": "Confirm academic restructure",
 				"create-description": "Enter the basic information to create a new study plan.",
 				"created": "Study plan created successfully.",
 				"deleted": "Study plan deleted successfully.",
 				"empty": "No study plans available.",
+				"found": "{{ count }} study plans",
 				"loaded": "Study plans loaded successfully.",
 				"no-description": "No description",
-				"select-study-plan": "Select a study plan to view its details."
+				"select-study-plan": "Select a study plan to view its details.",
+				"updated": "Study plan updated successfully."
 			},
 			"sections": {
 				"access": "Plan configuration",

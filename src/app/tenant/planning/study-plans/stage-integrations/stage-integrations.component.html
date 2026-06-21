@@ -152,6 +152,7 @@
             [integrationOptions]="options()"
             (integrationUpdated)="onIntegrationUpdated($event)"
             (integrationDeleted)="onIntegrationDeleted($event)"
+            (academicsStageUpdated)="onAcademicsStageUpdated($event)"
           />
         } @else {
           <div class="stage-integrations__workspace-empty">

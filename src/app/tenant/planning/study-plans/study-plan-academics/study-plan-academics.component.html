@@ -4,6 +4,7 @@
       class="study-plan-academics__stage-view"
       [stageId]="selectedIntegrationStageId()"
       [route]="childRoute(integrationsChild()?.name)"
+      (academicsStageUpdated)="updateStageSnapshot($event)"
       (back)="closeIntegrations()"
     />
   } @else if (selectedSubjectStageId()) {
@@ -12,6 +13,7 @@
       [stageId]="selectedSubjectStageId()"
       [initialGradeId]="selectedSubjectGradeId()"
       [route]="childRoute(subjectsChild()?.name)"
+      (academicsStageUpdated)="updateStageSnapshot($event)"
       (back)="closeStageSubjects()"
     />
   } @else if (selectedStageId()) {
@@ -19,6 +21,8 @@
       class="study-plan-academics__stage-view"
       [stageId]="selectedStageId()"
       [route]="childRoute(stagesChild()?.name)"
+      (academicsStageUpdated)="updateStageSnapshot($event)"
+      (stageDeleted)="onStageDeleted($event)"
       (back)="closeStage()"
     />
   } @else {

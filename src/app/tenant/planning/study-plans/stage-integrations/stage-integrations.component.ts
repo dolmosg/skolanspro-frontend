@@ -22,6 +22,7 @@ import {
   StudyPlanIntegrationDetailItem,
 } from '../study-plan-integration-detail/study-plan-integration-detail.component';
 import { SkTextCaseDirective } from 'app/shared/directives/sk-text-mode-case';
+import type { IStudyPlanStage as IStudyPlanAcademicsStage } from '../study-plan-academics/study-plan-academics.component';
 
 interface StageIntegrationItem extends Omit<ISubjectIntegration, 'items'> {
   items_count: number;
@@ -52,6 +53,7 @@ interface StageIntegrationsIndexData {
 
 interface StageIntegrationMutationData {
   integration?: StageIntegrationItem | null;
+  academics_stage?: IStudyPlanAcademicsStage | null;
 }
 
 @Component({
@@ -77,6 +79,7 @@ export class StageIntegrationsComponent extends SkolansBaseComponent implements 
   readonly route = input<string | null>(null);
 
   readonly back = output<void>();
+  readonly academicsStageUpdated = output<IStudyPlanAcademicsStage>();
 
   protected readonly stage = signal<StageIntegrationsStage | null>(null);
   protected readonly integrations = signal<StageIntegrationItem[]>([]);
@@ -278,6 +281,7 @@ export class StageIntegrationsComponent extends SkolansBaseComponent implements 
           name: '',
           active: true,
         });
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
       },
       error: () => {
         this.savingIntegration.set(false);
@@ -299,6 +303,10 @@ export class StageIntegrationsComponent extends SkolansBaseComponent implements 
     );
 
     this.selectedIntegration.set(updatedStageIntegration);
+  }
+
+  protected onAcademicsStageUpdated(stage: IStudyPlanAcademicsStage): void {
+    this.emitAcademicsStageSnapshot(stage);
   }
 
   protected onIntegrationDeleted(integrationId: number): void {
@@ -340,5 +348,15 @@ export class StageIntegrationsComponent extends SkolansBaseComponent implements 
 
   protected onBack(): void {
     this.back.emit();
+  }
+
+  private emitAcademicsStageSnapshot(
+    stage: IStudyPlanAcademicsStage | null | undefined,
+  ): void {
+    if (!stage) {
+      return;
+    }
+
+    this.academicsStageUpdated.emit(stage);
   }
 }

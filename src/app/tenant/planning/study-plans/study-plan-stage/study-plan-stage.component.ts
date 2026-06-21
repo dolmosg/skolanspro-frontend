@@ -17,6 +17,7 @@ import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { StudyPlanTermComponent } from '../study-plan-term/study-plan-term.component';
 import { DateValidators } from '@shared/validators/date.validators';
+import type { IStudyPlanStage as IStudyPlanAcademicsStage } from '../study-plan-academics/study-plan-academics.component';
 
 export interface IStudyPlanStageStatus {
   id: number;
@@ -92,6 +93,7 @@ export interface IStudyPlanStageDetail {
 
 interface StudyPlanStageShowResponse {
   study_plan_stage?: IStudyPlanStageDetail | null;
+  academics_stage?: IStudyPlanAcademicsStage | null;
   options?: ScreenOptionItem[];
   children?: ScreenChildItem[];
 }
@@ -132,6 +134,8 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
   readonly route = input<string | null>(null);
 
   readonly back = output<void>();
+  readonly academicsStageUpdated = output<IStudyPlanAcademicsStage>();
+  readonly stageDeleted = output<number>();
 
   protected readonly stage = signal<IStudyPlanStageDetail | null>(null);
 
@@ -239,6 +243,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
         this.stage.set(loadedStage);
         this.setScreenOptions(res.data.options);
         this.setScreenChildren(res.data.children);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
 
         if (loadedStage) {
           this.patchStageForm(loadedStage);
@@ -431,12 +436,23 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
 
     this.savingStage.set(true);
 
-    this.executeSilentRequest(
+    this.executeSilentRequest<StudyPlanStageShowResponse>(
       this.api.put(`${route}/${stage.id}`, this.stageForm.getRawValue()),
-      () => {
+      (res) => {
         this.savingStage.set(false);
         this.stageMode.set('view');
-        this.loadStage();
+        const updatedStage = res.data.study_plan_stage ?? null;
+
+        if (updatedStage) {
+          this.stage.update((currentStage) => ({
+            ...(currentStage ?? updatedStage),
+            ...updatedStage,
+          }));
+          this.patchStageForm(updatedStage);
+        }
+
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
+        this.setStudyPlanStageAssistantContext();
       },
       () => {
         this.savingStage.set(false);
@@ -453,7 +469,7 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     }
 
     this.executeSilentRequest(this.api.delete(`${route}/${stage.id}`), () => {
-      this.back.emit();
+      this.stageDeleted.emit(stage.id);
     });
   }
 
@@ -472,6 +488,16 @@ export class StudyPlanStageComponent extends SkolansBaseComponent implements OnI
     });
 
     this.stageForm.updateValueAndValidity();
+  }
+
+  private emitAcademicsStageSnapshot(
+    stage: IStudyPlanAcademicsStage | null | undefined,
+  ): void {
+    if (!stage) {
+      return;
+    }
+
+    this.academicsStageUpdated.emit(stage);
   }
 
   private applyStageDateValidators(stage: IStudyPlanStageDetail): void {

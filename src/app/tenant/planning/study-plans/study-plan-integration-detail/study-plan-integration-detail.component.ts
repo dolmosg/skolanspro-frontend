@@ -23,6 +23,7 @@ import type {
   ISubjectIntegration,
   ISubjectIntegrationItem,
 } from '@shared/interfaces/study-plan-interfaces';
+import type { IStudyPlanStage as IStudyPlanAcademicsStage } from '../study-plan-academics/study-plan-academics.component';
 
 export interface StudyPlanIntegrationDetailItem extends Omit<ISubjectIntegration, 'stage' | 'items'> {
   items?: ISubjectIntegrationItem[];
@@ -38,6 +39,7 @@ interface StudyPlanIntegrationMutationData {
   integration?: StudyPlanIntegrationDetailItem | null;
   subject_integration?: StudyPlanIntegrationDetailItem | null;
   integration_id?: number;
+  academics_stage?: IStudyPlanAcademicsStage | null;
 }
 
 @Component({
@@ -67,6 +69,7 @@ export class StudyPlanIntegrationDetailComponent extends SkolansBaseComponent im
 
   readonly integrationUpdated = output<StudyPlanIntegrationDetailItem>();
   readonly integrationDeleted = output<number>();
+  readonly academicsStageUpdated = output<IStudyPlanAcademicsStage>();
 
   protected readonly integration = signal<StudyPlanIntegrationDetailItem | null>(null);
   protected readonly stage = signal<IStudyPlanStage | null>(null);
@@ -228,6 +231,7 @@ export class StudyPlanIntegrationDetailComponent extends SkolansBaseComponent im
         this.integration.set(updatedIntegration);
         this.patchIntegrationForm(updatedIntegration);
         this.integrationUpdated.emit(updatedIntegration);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
       },
       error: () => {
         this.savingIntegration.set(false);
@@ -268,6 +272,7 @@ export class StudyPlanIntegrationDetailComponent extends SkolansBaseComponent im
         this.handleApiSuccess(res);
         this.deletingIntegration.set(false);
         this.integrationDeleted.emit(res.data.integration_id ?? integration.id);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
       },
       error: () => {
         this.deletingIntegration.set(false);
@@ -373,5 +378,15 @@ export class StudyPlanIntegrationDetailComponent extends SkolansBaseComponent im
     });
 
     this.integrationForm.updateValueAndValidity();
+  }
+
+  private emitAcademicsStageSnapshot(
+    stage: IStudyPlanAcademicsStage | null | undefined,
+  ): void {
+    if (!stage) {
+      return;
+    }
+
+    this.academicsStageUpdated.emit(stage);
   }
 }

@@ -4,18 +4,6 @@
       <h4>{{ 'planning.study-plan-academics.stages.title' | translate }}</h4>
       <p>{{ 'planning.study-plan-academics.stages.description' | translate }}</p>
     </div>
-
-    @if (canAddStage()) {
-      @if (addStageOption(); as option) {
-        <app-ui-button
-          [label]="option.translation | translate"
-          [iconLeft]="option.icon"
-          variant="primary"
-          size="sm"
-          (clicked)="onAddStage()"
-        />
-      }
-    }
   </header>
 
   <div class="study-plan-stages-summary__metrics">
@@ -34,10 +22,14 @@
     <div class="study-plan-stages-summary__metric study-plan-stages-summary__metric--current">
       <div class="study-plan-stages-summary__metric-status">
         @if (currentTerm()?.type === 'current') {
-          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--success"></span>
+          <span
+            class="study-plan-stages-summary__dot study-plan-stages-summary__dot--success"
+          ></span>
           <span>{{ 'planning.study-plan-academics.stages.metrics.current' | translate }}</span>
         } @else if (currentTerm()?.type === 'next') {
-          <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--warning"></span>
+          <span
+            class="study-plan-stages-summary__dot study-plan-stages-summary__dot--warning"
+          ></span>
           <span>{{ 'planning.study-plan-academics.stages.metrics.next' | translate }}</span>
         } @else if (currentTerm()?.type === 'last') {
           <span class="study-plan-stages-summary__dot study-plan-stages-summary__dot--muted"></span>
@@ -100,87 +92,156 @@
     </div>
   </div>
 
-  <div class="study-plan-stages-summary__section-title">
-    {{ 'planning.study-plan-academics.stages.distribution' | translate }}
-  </div>
-
-  <div class="study-plan-stages-summary__stage-list">
-    @for (stage of stages(); track stage.id) {
-      <button class="study-plan-stages-summary__stage-row" type="button" (click)="onManage(stage.id)">
-        <span class="study-plan-stages-summary__stage-index">{{ stage.order }}</span>
-
-        <span class="study-plan-stages-summary__stage-content">
-          <span class="study-plan-stages-summary__stage-info">
-            <strong>{{ stage.name }}</strong>
-
-            <small>
-              {{ stage.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
-              —
-              {{ stage.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
-            </small>
-          </span>
-
-          <span class="study-plan-stages-summary__term-badges">
-            @for (term of stage.terms ?? []; track term.id) {
-              <span
-                class="study-plan-stages-summary__term-badge"
-                [class.study-plan-stages-summary__term-badge--open]="term.status?.name === 'open'"
-                [class.study-plan-stages-summary__term-badge--closed]="term.status?.name === 'closed'"
-                [class.study-plan-stages-summary__term-badge--review]="term.status?.name === 'in-review'"
-                [class.study-plan-stages-summary__term-badge--configuration]="
-                  term.status?.name === 'configuration'
-                "
-                [title]="
-                  term.code  +
-                  ' · ' +
-                  ((term.status?.translation | translate) || term.status?.name || '')
-                "
-              >
-                {{ term.code }}
-              </span>
-            } @empty {
-              <span
-                class="study-plan-stages-summary__term-badge study-plan-stages-summary__term-badge--empty"
-                [title]="'planning.study-plan-academics.stages.empty' | translate"
-              >
-                0
-              </span>
-            }
-          </span>
-        </span>
-
-        <span class="study-plan-stages-summary__stage-action">
-          <app-ui-icon name="drilldown" size="md" />
-        </span>
-      </button>
-    } @empty {
-      <div class="study-plan-stages-summary__empty">
-        {{ 'planning.study-plan-academics.stages.empty' | translate }}
-      </div>
-    }
-  </div>
-
-  @if (hasCompleteStages()) {
-    <div class="study-plan-stages-summary__status study-plan-stages-summary__status--success">
-      <app-ui-icon name="check" size="md" />
-
-      <div>
-        <strong>{{ 'planning.study-plan-academics.stages.status.ready' | translate }}</strong>
+  @if (canAddStage()) {
+    <div class="study-plan-stages-summary__recovery">
+      <div class="study-plan-stages-summary__recovery-helper">
         <span>
-          {{ 'planning.study-plan-academics.stages.status.ready-description' | translate }}
+          @if (expectedStagesCount() === 1) {
+            {{
+              'planning.study-plan-academics.stages.recovery-required-singular'
+                | translate: { expected: expectedStagesCount() }
+            }}
+          } @else {
+            {{
+              'planning.study-plan-academics.stages.recovery-required-plural'
+                | translate: { expected: expectedStagesCount() }
+            }}
+          }
+        </span>
+
+        <span>
+          @if (missingStagesCount() === 1) {
+            {{
+              'planning.study-plan-academics.stages.recovery-missing-singular'
+                | translate: { missing: missingStagesCount() }
+            }}
+          } @else {
+            {{
+              'planning.study-plan-academics.stages.recovery-missing-plural'
+                | translate: { missing: missingStagesCount() }
+            }}
+          }
         </span>
       </div>
+
+      @if (addStageOption(); as option) {
+        <app-ui-button
+          [label]="option.translation | translate"
+          [iconLeft]="option.icon"
+          variant="primary"
+          size="sm"
+          (click)="onAddStage()"
+        />
+      }
     </div>
   } @else {
-    <div class="study-plan-stages-summary__status study-plan-stages-summary__status--warning">
-      <app-ui-icon name="triangle-alert" size="md" />
-
-      <div>
-        <strong>{{ 'planning.study-plan-academics.stages.status.pending' | translate }}</strong>
-        <span>
-          {{ 'planning.study-plan-academics.stages.status.pending-description' | translate }}
-        </span>
-      </div>
+    <div class="study-plan-stages-summary__section-title">
+      {{ 'planning.study-plan-academics.stages.distribution' | translate }}
     </div>
+
+    <div class="study-plan-stages-summary__stage-list">
+      @for (stage of stages(); track stage.id) {
+        <button
+          class="study-plan-stages-summary__stage-row"
+          type="button"
+          (click)="onManage(stage.id)"
+        >
+          <span class="study-plan-stages-summary__stage-index">{{ stage.order }}</span>
+
+          <span class="study-plan-stages-summary__stage-content">
+            <span class="study-plan-stages-summary__stage-info">
+              <strong>{{ stage.name }}</strong>
+
+              <small>
+                {{ stage.start_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+                —
+                {{ stage.end_date | date: 'dd/MM/yyyy' : 'UTC' : siteState.locale() }}
+              </small>
+            </span>
+
+            <span class="study-plan-stages-summary__term-badges">
+              @for (term of stage.terms ?? []; track term.id) {
+                <span
+                  class="study-plan-stages-summary__term-badge"
+                  [class.study-plan-stages-summary__term-badge--open]="term.status?.name === 'open'"
+                  [class.study-plan-stages-summary__term-badge--closed]="
+                    term.status?.name === 'closed'
+                  "
+                  [class.study-plan-stages-summary__term-badge--review]="
+                    term.status?.name === 'in-review'
+                  "
+                  [class.study-plan-stages-summary__term-badge--configuration]="
+                    term.status?.name === 'configuration'
+                  "
+                  [title]="
+                    term.code +
+                    ' · ' +
+                    ((term.status?.translation | translate) || term.status?.name || '')
+                  "
+                >
+                  {{ term.code }}
+                </span>
+              } @empty {
+                <span
+                  class="study-plan-stages-summary__term-badge study-plan-stages-summary__term-badge--empty"
+                  [title]="'planning.study-plan-academics.stages.empty' | translate"
+                >
+                  0
+                </span>
+              }
+            </span>
+          </span>
+
+          <span class="study-plan-stages-summary__stage-action">
+            <app-ui-icon name="drilldown" size="md" />
+          </span>
+        </button>
+      } @empty {
+        <div class="study-plan-stages-summary__empty">
+          {{ 'planning.study-plan-academics.stages.empty' | translate }}
+        </div>
+      }
+    </div>
+  }
+
+  @if (!canAddStage()) {
+    @if (isStructureReady()) {
+      <div class="study-plan-stages-summary__status study-plan-stages-summary__status--success">
+        <app-ui-icon name="check" size="md" />
+
+        <div>
+          <strong>{{ 'planning.study-plan-academics.stages.status.ready' | translate }}</strong>
+          <span>
+            {{ 'planning.study-plan-academics.stages.status.ready-description' | translate }}
+          </span>
+        </div>
+      </div>
+    } @else if (hasCompleteStages()) {
+      <div class="study-plan-stages-summary__status study-plan-stages-summary__status--warning">
+        <app-ui-icon name="triangle-alert" size="md" />
+
+        <div>
+          <strong>{{
+            'planning.study-plan-academics.stages.status.missing-terms' | translate
+          }}</strong>
+          <span>
+            {{
+              'planning.study-plan-academics.stages.status.missing-terms-description' | translate
+            }}
+          </span>
+        </div>
+      </div>
+    } @else {
+      <div class="study-plan-stages-summary__status study-plan-stages-summary__status--warning">
+        <app-ui-icon name="triangle-alert" size="md" />
+
+        <div>
+          <strong>{{ 'planning.study-plan-academics.stages.status.pending' | translate }}</strong>
+          <span>
+            {{ 'planning.study-plan-academics.stages.status.pending-description' | translate }}
+          </span>
+        </div>
+      </div>
+    }
   }
 </article>

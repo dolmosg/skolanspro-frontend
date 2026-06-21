@@ -2378,11 +2378,13 @@
 			"actions": {
 				"manage": "Administrar"
 			},
-			"add-stage": "Nueva Etapa",
+			"add-stage": "Reestablecer etapas",
 			"description": "Define cómo está construida académicamente la estructura del plan de estudio.",
 			"index": "Estructura académica",
 			"integrations": {
 				"description": "Configura cómo se integran académicamente las asignaturas en boletas y promedios.",
+				"no-stages-description": "Las integraciones estarán disponibles después de configurar los períodos académicos de las etapas y asignar las materias por grado.",
+				"no-stages-title": "Configuración pendiente",
 				"pending-description": "Define ponderaciones y agrupaciones entre asignaturas.",
 				"pending-title": "Integraciones académicas",
 				"title": "Integración de Asignaturas"
@@ -2404,7 +2406,13 @@
 					"stages": "Etapas",
 					"terms": "Periodos"
 				},
+				"recovery-missing-plural": "Faltan {{ missing }} por generar.",
+				"recovery-missing-singular": "Falta {{ missing }} por generar.",
+				"recovery-required-plural": "El plan requiere {{ expected }} etapas.",
+				"recovery-required-singular": "El plan requiere {{ expected }} etapa.",
 				"status": {
+					"missing-terms": "Configuración pendiente",
+					"missing-terms-description": "El plan ya tiene etapas configuradas, pero aún no existen periodos académicos.",
 					"pending": "Configuración pendiente",
 					"pending-description": "El plan todavía no tiene etapas registradas.",
 					"ready": "Estructura configurada",
@@ -2423,8 +2431,8 @@
 				"grade-subjects": "Grados con asignaturas configuradas",
 				"grades-with-subjects": "grados con materias",
 				"in-stage": "asignaturas en la etapa",
-				"pending-description": "Asigna materias y define la estructura académica por grado.",
-				"pending-title": "Configuración de asignaturas",
+				"pending-description": "Las asignaturas estarán disponibles después de configurar las etapas académicas del plan.",
+				"pending-title": "Configuración pendiente",
 				"title": "Asignaturas por Grado",
 				"within-grade": "Todas las etapas tienen materias en cada grado."
 			},
@@ -2567,6 +2575,7 @@
 				"confirm-delete": "¿Deseas eliminar esta integración académica? Esta acción también eliminará su configuración asociada.",
 				"delete-title": "Eliminar integración"
 			},
+			"no-integrations": "Sin integraciones configuradas",
 			"select-description": "Selecciona una integración del panel izquierdo para consultar o modificar su configuración.",
 			"select-title": "Selecciona una integración",
 			"stage": "Etapa",
@@ -2680,7 +2689,7 @@
 			"update": "Actualizar Periodo"
 		},
 		"study-plan-stages": {
-			"add": "Nueva etapa",
+			"add": "Reiniciar",
 			"configuration": {
 				"stage-help": "",
 				"stage-help-line-1": "La etapa define el rango de fechas general del ciclo académico.",
@@ -2716,6 +2725,15 @@
 			"assign-evaluation-type": "Asignar tipo de evaluación",
 			"assign-grading-strategy": "Asignar política de calificación",
 			"assign-subject-type": "Asignar tipo de asignatura",
+			"assignment": {
+				"assign": "Asignar materias",
+				"description": "Selecciona las materias que se agregarán a esta etapa y grado.",
+				"no-available": "No hay materias disponibles",
+				"no-available-description": "Todas las materias disponibles para esta selección ya fueron asignadas o no existen materias activas compatibles.",
+				"no-results": "No se encontraron materias",
+				"search": "Buscar materia por código o nombre...",
+				"selected": "seleccionadas"
+			},
 			"bulk": {
 				"assign-evaluation-type": {
 					"title": "Asignar tipo de evaluación"
@@ -2737,6 +2755,14 @@
 			},
 			"crossovers": "Transversales",
 			"delete": "Eliminar asignatura",
+			"delete-modal": {
+				"title": "Eliminar asignatura",
+				"description": "¿Deseas eliminar esta asignatura?",
+				"bulk-title": "Eliminar asignaturas",
+				"bulk-description": "Se eliminarán {{count}} materias.",
+				"confirm": "Eliminar",
+				"cancel": "Cancelar"
+			},
 			"fields": {
 				"evaluation-type": "Tipo de Evaluación",
 				"grade-policy": "Política de calificación",
@@ -2819,13 +2845,17 @@
 			"messages": {
 				"already-exists": "Ya existe un plan de estudio para este nivel, ciclo escolar y sección.",
 				"confirm-delete": "¿Seguro que deseas eliminar este plan de estudio?",
+				"confirm-restructure": "Cambiar la estructura recalculará etapas, nombres, órdenes y fechas. Las fechas generadas serán una base inicial y el coordinador podrá ajustarlas después etapa por etapa.",
+				"confirm-restructure-title": "Confirmar reestructura académica",
 				"create-description": "Captura la información básica para crear un nuevo plan de estudio.",
 				"created": "Plan de estudio creado correctamente.",
 				"deleted": "Plan de estudio eliminado correctamente.",
 				"empty": "No hay planes de estudio disponibles.",
+				"found": "{{ count }} planes de estudio",
 				"loaded": "Planes de estudio cargados correctamente.",
 				"no-description": "Sin descripción",
-				"select-study-plan": "Selecciona un plan de estudio para ver su información."
+				"select-study-plan": "Selecciona un plan de estudio para ver su información.",
+				"updated": "Plan de estudio actualizado correctamente."
 			},
 			"sections": {
 				"access": "Configuración del Plan",

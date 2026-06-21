@@ -8,8 +8,8 @@
         [iconLeft]="addOption.icon"
         [variant]="getScreenOptionVariant('add', 'primary')"
         size="sm"
-        [disabled]="!canCreateStudyPlan()"
-        (click)="openCreateModal()"
+        [disabled]="!canCreateStudyPlan() || isCreatingStudyPlan()"
+        (click)="startCreateStudyPlan()"
       />
     }
   </div>
@@ -46,8 +46,10 @@
     <section class="study-plans__list-panel">
       <header class="study-plans__list-header">
         <span>
-          {{ 'planning.study-plans.messages.found' | translate }}
-          {{ filteredStudyPlans().length }}
+          {{
+            'planning.study-plans.messages.found'
+              | translate: { count: filteredStudyPlans().length }
+          }}
         </span>
       </header>
 
@@ -91,10 +93,193 @@
     </section>
 
     <aside class="study-plans__detail">
-      @if (selectedStudyPlan(); as studyPlan) {
+      @if (isCreatingStudyPlan()) {
+        <form
+          class="study-plans__create-form"
+          [formGroup]="createStudyPlanForm"
+          (ngSubmit)="submitCreateStudyPlan()"
+        >
+          <header class="study-plans__detail-header">
+            <div class="study-plans__detail-title">
+              <span class="study-plans__detail-icon">
+                <app-ui-icon name="add" size="md" />
+              </span>
+
+              <div class="study-plans__detail-title-content">
+                <h3>{{ 'planning.study-plans.add' | translate }}</h3>
+                <p>{{ 'planning.study-plans.messages.create-description' | translate }}</p>
+
+                <div class="study-plans__badges">
+                  <span>{{
+                    findCatalogLabel(catalogs().school_years, selectedSchoolYearId()!)
+                  }}</span>
+                  <span>{{ findCatalogLabel(catalogs().sections, selectedSectionId()!) }}</span>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <section class="study-plans__create-section">
+            <div class="study-plans__create-grid">
+              <label class="study-plans__create-field study-plans__create-field--wide">
+                <span>
+                  {{ 'planning.study-plans.fields.name' | translate }}
+                  <strong>*</strong>
+                </span>
+
+                <input type="text" formControlName="name" maxlength="70" autocomplete="off" />
+
+                @if (
+                  createStudyPlanForm.controls.name.touched &&
+                  createStudyPlanForm.controls.name.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </label>
+
+              <label class="study-plans__create-field study-plans__create-field--wide">
+                <span>{{ 'planning.study-plans.fields.description' | translate }}</span>
+
+                <input
+                  type="text"
+                  formControlName="description"
+                  maxlength="150"
+                  autocomplete="off"
+                />
+
+                @if (
+                  createStudyPlanForm.controls.description.touched &&
+                  createStudyPlanForm.controls.description.invalid
+                ) {
+                  <small>{{ 'validation.maxlength' | translate }}</small>
+                }
+              </label>
+
+              <div class="study-plans__create-field">
+                <label>
+                  {{ 'planning.study-plans.fields.level' | translate }}
+                  <strong>*</strong>
+                </label>
+
+                <app-sk-select
+                  [items]="availableLevelsForCreate()"
+                  bindLabel="label"
+                  bindValue="id"
+                  [control]="createStudyPlanForm.controls.level_id"
+                  [clearable]="false"
+                />
+
+                @if (
+                  createStudyPlanForm.controls.level_id.touched &&
+                  createStudyPlanForm.controls.level_id.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </div>
+
+              <div class="study-plans__create-field">
+                <label>
+                  {{ 'planning.study-plans.fields.structure' | translate }}
+                  <strong>*</strong>
+                </label>
+
+                <app-sk-select
+                  [items]="catalogs().study_plan_structures"
+                  bindLabel="translation"
+                  bindValue="id"
+                  [control]="createStudyPlanForm.controls.study_plan_structure_id"
+                  [clearable]="false"
+                  [translateLabel]="true"
+                />
+
+                @if (
+                  createStudyPlanForm.controls.study_plan_structure_id.touched &&
+                  createStudyPlanForm.controls.study_plan_structure_id.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </div>
+
+              <div class="study-plans__create-field">
+                <label>
+                  {{ 'planning.study-plans.fields.schedule-type' | translate }}
+                  <strong>*</strong>
+                </label>
+
+                <app-sk-select
+                  [items]="catalogs().schedule_types"
+                  bindLabel="translation"
+                  bindValue="id"
+                  [control]="createStudyPlanForm.controls.schedule_type_id"
+                  [clearable]="false"
+                  [translateLabel]="true"
+                />
+
+                @if (
+                  createStudyPlanForm.controls.schedule_type_id.touched &&
+                  createStudyPlanForm.controls.schedule_type_id.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </div>
+
+              <label class="study-plans__create-field">
+                <span>
+                  {{ 'planning.study-plans.fields.start' | translate }}
+                  <strong>*</strong>
+                </span>
+
+                <input type="date" formControlName="start" />
+
+                @if (
+                  createStudyPlanForm.controls.start.touched &&
+                  createStudyPlanForm.controls.start.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </label>
+
+              <label class="study-plans__create-field">
+                <span>
+                  {{ 'planning.study-plans.fields.end' | translate }}
+                  <strong>*</strong>
+                </span>
+
+                <input type="date" formControlName="end" />
+
+                @if (
+                  createStudyPlanForm.controls.end.touched &&
+                  createStudyPlanForm.controls.end.invalid
+                ) {
+                  <small>{{ 'validation.required' | translate }}</small>
+                }
+              </label>
+            </div>
+          </section>
+
+          <footer class="study-plans__create-actions">
+            <app-ui-button
+              type="button"
+              variant="danger"
+              iconLeft="reset"
+              [label]="'common.cancel' | translate"
+              (click)="cancelCreateStudyPlan()"
+            />
+
+            <app-ui-button
+              type="submit"
+              variant="primary"
+              iconLeft="save"
+              [label]="'common.save' | translate"
+            />
+          </footer>
+        </form>
+      } @else if (selectedStudyPlan(); as studyPlan) {
         <app-study-plan-configuration
           [selectedStudyPlanId]="studyPlan.id"
           (studyPlanChildSelected)="openStudyPlanChild($event.child, $event.studyPlan)"
+          (studyPlanDeleteRequested)="onDelete()"
+          (studyPlanUpdated)="onStudyPlanUpdated($event)"
         />
       } @else {
         <div class="study-plans__placeholder">

@@ -27,6 +27,7 @@
           <button
             class="study-plan-stage-subjects__nav-item"
             type="button"
+            [disabled]="isAddingSubjects()"
             [class.study-plan-stage-subjects__nav-item--active]="item.selected"
             (click)="selectGrade(item.gradeId)"
           >
@@ -42,6 +43,7 @@
         <button
           class="study-plan-stage-subjects__nav-item study-plan-stage-subjects__nav-item--crossovers"
           type="button"
+          [disabled]="isAddingSubjects()"
           [class.study-plan-stage-subjects__nav-item--active]="isCrossoversSelected()"
           (click)="selectCrossovers()"
         >
@@ -56,163 +58,177 @@
     </aside>
 
     <main class="study-plan-stage-subjects__content">
-      <section class="study-plan-stage-subjects__summary">
-        <div>
-          <strong>{{ title() }}</strong>
-          <small>{{ subtitle() }}</small>
-        </div>
-
-        <div class="study-plan-stage-subjects__summary-search">
-          <input
-            type="text"
-            placeholder="{{ 'planning.study-plan-subjects.search-by' | translate }}"
-            [value]="subjectSearch()"
-            (input)="updateSubjectSearch($any($event.target).value)"
-          />
-
-          @if (hasActiveSearch()) {
-            <button
-              type="button"
-              class="study-plan-stage-subjects__clear-search"
-              (click)="clearSubjectSearch()"
-            >
-              {{ 'common.clear' | translate }}
-            </button>
-          }
-        </div>
-
-        <div class="study-plan-stage-subjects__summary-count">
-          <strong>{{ visibleSubjectsCount() }}</strong>
-
-          <span>
-            @if (hasActiveSearch()) {
-              de {{ totalSelectedGradeSubjectsCount() }}
-            }
-
-            {{ 'common.subjects' | translate }}
-          </span>
-        </div>
-      </section>
-
-      @if (savingOrder()) {
-        <span class="study-plan-stage-subjects__saving">{{
-          'common.saving-order' | translate
-        }}</span>
-      }
-
-      @if (filteredSubjects().length > 0) {
-        <section
-          class="study-plan-stage-subjects__subjects"
-          cdkDropList
-          [cdkDropListData]="filteredSubjects()"
-          [cdkDropListDisabled]="!canReorder()"
-          (cdkDropListDropped)="onSubjectsDropped($event)"
-        >
-          @for (item of filteredSubjects(); track item.id) {
-            @if (editingSubjectId() === item.id) {
-              <div class="study-plan-stage-subjects__subject-editor">
-                <app-stage-subject-editor
-                  [subject]="item"
-                  [catalogs]="catalogs()"
-                  (save)="saveSubject($event)"
-                  (cancel)="cancelEditingSubject()"
-                />
-              </div>
-            } @else {
-              <article
-                class="study-plan-stage-subjects__subject"
-                cdkDrag
-                [cdkDragDisabled]="!canReorder()"
-                [class.study-plan-stage-subjects__subject--selected]="isSubjectSelected(item.id)"
-              >
-                <button
-                  class="study-plan-stage-subjects__subject-drag"
-                  type="button"
-                  cdkDragHandle
-                  [disabled]="!canReorder()"
-                  aria-label="Ordenar asignatura"
-                >
-                  <app-ui-icon name="drag" size="sm" />
-                </button>
-
-                <label
-                  class="study-plan-stage-subjects__subject-check"
-                  [attr.aria-label]="'Seleccionar ' + (item.subject?.name ?? 'asignatura')"
-                >
-                  <input
-                    class="study-plan-stage-subjects__checkbox"
-                    type="checkbox"
-                    [checked]="isSubjectSelected(item.id)"
-                    (change)="toggleSubjectSelection(item.id)"
-                  />
-                </label>
-
-                <div class="study-plan-stage-subjects__subject-index">
-                  {{ item.order + 1 }}
-                </div>
-
-                <app-stage-subject-viewer
-                  [subject]="item"
-                  [selected]="isSubjectSelected(item.id)"
-                  [disabled]="hasSelectedSubjects()"
-                  [updateOption]="getScreenOption('update')"
-                  [manageCoordinatorsOption]="getScreenOption('manage-coordinators')"
-                  [deleteOption]="getScreenOption('delete')"
-                  [subjectTypeLabel]="subjectTypeLabel(item.subject_type_id)"
-                  [subjectTypeHelp]="subjectTypeHelp(item.subject_type_id) ?? ''"
-                  [evaluationTypeLabel]="evaluationTypeLabel(item.evaluation_type_id)"
-                  [evaluationTypeHelp]="evaluationTypeHelp(item.evaluation_type_id)"
-                  [gradePolicyLabel]="gradePolicyLabel(item.grade_policy_id)"
-                  [gradePolicyHelp]="gradePolicyHelp(item.grade_policy_id)"
-                  [coordinatorsLabel]="coordinatorsLabel(item)"
-                  [settingsLabel]="subjectSettingsLabel(item)"
-                  (edit)="onEditSubject(item)"
-                  (manageCoordinators)="onManageCoordinators(item)"
-                  (delete)="onDeleteSubject(item)"
-                />
-              </article>
-            }
-          }
-        </section>
+      @if (isAddingSubjects()) {
+        <app-stage-subject-assignment
+          [stageId]="stageId()"
+          [gradeId]="selectedGradeId()"
+          [route]="route()"
+          [title]="title()"
+          [subtitle]="subtitle()"
+          (assigned)="onSubjectsAssigned($event)"
+          (cancel)="cancelAddingSubjects()"
+        />
       } @else {
-        <section class="study-plan-stage-subjects__empty">
-          <app-ui-icon name="book-open" size="lg" />
-          <strong>Sin asignaturas</strong>
-          <span>{{
-            'planning.study-plan-subjects.settings.no-subjects-description' | translate
-          }}</span>
-        </section>
-      }
+        <section class="study-plan-stage-subjects__summary">
+          <div>
+            <strong>{{ title() }}</strong>
+            <small>{{ subtitle() }}</small>
+          </div>
 
-      <footer class="study-plan-stage-subjects__actions">
-        <div class="study-plan-stage-subjects__actions-primary">
-          @if (getScreenOption('add'); as addOption) {
-            <app-ui-button
-              [label]="addOption.translation | translate"
-              [iconLeft]="addOption.icon"
-              [variant]="addOption.color"
+          <div class="study-plan-stage-subjects__summary-search">
+            <input
+              type="text"
+              placeholder="{{ 'planning.study-plan-subjects.search-by' | translate }}"
+              [value]="subjectSearch()"
+              (input)="updateSubjectSearch($any($event.target).value)"
             />
-          }
-        </div>
 
-        @if (hasSelectedSubjects()) {
-          <div class="study-plan-stage-subjects__actions-selection">
-            <span class="study-plan-stage-subjects__selected-count">
-              {{ selectedSubjectIds().length }} seleccionadas
+            @if (hasActiveSearch()) {
+              <button
+                type="button"
+                class="study-plan-stage-subjects__clear-search"
+                (click)="clearSubjectSearch()"
+              >
+                {{ 'common.clear' | translate }}
+              </button>
+            }
+          </div>
+
+          <div class="study-plan-stage-subjects__summary-count">
+            <strong>{{ visibleSubjectsCount() }}</strong>
+
+            <span>
+              @if (hasActiveSearch()) {
+                de {{ totalSelectedGradeSubjectsCount() }}
+              }
+
+              {{ 'common.subjects' | translate }}
             </span>
+          </div>
+        </section>
 
-            @for (action of footerActions(); track action.id) {
+        @if (savingOrder()) {
+          <span class="study-plan-stage-subjects__saving">{{
+            'common.saving-order' | translate
+          }}</span>
+        }
+
+        @if (filteredSubjects().length > 0) {
+          <section
+            class="study-plan-stage-subjects__subjects"
+            cdkDropList
+            [cdkDropListData]="filteredSubjects()"
+            [cdkDropListDisabled]="!canReorder()"
+            (cdkDropListDropped)="onSubjectsDropped($event)"
+          >
+            @for (item of filteredSubjects(); track item.id) {
+              @if (editingSubjectId() === item.id) {
+                <div class="study-plan-stage-subjects__subject-editor">
+                  <app-stage-subject-editor
+                    [subject]="item"
+                    [catalogs]="catalogs()"
+                    (save)="saveSubject($event)"
+                    (cancel)="cancelEditingSubject()"
+                  />
+                </div>
+              } @else {
+                <article
+                  class="study-plan-stage-subjects__subject"
+                  cdkDrag
+                  [cdkDragDisabled]="!canReorder()"
+                  [class.study-plan-stage-subjects__subject--selected]="isSubjectSelected(item.id)"
+                >
+                  <button
+                    class="study-plan-stage-subjects__subject-drag"
+                    type="button"
+                    cdkDragHandle
+                    [disabled]="!canReorder()"
+                    aria-label="Ordenar asignatura"
+                  >
+                    <app-ui-icon name="drag" size="sm" />
+                  </button>
+
+                  <label
+                    class="study-plan-stage-subjects__subject-check"
+                    [attr.aria-label]="'Seleccionar ' + (item.subject?.name ?? 'asignatura')"
+                  >
+                    <input
+                      class="study-plan-stage-subjects__checkbox"
+                      type="checkbox"
+                      [checked]="isSubjectSelected(item.id)"
+                      (change)="toggleSubjectSelection(item.id)"
+                    />
+                  </label>
+
+                  <div class="study-plan-stage-subjects__subject-index">
+                    {{ item.order + 1 }}
+                  </div>
+
+                  <app-stage-subject-viewer
+                    [subject]="item"
+                    [selected]="isSubjectSelected(item.id)"
+                    [disabled]="hasSelectedSubjects()"
+                    [updateOption]="getScreenOption('update')"
+                    [manageCoordinatorsOption]="getScreenOption('manage-coordinators')"
+                    [deleteOption]="getScreenOption('delete')"
+                    [subjectTypeLabel]="subjectTypeLabel(item.subject_type_id)"
+                    [subjectTypeHelp]="subjectTypeHelp(item.subject_type_id) ?? ''"
+                    [evaluationTypeLabel]="evaluationTypeLabel(item.evaluation_type_id)"
+                    [evaluationTypeHelp]="evaluationTypeHelp(item.evaluation_type_id)"
+                    [gradePolicyLabel]="gradePolicyLabel(item.grade_policy_id)"
+                    [gradePolicyHelp]="gradePolicyHelp(item.grade_policy_id)"
+                    [coordinatorsLabel]="coordinatorsLabel(item)"
+                    [settingsLabel]="subjectSettingsLabel(item)"
+                    (edit)="onEditSubject(item)"
+                    (manageCoordinators)="onManageCoordinators(item)"
+                    (delete)="onDeleteSubject(item)"
+                  />
+                </article>
+              }
+            }
+          </section>
+        } @else {
+          <section class="study-plan-stage-subjects__empty">
+            <app-ui-icon name="book-open" size="lg" />
+            <strong>{{ 'planning.study-plan-subjects.settings.no-subjects' | translate }}</strong>
+            <span>{{
+              'planning.study-plan-subjects.settings.no-subjects-description' | translate
+            }}</span>
+          </section>
+        }
+
+        <footer class="study-plan-stage-subjects__actions">
+          <div class="study-plan-stage-subjects__actions-primary">
+            @if (getScreenOption('add'); as addOption) {
               <app-ui-button
-                [title]="action.translation | translate"
-                [iconLeft]="action.icon"
-                [variant]="action.color"
-                [iconOnly]="true"
-                (click)="executeAction(action)"
+                [label]="addOption.translation | translate"
+                [iconLeft]="addOption.icon"
+                [variant]="addOption.color"
+                [disabled]="hasEditingSubject() || hasSelectedSubjects()"
+                (click)="startAddingSubjects()"
               />
             }
           </div>
-        }
-      </footer>
+
+          @if (hasSelectedSubjects()) {
+            <div class="study-plan-stage-subjects__actions-selection">
+              <span class="study-plan-stage-subjects__selected-count">
+                {{ selectedSubjectIds().length }} seleccionadas
+              </span>
+
+              @for (action of footerActions(); track action.id) {
+                <app-ui-button
+                  [title]="action.translation | translate"
+                  [iconLeft]="action.icon"
+                  [variant]="action.color"
+                  [iconOnly]="true"
+                  (click)="executeAction(action)"
+                />
+              }
+            </div>
+          }
+        </footer>
+      }
     </main>
   </div>
 </section>

@@ -167,6 +167,14 @@ export class StudyPlanStagesSummaryComponent extends SkolansBaseComponent {
     return this.stagesCount() >= expected;
   });
 
+  protected readonly hasConfiguredTerms = computed(() => {
+    return this.termsTotal() > 0;
+  });
+
+  protected readonly isStructureReady = computed(() => {
+    return this.hasCompleteStages() && this.hasConfiguredTerms();
+  });
+
   protected onAddStage(): void {
     this.addStage.emit();
   }

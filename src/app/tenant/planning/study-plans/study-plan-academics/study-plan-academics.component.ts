@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  input,
+  OnChanges,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
@@ -121,9 +130,10 @@ type StudyPlanAcademicsPlan = StudyPlanConfigurationItem & {
   templateUrl: './study-plan-academics.component.html',
   styleUrl: './study-plan-academics.component.scss',
 })
-export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements OnInit {
+export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements OnInit, OnChanges {
   readonly studyPlan = input<StudyPlanConfigurationItem | null>(null);
   readonly route = input<string | null>(null);
+  readonly refreshToken = input(0);
 
   constructor() {
     super();
@@ -163,6 +173,12 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
     this.loadOptions();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['refreshToken'] && !changes['refreshToken'].firstChange) {
+      this.loadOptions();
+    }
+  }
+
   protected loadOptions(): void {
     const route = this.route();
 
@@ -180,6 +196,58 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
       this.loadedStudyPlan.set(res.data['study-plan'] ?? null);
       this.setStudyPlanAcademicsAssistantContext(res.data['study-plan'] ?? null);
     });
+  }
+
+  /**
+   * State ownership
+   * ---------------
+   * This component owns the canonical academics snapshot through
+   * loadedStudyPlan. Child screens own their local editing state and emit the
+   * updated academics stage after successful backend mutations. The parent
+   * merges only the affected stage so summary cards refresh without treating
+   * navigation back as a data-change signal.
+   */
+  protected updateStageSnapshot(updatedStage: IStudyPlanStage | null | undefined): void {
+    if (!updatedStage) {
+      return;
+    }
+
+    const currentPlan = this.loadedStudyPlan() ?? this.academicPlan();
+
+    if (!currentPlan) {
+      return;
+    }
+
+    const currentStages = currentPlan.stages ?? [];
+    const stageExists = currentStages.some((stage) => stage.id === updatedStage.id);
+    const updatedStages = stageExists
+      ? currentStages.map((stage) =>
+          stage.id === updatedStage.id ? this.mergeStageSnapshot(stage, updatedStage) : stage,
+        )
+      : [...currentStages, updatedStage].sort((a, b) => a.order - b.order);
+
+    this.loadedStudyPlan.set({
+      ...currentPlan,
+      stages: updatedStages,
+    });
+  }
+
+  protected removeStageSnapshot(stageId: number): void {
+    const currentPlan = this.loadedStudyPlan() ?? this.academicPlan();
+
+    if (!currentPlan) {
+      return;
+    }
+
+    this.loadedStudyPlan.set({
+      ...currentPlan,
+      stages: (currentPlan.stages ?? []).filter((stage) => stage.id !== stageId),
+    });
+  }
+
+  protected onStageDeleted(stageId: number): void {
+    this.removeStageSnapshot(stageId);
+    this.closeStage();
   }
 
   private setStudyPlanAcademicsAssistantContext(studyPlan: StudyPlanAcademicsPlan | null): void {
@@ -213,7 +281,7 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
         levelName: studyPlan.level?.description ?? studyPlan.level?.name ?? null,
         schoolYearId: studyPlan.school_year_id,
         sectionId: studyPlan.section_id,
-        structureId: studyPlan.studyplan_structure_id,
+        structureId: studyPlan.study_plan_structure_id,
         structureName: studyPlan.structure?.translation ?? studyPlan.structure?.name ?? null,
         stagesCount: stages.length,
         termsCount,
@@ -231,6 +299,19 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
         canManageIntegrations: Boolean(this.integrationsChild()),
       },
     });
+  }
+
+  private mergeStageSnapshot(
+    currentStage: IStudyPlanStage,
+    updatedStage: IStudyPlanStage,
+  ): IStudyPlanStage {
+    return {
+      ...currentStage,
+      ...updatedStage,
+      terms: updatedStage.terms ?? currentStage.terms,
+      subjects_summary: updatedStage.subjects_summary ?? currentStage.subjects_summary,
+      integrations: updatedStage.integrations ?? currentStage.integrations,
+    };
   }
 
   protected childRoute(childName: string | null | undefined): string | null {
@@ -293,5 +374,19 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
     this.selectedIntegrationStageId.set(null);
   }
 
-  protected openAddStage(): void {}
+  protected openAddStage(): void {
+    const route = this.apiRoute();
+    const studyPlanId = this.academicPlan()?.id;
+
+    if (!route || !studyPlanId) {
+      return;
+    }
+
+    this.executeMutationRequest(
+      this.api.post(`${route}/${studyPlanId}/restore-stages`, {}),
+      () => {
+        this.loadOptions();
+      },
+    );
+  }
 }

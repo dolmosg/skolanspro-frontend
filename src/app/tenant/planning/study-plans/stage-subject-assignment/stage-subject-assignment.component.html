@@ -1,0 +1,91 @@
+<section class="stage-subject-assignment">
+  <header class="stage-subject-assignment__header">
+    <span class="stage-subject-assignment__icon">
+      <app-ui-icon name="add" size="sm" />
+    </span>
+
+    <div>
+      <strong>{{ title() }}</strong>
+      <p>{{ 'planning.study-plan-subjects.assignment.description' | translate }}</p>
+    </div>
+  </header>
+
+  <div class="stage-subject-assignment__toolbar">
+    <div class="stage-subject-assignment__search">
+      <input
+        type="text"
+        [placeholder]="'planning.study-plan-subjects.assignment.search' | translate"
+        [value]="search()"
+        (input)="updateSearch($any($event.target).value)"
+      />
+
+      @if (hasActiveSearch()) {
+        <button type="button" (click)="clearSearch()">
+          {{ 'common.clear' | translate }}
+        </button>
+      }
+    </div>
+
+    <div class="stage-subject-assignment__count">
+      <strong>{{ selectedCount() }}</strong>
+      <span>{{ 'planning.study-plan-subjects.assignment.selected' | translate }}</span>
+    </div>
+  </div>
+
+  @if (hasAvailableSubjects()) {
+    @if (hasFilteredSubjects()) {
+      <div class="stage-subject-assignment__list">
+        @for (subject of filteredSubjects(); track subject.id) {
+          <label
+            class="stage-subject-assignment__item"
+            [class.stage-subject-assignment__item--selected]="isSelected(subject.id)"
+          >
+            <input
+              type="checkbox"
+              [checked]="isSelected(subject.id)"
+              (change)="toggleSubject(subject.id, $event)"
+            />
+
+            <span class="stage-subject-assignment__subject">
+              <strong>{{ subjectLabel(subject) }}</strong>
+
+              @if (subjectMeta(subject); as meta) {
+                <span>{{ meta }}</span>
+              }
+            </span>
+          </label>
+        }
+      </div>
+    } @else {
+      <div class="stage-subject-assignment__empty">
+        <app-ui-icon name="search" size="md" />
+        <strong>{{ 'planning.study-plan-subjects.assignment.no-results' | translate }}</strong>
+      </div>
+    }
+  } @else {
+    <div class="stage-subject-assignment__empty">
+      <app-ui-icon name="info" size="md" />
+      <strong>{{ 'planning.study-plan-subjects.assignment.no-available' | translate }}</strong>
+      <span>{{ 'planning.study-plan-subjects.assignment.no-available-description' | translate }}</span>
+    </div>
+  }
+
+  <footer class="stage-subject-assignment__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="danger"
+      size="sm"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'planning.study-plan-subjects.assignment.assign' | translate"
+      variant="primary"
+      size="sm"
+      type="button"
+      [disabled]="!canAssign()"
+      (click)="assignSubjects()"
+    />
+  </footer>
+</section>

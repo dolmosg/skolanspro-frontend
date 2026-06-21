@@ -31,18 +31,28 @@ export class StudyPlanIntegrationsSummaryComponent {
     }, 0);
   });
 
-  protected readonly stagesWithIntegrations = computed(() => {
-    return this.stages().filter((stage) => (stage.integrations?.length ?? 0) > 0);
-  });
-
   protected readonly activeIntegrations = computed(() => {
     return this.stages().reduce((total, stage) => {
       return total + (stage.integrations ?? []).filter((integration) => integration.active).length;
     }, 0);
   });
 
-  protected readonly hasIntegrations = computed(() => {
-    return this.totalIntegrations() > 0;
+  protected readonly hasStages = computed(() => {
+    return this.stages().length > 0;
+  });
+
+  protected readonly hasConfiguredTerms = computed(() => {
+    return this.stages().some((stage) => (stage.terms?.length ?? 0) > 0);
+  });
+
+  protected readonly hasConfiguredSubjects = computed(() => {
+    return this.stages().some((stage) => {
+      return (stage.subjects_summary?.total_subjects ?? 0) > 0;
+    });
+  });
+
+  protected readonly canManageIntegrations = computed(() => {
+    return this.hasStages() && this.hasConfiguredTerms() && this.hasConfiguredSubjects();
   });
 
   protected stageIntegrations(stage: IStudyPlanStage): IStudyPlanStageIntegration[] {

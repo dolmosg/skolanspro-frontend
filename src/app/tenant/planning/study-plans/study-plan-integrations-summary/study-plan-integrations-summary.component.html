@@ -6,29 +6,29 @@
     </div>
   </header>
 
-  <div class="study-plan-integrations-summary__stats">
-    <div class="study-plan-integrations-summary__stat">
-      <app-ui-icon name="layers" size="sm" />
+  @if (canManageIntegrations()) {
+    <div class="study-plan-integrations-summary__stats">
+      <div class="study-plan-integrations-summary__stat">
+        <app-ui-icon name="layers" size="sm" />
 
-      <div class="study-plan-integrations-summary__stat-content">
-        <strong>{{ totalIntegrations() }}</strong>
-        <span>{{ 'planning.study-plan-integrations.integrations' | translate }}</span>
+        <div class="study-plan-integrations-summary__stat-content">
+          <strong>{{ totalIntegrations() }}</strong>
+          <span>{{ 'planning.study-plan-integrations.integrations' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="study-plan-integrations-summary__stat">
+        <app-ui-icon name="check-circle" size="sm" />
+
+        <div class="study-plan-integrations-summary__stat-content">
+          <strong>{{ activeIntegrations() }}</strong>
+          <span>{{ 'planning.study-plan-integrations.active' | translate }}</span>
+        </div>
       </div>
     </div>
 
-    <div class="study-plan-integrations-summary__stat">
-      <app-ui-icon name="check-circle" size="sm" />
-
-      <div class="study-plan-integrations-summary__stat-content">
-        <strong>{{ activeIntegrations() }}</strong>
-        <span>{{ 'planning.study-plan-integrations.active' | translate }}</span>
-      </div>
-    </div>
-  </div>
-
-  @if (hasIntegrations()) {
     <div class="study-plan-integrations-summary__list">
-      @for (stage of stagesWithIntegrations(); track stage.id) {
+      @for (stage of stages(); track stage.id) {
         <button
           class="study-plan-integrations-summary__stage"
           type="button"
@@ -40,18 +40,23 @@
 
           <div class="study-plan-integrations-summary__stage-content">
             <strong>{{ stage.name }}</strong>
-            <span>
-              {{ stageIntegrations(stage).length }}
-              {{ 'planning.study-plan-integrations.configured' | translate }}
-            </span>
 
-            <div class="study-plan-integrations-summary__badges">
-              @for (integration of stageIntegrations(stage); track integration.id) {
-                <span class="study-plan-integrations-summary__badge">
-                  {{ integration.code }}
-                </span>
-              }
-            </div>
+            @if (stageIntegrations(stage).length > 0) {
+              <span>
+                {{ stageIntegrations(stage).length }}
+                {{ 'planning.study-plan-integrations.configured' | translate }}
+              </span>
+
+              <div class="study-plan-integrations-summary__badges">
+                @for (integration of stageIntegrations(stage); track integration.id) {
+                  <span class="study-plan-integrations-summary__badge">
+                    {{ integration.code }}
+                  </span>
+                }
+              </div>
+            } @else {
+              <span>{{ 'planning.study-plan-integrations.no-integrations' | translate }}</span>
+            }
           </div>
 
           <app-ui-icon name="drilldown" size="sm" />
@@ -59,22 +64,14 @@
       }
     </div>
   } @else {
-    @if (stages()[0]; as firstStage) {
-      <button
-        class="study-plan-integrations-summary__empty"
-        type="button"
-        (click)="onOpenStage(firstStage.id)"
-      >
-        <app-ui-icon name="route" size="md" />
-        <strong>{{ 'planning.study-plan-academics.integrations.pending-title' | translate }}</strong>
-        <span>{{ 'planning.study-plan-academics.integrations.pending-description' | translate }}</span>
-      </button>
-    } @else {
-      <div class="study-plan-integrations-summary__empty">
-        <app-ui-icon name="route" size="md" />
-        <strong>{{ 'planning.study-plan-academics.integrations.pending-title' | translate }}</strong>
-        <span>{{ 'planning.study-plan-academics.integrations.pending-description' | translate }}</span>
-      </div>
-    }
+    <div class="study-plan-integrations-summary__empty">
+      <app-ui-icon name="route" size="md" />
+      <strong>{{
+        'planning.study-plan-academics.integrations.no-stages-title' | translate
+      }}</strong>
+      <span>{{
+        'planning.study-plan-academics.integrations.no-stages-description' | translate
+      }}</span>
+    </div>
   }
 </section>

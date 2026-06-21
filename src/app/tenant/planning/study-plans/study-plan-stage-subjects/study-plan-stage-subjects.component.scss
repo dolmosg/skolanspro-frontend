@@ -111,6 +111,12 @@
     transform: translateY(-1px);
   }
 
+  &:disabled {
+    cursor: default;
+    opacity: 0.62;
+    transform: none;
+  }
+
   >div {
     display: flex;
     flex-direction: column;

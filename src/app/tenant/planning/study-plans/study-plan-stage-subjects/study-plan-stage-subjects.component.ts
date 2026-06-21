@@ -1,9 +1,16 @@
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Observable, catchError, throwError } from 'rxjs';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
+import {
+  ISklConfirmModalData,
+  SklConfirmModal,
+} from '@shared/base/skl-confirm-modal/skl-confirm-modal';
+import { ApiResponse } from '@shared/interfaces/api-response.interface';
 import { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import type {
   IEvaluationType,
@@ -33,11 +40,14 @@ import {
   StageSubjectGradeItem,
   StudyPlanStageSubjectsData,
 } from '../study-plan-subjects.interfaces';
+import type { IStudyPlanStage as IStudyPlanAcademicsStage } from '../study-plan-academics/study-plan-academics.component';
 import { StageSubjectViewerComponent } from '../stage-subject-viewer/stage-subject-viewer.component';
 import {
   StageSubjectEditorComponent,
   StageSubjectEditorResult,
 } from '../stage-subject-editor/stage-subject-editor.component';
+import { StageSubjectAssignmentComponent } from '../stage-subject-assignment/stage-subject-assignment.component';
+import type { AssignedStudyPlanSubjectsResponse } from '../stage-subject-assignment/stage-subject-assignment.component';
 
 type BulkSelectionItem = {
   id: number | null;
@@ -45,6 +55,26 @@ type BulkSelectionItem = {
   translation?: string | null;
   helpTranslation?: string | null;
   order?: number | null;
+};
+
+type DeleteStageSubjectResponse = {
+  deleted_id?: number | null;
+  academics_stage?: IStudyPlanAcademicsStage | null;
+};
+
+type BulkDeleteStageSubjectsResponse = {
+  deleted_ids?: number[] | null;
+  academics_stage?: IStudyPlanAcademicsStage | null;
+};
+
+type StageSubjectMutationResponse = {
+  subjects?: IStudyPlanStageSubject[];
+  academics_stage?: IStudyPlanAcademicsStage | null;
+};
+
+type ReorderStageSubjectsResponse = {
+  items?: Array<{ id: number; order: number }>;
+  academics_stage?: IStudyPlanAcademicsStage | null;
 };
 
 @Component({
@@ -58,16 +88,20 @@ type BulkSelectionItem = {
     UiIconComponent,
     StageSubjectViewerComponent,
     StageSubjectEditorComponent,
+    StageSubjectAssignmentComponent,
   ],
   templateUrl: './study-plan-stage-subjects.component.html',
   styleUrl: './study-plan-stage-subjects.component.scss',
 })
 export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
+  private readonly http = inject(HttpClient);
+
   readonly stageId = input<number | null>(null);
   readonly initialGradeId = input<number | null>(null);
   readonly route = input<string | null>(null);
 
   readonly back = output<void>();
+  readonly academicsStageUpdated = output<IStudyPlanAcademicsStage>();
 
   protected readonly stage = signal<IStudyPlanStageSubjectsStage | null>(null);
   protected readonly grades = signal<IGrade[]>([]);
@@ -76,6 +110,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   protected readonly subjectSearch = signal('');
   protected readonly savingOrder = signal(false);
   protected readonly editingSubjectId = signal<number | null>(null);
+  protected readonly isAddingSubjects = signal(false);
 
   protected readonly catalogs = signal<IStudyPlanStageSubjectsCatalogs>({
     subject_types: [],
@@ -291,6 +326,10 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   }
 
   protected selectGrade(gradeId: number): void {
+    if (this.isAddingSubjects()) {
+      return;
+    }
+
     this.selectedGradeId.set(gradeId);
     this.clearSubjectSearch();
     this.clearSubjectSelection();
@@ -298,11 +337,42 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   }
 
   protected selectCrossovers(): void {
+    if (this.isAddingSubjects()) {
+      return;
+    }
+
     this.selectedGradeId.set(null);
     this.clearSubjectSearch();
     this.clearSubjectSelection();
     this.setStudyPlanStageSubjectsAssistantContext();
   }
+
+  protected startAddingSubjects(): void {
+    if (!this.stageId() || !this.route()) {
+      return;
+    }
+
+    this.editingSubjectId.set(null);
+    this.selectedSubjectIds.set([]);
+    this.subjectSearch.set('');
+    this.isAddingSubjects.set(true);
+    this.setAddingSubjectsAssistantContext();
+  }
+
+  protected cancelAddingSubjects(): void {
+    this.isAddingSubjects.set(false);
+    this.setStudyPlanStageSubjectsAssistantContext();
+  }
+
+  protected onSubjectsAssigned(result: AssignedStudyPlanSubjectsResponse): void {
+    this.mergeStageSubjects(result.subjects ?? []);
+    this.isAddingSubjects.set(false);
+    this.selectedSubjectIds.set([]);
+    this.subjectSearch.set('');
+    this.emitAcademicsStageSnapshot(result.academics_stage);
+    this.setStudyPlanStageSubjectsAssistantContext();
+  }
+
   private setStudyPlanStageSubjectsAssistantContext(): void {
     const stage = this.stage();
 
@@ -372,6 +442,34 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
           gradePoliciesCount: this.catalogs().grade_policies.length,
           coordinatorsCount: this.catalogs().coordinators.length,
         },
+      },
+    });
+  }
+
+  private setAddingSubjectsAssistantContext(): void {
+    const stage = this.stage();
+
+    if (!stage) {
+      return;
+    }
+
+    const selectedGrade = this.selectedGrade();
+
+    this.setAssistantContext({
+      contextType: 'editor',
+      contextId: 'planning.study-plans.academics.subjects',
+      feature: 'study-plans',
+      title: this.title(),
+      subtitle: this.subtitle(),
+      entity: 'StudyPlanStageSubject',
+      mode: 'adding-subjects',
+      data: {
+        stageId: stage.id,
+        stageName: stage.name,
+        gradeId: this.selectedGradeId(),
+        gradeName: selectedGrade?.description ?? selectedGrade?.name ?? null,
+        isCrossoverMode: this.isCrossoversSelected(),
+        availableActions: ['assign-subjects', 'cancel'],
       },
     });
   }
@@ -583,11 +681,12 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     this.savingOrder.set(true);
     this.setStudyPlanStageSubjectsAssistantContext();
 
-    this.executeSilentRequest(
+    this.executeSilentRequest<ReorderStageSubjectsResponse>(
       this.api.put(`${route}/reorder/${stageId}`, payload),
       (res) => {
         this.handleApiSuccess(res);
         this.savingOrder.set(false);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
         this.setStudyPlanStageSubjectsAssistantContext();
       },
       () => {
@@ -636,7 +735,9 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         id: item.id,
         name: item.name,
         translation: this.translate.instant(item.translation),
-        helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+        helpTranslation: item.help_translation
+          ? this.translate.instant(item.help_translation)
+          : null,
         order: item.order ?? null,
       }));
       const action = this.getScreenOption('assign-evaluation-type');
@@ -664,7 +765,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         return;
       }
 
-      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+      this.executeMutationRequest<StageSubjectMutationResponse>(
         this.api.put(`${route}/bulk-evaluation-type`, {
           subject_ids: this.selectedSubjectIds(),
           evaluation_type_id: evaluationTypeId,
@@ -672,6 +773,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         (res) => {
           this.replaceStageSubjects(res.data.subjects ?? []);
           this.clearSubjectSelection();
+          this.emitAcademicsStageSnapshot(res.data.academics_stage);
         },
       );
     } finally {
@@ -685,7 +787,9 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         id: item.id,
         name: item.name,
         translation: this.translate.instant(item.translation),
-        helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+        helpTranslation: item.help_translation
+          ? this.translate.instant(item.help_translation)
+          : null,
         order: item.order ?? null,
       }));
       const action = this.getScreenOption('assign-subject-type');
@@ -713,7 +817,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         return;
       }
 
-      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+      this.executeMutationRequest<StageSubjectMutationResponse>(
         this.api.put(`${route}/bulk-subject-type`, {
           subject_ids: this.selectedSubjectIds(),
           subject_type_id: subjectTypeId,
@@ -721,6 +825,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         (res) => {
           this.replaceStageSubjects(res.data.subjects ?? []);
           this.clearSubjectSelection();
+          this.emitAcademicsStageSnapshot(res.data.academics_stage);
         },
       );
     } finally {
@@ -742,7 +847,9 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
           id: item.id,
           name: item.name,
           translation: this.translate.instant(item.translation),
-          helpTranslation: item.help_translation ? this.translate.instant(item.help_translation) : null,
+          helpTranslation: item.help_translation
+            ? this.translate.instant(item.help_translation)
+            : null,
           order: item.order ?? null,
         })),
       ];
@@ -774,7 +881,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         return;
       }
 
-      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+      this.executeMutationRequest<StageSubjectMutationResponse>(
         this.api.put(`${route}/bulk-grade-policy`, {
           subject_ids: this.selectedSubjectIds(),
           grade_policy_id: gradePolicyId,
@@ -782,6 +889,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         (res) => {
           this.replaceStageSubjects(res.data.subjects ?? []);
           this.clearSubjectSelection();
+          this.emitAcademicsStageSnapshot(res.data.academics_stage);
         },
       );
     } finally {
@@ -816,7 +924,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         return;
       }
 
-      this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+      this.executeMutationRequest<StageSubjectMutationResponse>(
         this.api.put(`${route}/bulk-coordinator`, {
           subject_ids: this.selectedSubjectIds(),
           coordinator_id: coordinatorId,
@@ -824,6 +932,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         (res) => {
           this.replaceStageSubjects(res.data.subjects ?? []);
           this.clearSubjectSelection();
+          this.emitAcademicsStageSnapshot(res.data.academics_stage);
         },
       );
     } finally {
@@ -835,8 +944,28 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     this.startEditingSubject(subject);
   }
 
-  protected onDeleteSubject(subject: IStudyPlanStageSubject): void {
-    console.log('delete subject', subject);
+  protected async onDeleteSubject(subject: IStudyPlanStageSubject): Promise<void> {
+    const route = this.route();
+
+    if (!route) {
+      return;
+    }
+
+    const confirmed = await this.confirmDeleteSubject(this.stageSubjectLabel(subject));
+
+    if (!confirmed) {
+      this.setStudyPlanStageSubjectsAssistantContext();
+      return;
+    }
+
+    this.executeMutationRequest<DeleteStageSubjectResponse>(
+      this.api.delete(`${route}/${subject.id}`),
+      (res) => {
+        this.removeStageSubjects([res.data.deleted_id ?? subject.id]);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
+        this.setStudyPlanStageSubjectsAssistantContext();
+      },
+    );
   }
 
   protected async onManageCoordinators(subject: IStudyPlanStageSubject): Promise<void> {
@@ -881,28 +1010,53 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
       return;
     }
 
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+    this.executeMutationRequest<StageSubjectMutationResponse>(
       this.api.put(`${route}/sync-coordinators/${subject.id}`, {
         coordinator_ids: result.ids,
       }),
       (res) => {
         this.replaceStageSubjects(res.data.subjects ?? []);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
       },
     );
   }
 
-  protected deleteSelectedSubjects(): void {
+  protected async deleteSelectedSubjects(): Promise<void> {
+    const selectedSubjectIds = this.selectedSubjectIds();
+
+    if (selectedSubjectIds.length === 0) {
+      return;
+    }
+
+    const route = this.route();
+
+    if (!route) {
+      return;
+    }
+
     const action = this.getScreenOption('delete');
 
     if (action) {
       this.setBulkActionAssistantContext(action);
     }
 
-    console.log({
-      action: 'delete',
-      selectedSubjects: this.selectedSubjectIds(),
-    });
+    const confirmed = await this.confirmBulkDeleteSubjects(selectedSubjectIds.length);
+
+    if (!confirmed) {
+      this.setStudyPlanStageSubjectsAssistantContext();
+      return;
+    }
+
     this.setStudyPlanStageSubjectsAssistantContext();
+
+    this.executeMutationRequest<BulkDeleteStageSubjectsResponse>(
+      this.deleteStageSubjects(route, selectedSubjectIds),
+      (res) => {
+        this.removeStageSubjects(res.data.deleted_ids ?? selectedSubjectIds);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
+        this.setStudyPlanStageSubjectsAssistantContext();
+      },
+    );
   }
 
   private bulkActionDescription(): string {
@@ -918,10 +1072,11 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
       return;
     }
 
-    this.executeMutationRequest<{ subjects: IStudyPlanStageSubject[] }>(
+    this.executeMutationRequest<StageSubjectMutationResponse>(
       this.api.put(`${route}/${payload.id}`, payload),
       (res) => {
         this.replaceStageSubjects(res.data.subjects ?? []);
+        this.emitAcademicsStageSnapshot(res.data.academics_stage);
         this.cancelEditingSubject();
       },
     );
@@ -946,6 +1101,191 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
         return updatedById.get(subject.id) ?? subject;
       }),
     });
+  }
+
+  private removeStageSubjects(ids: number[]): void {
+    if (ids.length === 0) {
+      return;
+    }
+
+    const currentStage = this.stage();
+
+    if (!currentStage) {
+      return;
+    }
+
+    const deletedIds = new Set(ids);
+
+    this.stage.set({
+      ...currentStage,
+      subjects: (currentStage.subjects ?? []).filter((subject) => !deletedIds.has(subject.id)),
+    });
+
+    this.selectedSubjectIds.set(this.selectedSubjectIds().filter((id) => !deletedIds.has(id)));
+
+    if (this.editingSubjectId() !== null && deletedIds.has(this.editingSubjectId() as number)) {
+      this.editingSubjectId.set(null);
+    }
+  }
+
+  private async confirmDeleteSubject(subject: string): Promise<boolean> {
+    const confirmed = await this.modal.open<ISklConfirmModalData, boolean>({
+      component: SklConfirmModal,
+      title: this.translate.instant('planning.study-plan-subjects.delete-modal.title'),
+      data: {
+        message: this.translate.instant('planning.study-plan-subjects.delete-modal.description', {
+          subject,
+        }),
+        confirmLabel: this.translate.instant('planning.study-plan-subjects.delete-modal.confirm'),
+        cancelLabel: this.translate.instant('planning.study-plan-subjects.delete-modal.cancel'),
+        type: 'danger',
+      },
+      size: 'sm',
+      closeOnBackdrop: true,
+      closeOnEscape: true,
+      showCloseButton: true,
+    });
+
+    return confirmed === true;
+  }
+
+  private async confirmBulkDeleteSubjects(count: number): Promise<boolean> {
+    const confirmed = await this.modal.open<ISklConfirmModalData, boolean>({
+      component: SklConfirmModal,
+      title: this.translate.instant('planning.study-plan-subjects.delete-modal.bulk-title'),
+      data: {
+        message: this.translate.instant(
+          'planning.study-plan-subjects.delete-modal.bulk-description',
+          { count },
+        ),
+        confirmLabel: this.translate.instant('planning.study-plan-subjects.delete-modal.confirm'),
+        cancelLabel: this.translate.instant('planning.study-plan-subjects.delete-modal.cancel'),
+        type: 'danger',
+      },
+      size: 'sm',
+      closeOnBackdrop: true,
+      closeOnEscape: true,
+      showCloseButton: true,
+    });
+
+    return confirmed === true;
+  }
+
+  private deleteStageSubjects(
+    route: string,
+    subjectIds: number[],
+  ): Observable<ApiResponse<BulkDeleteStageSubjectsResponse>> {
+    return this.http
+      .request<ApiResponse<BulkDeleteStageSubjectsResponse>>(
+        'DELETE',
+        this.apiConfig.buildUrl(`${route}/bulk-delete`),
+        {
+          body: {
+            subject_ids: subjectIds,
+          },
+          headers: this.buildDeleteHeaders(),
+        },
+      )
+      .pipe(catchError((error: HttpErrorResponse) => this.handleDeleteHttpError(error)));
+  }
+
+  private buildDeleteHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    const locale = localStorage.getItem('skolans-language') || 'es-MX';
+    let headers = new HttpHeaders({
+      locale,
+      'Accept-Language': locale,
+      Accept: 'application/json',
+    });
+
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return headers;
+  }
+
+  private handleDeleteHttpError(error: HttpErrorResponse): Observable<never> {
+    if (error?.status === 0) {
+      this.toast.error('errors.network');
+      return throwError(() => error);
+    }
+
+    const message = this.deleteHttpErrorMessage(error);
+
+    if (error?.status !== 422) {
+      this.toast.error(message);
+    }
+
+    return throwError(() => error);
+  }
+
+  private deleteHttpErrorMessage(error: HttpErrorResponse): string {
+    const body = error?.error;
+
+    if (!body) {
+      return 'errors.unexpected';
+    }
+
+    if (typeof body === 'string') {
+      return body;
+    }
+
+    if (typeof body.message === 'string' && body.message.trim().length > 0) {
+      return body.message;
+    }
+
+    if (typeof body.error === 'string' && body.error.trim().length > 0) {
+      return body.error;
+    }
+
+    return 'errors.unexpected';
+  }
+
+  private stageSubjectLabel(subject: IStudyPlanStageSubject): string {
+    const code = subject.subject?.code?.trim();
+    const name = subject.subject?.name?.trim();
+
+    if (code && name) {
+      return `${code} - ${name}`;
+    }
+
+    return name || code || `#${subject.id}`;
+  }
+
+  private mergeStageSubjects(newSubjects: IStudyPlanStageSubject[]): void {
+    if (newSubjects.length === 0) {
+      return;
+    }
+
+    const currentStage = this.stage();
+
+    if (!currentStage) {
+      return;
+    }
+
+    const mergedById = new Map<number, IStudyPlanStageSubject>();
+
+    for (const subject of currentStage.subjects ?? []) {
+      mergedById.set(subject.id, subject);
+    }
+
+    for (const subject of newSubjects) {
+      mergedById.set(subject.id, subject);
+    }
+
+    this.stage.set({
+      ...currentStage,
+      subjects: Array.from(mergedById.values()),
+    });
+  }
+
+  private emitAcademicsStageSnapshot(stage: IStudyPlanAcademicsStage | null | undefined): void {
+    if (!stage) {
+      return;
+    }
+
+    this.academicsStageUpdated.emit(stage);
   }
 
   private async selectCatalogValue(
@@ -996,6 +1336,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
     this.selectedSubjectIds.set([]);
     this.subjectSearch.set('');
     this.savingOrder.set(false);
+    this.isAddingSubjects.set(false);
     this.clearScreenOptions();
     this.clearScreenChildren();
 

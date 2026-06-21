@@ -1,0 +1,111 @@
+TODO — Cierre del módulo StudyPlans
+
+1. Stages / Etapas
+
+* Corregir botón Agregar etapa.
+* Confirmar evento real de app-ui-button: (click) vs (clicked).
+* Implementar openAddStage().
+* Crear flujo completo: abrir modal/aside → guardar → refrescar stages → seleccionar nueva etapa.
+* Validar edición/eliminación de stage si ya existe UI.
+
+2. Subjects / Materias por etapa
+
+* Conectar botón Agregar materia del footer.
+* Implementar alta de materias en etapa.
+* Implementar eliminar materia individual.
+* Implementar eliminar materias seleccionadas en bulk.
+* Agregar confirmación antes de borrar.
+* Refrescar lista después de cambios.
+* Revisar impactos de cascada: integraciones, pesos, términos, grados.
+
+3. Integrations / Integraciones
+
+* Terminar detalle de integración.
+* Implementar acciones:
+    * Agregar asignaturas.
+    * Quitar asignatura.
+    * Configurar cálculo/pesos.
+    * Eliminar integración.
+* Usar getScreenOption(...) en lugar de computed/métodos duplicados cuando aplique.
+* Validar crossover, por grado y por periodo.
+* Confirmar que permisos del child study-plan-integration-items gobiernan el detalle.
+
+4. Configuration / Información del plan
+
+* Conectar botón Editar / Guardar.
+* Implementar persistencia de:
+    * Información general.
+    * Attendance settings.
+    * Grading settings.
+    * LMS settings solo si se decide conservar.
+* Conectar acción Eliminar plan de estudios.
+* Agregar confirmación fuerte para delete.
+
+5. LMS
+
+* Tomar decisión de producto:
+    * Se implementa ahora.
+    * Se oculta oficialmente.
+    * Se deja como backlog.
+* Si no va ahora, quitar/comment limpiar sin dejar UI rota.
+
+6. Limpieza técnica
+
+* Quitar console.log.
+* Quitar placeholders vacíos.
+* Quitar comentarios viejos de template.
+* Revisar métodos muertos como clearSelectedStudyPlan().
+* Buscar bindings en HTML que llamen métodos inexistentes.
+* Evitar métodos duplicados para opciones de pantalla.
+
+7. Backend/API
+
+* Confirmar endpoints necesarios:
+    * Crear stage.
+    * Actualizar stage.
+    * Eliminar stage.
+    * Agregar subjects.
+    * Eliminar subject.
+    * Bulk delete subjects.
+    * Update study plan configuration.
+    * Delete study plan.
+    * CRUD integrations/items/weights.
+* Validar respuestas con contrato SkolansPro: success, data, message, errores consistentes.
+* Confirmar transacciones en deletes/bulk deletes.
+
+8. UX final
+
+* Empty states claros.
+* Loaders en cada mutación.
+* Toasts de éxito/error.
+* Confirmaciones destructivas.
+* Botones ocultos/deshabilitados según permisos.
+* Nada visible que no funcione.
+
+9. Validación final
+
+* Build Angular.
+* Lint.
+* Revisar consola sin errores.
+* Smoke test completo:
+    * Crear plan.
+    * Editar configuración.
+    * Crear stage.
+    * Agregar materias.
+    * Eliminar materia.
+    * Crear integración.
+    * Agregar materias a integración.
+    * Configurar pesos.
+    * Eliminar integración.
+    * Eliminar plan.
+
+Orden recomendado
+
+1. Etapas
+2. Materias
+3. Integraciones
+4. Configuración
+5. LMS decisión
+6. Limpieza
+7. Build/lint/smoke test
+8. Docs/commit final

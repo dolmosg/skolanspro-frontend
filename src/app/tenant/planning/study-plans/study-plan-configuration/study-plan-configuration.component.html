@@ -5,7 +5,7 @@
 >
   @if (studyPlan(); as plan) {
     @if (editMode()) {
-      <form class="study-plan-configuration__edit" [formGroup]="form">
+      <form class="study-plan-configuration__edit" [formGroup]="form" (ngSubmit)="save()">
         <header class="study-plan-configuration__edit-header">
           <div>
             <span>{{ plan.name }}</span>
@@ -24,7 +24,7 @@
             />
 
             <app-ui-button
-              type="button"
+              type="submit"
               variant="primary"
               iconLeft="save"
               [label]="'common.save' | translate"
@@ -97,8 +97,8 @@
 
             <label class="study-plan-configuration__edit-field">
               <span>{{ 'planning.study-plans.fields.structure' | translate }}</span>
-              <select formControlName="studyplan_structure_id">
-                @for (structure of catalogs().studyplan_structures ?? []; track structure.id) {
+              <select formControlName="study_plan_structure_id">
+                @for (structure of catalogs().study_plan_structures ?? []; track structure.id) {
                   <option [ngValue]="structure.id">
                     {{ structure.translation || structure.name | translate }}
                   </option>
@@ -174,12 +174,26 @@
 
             <label class="study-plan-configuration__edit-field">
               <span>{{ 'planning.study-plans.fields.class-percent' | translate }}</span>
-              <input type="number" min="0" max="100" step="0.01" formControlName="class_percent" />
+              <input
+                type="number"
+                min="0"
+                max="1"
+                step="any"
+                formControlName="class_percent"
+                (blur)="normalizePercentControl('grading_settings.class_percent')"
+              />
             </label>
 
             <label class="study-plan-configuration__edit-field">
               <span>{{ 'planning.study-plans.fields.exam-percent' | translate }}</span>
-              <input type="number" min="0" max="100" step="0.01" formControlName="exam_percent" />
+              <input
+                type="number"
+                min="0"
+                max="1"
+                step="any"
+                formControlName="exam_percent"
+                (blur)="normalizePercentControl('grading_settings.exam_percent')"
+              />
             </label>
 
             <label class="study-plan-configuration__edit-check">
@@ -197,9 +211,10 @@
               <input
                 type="number"
                 min="0"
-                max="100"
-                step="0.01"
+                max="1"
+                step="any"
                 formControlName="exemption_percent"
+                (blur)="normalizePercentControl('grading_settings.exemption_percent')"
               />
             </label>
           </div>
@@ -259,9 +274,10 @@
               <input
                 type="number"
                 min="0"
-                max="100"
-                step="0.01"
+                max="1"
+                step="any"
                 formControlName="attendance_percent"
+                (blur)="normalizePercentControl('attendance_settings.attendance_percent')"
               />
             </label>
           </div>
@@ -355,6 +371,7 @@
                 [iconLeft]="deleteOption.icon"
                 [variant]="getScreenOptionVariant('delete', 'danger')"
                 size="sm"
+                (click)="requestDeleteStudyPlan()"
               />
             }
           }
@@ -467,6 +484,7 @@
             <app-study-plan-academics
               [studyPlan]="studyPlan()"
               [route]="childRoute('study-plan-academics')"
+              [refreshToken]="academicsRefreshToken()"
             />
           }
 
