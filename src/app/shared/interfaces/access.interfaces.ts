@@ -71,4 +71,12 @@ export interface ScreenChildItem {
   parent_id?: number;
   module_id?: number;
   has_children?: boolean;
+  /**
+   * Backend-resolved actions available for this child controller.
+   *
+   * Parent components may use these options to render child-specific actions
+   * without resolving permissions in the frontend. The backend remains the
+   * source of truth for which actions the authenticated role can access.
+   */
+  options?: ScreenOptionItem[];
 }

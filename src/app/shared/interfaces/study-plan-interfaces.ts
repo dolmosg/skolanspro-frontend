@@ -1,15 +1,19 @@
 import { ISubject } from './academics.interfaces';
 import { ISchoolYear, ISection } from './administration.interfaces';
+import type { IDay } from './central.interfaces';
 import type { IPerson } from './identity.interfaces';
 import type {
   IAspectMode,
   IAttendanceCalculation,
   IAttendanceType,
+  IBlockType,
   ICommentType,
   IDescriptiveSheetType,
+  IGender,
   IGrade,
   IGradePolicy,
   IGradingScale,
+  IGroupType,
   ILevel,
   IScheduleType,
   IStudyPlanStructure,
@@ -46,6 +50,107 @@ export interface IStudyPlan {
   attendance_settings?: IStudyPlanAttendanceSetting | null;
   lms_settings?: IStudyPlanLmsSetting | null;
   schedule_type?: IScheduleType | null;
+  schedule_structures?: IStudyPlanScheduleStructure[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanScheduleStructure
+ */
+export interface IStudyPlanScheduleStructure {
+  id: number;
+  study_plan_id: number;
+  name: string;
+  active: boolean;
+  order: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  study_plan?: IStudyPlan | null;
+  segments?: IStudyPlanScheduleSegment[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanScheduleSegment
+ */
+export interface IStudyPlanScheduleSegment {
+  id: number | null;
+  study_plan_schedule_structure_id: number;
+  gender_id: number | null;
+  name: string;
+  active: boolean;
+  order: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  /**
+   * Total number of schedule blocks in the segment.
+   */
+  blocks_count?: number;
+  /**
+   * Number of lesson blocks in the segment.
+   */
+  lessons_count?: number;
+  /**
+   * Number of break blocks in the segment.
+   */
+  breaks_count?: number;
+  schedule_structure?: IStudyPlanScheduleStructure | null;
+  gender?: IGender | null;
+  segment_days?: IStudyPlanScheduleSegmentDay[];
+  blocks?: IStudyPlanScheduleBlock[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanScheduleSegmentDay
+ */
+export interface IStudyPlanScheduleSegmentDay {
+  id: number | null;
+  study_plan_schedule_segment_id: number | null;
+  day_id: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  segment?: IStudyPlanScheduleSegment | null;
+  day?: IDay | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanScheduleBlock
+ */
+export interface IStudyPlanScheduleBlock {
+  id: number;
+  study_plan_schedule_segment_id: number;
+  block_type_id: number;
+  code: string;
+  name: string;
+  start: string;
+  end: string;
+  order: number;
+  duration: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  segment?: IStudyPlanScheduleSegment | null;
+  type?: IBlockType | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanScheduleVariant
+ */
+export interface IStudyPlanScheduleVariant {
+  id: number;
+  study_plan_id: number;
+  code: string;
+  name: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+  study_plan?: IStudyPlan | null;
 }
 
 /**
@@ -131,6 +236,7 @@ export interface IStudyPlanStage {
   terms?: IStudyPlanTerm[];
   subjects?: IStudyPlanStageSubject[];
   integrations?: ISubjectIntegration[];
+  groups?: IStudyPlanStageGroup[];
 }
 
 /**
@@ -160,6 +266,73 @@ export interface IStudyPlanTerm {
   status?: ITermStatus | null;
   type?: ITermType | null;
   descriptive_sheet_type?: IDescriptiveSheetType | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanStageGroup
+ */
+export interface IStudyPlanStageGroup {
+  id: number;
+  study_plan_stage_id: number;
+  group_type_id: number;
+  grade_id: number | null;
+  study_plan_stage_subject_id: number | null;
+  gender_id: number | null;
+  code: string;
+  name: string;
+  quota: number;
+  color: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  stage?: IStudyPlanStage | null;
+  type?: IGroupType | null;
+  grade?: IGrade | null;
+  subject?: IStudyPlanStageSubject | null;
+  gender?: IGender | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanStageSubjectGroup
+ */
+export interface IStudyPlanStageSubjectGroup {
+  id: number;
+  study_plan_stage_id: number;
+  stage_subject_id: number;
+  study_plan_stage_group_id: number;
+  grade_capture_enabled: boolean;
+  report_card_official_override: boolean | null;
+  comment_group_id: number | null;
+  active: boolean;
+  order: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  stage?: IStudyPlanStage | null;
+  stage_subject?: IStudyPlanStageSubject | null;
+  stage_group?: IStudyPlanStageGroup | null;
+  blocks?: IStudyPlanStageSubjectGroupBlock[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanStageSubjectGroupBlock
+ */
+export interface IStudyPlanStageSubjectGroupBlock {
+  id: number;
+  study_plan_stage_subject_group_id: number;
+  study_plan_schedule_block_id: number;
+  day_id: number;
+  study_plan_schedule_variant_id: number;
+  study_plan_stage_subject_group_team_id: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  subject_group?: IStudyPlanStageSubjectGroup | null;
+  schedule_block?: IStudyPlanScheduleBlock | null;
+  schedule_variant?: IStudyPlanScheduleVariant | null;
 }
 
 /**

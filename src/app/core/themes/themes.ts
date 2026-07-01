@@ -1,4 +1,4 @@
-export type ThemeName = 'orange' | 'blue' | 'purple' | 'green' | 'teal';
+export type ThemeName = 'orange' | 'blue' | 'purple' | 'green' | 'teal' | 'slate';
 
 export type ThemePalette = Record<string, string>;
 
@@ -7,6 +7,10 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--color-primary': '#fd7e14',
     '--color-primary-hover': '#e96b0c',
     '--color-primary-soft': '#ffe5d0',
+    '--color-primary-tint-hover': '#fff8f2',
+    '--color-primary-tint-selected': '#fff3e8',
+    '--color-primary-border-hover': '#ffd4ad',
+    '--color-primary-border-selected': '#fdba74',
 
     '--color-success': '#198754',
     '--color-success-hover': '#157347',
@@ -65,6 +69,10 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--color-primary': '#2563eb',
     '--color-primary-hover': '#1d4ed8',
     '--color-primary-soft': '#dbeafe',
+    '--color-primary-tint-hover': '#f5f8ff',
+    '--color-primary-tint-selected': '#e8f0ff',
+    '--color-primary-border-hover': '#bfdbfe',
+    '--color-primary-border-selected': '#93c5fd',
 
     '--color-success': '#16a34a',
     '--color-success-hover': '#15803d',
@@ -123,6 +131,10 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--color-primary': '#6f42c1',
     '--color-primary-hover': '#5a32a3',
     '--color-primary-soft': '#eadcf8',
+    '--color-primary-tint-hover': '#fbf7ff',
+    '--color-primary-tint-selected': '#f3eafd',
+    '--color-primary-border-hover': '#d8b4fe',
+    '--color-primary-border-selected': '#c084fc',
 
     '--color-success': '#198754',
     '--color-success-hover': '#157347',
@@ -181,6 +193,10 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--color-primary': '#16a34a',
     '--color-primary-hover': '#15803d',
     '--color-primary-soft': '#dcfce7',
+    '--color-primary-tint-hover': '#f4fff7',
+    '--color-primary-tint-selected': '#e7f7ec',
+    '--color-primary-border-hover': '#bbf7d0',
+    '--color-primary-border-selected': '#86efac',
 
     '--color-success': '#16a34a',
     '--color-success-hover': '#15803d',
@@ -239,6 +255,10 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--color-primary': '#0d9488',
     '--color-primary-hover': '#0f766e',
     '--color-primary-soft': '#ccfbf1',
+    '--color-primary-tint-hover': '#f2fffc',
+    '--color-primary-tint-selected': '#e6fffb',
+    '--color-primary-border-hover': '#99f6e4',
+    '--color-primary-border-selected': '#5eead4',
 
     '--color-success': '#16a34a',
     '--color-success-hover': '#15803d',
@@ -284,6 +304,68 @@ export const APP_THEMES: Record<ThemeName, ThemePalette> = {
     '--sidebar-active-bg': '#e6fffb',
     '--sidebar-active-text': '#0d9488',
     '--sidebar-active-indicator': '#0d9488',
+
+    '--sidebar-group-open-bg': '#f8fafc',
+    '--sidebar-group-open-border': '#e2e8f0',
+
+    '--sidebar-tree-line': '#f1f5f9',
+    '--sidebar-chevron': '#cbd5e1',
+    '--sidebar-chevron-open': '#64748b',
+  },
+
+  slate: {
+    '--color-primary': '#475569',
+    '--color-primary-hover': '#334155',
+    '--color-primary-soft': '#e2e8f0',
+    '--color-primary-tint-hover': '#f8fafc',
+    '--color-primary-tint-selected': '#eef2f7',
+    '--color-primary-border-hover': '#cbd5e1',
+    '--color-primary-border-selected': '#94a3b8',
+
+    '--color-success': '#16a34a',
+    '--color-success-hover': '#15803d',
+    '--color-success-soft': '#dcfce7',
+
+    '--color-danger': '#dc2626',
+    '--color-danger-hover': '#b91c1c',
+    '--color-danger-soft': '#fee2e2',
+
+    '--color-warning': '#d97706',
+    '--color-warning-hover': '#b45309',
+    '--color-warning-soft': '#fef3c7',
+
+    '--color-info': '#0891b2',
+    '--color-info-hover': '#0e7490',
+    '--color-info-soft': '#cffafe',
+
+    '--color-surface': '#ffffff',
+    '--color-surface-subtle': '#f8fafc',
+    '--color-surface-muted': '#f1f5f9',
+
+    '--color-border': '#e2e8f0',
+    '--color-border-strong': '#cbd5e1',
+
+    '--color-text': '#0f172a',
+    '--color-text-soft': '#334155',
+    '--color-text-muted': '#64748b',
+    '--color-text-faint': '#94a3b8',
+
+    '--shadow-primary': '0 8px 18px rgba(71, 85, 105, 0.18)',
+    '--shadow-danger': '0 8px 18px rgba(220, 38, 38, 0.16)',
+
+    '--radius-sm': '8px',
+    '--radius-md': '12px',
+    '--radius-lg': '16px',
+
+    '--sidebar-bg': '#f8fafc',
+    '--sidebar-border': '#e2e8f0',
+    '--sidebar-text': '#334155',
+    '--sidebar-text-strong': '#0f172a',
+    '--sidebar-hover': '#eef2f7',
+
+    '--sidebar-active-bg': '#eef2f7',
+    '--sidebar-active-text': '#475569',
+    '--sidebar-active-indicator': '#475569',
 
     '--sidebar-group-open-bg': '#f8fafc',
     '--sidebar-group-open-border': '#e2e8f0',

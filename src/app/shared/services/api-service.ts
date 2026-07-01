@@ -206,6 +206,38 @@ export class ApiService {
   }
 
   /**
+   * Executes an HTTP PATCH request.
+   *
+   * PATCH is intended for partial updates or focused domain actions that do not
+   * replace the entire resource.
+   *
+   * @param route Relative backend route
+   * @param body Request payload
+   * @param options Optional request behavior overrides
+   * @returns Observable<ApiResponse<T>>
+   */
+  patch<T>(route: string, body: unknown, options?: ApiRequestOptions): Observable<ApiResponse<T>> {
+    const useLoader = this.shouldUseLoader(options);
+
+    if (useLoader) {
+      this.loader.show();
+    }
+
+    return this.http
+      .patch<ApiResponse<T>>(this.apiConfig.buildUrl(route), body, {
+        headers: this.buildHeaders(),
+      })
+      .pipe(
+        catchError((e) => this.handleError(e)),
+        finalize(() => {
+          if (useLoader) {
+            this.loader.hide();
+          }
+        }),
+      );
+  }
+
+  /**
    * Executes an HTTP DELETE request.
    *
    * @param route Relative backend route

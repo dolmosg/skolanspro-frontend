@@ -1,0 +1,104 @@
+<section class="study-plan-organization">
+  @if (selectedStructureId() === null) {
+    <div class="study-plan-organization__schedule-type">
+      <div class="study-plan-organization__schedule-type-icon" aria-hidden="true">
+        <app-ui-icon name="calendar" size="lg" tone="primary" />
+      </div>
+
+      <div class="study-plan-organization__schedule-type-summary">
+        <span class="study-plan-organization__schedule-type-label">
+          {{ 'planning.study-plan-organizations.schedule-type.label' | translate }}
+        </span>
+        <strong class="study-plan-organization__schedule-type-value">
+          {{ scheduleTypeTranslationKey() | translate }}
+        </strong>
+      </div>
+
+      <div class="study-plan-organization__schedule-type-help">
+        @if (scheduleTypeHelpTranslationKey()) {
+          <p>{{ scheduleTypeHelpTranslationKey() | translate }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="study-plan-organization__grid">
+      <section
+        class="study-plan-organization__column study-plan-organization__column--configuration"
+      >
+        <header class="study-plan-organization__column-header">
+          <div class="study-plan-organization__column-icon" aria-hidden="true">
+            <app-ui-icon name="settings" size="lg" tone="primary" />
+          </div>
+
+          <div>
+            <h3>
+              {{ 'planning.study-plan-organizations.columns.configuration.title' | translate }}
+            </h3>
+            <p>
+              {{
+                'planning.study-plan-organizations.columns.configuration.description' | translate
+              }}
+            </p>
+          </div>
+        </header>
+
+        <div class="study-plan-organization__summary-list">
+          @if (hasScheduleConfiguration() && hasScheduleStructureChild()) {
+            <app-study-plan-schedule-structure-summary
+              [summary]="scheduleStructureSummary()"
+              [route]="scheduleStructureRoute()"
+              [options]="scheduleStructureOptions()"
+              (structureSelected)="openScheduleStructure($event)"
+              (segmentSelected)="openScheduleSegment($event.structureId, $event.segmentId)"
+              (structureActivated)="reloadOrganization()"
+            />
+          }
+          @if (hasStageGroupsChild()) {
+            <app-study-plan-stage-groups-summary
+              [summary]="stageGroupsSummary()"
+              [options]="stageGroupsOptions()"
+            />
+          }
+        </div>
+      </section>
+
+      <section class="study-plan-organization__column study-plan-organization__column--assignment">
+        <header class="study-plan-organization__column-header">
+          <div class="study-plan-organization__column-icon" aria-hidden="true">
+            <app-ui-icon name="list-checks" size="lg" tone="primary" />
+          </div>
+
+          <div>
+            <h3>{{ 'planning.study-plan-organizations.columns.assignment.title' | translate }}</h3>
+            <p>
+              {{ 'planning.study-plan-organizations.columns.assignment.description' | translate }}
+            </p>
+          </div>
+        </header>
+
+        <div class="study-plan-organization__summary-list">
+          @if (hasAcademicAssignmentsChild()) {
+            <app-study-plan-academic-assignments-summary
+              [summary]="academicAssignmentsSummary()"
+              [options]="academicAssignmentsOptions()"
+            />
+          }
+          @if (hasScheduleConfiguration() && hasSchedulesChild()) {
+            <app-study-plan-schedules-summary
+              [summary]="schedulesSummary()"
+              [options]="schedulesOptions()"
+            />
+          }
+        </div>
+      </section>
+    </div>
+  } @else {
+    <app-schedule-structure-view
+      [route]="scheduleStructureRoute()"
+      [structureId]="selectedStructureId()"
+      [segmentId]="selectedSegmentId()"
+      (back)="closeScheduleStructureView()"
+      (saved)="reloadOrganization()"
+    />
+  }
+</section>

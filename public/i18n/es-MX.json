@@ -1589,6 +1589,7 @@
 				"green": "Verde",
 				"orange": "Naranja",
 				"purple": "Morado",
+				"slate": "Ejecutivo",
 				"teal": "Turquesa"
 			},
 			"update": "Actualizar tema"
@@ -1885,8 +1886,14 @@
 		"schedule-types": {
 			"add": "Nuevo Tipo de Horario",
 			"delete": "Eliminar Tipo de Horario",
+			"help": {
+				"none": "Este plan de estudios no utiliza horarios. Las asignaciones académicas pueden configurarse sin definir estructuras horarias, bloques o distribuciones de tiempo.",
+				"stage": "La estructura horaria se organiza por etapa académica. Cada etapa puede definir su propia distribución horaria de forma independiente, incluyendo segmentos, bloques y distribución semanal.",
+				"week": "La estructura horaria se organiza mediante un esquema de semanas pares e impares. Cada semana puede definir una distribución horaria diferente, permitiendo que las asignaciones académicas varíen entre ambos ciclos semanales."
+			},
 			"order": "Ordenar Tipos de Horario",
 			"translation": {
+				"none": "Sin Horarios",
 				"stage": "Por Etapa",
 				"week": "Por Semana"
 			},
@@ -2161,6 +2168,9 @@
 				"mother": "Madre",
 				"tutor": "Tutor"
 			}
+		},
+		"working-days": {
+			"update": "Actualizar días"
 		}
 	},
 	"context": {
@@ -2263,6 +2273,7 @@
 		"student-statuses": "Estados de Alumno",
 		"student-year-statuses": "Estados del Ciclo del Alumno",
 		"student-years": "Ciclos escolares",
+		"study-plan-academic-assignments": "Asignaciones Académicas",
 		"study-plan-academics": "Estructura Académica",
 		"study-plan-attendance": "Asistencia",
 		"study-plan-evaluation": "Evaluación y Seguimiento",
@@ -2272,8 +2283,13 @@
 		"study-plan-integration-items": "Elementos de la integración",
 		"study-plan-integrations": "Integración de Asignaturas",
 		"study-plan-lms": "LMS",
+		"study-plan-organizations": "Organización y Horarios",
 		"study-plan-report-cards": "Boletas",
-		"study-plan-scheduling": "Organización y Horarios",
+		"study-plan-schedule-blocks": "Bloques de horarios",
+		"study-plan-schedule-segments": "Segmentos de horario",
+		"study-plan-schedule-structures": "Estructura de Horario",
+		"study-plan-schedules": "Horarios",
+		"study-plan-stage-groups": "Grupos",
 		"study-plan-stage-terms": "periodos",
 		"study-plan-subjects": "Asignaturas",
 		"study-plans": "Planes de Estudio",
@@ -2294,7 +2310,8 @@
 		"user-levles": "Niveles de usuario",
 		"user-roles": "Roles adicionales",
 		"user-security": "Seguridad",
-		"users": "Usuarios"
+		"users": "Usuarios",
+		"working-days": "Días laborables"
 	},
 	"forgot_password": {
 		"back": "Volver a iniciar sesión",
@@ -2374,6 +2391,9 @@
 		"utilities": "Utilerías"
 	},
 	"planning": {
+		"study-plan-academic-assignments": {
+			"index": "Asignaciones"
+		},
 		"study-plan-academics": {
 			"actions": {
 				"manage": "Administrar"
@@ -2583,6 +2603,192 @@
 			"title": "Integración de asignaturas",
 			"update": "Actualizar integración"
 		},
+		"study-plan-organizations": {
+			"academic-assignments": {
+				"assigned-count": "{{ assigned }} / {{ expected }} materias asignadas",
+				"description": "Resume el avance de asignación de materias por etapa, grado y cruces académicos.",
+				"empty-description": "Aún no hay asignaciones académicas configuradas para este plan.",
+				"empty-title": "Sin asignaciones académicas",
+				"title": "Asignaciones académicas"
+			},
+			"add-structure": "Nueva Estructura",
+			"columns": {
+				"assignment": {
+					"description": "Asigna elementos y construye los horarios.",
+					"title": "Asignación"
+				},
+				"configuration": {
+					"description": "Define la estructura base del plan.",
+					"title": "Configuración"
+				}
+			},
+			"index": "Organización y Horarios",
+			"schedule-structure": {
+				"block-count": "{{ count }} bloque",
+				"blocks-count": "{{ count }} bloques",
+				"break-count": "{{ count }} descanso",
+				"breaks-count": "{{ count }} descansos",
+				"description": "Resume las estructuras, segmentos y días configurados para el horario del plan.",
+				"empty-description": "Aún no hay estructuras horarias registradas para este plan.",
+				"empty-title": "Sin estructura horaria",
+				"no-days": "Sin días configurados",
+				"segment-count": "{{ count }} segmento",
+				"segments-count": "{{ count }} segmentos",
+				"title": "Estructura horaria"
+			},
+			"schedule-type": {
+				"help": {
+					"configuration": "Los horarios se configuran de forma independiente para cada estructura definida.",
+					"structure": "La estructura horaria resume cómo se organiza el tiempo del plan."
+				},
+				"label": "Tipo de horario"
+			},
+			"schedules": {
+				"academic-group-count": "{{ count }} grupo académico",
+				"academic-groups-count": "{{ count }} grupos académicos",
+				"description": "Resume cuántos grupos académicos ya tienen horario por etapa, grado y variante.",
+				"empty-description": "Aún no hay horarios o variantes de horario disponibles para este plan.",
+				"empty-title": "Sin horarios configurados",
+				"scheduled-group-count": "{{ scheduled }} / {{ total }} con horario",
+				"scheduled-groups-count": "{{ scheduled }} / {{ total }} con horario",
+				"subject-count": "{{ count }} asignatura",
+				"subjects-count": "{{ count }} asignaturas",
+				"title": "Horarios",
+				"variants": "Variantes"
+			},
+			"stage-groups": {
+				"description": "Resume los grupos configurados por etapa, grado y transversales.",
+				"empty-description": "No hay grupos académicos configurados.",
+				"empty-title": "Sin grupos académicos",
+				"group-count": "{{ count }} grupo",
+				"groups-count": "{{ count }} grupos",
+				"title": "Grupos académicos"
+			}
+		},
+		"study-plan-schedule-blocks": {
+			"add": "Nuevo bloque",
+			"delete": "Eliminar bloque",
+			"update": "Actualizar bloque"
+		},
+		"study-plan-schedule-segments": {
+			"add": "Nuevo Segmento",
+			"delete": "Eliminar segmento",
+			"detail": {
+				"actions": {
+					"delete_block": "Eliminar",
+					"edit_block": "Editar",
+					"new_block": "Nuevo bloque",
+					"reorder_blocks": "Reordenar"
+				},
+				"blocks": {
+					"columns": {
+						"code": "Código",
+						"duration": "Duración",
+						"end": "Finaliza",
+						"name": "Nombre",
+						"number": "No.",
+						"start": "Inicio",
+						"type": "Tipo"
+					},
+					"duration": "Duración",
+					"empty": "Sin bloques configurados",
+					"form": {
+						"create-title": "Nuevo bloque",
+						"edit-title": "Editar bloque",
+						"end_after_start": "La hora de finalización debe ser mayor que la hora de inicio."
+					},
+					"messages": {
+						"confirm-delete": "¿Deseas eliminar el bloque seleccionado? Esta acción no se puede deshacer.",
+						"delete-title": "Eliminar bloque"
+					},
+					"minutes": "min",
+					"select_to_enable_actions": "Selecciona un bloque para habilitar las acciones",
+					"title": "Bloques del segmento"
+				},
+				"days": {
+					"create-helper": "Los días laborables se asignarán cuando se cree el segmento.",
+					"title": "Días del segmento"
+				},
+				"form": {
+					"active": "Segmento activo",
+					"gender": "Género",
+					"name": "Nombre",
+					"title": "Editar segmento"
+				},
+				"messages": {
+					"confirm-delete": "¿Deseas eliminar este segmento? También se eliminarán sus días y bloques.",
+					"delete-title": "Eliminar segmento"
+				},
+				"metrics": {
+					"block": "Bloque",
+					"blocks": "Bloques",
+					"break": "Descanso",
+					"breaks": "Descansos",
+					"day": "Día",
+					"days": "Días",
+					"lesson": "Clase",
+					"lessons": "Clases"
+				},
+				"select": "Selecciona un segmento",
+				"status": {
+					"active": "Segmento activo",
+					"inactive": "Segmento inactivo"
+				},
+				"subtitle": "Configura los días y revisa la secuencia de bloques del segmento.",
+				"title": "Segmento de horario"
+			},
+			"metrics": {
+				"break-count": "{{ count }} descanso",
+				"breaks-count": "{{ count }} descansos",
+				"lesson-count": "{{ count }} clase",
+				"lessons-count": "{{ count }} clases"
+			},
+			"update": "Editar segmento"
+		},
+		"study-plan-schedule-structures": {
+			"add": "Nueva Estructura",
+			"delete": "Eliminar Estructura",
+			"detail": {
+				"form": {
+					"name": "Nombre",
+					"title": "Editar estructura"
+				},
+				"metrics": {
+					"block": "Bloque",
+					"blocks": "Bloques",
+					"break": "Descanso",
+					"breaks": "Descansos",
+					"lesson": "Clase",
+					"lessons": "Clases",
+					"segment": "Segmento",
+					"segments": "Segmentos"
+				},
+				"purpose": {
+					"blocks": "Distribución de bloques y descansos",
+					"description": "Esta estructura define cómo se organiza el tiempo disponible para construir horarios.",
+					"schedules": "Base para construir horarios",
+					"segments": "Segmentos del horario",
+					"title": "Esta estructura define"
+				},
+				"status": {
+					"active": "Estructura activa",
+					"inactive": "Estructura inactiva"
+				},
+				"subtitle": "Configura la base temporal que organiza los segmentos, clases y descansos del horario."
+			},
+			"messages": {
+				"updated": "Estructura actualizada correctamente."
+			},
+			"update": "Actualizar Estructura"
+		},
+		"study-plan-schedules": {
+			"index": "Horarios"
+		},
+		"study-plan-stage-groups": {
+			"add": "Nuevo Grupo",
+			"delete": "Eliminar Grupo",
+			"update": "Actualizar Grupo"
+		},
 		"study-plan-stage-terms": {
 			"add": "Nuevo Periodo",
 			"configuration": {
@@ -2756,12 +2962,12 @@
 			"crossovers": "Transversales",
 			"delete": "Eliminar asignatura",
 			"delete-modal": {
-				"title": "Eliminar asignatura",
-				"description": "¿Deseas eliminar esta asignatura?",
-				"bulk-title": "Eliminar asignaturas",
 				"bulk-description": "Se eliminarán {{count}} materias.",
+				"bulk-title": "Eliminar asignaturas",
+				"cancel": "Cancelar",
 				"confirm": "Eliminar",
-				"cancel": "Cancelar"
+				"description": "¿Deseas eliminar esta asignatura?",
+				"title": "Eliminar asignatura"
 			},
 			"fields": {
 				"evaluation-type": "Tipo de Evaluación",

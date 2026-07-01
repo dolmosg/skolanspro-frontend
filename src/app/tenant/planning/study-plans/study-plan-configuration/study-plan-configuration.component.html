@@ -488,8 +488,12 @@
             />
           }
 
-          @case ('study-plan-scheduling') {
-            <p>Organización y horarios</p>
+          @case ('study-plan-organizations') {
+            <app-study-plan-organization
+              [studyPlan]="studyPlan()"
+              [route]="childRoute('study-plan-organizations')"
+              [refreshToken]="academicsRefreshToken()"
+            />
           }
 
           @case ('study-plan-evaluation') {

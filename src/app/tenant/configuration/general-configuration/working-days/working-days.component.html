@@ -1,0 +1,37 @@
+<section class="sk-page">
+  <div class="sk-page__panel">
+    <div class="sk-toolbar sk-page__toolbar">
+      <div class="sk-toolbar__left"></div>
+
+      <div class="sk-toolbar__center">
+        <div class="sk-selection-inline">
+          <strong>{{ 'controllers.working-days' | translate }}</strong>
+        </div>
+      </div>
+
+      <div class="sk-toolbar__right"></div>
+    </div>
+
+    <div class="working-days-list" [class.working-days-list--loading]="loading()">
+      @for (item of workingDays(); track item.id) {
+        <label class="working-days-list__item">
+          <input
+            class="working-days-list__checkbox"
+            type="checkbox"
+            [checked]="item.active"
+            [disabled]="!getScreenOption('update') || updatingWorkingDayId() !== null"
+            (change)="updateWorkingDay(item, $event)"
+          />
+
+          <span class="working-days-list__name">
+            {{ item.day?.translation | translate }}
+          </span>
+        </label>
+      } @empty {
+        <div class="working-days-list__empty">
+          {{ 'common.no-data' | translate }}
+        </div>
+      }
+    </div>
+  </div>
+</section>

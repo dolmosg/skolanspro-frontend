@@ -113,10 +113,6 @@ export class StudyPlansComponent extends SkolansBaseComponent implements OnInit 
 
   protected readonly studyPlanGroups = [
     {
-      key: 'information',
-      controllers: ['study-plan-information'],
-    },
-    {
       key: 'academics',
       controllers: ['study-plan-academics'],
     },

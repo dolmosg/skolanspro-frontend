@@ -13,17 +13,16 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.interfaces';
-
-import type { StudyPlanConfigurationItem } from '../study-plan-configuration/study-plan-configuration.component';
-import { StudyPlanStagesSummaryComponent } from '../study-plan-stages-summary/study-plan-stages-summary.component';
-import { StudyPlanStageComponent } from '../study-plan-stage/study-plan-stage.component';
+import { StudyPlanStagesSummaryComponent } from './components/study-plan-stages-summary/study-plan-stages-summary.component';
+import { StudyPlanStageComponent } from './components/study-plan-stage/study-plan-stage.component';
 import {
+  StudyPlanStageGradeSelection,
   StudyPlanSubjectsSummaryComponent,
-  type StudyPlanStageGradeSelection,
-} from '../study-plan-subjects-summary/study-plan-subjects-summary.component';
-import { StudyPlanStageSubjectsComponent } from '../study-plan-stage-subjects/study-plan-stage-subjects.component';
-import { StudyPlanIntegrationsSummaryComponent } from '../study-plan-integrations-summary/study-plan-integrations-summary.component';
-import { StageIntegrationsComponent } from '../stage-integrations/stage-integrations.component';
+} from './components/study-plan-subjects-summary/study-plan-subjects-summary.component';
+import { StudyPlanStageSubjectsComponent } from './components/study-plan-stage-subjects/study-plan-stage-subjects.component';
+import { StudyPlanIntegrationsSummaryComponent } from './components/study-plan-integrations-summary/study-plan-integrations-summary.component';
+import { StageIntegrationsComponent } from './components/stage-integrations/stage-integrations.component';
+import { StudyPlanConfigurationItem } from '../study-plan-configuration/study-plan-configuration.component';
 
 export interface IStudyPlanTermStatus {
   id: number;
@@ -382,11 +381,8 @@ export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements
       return;
     }
 
-    this.executeMutationRequest(
-      this.api.post(`${route}/${studyPlanId}/restore-stages`, {}),
-      () => {
-        this.loadOptions();
-      },
-    );
+    this.executeMutationRequest(this.api.post(`${route}/${studyPlanId}/restore-stages`, {}), () => {
+      this.loadOptions();
+    });
   }
 }

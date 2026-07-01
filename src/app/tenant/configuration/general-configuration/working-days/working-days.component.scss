@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.working-days-list {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 36rem;
+  padding-top: 1rem;
+}
+
+.working-days-list--loading {
+  opacity: 0.72;
+}
+
+.working-days-list__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border, #d1d5db);
+  border-radius: 0.5rem;
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text, #111827);
+  cursor: pointer;
+}
+
+.working-days-list__item:has(.working-days-list__checkbox:disabled) {
+  cursor: default;
+}
+
+.working-days-list__checkbox {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  accent-color: var(--color-primary, #7c3aed);
+}
+
+.working-days-list__name {
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.working-days-list__empty {
+  padding: 2.5rem 1rem;
+  border: 1px dashed var(--color-border, #d1d5db);
+  border-radius: 0.5rem;
+  color: var(--color-text-muted, #6b7280);
+  text-align: center;
+}

@@ -1,3 +1,5 @@
+import type { IDay } from './central.interfaces';
+
 /**
  * Shared Configuration domain interfaces.
  *
@@ -914,4 +916,17 @@ export interface ITutorType {
   id: number;
   name: string | null;
   translation: string;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Configuration\GeneralConfiguration\WorkingDay
+ */
+export interface IWorkingDay {
+  active: boolean;
+  day?: IDay | null;
+  day_id: number;
+  id: number;
+  order: number;
 }

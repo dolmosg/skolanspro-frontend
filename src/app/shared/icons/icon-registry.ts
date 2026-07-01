@@ -112,6 +112,7 @@ import {
   LucideUserRoundCheck,
   LucideListChecks,
   LucideRoute,
+  LucideBetweenHorizontalStart,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -547,9 +548,9 @@ export const ICON_REGISTRY = {
     lucideName: 'eye-off',
     icon: LucideEyeOff,
   },
-  route:{
-    lucideName:'route',
-    icon:LucideRoute
+  route: {
+    lucideName: 'route',
+    icon: LucideRoute,
   },
   close: {
     lucideName: 'x',
@@ -557,7 +558,7 @@ export const ICON_REGISTRY = {
   },
   'circle-help': {
     lucideName: 'circle-help',
-    icon: LucideCircleQuestionMark
+    icon: LucideCircleQuestionMark,
   },
   'circle-question-mark': {
     lucideName: 'circle-question-mark',
@@ -588,7 +589,10 @@ export const ICON_REGISTRY = {
     lucideName: 'globe',
     icon: LucideGlobe,
   },
-
+  blocks: {
+    lucideName: 'between-horizontal-start',
+    icon: LucideBetweenHorizontalStart,
+  },
   'blood-types': {
     lucideName: 'droplet',
     icon: LucideDroplet,

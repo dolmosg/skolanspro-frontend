@@ -1,0 +1,221 @@
+@if (segment(); as currentSegment) {
+  <article class="schedule-segment-detail">
+    <section class="schedule-segment-detail__summary">
+      <div class="schedule-segment-detail__summary-main">
+        @if (!isEditing()) {
+          <header class="schedule-segment-detail__header">
+            <div class="schedule-segment-detail__identity">
+              <span class="schedule-segment-detail__icon" aria-hidden="true">
+                <app-ui-icon name="calendar-days" size="md" tone="primary" />
+              </span>
+
+              <div>
+                <h3>{{ currentSegment.name }}</h3>
+                <div class="schedule-segment-detail__status-row">
+                  <span
+                    class="schedule-segment-detail__status"
+                    [class.schedule-segment-detail__status--active]="currentSegment.active"
+                    [class.schedule-segment-detail__status--inactive]="!currentSegment.active"
+                  >
+                    <app-ui-icon
+                      [name]="currentSegment.active ? 'check' : 'circle-dot'"
+                      size="sm"
+                      tone="default"
+                    />
+                    <span>
+                      {{
+                        (currentSegment.active
+                          ? 'planning.study-plan-schedule-segments.detail.status.active'
+                          : 'planning.study-plan-schedule-segments.detail.status.inactive'
+                        ) | translate
+                      }}
+                    </span>
+                  </span>
+
+                  @if (currentSegment.gender) {
+                    <span class="schedule-segment-detail__gender">
+                      {{ genderTranslation(currentSegment) | translate }}
+                    </span>
+                  }
+                </div>
+                <p>{{ 'planning.study-plan-schedule-segments.detail.title' | translate }}</p>
+              </div>
+            </div>
+
+            <div class="schedule-segment-detail__action-group">
+              @if (!isCreatingSegment() && updateOption(); as option) {
+                <app-ui-button
+                  [label]="option.translation | translate"
+                  [title]="option.translation | translate"
+                  [iconLeft]="option.icon"
+                  [iconOnly]="true"
+                  [variant]="updateOptionVariant()"
+                  size="sm"
+                  type="button"
+                  (click)="startSegmentEdit()"
+                />
+              }
+
+              @if (!isCreatingSegment() && deleteOption(); as option) {
+                <app-ui-button
+                  [label]="option.translation | translate"
+                  [title]="option.translation | translate"
+                  [iconLeft]="option.icon"
+                  [iconOnly]="true"
+                  [variant]="deleteOptionVariant()"
+                  size="sm"
+                  type="button"
+                  [disabled]="deleting() || saving()"
+                  (click)="confirmDeleteSegment()"
+                />
+              }
+            </div>
+          </header>
+        } @else {
+          <form class="schedule-segment-detail__form" [formGroup]="form" (ngSubmit)="saveSegment()">
+            <header class="schedule-segment-detail__form-header">
+              <div class="schedule-segment-detail__form-title">
+                <h3>{{ 'planning.study-plan-schedule-segments.detail.title' | translate }}</h3>
+                <p>{{ 'planning.study-plan-schedule-segments.detail.subtitle' | translate }}</p>
+              </div>
+
+              <div class="schedule-segment-detail__form-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  [iconOnly]="true"
+                  variant="danger"
+                  size="sm"
+                  type="button"
+                  [disabled]="saving()"
+                  (click)="cancelSegmentEdit()"
+                />
+
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  iconLeft="save"
+                  [iconOnly]="true"
+                  variant="primary"
+                  size="sm"
+                  type="submit"
+                  [disabled]="saving() || form.invalid"
+                />
+              </div>
+            </header>
+
+            <div class="schedule-segment-detail__form-fields">
+              <div class="schedule-segment-detail__form-primary-row">
+                <label class="schedule-segment-detail__field">
+                  <span>{{
+                    'planning.study-plan-schedule-segments.detail.form.name' | translate
+                  }}</span>
+                  <input type="text" formControlName="name" maxlength="255" />
+                  <form-error [control]="form.controls.name"></form-error>
+                </label>
+
+                <label class="schedule-segment-detail__field">
+                  <span>{{
+                    'planning.study-plan-schedule-segments.detail.form.gender' | translate
+                  }}</span>
+
+                  <div class="schedule-segment-detail__select-control">
+                    <app-sk-select
+                      [items]="genders()"
+                      bindValue="id"
+                      bindLabel="translation"
+                      [translateLabel]="true"
+                      [clearable]="true"
+                      [control]="form.controls.gender_id"
+                    />
+                  </div>
+                </label>
+              </div>
+
+              <label class="schedule-segment-detail__check">
+                <input type="checkbox" formControlName="active" />
+                <span>{{
+                  'planning.study-plan-schedule-segments.detail.form.active' | translate
+                }}</span>
+              </label>
+            </div>
+          </form>
+        }
+
+        @if (!isEditing()) {
+          <p class="schedule-segment-detail__description">
+            {{ 'planning.study-plan-schedule-segments.detail.subtitle' | translate }}
+          </p>
+        }
+
+        <section class="schedule-segment-detail__metrics">
+          <div class="schedule-segment-detail__metric">
+            <strong>{{ daysCount() }}</strong>
+            <span>{{ dayLabel() | translate }}</span>
+          </div>
+
+          <div class="schedule-segment-detail__metric">
+            <strong>{{ lessonsCount() }}</strong>
+            <span>{{ lessonLabel() | translate }}</span>
+          </div>
+
+          <div class="schedule-segment-detail__metric">
+            <strong>{{ breaksCount() }}</strong>
+            <span>{{ breakLabel() | translate }}</span>
+          </div>
+
+          <div class="schedule-segment-detail__metric">
+            <strong>{{ blocksCount() }}</strong>
+            <span>{{ blockLabel() | translate }}</span>
+          </div>
+        </section>
+      </div>
+
+      <aside class="schedule-segment-detail__days-panel">
+        <header class="schedule-segment-detail__section-header">
+          <span class="schedule-segment-detail__section-icon" aria-hidden="true">
+            <app-ui-icon name="calendar-days" size="sm" tone="primary" />
+          </span>
+          <h4>{{ 'planning.study-plan-schedule-segments.detail.days.title' | translate }}</h4>
+        </header>
+
+        <div class="schedule-segment-detail__days">
+          @for (workingDay of workingDays(); track workingDay.id) {
+            <label class="schedule-segment-detail__day">
+              <input
+                type="checkbox"
+                [checked]="isSegmentDaySelected(workingDay.day_id)"
+                [disabled]="isCreatingSegment() || !updateOption() || updatingDays()"
+                (change)="updateSegmentDay(workingDay.day_id, $event)"
+              />
+              <span>{{ dayTranslation(workingDay.day) | translate }}</span>
+            </label>
+          } @empty {
+            <p class="schedule-segment-detail__empty-text">{{ 'common.no-data' | translate }}</p>
+          }
+        </div>
+
+        @if (isCreatingSegment()) {
+          <p class="schedule-segment-detail__empty-text">
+            {{
+              'planning.study-plan-schedule-segments.detail.days.create-helper' | translate
+            }}
+          </p>
+        }
+      </aside>
+    </section>
+
+    @if (!isCreatingSegment()) {
+      <app-schedule-segment-blocks
+        [segmentId]="currentSegment.id"
+        [blocks]="blocks()"
+        [blockTypes]="blockTypes()"
+        [children]="childControllers()"
+        (changed)="handleBlockChanged($event)"
+      />
+    }
+  </article>
+} @else {
+  <section class="schedule-segment-detail__empty">
+    <p>{{ 'common.no-data' | translate }}</p>
+  </section>
+}

@@ -1589,6 +1589,7 @@
 				"green": "Green",
 				"orange": "Orange",
 				"purple": "Purple",
+				"slate": "Executive",
 				"teal": "Teal"
 			},
 			"update": "Update theme"
@@ -1885,8 +1886,14 @@
 		"schedule-types": {
 			"add": "New Schedule Type",
 			"delete": "Remove Schedule Type",
+			"help": {
+				"none": "This study plan does not use schedules. Academic assignments can be configured without defining schedule structures, time blocks, or time distributions.",
+				"stage": "The schedule structure is organized by academic stage. Each stage can define its own schedule distribution independently, including segments, time blocks, and weekly distribution.",
+				"week": "The schedule structure is organized using alternating even and odd weeks. Each week can define a different schedule distribution, allowing academic assignments to vary between both weekly cycles."
+			},
 			"order": "Order Schedule Types",
 			"translation": {
+				"none": "No Schedule",
 				"stage": "By Stage",
 				"week": "By Week"
 			},
@@ -2161,6 +2168,9 @@
 				"mother": "Mother",
 				"tutor": "Tutor"
 			}
+		},
+		"working-days": {
+			"update": "Update days"
 		}
 	},
 	"context": {
@@ -2263,6 +2273,7 @@
 		"student-statuses": "Student Statuses",
 		"student-year-statuses": "Student Year Statuses",
 		"student-years": "School years",
+		"study-plan-academic-assignments": "Academic Assignments",
 		"study-plan-academics": "Academic Structure",
 		"study-plan-attendance": "Attendance",
 		"study-plan-evaluation": "Evaluation & Monitoring",
@@ -2272,8 +2283,13 @@
 		"study-plan-integration-items": "Integration Items",
 		"study-plan-integrations": "Subject Integration",
 		"study-plan-lms": "LMS",
+		"study-plan-organizations": "Scheduling & Timetable",
 		"study-plan-report-cards": "Report Cards",
-		"study-plan-scheduling": "Scheduling & Timetable",
+		"study-plan-schedule-blocks": "Schedule Blocks",
+		"study-plan-schedule-segments": "Schedule Segments",
+		"study-plan-schedule-structures": "Schedule Structure",
+		"study-plan-schedules": "Schedules",
+		"study-plan-stage-groups": "Groups",
 		"study-plan-stage-terms": "Terms",
 		"study-plan-subjects": "Subjects",
 		"study-plans": "Study Plans",
@@ -2294,7 +2310,8 @@
 		"user-levles": "User Levels",
 		"user-roles": "Additional Roles",
 		"user-security": "Security",
-		"users": "Users"
+		"users": "Users",
+		"working-days": "Working days"
 	},
 	"forgot_password": {
 		"back": "Back to sign in",
@@ -2374,6 +2391,9 @@
 		"utilities": "Utilities"
 	},
 	"planning": {
+		"study-plan-academic-assignments": {
+			"index": "Assignments"
+		},
 		"study-plan-academics": {
 			"actions": {
 				"manage": "Manage"
@@ -2583,6 +2603,192 @@
 			"title": "Subject Integrations",
 			"update": "Update integration"
 		},
+		"study-plan-organizations": {
+			"academic-assignments": {
+				"assigned-count": "{{ assigned }} / {{ expected }} subjects assigned",
+				"description": "Summarizes assignment progress by stage, grade, and academic crossovers.",
+				"empty-description": "There are no academic assignments configured for this plan yet.",
+				"empty-title": "No academic assignments",
+				"title": "Academic assignments"
+			},
+			"add-structure": "New Structure",
+			"columns": {
+				"assignment": {
+					"description": "Assign elements and build schedules.",
+					"title": "Assignment"
+				},
+				"configuration": {
+					"description": "Define the base structure of the plan.",
+					"title": "Configuration"
+				}
+			},
+			"index": "Scheduling & Time Table",
+			"schedule-structure": {
+				"block-count": "{{ count }} block",
+				"blocks-count": "{{ count }} blocks",
+				"break-count": "{{ count }} break",
+				"breaks-count": "{{ count }} breaks",
+				"description": "Summarizes the structures, segments, and days configured for the plan schedule.",
+				"empty-description": "There are no schedule structures registered for this plan yet.",
+				"empty-title": "No schedule structure",
+				"no-days": "No days configured",
+				"segment-count": "{{ count }} segment",
+				"segments-count": "{{ count }} segments",
+				"title": "Schedule structure"
+			},
+			"schedule-type": {
+				"help": {
+					"configuration": "Schedules are configured independently for each defined structure.",
+					"structure": "The schedule structure summarizes how the plan time is organized."
+				},
+				"label": "Schedule type"
+			},
+			"schedules": {
+				"academic-group-count": "{{ count }} academic group",
+				"academic-groups-count": "{{ count }} academic groups",
+				"description": "Summarizes how many academic groups already have schedules by stage, grade, and variant.",
+				"empty-description": "There are no schedules or schedule variants available for this plan yet.",
+				"empty-title": "No schedules configured",
+				"scheduled-group-count": "{{ scheduled }} / {{ total }} with schedule",
+				"scheduled-groups-count": "{{ scheduled }} / {{ total }} with schedule",
+				"subject-count": "{{ count }} subject",
+				"subjects-count": "{{ count }} subjects",
+				"title": "Schedules",
+				"variants": "Variants"
+			},
+			"stage-groups": {
+				"description": "Summarizes the groups configured by stage, grade, and crossovers.",
+				"empty-description": "No academic groups have been configured.",
+				"empty-title": "No academic groups",
+				"group-count": "{{ count }} group",
+				"groups-count": "{{ count }} groups",
+				"title": "Academic groups"
+			}
+		},
+		"study-plan-schedule-blocks": {
+			"add": "New block",
+			"delete": "Remove block",
+			"update": "Update block"
+		},
+		"study-plan-schedule-segments": {
+			"add": "New Segment",
+			"delete": "Remove segment",
+			"detail": {
+				"actions": {
+					"delete_block": "Delete",
+					"edit_block": "Edit",
+					"new_block": "New block",
+					"reorder_blocks": "Reorder"
+				},
+				"blocks": {
+					"columns": {
+						"code": "Code",
+						"duration": "Duration",
+						"end": "End",
+						"name": "Name",
+						"number": "No.",
+						"start": "Start",
+						"type": "Type"
+					},
+					"duration": "Duration",
+					"empty": "No blocks configured",
+					"form": {
+						"create-title": "New block",
+						"edit-title": "Edit block",
+						"end_after_start": "End time must be greater than start time."
+					},
+					"messages": {
+						"confirm-delete": "Do you want to delete the selected block? This action cannot be undone.",
+						"delete-title": "Delete block"
+					},
+					"minutes": "min",
+					"select_to_enable_actions": "Select a block to enable actions",
+					"title": "Segment blocks"
+				},
+				"days": {
+					"create-helper": "Working days will be assigned when the segment is created.",
+					"title": "Segment days"
+				},
+				"form": {
+					"active": "Active segment",
+					"gender": "Gender",
+					"name": "Name",
+					"title": "Edit segment"
+				},
+				"messages": {
+					"confirm-delete": "Do you want to delete this segment? Its days and blocks will also be removed.",
+					"delete-title": "Delete segment"
+				},
+				"metrics": {
+					"block": "Block",
+					"blocks": "Blocks",
+					"break": "Break",
+					"breaks": "Breaks",
+					"day": "Day",
+					"days": "Days",
+					"lesson": "Lesson",
+					"lessons": "Lessons"
+				},
+				"select": "Select a segment",
+				"status": {
+					"active": "Active segment",
+					"inactive": "Inactive segment"
+				},
+				"subtitle": "Configure the days and review the segment block sequence.",
+				"title": "Schedule segment"
+			},
+			"metrics": {
+				"break-count": "{{ count }} break",
+				"breaks-count": "{{ count }} breaks",
+				"lesson-count": "{{ count }} lesson",
+				"lessons-count": "{{ count }} lessons"
+			},
+			"update": "Edit segment"
+		},
+		"study-plan-schedule-structures": {
+			"add": "New Structure",
+			"delete": "Remove Structure",
+			"detail": {
+				"form": {
+					"name": "Name",
+					"title": "Edit structure"
+				},
+				"metrics": {
+					"block": "Block",
+					"blocks": "Blocks",
+					"break": "Break",
+					"breaks": "Breaks",
+					"lesson": "Lesson",
+					"lessons": "Lessons",
+					"segment": "Segment",
+					"segments": "Segments"
+				},
+				"purpose": {
+					"blocks": "Lesson blocks and breaks distribution",
+					"description": "This structure defines how available time is organized to build schedules.",
+					"schedules": "Base used to build schedules",
+					"segments": "Schedule segments",
+					"title": "This structure defines"
+				},
+				"status": {
+					"active": "Active structure",
+					"inactive": "Inactive structure"
+				},
+				"subtitle": "Configure the time base that organizes schedule segments, lessons, and breaks."
+			},
+			"messages": {
+				"updated": "Structure updated successfully."
+			},
+			"update": "Edit Structure"
+		},
+		"study-plan-schedules": {
+			"index": "Schedules"
+		},
+		"study-plan-stage-groups": {
+			"add": "New Group",
+			"delete": "Remove Group",
+			"update": "Update Group"
+		},
 		"study-plan-stage-terms": {
 			"add": "New Term",
 			"configuration": {
@@ -2756,12 +2962,12 @@
 			"crossovers": "Crossovers",
 			"delete": "Delete subject",
 			"delete-modal": {
-				"title": "Delete subject",
-				"description": "Do you want to delete this subject?",
-				"bulk-title": "Delete subjects",
 				"bulk-description": "{{count}} subjects will be deleted.",
+				"bulk-title": "Delete subjects",
+				"cancel": "Cancel",
 				"confirm": "Delete",
-				"cancel": "Cancel"
+				"description": "Do you want to delete this subject?",
+				"title": "Delete subject"
 			},
 			"fields": {
 				"evaluation-type": "Evaluation Type",

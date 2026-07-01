@@ -248,13 +248,22 @@ export abstract class SkolansBaseComponent implements OnDestroy {
   /**
    * Wraps an observable request and toggles the shared loading signal.
    *
-   * This helper only manages UI loading state. It does not catch errors; HTTP
-   * errors remain the responsibility of ApiService and the component subscriber.
+   * This helper manages the shared loader lifecycle and optional completion
+   * cleanup. It does not catch errors; HTTP errors remain the responsibility of
+   * ApiService and the component subscriber.
+   *
+   * @param onComplete Executes when the request lifecycle has completely
+   * finished, regardless of whether the request succeeded or failed.
    */
-  protected request<T>(obs: Observable<T>): Observable<T> {
+  protected request<T>(obs: Observable<T>, onComplete?: () => void): Observable<T> {
     this.loading.set(true);
 
-    return obs.pipe(finalize(() => this.loading.set(false)));
+    return obs.pipe(
+      finalize(() => {
+        this.loading.set(false);
+        onComplete?.();
+      }),
+    );
   }
 
   /**
@@ -369,17 +378,23 @@ export abstract class SkolansBaseComponent implements OnDestroy {
    * - Handles `success:false` via `handleApiFailure`
    * - Shows success toast via `handleApiSuccess`
    * - Delegates HTTP errors to ApiService and uses a no-op handler
+   * - Executes optional completion cleanup after the lifecycle has finished
+   *
+   * @param onSuccess Executes only after a successful request.
+   * @param onComplete Executes when the request lifecycle has completely
+   * finished, regardless of whether the request succeeded or failed.
    */
   protected executeRequest<T, E = unknown>(
     obs: Observable<ApiResponse<T, E>>,
-    onSuccess: (res: ApiSuccessResponse<T>) => void,
+    onSuccess?: (res: ApiSuccessResponse<T>) => void,
+    onComplete?: () => void,
   ): void {
-    this.request(obs).subscribe({
+    this.request(obs, onComplete).subscribe({
       next: (res) => {
         if (this.handleApiFailure(res)) return;
 
         this.handleApiSuccess(res);
-        onSuccess(res as ApiSuccessResponse<T>);
+        onSuccess?.(res as ApiSuccessResponse<T>);
       },
       error: () => this.ignoreHandledRequestError(),
     });
@@ -394,17 +409,23 @@ export abstract class SkolansBaseComponent implements OnDestroy {
    * local cleanup after an HTTP/transport error, such as clearing data or
    * resetting local loading flags. The HTTP error itself is still normalized
    * and notified globally by `ApiService`.
+   *
+   * @param onSuccess Executes only after a successful request.
+   * @param onError Executes only after an HTTP/transport error.
+   * @param onComplete Executes when the request lifecycle has completely
+   * finished, regardless of whether the request succeeded or failed.
    */
   protected executeSilentRequest<T, E = unknown>(
     obs: Observable<ApiResponse<T, E>>,
-    onSuccess: (res: ApiSuccessResponse<T>) => void,
+    onSuccess?: (res: ApiSuccessResponse<T>) => void,
     onError?: () => void,
+    onComplete?: () => void,
   ): void {
-    this.request(obs).subscribe({
+    this.request(obs, onComplete).subscribe({
       next: (res) => {
         if (this.handleApiFailure(res)) return;
 
-        onSuccess(res as ApiSuccessResponse<T>);
+        onSuccess?.(res as ApiSuccessResponse<T>);
       },
       error: () => {
         onError?.();
@@ -417,12 +438,17 @@ export abstract class SkolansBaseComponent implements OnDestroy {
    * Executes a mutation request (create/update/delete) with success handling.
    *
    * Alias of `executeRequest` for semantic clarity in mutation flows.
+   *
+   * @param onSuccess Executes only after a successful request.
+   * @param onComplete Executes when the request lifecycle has completely
+   * finished, regardless of whether the request succeeded or failed.
    */
   protected executeMutationRequest<T, E = unknown>(
     obs: Observable<ApiResponse<T, E>>,
-    onSuccess: (res: ApiSuccessResponse<T>) => void,
+    onSuccess?: (res: ApiSuccessResponse<T>) => void,
+    onComplete?: () => void,
   ): void {
-    this.executeRequest(obs, onSuccess);
+    this.executeRequest(obs, onSuccess, onComplete);
   }
 
   /**
@@ -459,6 +485,14 @@ export abstract class SkolansBaseComponent implements OnDestroy {
     parent_id?: number;
     module_id?: number;
     has_children?: boolean;
+    options?: Array<{
+      id: number;
+      name: string;
+      translation: string;
+      icon: string;
+      color: 'primary' | 'secondary' | 'ghost' | 'danger';
+      controller_id?: number;
+    }>;
   }> {
     return this.getScreenChildren().map((child) => ({
       id: child.id,
@@ -470,6 +504,14 @@ export abstract class SkolansBaseComponent implements OnDestroy {
       parent_id: child.parent_id,
       module_id: child.module_id,
       has_children: child.has_children,
+      options: child.options?.map((option) => ({
+        id: option.id,
+        name: option.name,
+        translation: option.translation,
+        icon: option.icon,
+        color: option.color,
+        controller_id: option.controller_id,
+      })),
     }));
   }
 
@@ -489,6 +531,43 @@ export abstract class SkolansBaseComponent implements OnDestroy {
    */
   protected hasScreenChild(identifier: string): boolean {
     return !!this.getScreenChild(identifier);
+  }
+
+  /**
+   * Returns the API route exposed by a child controller.
+   *
+   * Child routes are resolved by the backend together with the allowed child
+   * controllers. Components should use this helper instead of hardcoding child
+   * routes when they need to call or pass an embedded child controller route.
+   */
+  protected getScreenChildRoute(childIdentifier: string): string | null {
+    return this.getScreenChild(childIdentifier)?.route ?? null;
+  }
+
+  /**
+   * Returns an allowed action for a child controller.
+   *
+   * The child and its options are backend-provided permission metadata. This
+   * helper only consumes that metadata: it does not infer permissions, build
+   * actions locally, or inspect feature-specific state.
+   *
+   * Parent components may use this for embedded child controller patterns, then
+   * pass the resolved option to presentational child components through inputs.
+   */
+  protected getScreenChildOption(
+    childIdentifier: string,
+    optionName: string,
+  ): ScreenOptionItem | null {
+    const child = this.getScreenChild(childIdentifier);
+
+    return child?.options?.find((option) => option?.name === optionName) ?? null;
+  }
+
+  /**
+   * Indicates whether an allowed action exists for a child controller.
+   */
+  protected hasScreenChildOption(childIdentifier: string, optionName: string): boolean {
+    return !!this.getScreenChildOption(childIdentifier, optionName);
   }
 
   /**

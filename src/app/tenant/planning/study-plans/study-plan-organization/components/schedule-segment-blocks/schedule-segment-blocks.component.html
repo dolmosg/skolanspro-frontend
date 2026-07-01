@@ -1,0 +1,240 @@
+<section class="schedule-segment-blocks">
+  <header class="schedule-segment-blocks__header">
+    <div class="schedule-segment-blocks__section-header">
+      <span class="schedule-segment-blocks__section-icon" aria-hidden="true">
+        <app-ui-icon name="blocks" size="sm" tone="primary" />
+      </span>
+      <h4>{{ 'planning.study-plan-schedule-segments.detail.blocks.title' | translate }}</h4>
+    </div>
+
+    @if (addBlockOption() || updateBlockOption() || deleteBlockOption() || reorderBlockOption()) {
+      <div class="schedule-segment-blocks__actions">
+        @if (addBlockOption(); as option) {
+          <app-ui-button
+            [label]="option.translation | translate"
+            [title]="option.translation | translate"
+            [iconLeft]="option.icon"
+            [iconOnly]="true"
+            [variant]="option.color"
+            size="sm"
+            type="button"
+            [disabled]="hasSelectedBlock() || isBlockFormOpen() || savingBlock()"
+            (click)="startCreateBlock()"
+          />
+        }
+
+        @if (updateBlockOption(); as option) {
+          <app-ui-button
+            [label]="option.translation | translate"
+            [title]="option.translation | translate"
+            [iconLeft]="option.icon"
+            [iconOnly]="true"
+            [variant]="option.color"
+            size="sm"
+            type="button"
+            [disabled]="!hasSelectedBlock() || isBlockFormOpen() || savingBlock()"
+            (click)="startEditSelectedBlock()"
+          />
+        }
+
+        @if (deleteBlockOption(); as option) {
+          <app-ui-button
+            [label]="option.translation | translate"
+            [title]="option.translation | translate"
+            [iconLeft]="option.icon"
+            [iconOnly]="true"
+            [variant]="option.color"
+            size="sm"
+            type="button"
+            [disabled]="!hasSelectedBlock() || isBlockFormOpen() || savingBlock()"
+            (click)="confirmDeleteSelectedBlock()"
+          />
+        }
+
+        @if (reorderBlockOption(); as option) {
+          <app-ui-button
+            [label]="option.translation | translate"
+            [title]="option.translation | translate"
+            [iconLeft]="option.icon"
+            [iconOnly]="true"
+            [variant]="option.color"
+            size="sm"
+            type="button"
+            [disabled]="!canReorderBlocks() || isBlockFormOpen() || savingBlock()"
+            (click)="startReorderBlocks()"
+          />
+        }
+      </div>
+    }
+  </header>
+
+  @if (!isBlockFormOpen() && !hasSelectedBlock() && (updateBlockOption() || deleteBlockOption())) {
+    <p class="schedule-segment-blocks__selection-hint">
+      {{ 'planning.study-plan-schedule-segments.detail.blocks.select_to_enable_actions' | translate }}
+    </p>
+  }
+
+  @if (isBlockFormOpen()) {
+    <form class="schedule-segment-blocks__form" [formGroup]="blockForm" (ngSubmit)="saveBlock()">
+      <header class="schedule-segment-blocks__form-header">
+        <h5>{{ blockFormTitle() | translate }}</h5>
+
+        <div class="schedule-segment-blocks__form-actions">
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            iconLeft="cancel"
+            variant="danger"
+            size="sm"
+            type="button"
+            [disabled]="savingBlock()"
+            (click)="cancelBlockForm()"
+          />
+
+          <app-ui-button
+            [label]="'common.save' | translate"
+            iconLeft="save"
+            variant="primary"
+            size="sm"
+            type="submit"
+            [disabled]="savingBlock() || blockForm.invalid"
+          />
+        </div>
+      </header>
+
+      <div class="schedule-segment-blocks__form-grid">
+        <label class="schedule-segment-blocks__field">
+          <span>{{
+            'planning.study-plan-schedule-segments.detail.blocks.columns.type' | translate
+          }}</span>
+
+          <div class="schedule-segment-blocks__control">
+            <app-sk-select
+              [items]="blockTypes()"
+              bindValue="id"
+              bindLabel="translation"
+              [translateLabel]="true"
+              [clearable]="false"
+              [placeholder]="'common.select'"
+              [disabled]="savingBlock()"
+              [control]="blockForm.controls.block_type_id"
+            />
+          </div>
+
+          <form-error [control]="blockForm.controls.block_type_id"></form-error>
+        </label>
+
+        <label class="schedule-segment-blocks__field">
+          <span>{{
+            'planning.study-plan-schedule-segments.detail.blocks.columns.code' | translate
+          }}</span>
+          <input
+            type="text"
+            formControlName="code"
+            maxlength="10"
+            [readOnly]="savingBlock()"
+          />
+          <form-error [control]="blockForm.controls.code"></form-error>
+        </label>
+
+        <label class="schedule-segment-blocks__field">
+          <span>{{
+            'planning.study-plan-schedule-segments.detail.blocks.columns.name' | translate
+          }}</span>
+          <input
+            type="text"
+            formControlName="name"
+            maxlength="255"
+            [readOnly]="savingBlock()"
+          />
+          <form-error [control]="blockForm.controls.name"></form-error>
+        </label>
+
+        <label class="schedule-segment-blocks__field">
+          <span>{{
+            'planning.study-plan-schedule-segments.detail.blocks.columns.start' | translate
+          }}</span>
+          <input type="time" formControlName="start" [readOnly]="savingBlock()" />
+          <form-error [control]="blockForm.controls.start"></form-error>
+        </label>
+
+        <label class="schedule-segment-blocks__field">
+          <span>{{
+            'planning.study-plan-schedule-segments.detail.blocks.columns.end' | translate
+          }}</span>
+          <input type="time" formControlName="end" [readOnly]="savingBlock()" />
+          <form-error [control]="blockForm.controls.end"></form-error>
+
+          @if (hasEndAfterStartError()) {
+            <p class="schedule-segment-blocks__error">
+              {{
+                'planning.study-plan-schedule-segments.detail.blocks.form.end_after_start'
+                  | translate
+              }}
+            </p>
+          }
+        </label>
+      </div>
+    </form>
+  }
+
+  <div class="schedule-segment-blocks__table">
+    <div class="schedule-segment-blocks__row schedule-segment-blocks__row--head">
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.number' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.type' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.code' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.name' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.start' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.end' | translate
+      }}</span>
+      <span>{{
+        'planning.study-plan-schedule-segments.detail.blocks.columns.duration' | translate
+      }}</span>
+    </div>
+
+    @for (block of sortedBlocks(); track block.id) {
+      <button
+        class="schedule-segment-blocks__row"
+        type="button"
+        [class.schedule-segment-blocks__row--selected]="isBlockSelected(block.id)"
+        [class.schedule-segment-blocks__row--disabled]="isBlockFormOpen() || savingBlock()"
+        [attr.aria-pressed]="isBlockSelected(block.id)"
+        [disabled]="isBlockFormOpen() || savingBlock()"
+        (click)="selectBlock(block.id)"
+      >
+        <span class="schedule-segment-blocks__number">{{ $index + 1 }}</span>
+        <span class="schedule-segment-blocks__type">
+          {{ blockTypeTranslation(block) | translate }}
+        </span>
+        <span class="schedule-segment-blocks__code">{{ block.code }}</span>
+
+        <span class="schedule-segment-blocks__name">
+          <strong>{{ block.name }}</strong>
+        </span>
+
+        <span class="schedule-segment-blocks__time">{{ formatTime(block.start) }}</span>
+        <span class="schedule-segment-blocks__time">{{ formatTime(block.end) }}</span>
+
+        <span class="schedule-segment-blocks__duration">
+          {{ durationMinutes(block) }}
+          {{ 'planning.study-plan-schedule-segments.detail.blocks.minutes' | translate }}
+        </span>
+      </button>
+    } @empty {
+      <div class="schedule-segment-blocks__empty">
+        <app-ui-icon name="list-ordered" size="md" tone="primary" />
+        <p>{{ 'planning.study-plan-schedule-segments.detail.blocks.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</section>

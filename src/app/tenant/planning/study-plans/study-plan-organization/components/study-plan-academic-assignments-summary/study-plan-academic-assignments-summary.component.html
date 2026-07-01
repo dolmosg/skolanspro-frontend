@@ -1,0 +1,84 @@
+<article class="study-plan-academic-assignments-summary">
+  <header class="study-plan-academic-assignments-summary__header">
+    <div class="study-plan-academic-assignments-summary__icon" aria-hidden="true">
+      <app-ui-icon name="list-checks" size="md" />
+    </div>
+
+    <div>
+      <h4>{{ 'planning.study-plan-organizations.academic-assignments.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-organizations.academic-assignments.description' | translate }}</p>
+    </div>
+  </header>
+
+  @if (hasStages()) {
+    <div class="study-plan-academic-assignments-summary__list">
+      @for (stage of stages(); track stage.id) {
+        <section class="study-plan-academic-assignments-summary__stage">
+          <header class="study-plan-academic-assignments-summary__stage-header">
+            <strong class="study-plan-academic-assignments-summary__name">
+              {{ stage.name }}
+            </strong>
+
+            <span class="study-plan-academic-assignments-summary__count">
+              {{ stage.assigned_count }} / {{ stage.expected_count }}
+            </span>
+
+            <strong
+              class="study-plan-academic-assignments-summary__percent"
+              [style.color]="stage.completion_color"
+            >
+              {{ stage.completion_percent }}%
+            </strong>
+          </header>
+
+          <div class="study-plan-academic-assignments-summary__progress" aria-hidden="true">
+            <span
+              [style.width.%]="stage.completion_percent"
+              [style.backgroundColor]="stage.completion_color"
+            ></span>
+          </div>
+
+          <div class="study-plan-academic-assignments-summary__items">
+            @for (grade of stage.grades; track grade.id ?? grade.type) {
+              <div class="study-plan-academic-assignments-summary__item">
+                <div class="study-plan-academic-assignments-summary__item-header">
+                  <strong class="study-plan-academic-assignments-summary__name">
+                    {{ grade.description || grade.name }}
+                  </strong>
+
+                  <span class="study-plan-academic-assignments-summary__count">
+                    {{ grade.assigned_count }} / {{ grade.expected_count }}
+                  </span>
+
+                  <strong
+                    class="study-plan-academic-assignments-summary__percent"
+                    [style.color]="grade.completion_color"
+                  >
+                    {{ grade.completion_percent }}%
+                  </strong>
+                </div>
+
+                <div class="study-plan-academic-assignments-summary__progress" aria-hidden="true">
+                  <span
+                    [style.width.%]="grade.completion_percent"
+                    [style.backgroundColor]="grade.completion_color"
+                  ></span>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="study-plan-academic-assignments-summary__empty">
+      <app-ui-icon name="list-checks" size="md" />
+      <strong>
+        {{ 'planning.study-plan-organizations.academic-assignments.empty-title' | translate }}
+      </strong>
+      <span>
+        {{ 'planning.study-plan-organizations.academic-assignments.empty-description' | translate }}
+      </span>
+    </div>
+  }
+</article>

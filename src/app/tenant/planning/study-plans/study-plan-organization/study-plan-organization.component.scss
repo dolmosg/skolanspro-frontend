@@ -1,0 +1,158 @@
+:host {
+  display: block;
+}
+
+.study-plan-organization {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.study-plan-organization__schedule-type {
+  display: grid;
+  grid-template-columns: auto minmax(11rem, 14rem) 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 18%, var(--color-border));
+  border-radius: 1rem;
+  background: linear-gradient(90deg,
+      color-mix(in srgb, var(--color-primary) 8%, var(--color-surface)),
+      color-mix(in srgb, var(--color-primary) 3%, var(--color-surface)));
+}
+
+.study-plan-organization__schedule-type-icon,
+.study-plan-organization__column-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.9rem;
+  font-size: 1.35rem;
+}
+
+.study-plan-organization__schedule-type-icon {
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+}
+
+.study-plan-organization__schedule-type-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-right: 1rem;
+  border-right: 1px solid color-mix(in srgb, var(--color-primary) 14%, var(--color-border));
+}
+
+.study-plan-organization__schedule-type-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+}
+
+.study-plan-organization__schedule-type-value {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+.study-plan-organization__schedule-type-help {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--color-text-soft);
+}
+
+.study-plan-organization__schedule-type-help p {
+  position: relative;
+  margin: 0;
+  padding-left: 0.9rem;
+  font-size: 0.92rem;
+}
+
+.study-plan-organization__schedule-type-help p::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+}
+
+.study-plan-organization__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.study-plan-organization__column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.study-plan-organization__column-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0;
+}
+
+.study-plan-organization__column-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.study-plan-organization__column-header p {
+  margin: 0.25rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.study-plan-organization__column--configuration .study-plan-organization__column-header h3,
+.study-plan-organization__column--configuration .study-plan-organization__column-icon {
+  color: var(--color-primary);
+}
+
+.study-plan-organization__column--configuration .study-plan-organization__column-icon {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+}
+
+.study-plan-organization__column--assignment .study-plan-organization__column-header h3,
+.study-plan-organization__column--assignment .study-plan-organization__column-icon {
+  color: var(--color-primary);
+}
+
+.study-plan-organization__column--assignment .study-plan-organization__column-icon {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+}
+
+.study-plan-organization__summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (max-width: 1199.98px) {
+  .study-plan-organization__schedule-type {
+    grid-template-columns: auto 1fr;
+  }
+
+  .study-plan-organization__schedule-type-summary {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .study-plan-organization__schedule-type-help {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .study-plan-organization__grid {
+    grid-template-columns: 1fr;
+  }
+}

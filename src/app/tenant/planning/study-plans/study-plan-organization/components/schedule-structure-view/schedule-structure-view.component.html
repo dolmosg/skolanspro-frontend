@@ -1,0 +1,157 @@
+<section class="schedule-structure-view">
+  <header class="schedule-structure-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  @if (structure(); as structureItem) {
+    <div class="schedule-structure-view__layout">
+      <aside class="schedule-structure-view__sidebar">
+        <section
+          class="schedule-structure-view__section schedule-structure-view__section--structure"
+        >
+          <header class="schedule-structure-view__section-header">
+            <div class="schedule-structure-view__section-title">
+              <span class="schedule-structure-view__section-icon">
+                <app-ui-icon name="layout-template" size="sm" tone="primary" />
+              </span>
+              <h3>{{ 'controllers.study-plan-schedule-structures' | translate }}</h3>
+            </div>
+          </header>
+
+          <div
+            class="schedule-structure-view__structure-card"
+            [class.schedule-structure-view__structure-card--selected]="isStructureSelected()"
+            role="button"
+            tabindex="0"
+            (click)="selectStructure()"
+            (keydown.enter)="selectStructure()"
+            (keydown.space)="$event.preventDefault(); selectStructure()"
+          >
+            <span class="schedule-structure-view__card-icon">
+              <app-ui-icon name="layout-template" size="sm" tone="primary" />
+            </span>
+
+            <div>
+              <strong>{{ structureItem.name }}</strong>
+            </div>
+
+            <app-ui-icon name="drilldown" size="sm" tone="primary" />
+          </div>
+        </section>
+
+        @if (segmentChild(); as child) {
+          <section
+            class="schedule-structure-view__segment-panel"
+            [attr.data-child-route]="segmentRoute()"
+          >
+            <header class="schedule-structure-view__section-header">
+              <div class="schedule-structure-view__section-title">
+                <span class="schedule-structure-view__section-icon">
+                  <app-ui-icon [name]="child.icon || 'layers'" size="sm" tone="primary" />
+                </span>
+                <h3>{{ child.translation | translate }}</h3>
+              </div>
+            </header>
+
+            <div class="schedule-structure-view__segment-list">
+              @for (segment of segments(); track segment.id) {
+                <button
+                  class="schedule-structure-view__segment-card"
+                  type="button"
+                  [class.schedule-structure-view__segment-card--active]="
+                    isSegmentSelected(segment.id)
+                  "
+                  (click)="selectSegment(segment.id)"
+                >
+                  <div>
+                    <span class="schedule-structure-view__segment-name">
+                      <span
+                        class="schedule-structure-view__segment-status"
+                        [class.schedule-structure-view__segment-status--active]="segment.active"
+                        [class.schedule-structure-view__segment-status--inactive]="!segment.active"
+                        aria-hidden="true"
+                      ></span>
+                      <strong>{{ segment.name }}</strong>
+                    </span>
+                    <span>
+                      {{
+                        lessonsCountLabelKey(segment.lessons_count)
+                          | translate: { count: segment.lessons_count ?? 0 }
+                      }}
+                      •
+                      {{
+                        breaksCountLabelKey(segment.breaks_count)
+                          | translate: { count: segment.breaks_count ?? 0 }
+                      }}
+                    </span>
+                  </div>
+
+                  <app-ui-icon name="drilldown" size="sm" tone="primary" />
+                </button>
+              } @empty {
+                <div class="schedule-structure-view__empty-card">
+                  {{ 'common.no-data' | translate }}
+                </div>
+              }
+            </div>
+
+            @if (addSegmentOption(); as option) {
+              <div class="schedule-structure-view__segment-actions">
+                <app-ui-button
+                  [label]="option.translation | translate"
+                  [iconLeft]="option.icon"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="hasSelectedSegment() || isCreatingSegment()"
+                  (click)="startCreateSegment()"
+                />
+              </div>
+            }
+          </section>
+        }
+      </aside>
+
+      <section class="schedule-structure-view__workspace">
+        @if (isCreatingSegment()) {
+          <app-schedule-segment-detail
+            [structureId]="structureItem.id"
+            [segmentId]="null"
+            [route]="segmentRoute()"
+            [createMode]="true"
+            (saved)="onSegmentSaved($event)"
+            (createCancelled)="onSegmentCreateCancelled()"
+          />
+        } @else if (selectedSegment(); as segment) {
+          <app-schedule-segment-detail
+            [structureId]="structureItem.id"
+            [segmentId]="segment.id"
+            [route]="segmentRoute()"
+            (saved)="onSegmentSaved($event)"
+            (deleted)="onSegmentDeleted()"
+          />
+        } @else if (isStructureSelected()) {
+          <app-schedule-structure-detail
+            [structure]="structureItem"
+            [route]="route()"
+            [options]="options()"
+            (saved)="onStructureSaved()"
+          />
+        } @else {
+          <div class="schedule-structure-view__workspace-empty">
+            <h3>{{ 'planning.study-plan-schedule-segments.detail.select' | translate }}</h3>
+          </div>
+        }
+      </section>
+    </div>
+  } @else {
+    <section class="schedule-structure-view__empty">
+      <p>{{ 'common.no-data' | translate }}</p>
+    </section>
+  }
+</section>

@@ -1,0 +1,139 @@
+@if (structure(); as currentStructure) {
+  <article class="schedule-structure-detail">
+    <header class="schedule-structure-detail__header">
+      @if (!editing()) {
+        <div class="schedule-structure-detail__identity">
+          <span class="schedule-structure-detail__icon" aria-hidden="true">
+            <app-ui-icon name="layout-template" size="md" tone="primary" />
+          </span>
+
+          <div>
+            <h3>{{ currentStructure.name }}</h3>
+            <div
+              class="schedule-structure-detail__status"
+              [class.schedule-structure-detail__status--active]="currentStructure.active"
+              [class.schedule-structure-detail__status--inactive]="!currentStructure.active"
+            >
+              <app-ui-icon
+                [name]="currentStructure.active ? 'check' : 'circle-dot'"
+                size="sm"
+                tone="default"
+              />
+              <span>
+                {{
+                  (currentStructure.active
+                    ? 'planning.study-plan-schedule-structures.detail.status.active'
+                    : 'planning.study-plan-schedule-structures.detail.status.inactive'
+                  ) | translate
+                }}
+              </span>
+            </div>
+            <p>{{ 'planning.study-plan-schedule-structures.detail.subtitle' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="schedule-structure-detail__header-actions">
+          @if (updateOption(); as option) {
+            <app-ui-button
+              [label]="option.translation | translate"
+              [iconLeft]="option.icon"
+              [iconOnly]="true"
+              [variant]="updateOptionVariant()"
+              size="sm"
+              type="button"
+              (click)="startEdit()"
+            />
+          }
+        </div>
+      } @else {
+        <form class="schedule-structure-detail__form" [formGroup]="form">
+          <div class="schedule-structure-detail__form-header">
+            <h3>{{ 'planning.study-plan-schedule-structures.detail.form.title' | translate }}</h3>
+            <p>{{ 'planning.study-plan-schedule-structures.detail.subtitle' | translate }}</p>
+          </div>
+
+          <label class="schedule-structure-detail__field">
+            <span>{{
+              'planning.study-plan-schedule-structures.detail.form.name' | translate
+            }}</span>
+            <input type="text" formControlName="name" />
+            <form-error [control]="form.controls.name"></form-error>
+          </label>
+
+          <div class="schedule-structure-detail__form-actions">
+            <app-ui-button
+              [label]="'common.cancel' | translate"
+              [iconOnly]="true"
+              iconLeft="cancel"
+              variant="danger"
+              size="sm"
+              type="button"
+              [disabled]="saving()"
+              (click)="cancelEdit()"
+            />
+
+            <app-ui-button
+              [label]="'common.save' | translate"
+              iconLeft="save"
+              [iconOnly]="true"
+              variant="primary"
+              size="sm"
+              type="button"
+              [disabled]="saving() || form.invalid"
+              (click)="save()"
+            />
+          </div>
+        </form>
+      }
+    </header>
+
+    <section class="schedule-structure-detail__metrics">
+      <div class="schedule-structure-detail__metric">
+        <strong>{{ segmentsCount() }}</strong>
+        <span>{{ segmentLabel() | translate }}</span>
+      </div>
+
+      <div class="schedule-structure-detail__metric">
+        <strong>{{ lessonsCount() }}</strong>
+        <span>{{ lessonLabel() | translate }}</span>
+      </div>
+
+      <div class="schedule-structure-detail__metric">
+        <strong>{{ breaksCount() }}</strong>
+        <span>{{ breakLabel() | translate }}</span>
+      </div>
+
+      <div class="schedule-structure-detail__metric">
+        <strong>{{ blocksCount() }}</strong>
+        <span>{{ blockLabel() | translate }}</span>
+      </div>
+    </section>
+
+    <section class="schedule-structure-detail__purpose">
+      <div class="schedule-structure-detail__purpose-header">
+        <span class="schedule-structure-detail__purpose-icon" aria-hidden="true">
+          <app-ui-icon name="calendar-days" size="sm" tone="primary" />
+        </span>
+
+        <div>
+          <h4>{{ 'planning.study-plan-schedule-structures.detail.purpose.title' | translate }}</h4>
+          <p>
+            {{ 'planning.study-plan-schedule-structures.detail.purpose.description' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <ul>
+        <li>{{ 'planning.study-plan-schedule-structures.detail.purpose.segments' | translate }}</li>
+        <li>{{ 'planning.study-plan-schedule-structures.detail.purpose.blocks' | translate }}</li>
+        <li>
+          {{ 'planning.study-plan-schedule-structures.detail.purpose.schedules' | translate }}
+        </li>
+      </ul>
+    </section>
+  </article>
+} @else {
+  <section class="schedule-structure-detail__empty">
+    <p>{{ 'common.no-data' | translate }}</p>
+  </section>
+}

@@ -50,3 +50,18 @@ export interface SiteStateResponse {
   data: SiteStateData;
   message: string;
 }
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Central\System\Day
+ */
+export interface IDay {
+  id: number;
+  name: string;
+  translation: string;
+  weekday: number;
+  order: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+}

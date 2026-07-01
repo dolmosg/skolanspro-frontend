@@ -1,0 +1,61 @@
+<article class="study-plan-stage-groups-summary">
+  <header class="study-plan-stage-groups-summary__header">
+    <div class="study-plan-stage-groups-summary__icon" aria-hidden="true">
+      <app-ui-icon name="families" size="md" />
+    </div>
+
+    <div>
+      <h4>{{ 'planning.study-plan-organizations.stage-groups.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-organizations.stage-groups.description' | translate }}</p>
+    </div>
+  </header>
+
+  @if (hasStages()) {
+    <div class="study-plan-stage-groups-summary__list">
+      @for (stage of stages(); track stage.id) {
+        <section class="study-plan-stage-groups-summary__stage">
+          <header class="study-plan-stage-groups-summary__stage-header">
+            <div>
+              <strong>{{ stage.name }}</strong>
+              <span>
+                {{
+                  groupsTranslationKey(stage.groups_count)
+                    | translate: { count: stage.groups_count }
+                }}
+              </span>
+            </div>
+          </header>
+
+          <div class="study-plan-stage-groups-summary__items">
+            @for (grade of stage.grades; track grade.id ?? grade.type) {
+              <div class="study-plan-stage-groups-summary__item">
+                <div class="study-plan-stage-groups-summary__item-content">
+                  <strong>{{ grade.name }}</strong>
+                  @if (grade.description) {
+                    <span>{{ grade.description }}</span>
+                  }
+                </div>
+
+                <div class="study-plan-stage-groups-summary__item-meta">
+                  <span>
+                    {{
+                      groupsTranslationKey(grade.groups_count)
+                        | translate: { count: grade.groups_count }
+                    }}
+                  </span>
+                  <app-ui-icon name="drilldown" size="sm" />
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="study-plan-stage-groups-summary__empty">
+      <app-ui-icon name="families" size="md" />
+      <strong>{{ 'planning.study-plan-organizations.stage-groups.empty-title' | translate }}</strong>
+      <span>{{ 'planning.study-plan-organizations.stage-groups.empty-description' | translate }}</span>
+    </div>
+  }
+</article>

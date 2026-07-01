@@ -1,0 +1,187 @@
+<article class="study-plan-schedules-summary">
+  <header class="study-plan-schedules-summary__header">
+    <div class="study-plan-schedules-summary__icon" aria-hidden="true">
+      <app-ui-icon name="calendar-check" size="md" />
+    </div>
+
+    <div>
+      <h4>{{ 'planning.study-plan-organizations.schedules.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-organizations.schedules.description' | translate }}</p>
+    </div>
+  </header>
+
+  @if (hasSchedules()) {
+    <div class="study-plan-schedules-summary__list">
+      @for (stage of stages(); track stage.id) {
+        <section class="study-plan-schedules-summary__stage">
+          <header class="study-plan-schedules-summary__stage-header">
+            <div class="study-plan-schedules-summary__stage-main">
+              <strong class="study-plan-schedules-summary__name">
+                {{ stage.name }}
+              </strong>
+
+              <span class="study-plan-schedules-summary__meta">
+                {{ subjectsTranslationKey(stage.subjects_count) | translate: { count: stage.subjects_count } }}
+                <span class="study-plan-schedules-summary__separator" aria-hidden="true"></span>
+                {{ academicGroupsTranslationKey(stage.groups_count) | translate: { count: stage.groups_count } }}
+              </span>
+            </div>
+
+            <span class="study-plan-schedules-summary__count">
+              {{
+                scheduledGroupsTranslationKey(stage.groups_count)
+                  | translate
+                    : {
+                        scheduled: stage.scheduled_groups_count,
+                        total: stage.groups_count,
+                      }
+              }}
+            </span>
+
+            <strong class="study-plan-schedules-summary__percent" [style.color]="stage.completion_color">
+              {{ stage.completion_percent }}%
+            </strong>
+          </header>
+
+          <div class="study-plan-schedules-summary__progress" aria-hidden="true">
+            <span
+              [style.width.%]="stage.completion_percent"
+              [style.backgroundColor]="stage.completion_color"
+            ></span>
+          </div>
+
+          @if (hasMultipleVariants() && stage.variants.length > 0) {
+            <div class="study-plan-schedules-summary__variants">
+              <span class="study-plan-schedules-summary__variants-title">
+                {{ 'planning.study-plan-organizations.schedules.variants' | translate }}
+              </span>
+
+              @for (variant of stage.variants; track variant.id) {
+                <div class="study-plan-schedules-summary__variant">
+                  <span class="study-plan-schedules-summary__variant-name">
+                    {{ variant.name }}
+                  </span>
+
+                  <span class="study-plan-schedules-summary__count">
+                    {{
+                      scheduledGroupsTranslationKey(variant.groups_count)
+                        | translate
+                          : {
+                              scheduled: variant.scheduled_groups_count,
+                              total: variant.groups_count,
+                            }
+                    }}
+                  </span>
+
+                  <strong
+                    class="study-plan-schedules-summary__percent"
+                    [style.color]="variant.completion_color"
+                  >
+                    {{ variant.completion_percent }}%
+                  </strong>
+
+                  <div class="study-plan-schedules-summary__progress" aria-hidden="true">
+                    <span
+                      [style.width.%]="variant.completion_percent"
+                      [style.backgroundColor]="variant.completion_color"
+                    ></span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <div class="study-plan-schedules-summary__items">
+            @for (grade of stage.grades; track grade.id ?? grade.type) {
+              <div class="study-plan-schedules-summary__item">
+                <div class="study-plan-schedules-summary__item-header">
+                  <div class="study-plan-schedules-summary__item-main">
+                    <strong class="study-plan-schedules-summary__name">
+                      {{ grade.description || grade.name }}
+                    </strong>
+
+                    <span class="study-plan-schedules-summary__meta">
+                      {{ subjectsTranslationKey(grade.subjects_count) | translate: { count: grade.subjects_count } }}
+                    </span>
+                  </div>
+
+                  <span class="study-plan-schedules-summary__count">
+                    {{
+                      scheduledGroupsTranslationKey(grade.groups_count)
+                        | translate
+                          : {
+                              scheduled: grade.scheduled_groups_count,
+                              total: grade.groups_count,
+                            }
+                    }}
+                  </span>
+
+                  <strong
+                    class="study-plan-schedules-summary__percent"
+                    [style.color]="grade.completion_color"
+                  >
+                    {{ grade.completion_percent }}%
+                  </strong>
+                </div>
+
+                <div class="study-plan-schedules-summary__progress" aria-hidden="true">
+                  <span
+                    [style.width.%]="grade.completion_percent"
+                    [style.backgroundColor]="grade.completion_color"
+                  ></span>
+                </div>
+
+                @if (hasMultipleVariants() && grade.variants.length > 0) {
+                  <div class="study-plan-schedules-summary__item-variants">
+                    @for (variant of grade.variants; track variant.id) {
+                      <div class="study-plan-schedules-summary__variant">
+                        <span class="study-plan-schedules-summary__variant-name">
+                          {{ variant.name }}
+                        </span>
+
+                        <span class="study-plan-schedules-summary__count">
+                          {{
+                            scheduledGroupsTranslationKey(variant.groups_count)
+                              | translate
+                                : {
+                                    scheduled: variant.scheduled_groups_count,
+                                    total: variant.groups_count,
+                                  }
+                          }}
+                        </span>
+
+                        <strong
+                          class="study-plan-schedules-summary__percent"
+                          [style.color]="variant.completion_color"
+                        >
+                          {{ variant.completion_percent }}%
+                        </strong>
+
+                        <div class="study-plan-schedules-summary__progress" aria-hidden="true">
+                          <span
+                            [style.width.%]="variant.completion_percent"
+                            [style.backgroundColor]="variant.completion_color"
+                          ></span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="study-plan-schedules-summary__empty">
+      <app-ui-icon name="calendar-check" size="md" />
+      <strong>
+        {{ 'planning.study-plan-organizations.schedules.empty-title' | translate }}
+      </strong>
+      <span>
+        {{ 'planning.study-plan-organizations.schedules.empty-description' | translate }}
+      </span>
+    </div>
+  }
+</article>

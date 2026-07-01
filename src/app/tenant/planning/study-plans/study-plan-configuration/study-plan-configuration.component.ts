@@ -24,6 +24,7 @@ import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.int
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { StudyPlanAcademicsComponent } from '../study-plan-academics/study-plan-academics.component';
+import { StudyPlanOrganizationComponent } from '../study-plan-organization/study-plan-organization.component';
 
 export interface StudyPlanConfigurationItem {
   id: number;
@@ -261,6 +262,7 @@ interface AssistantEditingFieldContext {
     DatePipe,
     ReactiveFormsModule,
     StudyPlanAcademicsComponent,
+    StudyPlanOrganizationComponent,
   ],
   templateUrl: './study-plan-configuration.component.html',
   styleUrl: './study-plan-configuration.component.scss',
@@ -736,8 +738,7 @@ export class StudyPlanConfigurationComponent
         {
           ...baseField,
           catalogKey: definition.catalogKey,
-          selectedOption:
-            availableOptions.find((option) => option.id === control.value) ?? null,
+          selectedOption: availableOptions.find((option) => option.id === control.value) ?? null,
           availableOptions,
         },
       ];
@@ -817,9 +818,8 @@ export class StudyPlanConfigurationComponent
 
   private getAssistantContextId(section: string): string {
     const map: Record<string, string> = {
-      'study-plan-information': 'planning.study-plans.information',
       'study-plan-academics': 'planning.study-plans.academics',
-      'study-plan-scheduling': 'planning.study-plans.scheduling',
+      'study-plan-organizations': 'planning.study-plans.scheduling',
       'study-plan-evaluation': 'planning.study-plans.evaluation',
       'study-plan-report-cards': 'planning.study-plans.report-cards',
     };
@@ -829,9 +829,8 @@ export class StudyPlanConfigurationComponent
 
   private getAssistantSectionTitle(section: string): string {
     const map: Record<string, string> = {
-      'study-plan-information': 'Información del plan',
       'study-plan-academics': 'Estructura académica',
-      'study-plan-scheduling': 'Horarios y calendario',
+      'study-plan-organizations': 'Horarios y calendario',
       'study-plan-evaluation': 'Evaluación',
       'study-plan-report-cards': 'Boletas',
     };
@@ -1196,9 +1195,8 @@ export class StudyPlanConfigurationComponent
 
   protected getStudyPlanChildDescription(name: string): string {
     const map: Record<string, string> = {
-      'study-plan-information': 'planning.study-plans.children.information',
       'study-plan-academics': 'planning.study-plans.children.academics',
-      'study-plan-scheduling': 'planning.study-plans.children.scheduling',
+      'study-plan-organizations': 'planning.study-plans.children.scheduling',
       'study-plan-evaluation': 'planning.study-plans.children.evaluation',
       'study-plan-report-cards': 'planning.study-plans.children.report-cards',
     };

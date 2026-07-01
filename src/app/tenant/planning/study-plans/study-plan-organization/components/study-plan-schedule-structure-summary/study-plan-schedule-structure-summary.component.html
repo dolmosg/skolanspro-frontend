@@ -1,0 +1,140 @@
+<article class="study-plan-schedule-structure-summary">
+  <header class="study-plan-schedule-structure-summary__header">
+    <div class="study-plan-schedule-structure-summary__icon" aria-hidden="true">
+      <app-ui-icon name="layout-template" size="md" />
+    </div>
+
+    <div>
+      <h4>{{ 'planning.study-plan-organizations.schedule-structure.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-organizations.schedule-structure.description' | translate }}</p>
+    </div>
+  </header>
+
+  @if (hasStructures()) {
+    <div class="study-plan-schedule-structure-summary__list">
+      @for (structure of structures(); track structure.id) {
+        <section
+          class="study-plan-schedule-structure-summary__structure"
+          role="button"
+          tabindex="0"
+          (click)="selectStructure(structure.id)"
+          (keydown)="selectStructureFromKeyboard($event, structure.id)"
+        >
+          <header class="study-plan-schedule-structure-summary__structure-header">
+            <div class="study-plan-schedule-structure-summary__structure-title">
+              <label
+                class="study-plan-schedule-structure-summary__active-control"
+                (click)="activateStructure($event, structure)"
+              >
+                <input
+                  type="radio"
+                  name="study-plan-schedule-structure-active"
+                  [checked]="isStructureActiveControlChecked(structure)"
+                  [disabled]="!canActivateStructure(structure)"
+                  [attr.aria-label]="structure.name"
+                />
+
+                <span
+                  class="study-plan-schedule-structure-summary__active-indicator"
+                  aria-hidden="true"
+                ></span>
+
+                <strong>{{ structure.name }}</strong>
+              </label>
+
+              <span>
+                {{
+                  segmentsTranslationKey(structure.segments_count)
+                    | translate: { count: structure.segments_count }
+                }}
+              </span>
+            </div>
+
+            <app-ui-icon name="drilldown" size="sm" />
+          </header>
+
+          <div class="study-plan-schedule-structure-summary__segments">
+            @for (segment of orderedSegments(structure); track segment.id) {
+              <div
+                class="study-plan-schedule-structure-summary__segment"
+                role="button"
+                tabindex="0"
+                (click)="selectSegment($event, structure.id, segment.id)"
+                (keydown)="selectSegmentFromKeyboard($event, structure.id, segment.id)"
+              >
+                <div class="study-plan-schedule-structure-summary__segment-icon" aria-hidden="true">
+                  <app-ui-icon name="calendar-days" size="sm" />
+                </div>
+
+                <div class="study-plan-schedule-structure-summary__segment-content">
+                  <strong class="study-plan-schedule-structure-summary__segment-name">
+                    {{ segment.name }}
+                  </strong>
+
+                  @if (segment.days.length > 0) {
+                    <div class="study-plan-schedule-structure-summary__days">
+                      @for (day of segment.days; track day.id) {
+                        <span>{{ day.translation | translate }}</span>
+                      }
+                    </div>
+                  } @else {
+                    <span class="study-plan-schedule-structure-summary__empty-days">
+                      {{
+                        'planning.study-plan-organizations.schedule-structure.no-days' | translate
+                      }}
+                    </span>
+                  }
+
+                  <div class="study-plan-schedule-structure-summary__counts">
+                    <span>
+                      {{
+                        blocksTranslationKey(segment.blocks_count)
+                          | translate: { count: segment.blocks_count }
+                      }}
+                    </span>
+
+                    <span
+                      class="study-plan-schedule-structure-summary__separator"
+                      aria-hidden="true"
+                    ></span>
+
+                    <span>
+                      {{
+                        breaksTranslationKey(segment.breaks_count)
+                          | translate: { count: segment.breaks_count }
+                      }}
+                    </span>
+                  </div>
+                </div>
+
+                <app-ui-icon
+                  class="study-plan-schedule-structure-summary__segment-chevron"
+                  name="drilldown"
+                  size="sm"
+                />
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="study-plan-schedule-structure-summary__empty">
+      <app-ui-icon name="calendar-days" size="md" />
+      <strong>{{
+        'planning.study-plan-organizations.schedule-structure.empty-title' | translate
+      }}</strong>
+      <span>{{
+        'planning.study-plan-organizations.schedule-structure.empty-description' | translate
+      }}</span>
+    </div>
+  }
+  @if (addStructureOption(); as option) {
+    <app-ui-button
+      [label]="option.translation | translate"
+      [iconLeft]="option.icon"
+      variant="primary"
+      size="sm"
+    />
+  }
+</article>

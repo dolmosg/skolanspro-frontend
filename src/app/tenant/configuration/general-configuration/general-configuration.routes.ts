@@ -87,4 +87,16 @@ export const GENERAL_CONFIGURATION_ROUTES: Routes = [
       },
     },
   },
+  {
+    path: 'working-days',
+    loadComponent: () =>
+      import('./working-days/working-days.component').then((m) => m.WorkingDaysComponent),
+    data: {
+      title: 'controllers.working-days',
+      breadcrumb: 'controllers.working-days',
+      api: {
+        route: 'configuration/working-days',
+      },
+    },
+  },
 ];
