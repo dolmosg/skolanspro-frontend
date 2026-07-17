@@ -1,0 +1,74 @@
+<section class="subject-group-options-editor">
+  <div class="subject-group-options-editor__controls">
+    <label class="subject-group-options-editor__capture">
+      <input
+        type="checkbox"
+        [checked]="gradeCaptureEnabled()"
+        [disabled]="loading()"
+        (change)="setGradeCaptureEnabled($event)"
+      />
+      <span class="subject-group-options-editor__switch" aria-hidden="true"></span>
+      <strong>
+        {{
+          'planning.study-plan-organizations.academic-assignments.options-editor.grade-capture'
+            | translate
+        }}
+      </strong>
+    </label>
+
+    <fieldset class="subject-group-options-editor__report-card">
+      <legend>
+        {{
+          'planning.study-plan-organizations.academic-assignments.options-editor.report-card'
+            | translate
+        }}
+      </legend>
+
+      <div class="subject-group-options-editor__segmented" role="radiogroup">
+        @for (option of reportCardOptions; track option.value) {
+          <button
+            type="button"
+            class="subject-group-options-editor__segment"
+            [class.subject-group-options-editor__segment--active]="
+              selectedReportCardOption() === option.value
+            "
+            [attr.aria-pressed]="selectedReportCardOption() === option.value"
+            [disabled]="loading()"
+            (click)="selectReportCardOption(option.value)"
+          >
+            {{ option.translation | translate }}
+          </button>
+        }
+      </div>
+    </fieldset>
+  </div>
+
+  <footer class="subject-group-options-editor__actions">
+    <app-ui-button
+      [label]="
+        'planning.study-plan-organizations.academic-assignments.options-editor.cancel'
+          | translate
+      "
+      variant="secondary"
+      fill="soft"
+      size="sm"
+      type="button"
+      [disabled]="loading()"
+      (click)="closeEditor()"
+    />
+
+    <app-ui-button
+      [label]="
+        'planning.study-plan-organizations.academic-assignments.options-editor.save'
+          | translate
+      "
+      iconLeft="save"
+      variant="primary"
+      fill="solid"
+      size="sm"
+      type="button"
+      [disabled]="loading() || !hasChanges()"
+      (click)="saveOptions()"
+    />
+  </footer>
+</section>

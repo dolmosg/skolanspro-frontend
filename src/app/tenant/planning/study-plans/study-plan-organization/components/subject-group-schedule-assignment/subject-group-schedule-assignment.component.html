@@ -1,0 +1,118 @@
+<section class="subject-group-schedule-assignment">
+  <header class="subject-group-schedule-assignment__header">
+    <div class="subject-group-schedule-assignment__content">
+      <strong>{{ assignmentGroup().name ?? ('common.no-data' | translate) }}</strong>
+
+      @if (schedule(); as scheduleData) {
+        <span>
+          {{
+            'planning.study-plan-schedule-structures.detail.status.active'
+              | translate
+          }}
+          ·
+          {{ scheduleData.structure.name }}
+        </span>
+      }
+    </div>
+  </header>
+
+  @if (loading() && !schedule()) {
+    <div class="subject-group-schedule-assignment__state">
+      {{ 'general.loading' | translate }}
+    </div>
+  }
+
+  @if (schedule(); as scheduleData) {
+    @if (scheduleData.uses_variant_selection) {
+      <label class="subject-group-schedule-assignment__variant">
+        <span>
+          {{ 'planning.study-plan-organizations.schedules.variants' | translate }}
+        </span>
+
+        <select
+          [value]="selectedVariantId() ?? ''"
+          [disabled]="scheduleData.variants.length <= 1"
+          (change)="setSelectedVariant($event)"
+        >
+          @for (variant of scheduleData.variants; track variant.id) {
+            <option [value]="variant.id">{{ variant.name }}</option>
+          } @empty {
+            <option value="">{{ 'common.no-data' | translate }}</option>
+          }
+        </select>
+      </label>
+    }
+
+    @if (scheduleData.segments.length > 0) {
+      <div class="subject-group-schedule-assignment__segments">
+        @for (segment of scheduleData.segments; track segment.id) {
+          <section class="subject-group-schedule-assignment__segment">
+            <h5>{{ segment.name }}</h5>
+
+            <div class="subject-group-schedule-assignment__matrix-scroll">
+              <table class="subject-group-schedule-assignment__matrix">
+                <thead>
+                  <tr>
+                    <th class="subject-group-schedule-assignment__block-head" scope="col">
+                      {{
+                        'planning.study-plan-schedule-segments.detail.metrics.block'
+                          | translate
+                      }}
+                    </th>
+
+                    @for (day of segment.days; track day.id) {
+                      <th scope="col">{{ day.translation | translate }}</th>
+                    }
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (block of segment.blocks; track block.id) {
+                    <tr>
+                      <th scope="row">
+                        <span class="subject-group-schedule-assignment__time">
+                          {{ formatTime(block.start) }} - {{ formatTime(block.end) }}
+                        </span>
+                        <strong>{{ block.name }}</strong>
+                      </th>
+
+                      @for (day of segment.days; track day.id) {
+                        <td>
+                          <input
+                            class="subject-group-schedule-assignment__checkbox"
+                            type="checkbox"
+                            [checked]="isCellSelected(block, day)"
+                            [disabled]="isCellPending(block, day)"
+                            (change)="toggleCell(block, day)"
+                          />
+                        </td>
+                      }
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td [attr.colspan]="segment.days.length + 1">
+                        {{ 'planning.study-plan-schedule-segments.detail.blocks.empty' | translate }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+      </div>
+    }
+  }
+
+  <footer class="subject-group-schedule-assignment__actions">
+    <app-ui-button
+      [label]="'common.close' | translate"
+      variant="secondary"
+      fill="soft"
+      size="sm"
+      type="button"
+      [disabled]="hasPendingRequests()"
+      (click)="closeEditor()"
+    />
+  </footer>
+</section>

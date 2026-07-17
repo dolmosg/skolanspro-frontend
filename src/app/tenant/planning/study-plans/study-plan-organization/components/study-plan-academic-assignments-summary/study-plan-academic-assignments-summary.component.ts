@@ -1,13 +1,19 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import type { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 
 import type { StudyPlanAcademicAssignmentsSummary } from '../../study-plan-organization.component';
 
 type StudyPlanAcademicAssignmentsSummaryStage =
   StudyPlanAcademicAssignmentsSummary['items'][number];
+type StudyPlanAcademicAssignmentsSummaryGrade =
+  StudyPlanAcademicAssignmentsSummaryStage['grades'][number];
+
+export interface StudyPlanAcademicAssignmentsSelection {
+  stageId: number;
+  gradeId: number | null;
+}
 
 @Component({
   selector: 'app-study-plan-academic-assignments-summary',
@@ -17,15 +23,20 @@ type StudyPlanAcademicAssignmentsSummaryStage =
 })
 export class StudyPlanAcademicAssignmentsSummaryComponent {
   readonly summary = input<StudyPlanAcademicAssignmentsSummary | null>(null);
-  /**
-   * Backend-resolved child options passed by Organization.
-   * This summary remains presentational and does not resolve permissions.
-   */
-  readonly options = input<ScreenOptionItem[]>([]);
-
+  readonly openGrade = output<StudyPlanAcademicAssignmentsSelection>();
   protected readonly stages = computed<StudyPlanAcademicAssignmentsSummaryStage[]>(() => {
     return this.summary()?.items ?? [];
   });
 
   protected readonly hasStages = computed(() => this.stages().length > 0);
+
+  protected openAssignmentGrade(
+    stage: StudyPlanAcademicAssignmentsSummaryStage,
+    grade: StudyPlanAcademicAssignmentsSummaryGrade,
+  ): void {
+    this.openGrade.emit({
+      stageId: stage.id,
+      gradeId: grade.type === 'grade' ? grade.id : null,
+    });
+  }
 }

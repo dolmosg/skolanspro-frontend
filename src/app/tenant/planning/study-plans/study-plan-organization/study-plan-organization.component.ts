@@ -4,9 +4,15 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SkolansBaseComponent } from '@shared/base/skolans-base-component';
 
 import { ScheduleStructureViewComponent } from './components/schedule-structure-view/schedule-structure-view.component';
-import { StudyPlanAcademicAssignmentsSummaryComponent } from './components/study-plan-academic-assignments-summary/study-plan-academic-assignments-summary.component';
+import {
+  StudyPlanAcademicAssignmentsSummaryComponent,
+  type StudyPlanAcademicAssignmentsSelection,
+} from './components/study-plan-academic-assignments-summary/study-plan-academic-assignments-summary.component';
+import { StudyPlanAcademicAssignmentsViewComponent } from './components/study-plan-academic-assignments-view/study-plan-academic-assignments-view.component';
+import type { StudyPlanAcademicAssignmentsOrganizationMutation } from './components/study-plan-academic-assignments-grade-detail/study-plan-academic-assignments-grade-detail.component';
 import { StudyPlanScheduleStructureSummaryComponent } from './components/study-plan-schedule-structure-summary/study-plan-schedule-structure-summary.component';
 import { StudyPlanSchedulesSummaryComponent } from './components/study-plan-schedules-summary/study-plan-schedules-summary.component';
+import { StudyPlanStageGroupsViewComponent } from './components/study-plan-stage-groups-view/study-plan-stage-groups-view.component';
 import { StudyPlanStageGroupsSummaryComponent } from './components/study-plan-stage-groups-summary/study-plan-stage-groups-summary.component';
 import { ScreenChildItem, ScreenOptionItem } from 'app/shared/interfaces/access.interfaces';
 import type { ISchoolYear, ISection } from '@shared/interfaces/administration.interfaces';
@@ -61,12 +67,16 @@ interface StudyPlanOrganizationStage extends Pick<
   terms: Pick<IStudyPlanTerm, 'id' | 'study_plan_stage_id' | 'code' | 'name'>[];
 }
 
-interface StudyPlanOrganizationSummaries {
+export interface StudyPlanOrganizationSummaries {
   schedule_structure: StudyPlanScheduleStructureSummary;
   stage_groups: StudyPlanStageGroupsSummary;
   academic_assignments: StudyPlanAcademicAssignmentsSummary;
   schedules: StudyPlanSchedulesSummary;
 }
+
+export type StudyPlanOrganizationSummariesPatch = Partial<
+  Pick<StudyPlanOrganizationSummaries, 'stage_groups' | 'academic_assignments' | 'schedules'>
+>;
 
 export interface StudyPlanScheduleStructureSummary {
   schedule_type_id: number;
@@ -104,6 +114,12 @@ interface StudyPlanScheduleStructureDaySummary {
 export interface StudyPlanStageGroupsSummary {
   stages_count: number;
   items: StudyPlanStageGroupsSummaryStage[];
+}
+
+export interface StudyPlanStageGroupsSelection {
+  stageId: number;
+  gradeId: number | null;
+  mode: 'grade' | 'crossover';
 }
 
 interface StudyPlanStageGroupsSummaryStage extends Pick<
@@ -246,6 +262,8 @@ interface StudyPlanSchedulesSummaryCrossoverItem {
     StudyPlanAcademicAssignmentsSummaryComponent,
     StudyPlanSchedulesSummaryComponent,
     ScheduleStructureViewComponent,
+    StudyPlanStageGroupsViewComponent,
+    StudyPlanAcademicAssignmentsViewComponent,
     UiIconComponent,
   ],
   templateUrl: './study-plan-organization.component.html',
@@ -260,6 +278,11 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   readonly organizationSummaries = signal<StudyPlanOrganizationSummaries | null>(null);
   readonly selectedStructureId = signal<number | null>(null);
   readonly selectedSegmentId = signal<number | null>(null);
+  readonly selectedGroupsStageId = signal<number | null>(null);
+  readonly selectedGroupsGradeId = signal<number | null>(null);
+  readonly selectedGroupsMode = signal<'grade' | 'crossover' | null>(null);
+  readonly selectedAcademicAssignmentStageId = signal<number | null>(null);
+  readonly selectedAcademicAssignmentGradeId = signal<number | null | undefined>(undefined);
 
   readonly currentStudyPlan = computed(() => this.organizationStudyPlan() ?? this.studyPlan());
   readonly scheduleStructureSummary = computed(
@@ -269,6 +292,22 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   readonly academicAssignmentsSummary = computed(
     () => this.organizationSummaries()?.academic_assignments ?? null,
   );
+  readonly selectedAcademicAssignmentStage = computed(() => {
+    const stageId = this.selectedAcademicAssignmentStageId();
+
+    if (stageId === null) {
+      return null;
+    }
+
+    return (
+      this.academicAssignmentsSummary()?.items.find((stage) => stage.id === stageId) ?? null
+    );
+  });
+  readonly selectedAcademicAssignmentGradeIdForView = computed(() => {
+    const gradeId = this.selectedAcademicAssignmentGradeId();
+
+    return gradeId === undefined ? null : gradeId;
+  });
   readonly schedulesSummary = computed(() => this.organizationSummaries()?.schedules ?? null);
   /**
    * Backend-resolved child route for the embedded schedule structure context.
@@ -277,6 +316,18 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   readonly scheduleStructureRoute = computed(() =>
     this.getScreenChildRoute('study-plan-schedule-structures'),
   );
+  /**
+   * Backend-resolved child route for the embedded academic assignments context.
+   * Organization owns route resolution and passes it to the assignments view.
+   */
+  readonly academicAssignmentsRoute = computed(() =>
+    this.getScreenChildRoute('study-plan-academic-assignments'),
+  );
+  /**
+   * Backend-resolved child route for the embedded stage groups context.
+   * Organization owns route resolution and passes it to the request-capable list.
+   */
+  readonly stageGroupsRoute = computed(() => this.getScreenChildRoute('study-plan-stage-groups'));
   /**
    * Backend permissions determine whether the schedule structure child summary is visible.
    */
@@ -369,15 +420,66 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   protected openScheduleStructure(structureId: number): void {
     this.selectedStructureId.set(structureId);
     this.selectedSegmentId.set(null);
+    this.closeStageGroupsView();
+    this.closeAcademicAssignmentsView();
   }
 
   protected openScheduleSegment(structureId: number, segmentId: number): void {
     this.selectedStructureId.set(structureId);
     this.selectedSegmentId.set(segmentId);
+    this.closeStageGroupsView();
+    this.closeAcademicAssignmentsView();
   }
 
   protected closeScheduleStructureView(): void {
     this.selectedStructureId.set(null);
     this.selectedSegmentId.set(null);
+  }
+
+  protected openStageGroups(selection: StudyPlanStageGroupsSelection): void {
+    this.closeScheduleStructureView();
+    this.closeAcademicAssignmentsView();
+    this.selectedGroupsStageId.set(selection.stageId);
+    this.selectedGroupsGradeId.set(selection.gradeId);
+    this.selectedGroupsMode.set(selection.mode);
+  }
+
+  protected closeStageGroupsView(): void {
+    this.selectedGroupsStageId.set(null);
+    this.selectedGroupsGradeId.set(null);
+    this.selectedGroupsMode.set(null);
+  }
+
+  protected openAcademicAssignments(selection: StudyPlanAcademicAssignmentsSelection): void {
+    this.closeScheduleStructureView();
+    this.closeStageGroupsView();
+    this.selectedAcademicAssignmentStageId.set(selection.stageId);
+    this.selectedAcademicAssignmentGradeId.set(selection.gradeId);
+  }
+
+  protected closeAcademicAssignmentsView(): void {
+    this.selectedAcademicAssignmentStageId.set(null);
+    this.selectedAcademicAssignmentGradeId.set(undefined);
+  }
+
+  protected handleAcademicAssignmentMutation(
+    change: StudyPlanAcademicAssignmentsOrganizationMutation,
+  ): void {
+    this.applyOrganizationSummariesPatch(change.organization_summaries);
+  }
+
+  protected applyOrganizationSummariesPatch(
+    patch: StudyPlanOrganizationSummariesPatch | undefined,
+  ): void {
+    const summaries = this.organizationSummaries();
+
+    if (!summaries || !patch) {
+      return;
+    }
+
+    this.organizationSummaries.set({
+      ...summaries,
+      ...patch,
+    });
   }
 }

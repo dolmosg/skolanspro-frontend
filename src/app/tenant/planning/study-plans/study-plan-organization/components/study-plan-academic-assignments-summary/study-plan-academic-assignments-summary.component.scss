@@ -124,13 +124,48 @@
 }
 
 .study-plan-academic-assignments-summary__item {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 100%;
   min-width: 0;
   padding: 0.72rem 0.85rem;
   border: 1px solid color-mix(in srgb, var(--color-primary) 14%, var(--color-border));
   border-radius: 0.9rem;
   background: var(--color-surface);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  gap: 0.5rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-primary-border-hover);
+    background: var(--color-primary-tint-hover);
+    box-shadow: 0 3px 10px var(--color-border);
+    transform: translateY(-1px);
+    outline: none;
+
+    app-ui-icon {
+      transform: translateX(2px);
+    }
+  }
+
+  app-ui-icon {
+    transition: transform 0.18s ease;
+  }
+}
+
+.study-plan-academic-assignments-summary__item-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   gap: 0.5rem;
 }
 
@@ -187,5 +222,9 @@
   .study-plan-academic-assignments-summary__count {
     grid-column: 1;
     grid-row: 2;
+  }
+
+  .study-plan-academic-assignments-summary__item {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }

@@ -1,0 +1,461 @@
+:host {
+  display: flex;
+  min-width: 0;
+}
+
+.study-plan-academic-assignments-subject-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface-subtle);
+  box-shadow: 0 2px 10px var(--color-border);
+  gap: 0.75rem;
+}
+
+.study-plan-academic-assignments-subject-card__subject-header,
+.study-plan-academic-assignments-subject-card__group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  gap: 0.75rem;
+}
+
+.study-plan-academic-assignments-subject-card__subject-heading,
+.study-plan-academic-assignments-subject-card__group-header > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.12rem;
+
+  strong,
+  span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  strong {
+    color: var(--color-text);
+    font-weight: 850;
+    line-height: 1.22;
+  }
+
+  span {
+    color: var(--color-text-muted);
+    font-size: 0.76rem;
+    font-weight: 750;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__subject-heading strong {
+  font-size: 0.98rem;
+}
+
+.study-plan-academic-assignments-subject-card__group-header > div strong {
+  font-size: 0.84rem;
+}
+
+.study-plan-academic-assignments-subject-card__subject-code {
+  color: var(--color-text-soft);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.study-plan-academic-assignments-subject-card__subject-tools {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+  gap: 0.4rem;
+}
+
+.study-plan-academic-assignments-subject-card__subject-meta {
+  display: block;
+  min-width: 0;
+  margin-top: -0.25rem;
+
+  app-ui-meta-item {
+    max-width: 100%;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__progress {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+
+.study-plan-academic-assignments-subject-card__progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+
+.study-plan-academic-assignments-subject-card__subject-metrics,
+.study-plan-academic-assignments-subject-card__group-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+  gap: 0.45rem;
+}
+
+.study-plan-academic-assignments-subject-card__compact-metric {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.7rem;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  gap: 0.35rem;
+
+  strong {
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  span {
+    overflow: hidden;
+    font-size: 0.7rem;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__group-actions {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.study-plan-academic-assignments-subject-card__groups {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 0.28rem;
+}
+
+.study-plan-academic-assignments-subject-card__groups-header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 2.35rem;
+  padding: 0 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-primary) 3%, var(--color-surface));
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  gap: 0.5rem;
+  user-select: none;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-primary-border-hover);
+    background: var(--color-primary-tint-hover);
+    box-shadow: 0 2px 8px var(--color-border);
+    outline: none;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__groups-title {
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: inherit;
+  font-size: 0.74rem;
+  font-weight: 850;
+  gap: 0.55rem;
+  line-height: 1;
+  text-transform: uppercase;
+
+  app-ui-icon {
+    flex: 0 0 auto;
+    color: var(--color-text-muted);
+    transition: transform 0.18s ease;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__groups-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  margin-top: 0.55rem;
+}
+
+.study-plan-academic-assignments-subject-card__group-creation {
+  min-width: 0;
+  margin-top: 0.65rem;
+}
+
+.study-plan-academic-assignments-subject-card__groups-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-left: 0.05rem;
+}
+
+.study-plan-academic-assignments-subject-card__group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  min-width: 0;
+  margin-top: 0.65rem;
+  gap: 0.65rem;
+}
+
+.study-plan-academic-assignments-subject-card__group-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+  gap: 0.65rem;
+}
+
+.study-plan-academic-assignments-subject-card__group-card--editing,
+.study-plan-academic-assignments-subject-card__group-card--options-editing,
+.study-plan-academic-assignments-subject-card__group-card--schedule-editing {
+  grid-column: 1 / -1;
+}
+
+.study-plan-academic-assignments-subject-card__group-progress {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+
+  strong {
+    color: var(--color-primary);
+    font-size: 0.76rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__options-editor,
+.study-plan-academic-assignments-subject-card__schedule-editor {
+  min-width: 0;
+}
+
+.study-plan-academic-assignments-subject-card__teachers {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.study-plan-academic-assignments-subject-card__teachers-title {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.study-plan-academic-assignments-subject-card__teacher-list {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.study-plan-academic-assignments-subject-card__teacher {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.2rem 0.45rem 0.2rem 0.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
+  gap: 0.35rem;
+}
+
+.study-plan-academic-assignments-subject-card__teacher-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.58rem;
+  font-weight: 900;
+  line-height: 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__teacher-name {
+  overflow: hidden;
+  min-width: 0;
+  max-width: 8.5rem;
+  color: var(--color-text-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.study-plan-academic-assignments-subject-card__teacher-more,
+.study-plan-academic-assignments-subject-card__teacher-empty {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.study-plan-academic-assignments-subject-card__teacher-more {
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--color-primary-border-hover);
+  border-radius: 999px;
+  background: var(--color-primary-tint-hover);
+  color: var(--color-primary);
+}
+
+.study-plan-academic-assignments-subject-card__teacher-empty {
+  padding: 0.2rem 0;
+}
+
+.study-plan-academic-assignments-subject-card__subject-status {
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.study-plan-academic-assignments-subject-card__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 1.6rem;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
+  gap: 0.28rem;
+  white-space: nowrap;
+
+  app-ui-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    line-height: 1;
+  }
+}
+
+.study-plan-academic-assignments-subject-card__status--compact {
+  width: auto;
+  min-width: 1.65rem;
+  min-height: 1.65rem;
+  padding: 0 0.35rem;
+}
+
+.study-plan-academic-assignments-subject-card__status--empty,
+.study-plan-academic-assignments-subject-card__status--pending {
+  border-color: var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+}
+
+.study-plan-academic-assignments-subject-card__status--partial {
+  border-color: var(--color-warning);
+  background: var(--color-warning-soft);
+  color: var(--color-warning-hover);
+}
+
+.study-plan-academic-assignments-subject-card__status--complete {
+  border-color: var(--color-success);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.study-plan-academic-assignments-subject-card__empty-text {
+  margin: 0.65rem 0 0;
+  padding: 0.85rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+@media (max-width: 575.98px) {
+  .study-plan-academic-assignments-subject-card__group-header {
+    flex-direction: column;
+  }
+
+  .study-plan-academic-assignments-subject-card__subject-header {
+    align-items: flex-start;
+  }
+
+  .study-plan-academic-assignments-subject-card__subject-tools {
+    align-self: flex-start;
+  }
+
+  .study-plan-academic-assignments-subject-card__status {
+    align-self: flex-start;
+    white-space: normal;
+  }
+}

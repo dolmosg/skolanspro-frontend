@@ -96,27 +96,100 @@
 /* Variants */
 
 /* PRIMARY */
-:host(.ui-button--primary) .ui-button__control {
+:host(.ui-button--primary.ui-button--fill-solid) .ui-button__control {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #ffffff;
   box-shadow: var(--shadow-primary);
 }
 
-:host(.ui-button--primary) .ui-button__control:hover:not(:disabled) {
+:host(.ui-button--primary.ui-button--fill-solid) .ui-button__control:hover:not(:disabled) {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
 }
 
-/* SECONDARY */
-:host(.ui-button--secondary) .ui-button__control {
+:host(.ui-button--primary.ui-button--fill-soft) .ui-button__control {
   background: var(--color-primary-soft);
   border-color: transparent;
   color: var(--color-primary);
 }
 
-:host(.ui-button--secondary) .ui-button__control:hover:not(:disabled) {
+:host(.ui-button--primary.ui-button--fill-soft) .ui-button__control:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-primary-soft) 78%, var(--color-primary) 22%);
+}
+
+:host(.ui-button--primary.ui-button--fill-outline) .ui-button__control {
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+:host(.ui-button--primary.ui-button--fill-outline) .ui-button__control:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+}
+
+/* SECONDARY */
+:host(.ui-button--secondary.ui-button--fill-solid) .ui-button__control {
+  background: var(--color-primary-soft);
+  border-color: transparent;
+  color: var(--color-primary);
+}
+
+:host(.ui-button--secondary.ui-button--fill-solid) .ui-button__control:hover:not(:disabled) {
   background: rgba(253, 126, 20, 0.18);
+}
+
+:host(.ui-button--secondary.ui-button--fill-soft) .ui-button__control {
+  background: var(--color-primary-tint-hover);
+  border-color: transparent;
+  color: var(--color-primary);
+}
+
+:host(.ui-button--secondary.ui-button--fill-soft) .ui-button__control:hover:not(:disabled) {
+  background: var(--color-primary-tint-selected);
+}
+
+:host(.ui-button--secondary.ui-button--fill-outline) .ui-button__control {
+  background: transparent;
+  border-color: var(--color-primary-border-selected);
+  color: var(--color-primary);
+}
+
+:host(.ui-button--secondary.ui-button--fill-outline) .ui-button__control:hover:not(:disabled) {
+  background: var(--color-primary-tint-hover);
+}
+
+/* DANGER */
+:host(.ui-button--danger.ui-button--fill-solid) .ui-button__control {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #ffffff;
+  box-shadow: var(--shadow-danger);
+}
+
+:host(.ui-button--danger.ui-button--fill-solid) .ui-button__control:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+  border-color: var(--color-danger-hover);
+}
+
+:host(.ui-button--danger.ui-button--fill-soft) .ui-button__control {
+  background: var(--color-danger-soft);
+  border-color: transparent;
+  color: var(--color-danger);
+}
+
+:host(.ui-button--danger.ui-button--fill-soft) .ui-button__control:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-danger-soft) 78%, var(--color-danger) 22%);
+}
+
+:host(.ui-button--danger.ui-button--fill-outline) .ui-button__control {
+  background: transparent;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+:host(.ui-button--danger.ui-button--fill-outline) .ui-button__control:hover:not(:disabled) {
+  background: var(--color-danger-soft);
 }
 
 /* GHOST */
@@ -124,24 +197,12 @@
   background: transparent;
   border-color: transparent;
   color: var(--color-text-soft);
+  box-shadow: none;
 }
 
 :host(.ui-button--ghost) .ui-button__control:hover:not(:disabled) {
   background: var(--color-surface-muted);
   color: var(--color-text);
-}
-
-/* DANGER */
-:host(.ui-button--danger) .ui-button__control {
-  background: var(--color-danger);
-  border-color: var(--color-danger);
-  color: #ffffff;
-  box-shadow: var(--shadow-danger);
-}
-
-:host(.ui-button--danger) .ui-button__control:hover:not(:disabled) {
-  background: var(--color-danger-hover);
-  border-color: var(--color-danger-hover);
 }
 
 :host(.ui-button--block) .ui-button__control {

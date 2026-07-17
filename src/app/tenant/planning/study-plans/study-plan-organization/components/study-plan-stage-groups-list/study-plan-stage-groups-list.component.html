@@ -1,0 +1,458 @@
+<section class="study-plan-stage-groups-list">
+  <section class="study-plan-stage-groups-list__section">
+    <header class="study-plan-stage-groups-list__header">
+      <div class="study-plan-stage-groups-list__title">
+        <span class="study-plan-stage-groups-list__section-icon" aria-hidden="true">
+          <app-ui-icon name="families" size="sm" tone="primary" />
+        </span>
+        <div>
+          <h4>{{ 'planning.study-plan-organizations.stage-groups.list.title' | translate }}</h4>
+          <p>{{ selectionLabel() | translate }}</p>
+        </div>
+      </div>
+
+      <span class="study-plan-stage-groups-list__count">
+        {{
+          (groups().length === 1
+            ? 'planning.study-plan-organizations.stage-groups.group-count'
+            : 'planning.study-plan-organizations.stage-groups.groups-count'
+          ) | translate: { count: groups().length }
+        }}
+      </span>
+    </header>
+
+    @if (hasGroups()) {
+      <div class="study-plan-stage-groups-list__filters">
+        <label
+          class="study-plan-stage-groups-list__filter study-plan-stage-groups-list__filter--search"
+        >
+          <span>{{ 'common.search' | translate }}</span>
+          <input
+            type="search"
+            [value]="searchTerm()"
+            [placeholder]="
+              'planning.study-plan-organizations.stage-groups.filters.search-placeholder'
+                | translate
+            "
+            (input)="setSearchTerm($event)"
+          />
+        </label>
+
+        <label class="study-plan-stage-groups-list__filter">
+          <span>{{
+            'planning.study-plan-organizations.stage-groups.columns.subject' | translate
+          }}</span>
+          <select [value]="selectedSubjectValue()" (change)="setSelectedSubject($event)">
+            <option value="all">
+              {{
+                'planning.study-plan-organizations.stage-groups.filters.all-subjects' | translate
+              }}
+            </option>
+            @for (subject of subjectOptions(); track subject.id) {
+              <option [value]="subject.id">{{ subjectOptionLabel(subject) }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="study-plan-stage-groups-list__filter">
+          <span>{{
+            'planning.study-plan-organizations.stage-groups.columns.gender' | translate
+          }}</span>
+          <select [value]="selectedGenderValue()" (change)="setSelectedGender($event)">
+            <option value="all">
+              {{ 'planning.study-plan-organizations.stage-groups.filters.all-genders' | translate }}
+            </option>
+            @for (gender of genderOptions(); track gender.id) {
+              <option [value]="gender.id">{{ gender.translation | translate }}</option>
+            }
+            @if (hasGenderlessGroups()) {
+              <option value="none">
+                {{ 'planning.study-plan-organizations.stage-groups.labels.no-gender' | translate }}
+              </option>
+            }
+          </select>
+        </label>
+
+        @if (hasActiveFilters()) {
+          <app-ui-button
+            [label]="'planning.study-plan-organizations.stage-groups.filters.clear' | translate"
+            iconLeft="clear-search"
+            variant="secondary"
+            size="sm"
+            type="button"
+            (click)="clearFilters()"
+          />
+        }
+      </div>
+
+      <div class="study-plan-stage-groups-list__chips" role="list">
+        @for (counter of typeCounters(); track counter.key) {
+          <button
+            type="button"
+            class="study-plan-stage-groups-list__chip"
+            [class.study-plan-stage-groups-list__chip--active]="selectedType() === counter.key"
+            (click)="selectTypeCounter(counter.key)"
+          >
+            <span>{{ counter.translation | translate }}</span>
+            <strong>{{ counter.count }}</strong>
+          </button>
+        }
+      </div>
+    }
+
+    <div class="study-plan-stage-groups-list__actions">
+      @if (getScreenOption('add'); as addOption) {
+        @if (canCreateGroup()) {
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [iconLeft]="addOption.icon"
+            [variant]="addOption.color"
+            [iconOnly]="true"
+            size="sm"
+            type="button"
+            [disabled]="editorMode() !== null || savingEditor()"
+            (click)="startCreate()"
+          />
+        }
+      }
+
+      @if (getScreenOption('update'); as updateOption) {
+        <app-ui-button
+          [label]="updateOption.translation | translate"
+          [iconLeft]="updateOption.icon"
+          [variant]="updateOption.color"
+          [iconOnly]="true"
+          size="sm"
+          type="button"
+          [disabled]="!hasSelectedGroup() || editorMode() !== null || savingEditor()"
+          (click)="startEdit()"
+        />
+      }
+
+      @if (getScreenOption('delete'); as deleteOption) {
+        <app-ui-button
+          [label]="deleteOption.translation | translate"
+          [iconLeft]="deleteOption.icon"
+          [variant]="deleteOption.color"
+          [iconOnly]="true"
+          size="sm"
+          type="button"
+          [disabled]="!canDeleteSelectedGroup() || editorMode() !== null || savingEditor()"
+          (click)="startDelete()"
+        />
+      }
+    </div>
+
+    @if (editorMode(); as mode) {
+      @if (editorModel(); as editor) {
+        <form
+          class="study-plan-stage-groups-list__editor"
+          [formGroup]="editorForm"
+          (ngSubmit)="saveEditor()"
+        >
+          <header class="study-plan-stage-groups-list__editor-header">
+            <div class="study-plan-stage-groups-list__editor-title">
+              <span class="study-plan-stage-groups-list__editor-icon" aria-hidden="true">
+                <app-ui-icon name="square-pen" size="sm" tone="primary" />
+              </span>
+
+              <h4>
+                {{
+                  (mode === 'add'
+                    ? 'planning.study-plan-organizations.stage-groups.editor.add-title'
+                    : 'planning.study-plan-organizations.stage-groups.editor.edit-title'
+                  ) | translate
+                }}
+              </h4>
+
+              @if (editor.headingLabel) {
+                <p>{{ editor.headingLabel }}</p>
+              }
+            </div>
+
+            <div class="study-plan-stage-groups-list__editor-actions">
+              <app-ui-button
+                [label]="'common.cancel' | translate"
+                [title]="'common.cancel' | translate"
+                iconLeft="cancel"
+                variant="secondary"
+                [iconOnly]="true"
+                size="sm"
+                type="button"
+                [disabled]="savingEditor()"
+                (click)="cancelEditor()"
+              />
+
+              <app-ui-button
+                [label]="'common.save' | translate"
+                [title]="'common.save' | translate"
+                iconLeft="save"
+                variant="primary"
+                [iconOnly]="true"
+                size="sm"
+                type="submit"
+                [disabled]="savingEditor() || editorForm.invalid"
+              />
+            </div>
+          </header>
+
+          <div class="study-plan-stage-groups-list__editor-body">
+            <dl class="study-plan-stage-groups-list__editor-context">
+              <div class="study-plan-stage-groups-list__context-item">
+                <dt>{{
+                  'planning.study-plan-organizations.stage-groups.columns.type' | translate
+                }}</dt>
+                <dd>{{ editor.typeLabel | translate }}</dd>
+              </div>
+
+              <div class="study-plan-stage-groups-list__context-item">
+                <dt>{{
+                  'planning.study-plan-organizations.stage-groups.columns.grade' | translate
+                }}</dt>
+                <dd>{{ editor.gradeLabel | translate }}</dd>
+              </div>
+
+              <div
+                class="study-plan-stage-groups-list__context-item study-plan-stage-groups-list__context-item--subject"
+              >
+                <dt>{{
+                  'planning.study-plan-organizations.stage-groups.columns.subject' | translate
+                }}</dt>
+                <dd>{{ editor.subjectLabel | translate }}</dd>
+              </div>
+            </dl>
+
+            <div class="study-plan-stage-groups-list__editor-grid">
+              <div
+                class="study-plan-stage-groups-list__editor-row study-plan-stage-groups-list__editor-row--identity"
+              >
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{
+                    'planning.study-plan-organizations.stage-groups.columns.code' | translate
+                  }}</span>
+                  <input
+                    type="text"
+                    formControlName="code"
+                    maxlength="10"
+                    [readOnly]="savingEditor()"
+                  />
+                  <form-error [control]="editorForm.controls.code"></form-error>
+                </label>
+
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{
+                    'planning.study-plan-organizations.stage-groups.columns.name' | translate
+                  }}</span>
+                  <input
+                    type="text"
+                    formControlName="name"
+                    maxlength="128"
+                    [readOnly]="savingEditor()"
+                  />
+                  <form-error [control]="editorForm.controls.name"></form-error>
+                </label>
+              </div>
+
+              <div
+                class="study-plan-stage-groups-list__editor-row study-plan-stage-groups-list__editor-row--details"
+              >
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{
+                    'planning.study-plan-organizations.stage-groups.columns.quota' | translate
+                  }}</span>
+                  <input
+                    type="number"
+                    min="1"
+                    formControlName="quota"
+                    [readOnly]="savingEditor()"
+                  />
+                  <form-error [control]="editorForm.controls.quota"></form-error>
+                </label>
+
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{
+                    'planning.study-plan-organizations.stage-groups.columns.gender' | translate
+                  }}</span>
+                  <select formControlName="gender_id" [disabled]="savingEditor()">
+                    <option [ngValue]="null">
+                      {{
+                        'planning.study-plan-organizations.stage-groups.labels.no-gender'
+                          | translate
+                      }}
+                    </option>
+                    @for (gender of genderOptions(); track gender.id) {
+                      <option [ngValue]="gender.id">{{ gender.translation | translate }}</option>
+                    }
+                  </select>
+                </label>
+
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{
+                    'planning.study-plan-organizations.stage-groups.columns.color' | translate
+                  }}</span>
+                  <div class="study-plan-stage-groups-list__color-control">
+                    <span
+                      class="study-plan-stage-groups-list__color-preview"
+                      [class.study-plan-stage-groups-list__color-preview--empty]="
+                        !editorForm.controls.color.value
+                      "
+                      [style.background]="editorForm.controls.color.value || null"
+                      aria-hidden="true"
+                    ></span>
+                    <input
+                      type="color"
+                      [attr.aria-label]="
+                        'planning.study-plan-organizations.stage-groups.columns.color' | translate
+                      "
+                      [title]="
+                        'planning.study-plan-organizations.stage-groups.columns.color' | translate
+                      "
+                      [value]="editorForm.controls.color.value"
+                      [disabled]="savingEditor()"
+                      (input)="setEditorColor($event)"
+                    />
+                    <strong>
+                      {{
+                        editorForm.controls.color.value ||
+                          ('planning.study-plan-organizations.stage-groups.labels.no-color'
+                            | translate)
+                      }}
+                    </strong>
+                  </div>
+                </label>
+
+                <label class="study-plan-stage-groups-list__editor-field">
+                  <span>{{ 'common.active' | translate }}</span>
+                  <div class="study-plan-stage-groups-list__active-control">
+                    <input type="checkbox" formControlName="active" [disabled]="savingEditor()" />
+                    <span
+                      class="study-plan-stage-groups-list__active-switch"
+                      aria-hidden="true"
+                    ></span>
+                    <strong>{{ 'common.active' | translate }}</strong>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
+    }
+
+    @if (hasGroups()) {
+      <div class="study-plan-stage-groups-list__table-scroll">
+        @if (hasFilteredGroups()) {
+          <div class="study-plan-stage-groups-list__table">
+            <div class="study-plan-stage-groups-list__row study-plan-stage-groups-list__row--head">
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.type' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.code' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.name' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.subject' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.gender' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.quota' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.color' | translate
+              }}</span>
+              <span>{{
+                'planning.study-plan-organizations.stage-groups.columns.active' | translate
+              }}</span>
+            </div>
+
+            @for (group of filteredGroups(); track group.id) {
+              <button
+                class="study-plan-stage-groups-list__row"
+                type="button"
+                [class.study-plan-stage-groups-list__row--selected]="isGroupSelected(group)"
+                [attr.aria-pressed]="isGroupSelected(group)"
+                (click)="selectGroup(group)"
+              >
+                <span class="study-plan-stage-groups-list__type">
+                  {{ groupTypeTranslation(group) | translate }}
+                </span>
+
+                <span class="study-plan-stage-groups-list__code">{{ group.code }}</span>
+
+                <span class="study-plan-stage-groups-list__name">
+                  <strong>{{ group.name }}</strong>
+                </span>
+
+                <span class="study-plan-stage-groups-list__subject">
+                  {{ subjectLabel(group) | translate }}
+                </span>
+
+                <span class="study-plan-stage-groups-list__gender">
+                  {{ genderTranslation(group) | translate }}
+                </span>
+
+                <span class="study-plan-stage-groups-list__quota">{{ group.quota }}</span>
+
+                <span class="study-plan-stage-groups-list__color">
+                  <span
+                    class="study-plan-stage-groups-list__swatch"
+                    [class.study-plan-stage-groups-list__swatch--empty]="!group.color"
+                    [style.background]="group.color || null"
+                    [attr.aria-label]="
+                      group.color
+                        ? ('planning.study-plan-organizations.stage-groups.columns.color'
+                          | translate)
+                        : ('planning.study-plan-organizations.stage-groups.labels.no-color'
+                          | translate)
+                    "
+                  ></span>
+                  <span>{{ colorLabel(group) | translate }}</span>
+                </span>
+
+                <span
+                  class="study-plan-stage-groups-list__status"
+                  [class.study-plan-stage-groups-list__status--inactive]="!group.active"
+                >
+                  {{ activeLabel(group) | translate }}
+                </span>
+              </button>
+            }
+          </div>
+        } @else {
+          <div class="study-plan-stage-groups-list__empty">
+            <span class="study-plan-stage-groups-list__empty-icon" aria-hidden="true">
+              <app-ui-icon name="search" size="lg" tone="muted" />
+            </span>
+            <h4>
+              {{
+                'planning.study-plan-organizations.stage-groups.list.empty-filtered-title'
+                  | translate
+              }}
+            </h4>
+            <p>
+              {{
+                'planning.study-plan-organizations.stage-groups.list.empty-filtered-description'
+                  | translate
+              }}
+            </p>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="study-plan-stage-groups-list__empty">
+        <span class="study-plan-stage-groups-list__empty-icon" aria-hidden="true">
+          <app-ui-icon name="families" size="lg" tone="muted" />
+        </span>
+        <h4>{{ 'planning.study-plan-organizations.stage-groups.list.empty-title' | translate }}</h4>
+        <p>
+          {{ 'planning.study-plan-organizations.stage-groups.list.empty-description' | translate }}
+        </p>
+      </div>
+    }
+  </section>
+</section>

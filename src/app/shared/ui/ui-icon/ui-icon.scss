@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -29,27 +30,101 @@ svg {
     height: 20px;
   }
 
-  &--default {
-    color: currentColor;
-  }
+}
 
-  &--muted {
-    color: #94a3b8;
-  }
+:host(.ui-icon--muted) {
+  color: #94a3b8;
+}
 
-  &--primary {
-    color: #2563eb;
-  }
+:host(.ui-icon--primary) {
+  color: #2563eb;
+}
 
-  &--success {
-    color: #16a34a;
-  }
+:host(.ui-icon--success) {
+  color: #16a34a;
+}
 
-  &--warning {
-    color: #d97706;
-  }
+:host(.ui-icon--warning) {
+  color: #d97706;
+}
 
-  &--danger {
-    color: #dc2626;
-  }
+:host(.ui-icon--danger) {
+  color: #dc2626;
+}
+
+:host([data-tooltip]:not([data-tooltip='']))::after {
+  content: attr(data-tooltip);
+
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #212529;
+  color: #fff;
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+
+  pointer-events: none;
+  z-index: 1000;
+}
+
+:host([data-tooltip]:not([data-tooltip='']))::before {
+  content: '';
+
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #212529;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+
+  pointer-events: none;
+  z-index: 1000;
+}
+
+:host([data-tooltip-position='bottom'][data-tooltip]:not([data-tooltip='']))::after {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+
+:host([data-tooltip-position='bottom'][data-tooltip]:not([data-tooltip='']))::before {
+  top: calc(100% + 3px);
+  bottom: auto;
+
+  border-top: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #212529;
+}
+
+:host([data-tooltip]:not([data-tooltip=''])):hover::after,
+:host([data-tooltip]:not([data-tooltip=''])):hover::before,
+:host([data-tooltip]:not([data-tooltip=''])):focus-visible::after,
+:host([data-tooltip]:not([data-tooltip=''])):focus-visible::before {
+  opacity: 1;
+  visibility: visible;
 }

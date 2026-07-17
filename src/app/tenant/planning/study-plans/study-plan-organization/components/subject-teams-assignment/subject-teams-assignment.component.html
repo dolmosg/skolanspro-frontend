@@ -1,0 +1,172 @@
+<section class="subject-teams-assignment">
+  <header class="subject-teams-assignment__header">
+    <div>
+      <strong>
+        {{ 'planning.study-plan-organizations.academic-assignments.teams.title' | translate }}
+      </strong>
+      <span>
+        {{ 'planning.study-plan-organizations.academic-assignments.teams.subject' | translate }}:
+        {{ subject().name ?? ('common.no-data' | translate) }}
+      </span>
+    </div>
+
+  </header>
+
+  @if (loading()) {
+    <p class="subject-teams-assignment__state">
+      {{ 'general.loading' | translate }}
+    </p>
+  } @else if (teamsConfiguration(); as configuration) {
+    <fieldset class="subject-teams-assignment__numbering">
+      <legend>
+        {{
+          'planning.study-plan-organizations.academic-assignments.teams.numbering-type'
+            | translate
+        }}
+      </legend>
+
+      <div class="subject-teams-assignment__numbering-options">
+        <label
+          class="subject-teams-assignment__numbering-option"
+          [class.subject-teams-assignment__numbering-option--selected]="
+            numberingType() === 'alphabetic'
+          "
+        >
+          <input
+            type="radio"
+            name="team-numbering-type"
+            value="alphabetic"
+            [checked]="numberingType() === 'alphabetic'"
+            [disabled]="saving()"
+            (change)="selectNumberingType('alphabetic')"
+          />
+          <span>
+            <strong>
+              {{
+                'planning.study-plan-organizations.academic-assignments.teams.alphabetic'
+                  | translate
+              }}
+            </strong>
+            <small>
+              {{
+                'planning.study-plan-organizations.academic-assignments.teams.alphabetic-help'
+                  | translate
+              }}
+            </small>
+          </span>
+        </label>
+
+        <label
+          class="subject-teams-assignment__numbering-option"
+          [class.subject-teams-assignment__numbering-option--selected]="
+            numberingType() === 'numeric'
+          "
+        >
+          <input
+            type="radio"
+            name="team-numbering-type"
+            value="numeric"
+            [checked]="numberingType() === 'numeric'"
+            [disabled]="saving()"
+            (change)="selectNumberingType('numeric')"
+          />
+          <span>
+            <strong>
+              {{
+                'planning.study-plan-organizations.academic-assignments.teams.numeric' | translate
+              }}
+            </strong>
+            <small>
+              {{
+                'planning.study-plan-organizations.academic-assignments.teams.numeric-help'
+                  | translate
+              }}
+            </small>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    @if (configuration.groups.length > 0) {
+      <div class="subject-teams-assignment__groups">
+        @for (group of configuration.groups; track group.id) {
+          <article class="subject-teams-assignment__group">
+            <header>
+              <strong>{{ group.name || ('common.no-data' | translate) }}</strong>
+              <span>{{ group.code || ('common.no-data' | translate) }}</span>
+            </header>
+
+            <label class="subject-teams-assignment__quantity">
+              <span>
+                {{
+                  'planning.study-plan-organizations.academic-assignments.teams.team-quantity'
+                    | translate
+                }}
+              </span>
+              <input
+                #quantityInput
+                type="number"
+                min="0"
+                step="1"
+                inputmode="numeric"
+                [value]="groupQuantity(group.id)"
+                [disabled]="saving()"
+                [attr.aria-invalid]="groupHasReduction(group.id)"
+                (input)="updateGroupQuantity(group.id, quantityInput.valueAsNumber)"
+              />
+              @if (groupHasReduction(group.id)) {
+                <small class="subject-teams-assignment__reduction-error">
+                  {{
+                    'planning.study-plan-organizations.academic-assignments.teams.reduction-not-allowed'
+                      | translate
+                  }}
+                </small>
+              }
+            </label>
+          </article>
+        }
+      </div>
+
+      <footer class="subject-teams-assignment__summary">
+        <span>
+          {{
+            'planning.study-plan-organizations.academic-assignments.teams.requested-total'
+              | translate
+          }}
+        </span>
+        <strong>{{ requestedTeamsCount() }}</strong>
+      </footer>
+    } @else {
+      <p class="subject-teams-assignment__state">
+        {{ 'planning.study-plan-organizations.academic-assignments.teams.no-groups' | translate }}
+      </p>
+    }
+  }
+
+  <footer class="subject-teams-assignment__actions">
+    <app-ui-button
+      [label]="'planning.study-plan-organizations.academic-assignments.teams.close' | translate"
+      variant="secondary"
+      fill="soft"
+      size="sm"
+      type="button"
+      [disabled]="saving()"
+      (click)="closeEditor()"
+    />
+
+    <app-ui-button
+      [label]="
+        (saving()
+          ? 'planning.study-plan-organizations.academic-assignments.teams.saving'
+          : 'common.save') | translate
+      "
+      iconLeft="save"
+      variant="primary"
+      fill="solid"
+      size="sm"
+      type="button"
+      [disabled]="!canSave()"
+      (click)="saveTeams()"
+    />
+  </footer>
+</section>

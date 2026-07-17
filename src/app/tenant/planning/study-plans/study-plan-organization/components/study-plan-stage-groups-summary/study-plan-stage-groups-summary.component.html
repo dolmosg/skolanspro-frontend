@@ -28,7 +28,11 @@
 
           <div class="study-plan-stage-groups-summary__items">
             @for (grade of stage.grades; track grade.id ?? grade.type) {
-              <div class="study-plan-stage-groups-summary__item">
+              <button
+                type="button"
+                class="study-plan-stage-groups-summary__item"
+                (click)="selectGrade(stage, grade)"
+              >
                 <div class="study-plan-stage-groups-summary__item-content">
                   <strong>{{ grade.name }}</strong>
                   @if (grade.description) {
@@ -45,7 +49,7 @@
                   </span>
                   <app-ui-icon name="drilldown" size="sm" />
                 </div>
-              </div>
+              </button>
             }
           </div>
         </section>

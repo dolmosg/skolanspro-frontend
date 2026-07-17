@@ -10,6 +10,9 @@ import { resolveLucideIconName } from '../../icons/icon-registry';
   styleUrl: './ui-icon.scss',
   host: {
     '[class]': 'hostClasses()',
+    '[attr.data-tooltip]': 'title()',
+    '[attr.data-tooltip-position]': 'tooltipPosition()',
+    '[attr.aria-label]': 'title()',
   },
 })
 export class UiIconComponent {
@@ -17,6 +20,7 @@ export class UiIconComponent {
   size = input<'sm' | 'md' | 'lg'>('md');
   tone = input<'default' | 'muted' | 'primary' | 'success' | 'warning' | 'danger'>('default');
   title = input<string | null>(null);
+  tooltipPosition = input<'top' | 'bottom'>('top');
 
   protected readonly resolvedName = computed(() => {
     return resolveLucideIconName(this.name());

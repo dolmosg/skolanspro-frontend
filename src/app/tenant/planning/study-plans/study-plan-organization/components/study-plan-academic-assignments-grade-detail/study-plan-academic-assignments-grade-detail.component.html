@@ -1,0 +1,214 @@
+<section class="study-plan-academic-assignments-grade-detail">
+  @if (loading()) {
+    <div class="study-plan-academic-assignments-grade-detail__state">
+      <span class="study-plan-academic-assignments-grade-detail__state-icon" aria-hidden="true">
+        <app-ui-icon name="list-checks" size="lg" tone="muted" />
+      </span>
+      <strong>{{ 'general.loading' | translate }}</strong>
+    </div>
+  } @else if (grade(); as gradeDetail) {
+    <header class="study-plan-academic-assignments-grade-detail__dashboard-header">
+      <div class="study-plan-academic-assignments-grade-detail__title">
+        <span class="study-plan-academic-assignments-grade-detail__title-icon" aria-hidden="true">
+          <app-ui-icon name="list-checks" size="sm" tone="primary" />
+        </span>
+
+        <div>
+          <span>{{ stage()?.name }}</span>
+          @if (hasSelectedGrade()) {
+            <h4>{{ title() }}</h4>
+          } @else {
+            <h4>{{ 'common.no-data' | translate }}</h4>
+          }
+          @if (description()) {
+            <p>{{ description() }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="study-plan-academic-assignments-grade-detail__search">
+        <input
+          type="text"
+          [value]="subjectSearch()"
+          [attr.placeholder]="
+            'planning.study-plan-organizations.academic-assignments.view.search-placeholder'
+              | translate
+          "
+          [attr.aria-label]="
+            'planning.study-plan-organizations.academic-assignments.view.search-placeholder'
+              | translate
+          "
+          (input)="updateSubjectSearch($event)"
+        />
+
+        @if (pendingReviewGradeOption(); as reviewOption) {
+          <app-ui-button
+            [title]="
+              (reviewPendingSubjects()
+                ? 'planning.study-plan-academic-assignments.show-all'
+                : reviewOption.translation
+              ) | translate
+            "
+            [label]="
+              (reviewPendingSubjects()
+                ? 'planning.study-plan-academic-assignments.show-all'
+                : reviewOption.translation
+              ) | translate
+            "
+            [iconLeft]="reviewPendingSubjects() ? 'eye' : reviewOption.icon"
+            [variant]="reviewOption.color"
+            [fill]="reviewPendingSubjects() ? 'solid' : 'outline'"
+            [iconOnly]="true"
+            size="sm"
+            (click)="togglePendingSubjectsReview()"
+          />
+        }
+
+        <ng-content select="[grade-actions]"></ng-content>
+      </div>
+
+      <div class="study-plan-academic-assignments-grade-detail__configuration">
+        <strong>{{ gradeDetail.summary.configured_percent }}%</strong>
+        <span>{{
+          'planning.study-plan-organizations.academic-assignments.labels.configured' | translate
+        }}</span>
+      </div>
+    </header>
+
+    <section class="study-plan-academic-assignments-grade-detail__summary">
+      @for (metric of gradeMetrics(gradeDetail.summary); track metric.key) {
+        <div class="study-plan-academic-assignments-grade-detail__metric">
+          <span class="study-plan-academic-assignments-grade-detail__metric-icon">
+            <app-ui-icon [name]="metric.icon" size="sm" tone="primary" />
+          </span>
+          <div>
+            <strong>{{ metric.value }}</strong>
+            <span>{{ metric.label | translate }}</span>
+          </div>
+        </div>
+      }
+    </section>
+
+    @if (hasFocus()) {
+      <section class="study-plan-academic-assignments-grade-detail__focus-mode">
+        <div>
+          <strong>
+            {{
+              'planning.study-plan-organizations.academic-assignments.schedule-focus.title'
+                | translate
+            }}
+          </strong>
+          <span>
+            {{
+              'planning.study-plan-organizations.academic-assignments.schedule-focus.description'
+                | translate
+            }}
+          </span>
+        </div>
+
+        <app-ui-button
+          [label]="
+            'planning.study-plan-organizations.academic-assignments.schedule-focus.back'
+              | translate
+          "
+          variant="secondary"
+          fill="soft"
+          size="sm"
+          type="button"
+          (click)="closeFocus()"
+        />
+      </section>
+    }
+
+    @if (gradeDetail.subjects.length > 0) {
+      @if (visibleSubjects().length > 0) {
+        <div class="study-plan-academic-assignments-grade-detail__subject-grid">
+          @for (subject of visibleSubjects(); track subject.id) {
+            <app-study-plan-academic-assignments-subject-card
+              [class.study-plan-academic-assignments-grade-detail__subject-card--expanded]="
+                expandedSubjectCardIds().includes(subject.id)
+              "
+              [route]="route() ?? ''"
+              [stageId]="response()?.stage?.id ?? 0"
+              [gradeId]="gradeId()"
+              [subject]="subject"
+              [options]="response()?.options ?? []"
+              [catalogs]="catalogsContext()"
+              [closeFocusEditorsToken]="closeFocusEditorsToken()"
+              (teacherEditorStateChange)="updateTeacherEditorState(subject.id, $event)"
+              (scheduleEditorStateChange)="updateScheduleEditorState(subject.id, $event)"
+              (manageTeamsRequested)="openTeamsEditor($event)"
+              (assignmentMutation)="handleAssignmentMutation($event)"
+              (subjectAssigned)="handleSubjectAssigned($event)"
+            />
+
+            @if (isManagingTeams(subject) && gradeId() !== null) {
+              <app-subject-teams-assignment
+                class="study-plan-academic-assignments-grade-detail__subject-card--expanded"
+                [route]="route() ?? ''"
+                [stageId]="response()?.stage?.id ?? 0"
+                [gradeId]="gradeId()!"
+                [subject]="subject"
+                (saved)="handleTeamsSaved($event)"
+                (close)="closeTeamsEditor()"
+              />
+            }
+          }
+        </div>
+      } @else {
+        <div class="study-plan-academic-assignments-grade-detail__state">
+          <span class="study-plan-academic-assignments-grade-detail__state-icon" aria-hidden="true">
+            <app-ui-icon name="search" size="lg" tone="muted" />
+          </span>
+          <strong>
+            {{
+              'planning.study-plan-organizations.academic-assignments.view.no-search-results-title'
+                | translate
+            }}
+          </strong>
+          <p>
+            {{
+              'planning.study-plan-organizations.academic-assignments.view.no-search-results-description'
+                | translate
+            }}
+          </p>
+        </div>
+      }
+    } @else {
+      <div class="study-plan-academic-assignments-grade-detail__state">
+        <span class="study-plan-academic-assignments-grade-detail__state-icon" aria-hidden="true">
+          <app-ui-icon name="list-checks" size="lg" tone="muted" />
+        </span>
+        <strong>
+          {{
+            'planning.study-plan-organizations.academic-assignments.view.no-subjects-title'
+              | translate
+          }}
+        </strong>
+        <p>
+          {{
+            'planning.study-plan-organizations.academic-assignments.view.no-subjects-description'
+              | translate
+          }}
+        </p>
+      </div>
+    }
+  } @else {
+    <div class="study-plan-academic-assignments-grade-detail__state">
+      <span class="study-plan-academic-assignments-grade-detail__state-icon" aria-hidden="true">
+        <app-ui-icon name="list-checks" size="lg" tone="muted" />
+      </span>
+      <strong>
+        {{
+          'planning.study-plan-organizations.academic-assignments.view.no-detail-title' | translate
+        }}
+      </strong>
+      <p>
+        {{
+          'planning.study-plan-organizations.academic-assignments.view.no-detail-description'
+            | translate
+        }}
+      </p>
+    </div>
+  }
+</section>

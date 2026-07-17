@@ -1,0 +1,223 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.subject-group-teacher-assignment {
+  display: grid;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface-subtle);
+  gap: 0.65rem;
+}
+
+.subject-group-teacher-assignment__header,
+.subject-group-teacher-assignment__content {
+  min-width: 0;
+}
+
+.subject-group-teacher-assignment__content {
+  display: grid;
+  gap: 0.2rem;
+
+  strong {
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 850;
+    line-height: 1.2;
+  }
+
+  span {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 750;
+    line-height: 1.25;
+  }
+}
+
+.subject-group-teacher-assignment__search {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+
+  span {
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    font-weight: 850;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    height: 2rem;
+    padding: 0 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.65rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 750;
+    outline: none;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
+
+    &::placeholder {
+      color: var(--color-text-muted);
+      font-weight: 700;
+    }
+
+    &:focus {
+      border-color: var(--color-primary-border-hover);
+      background: var(--color-primary-tint-hover);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
+    }
+  }
+}
+
+.subject-group-teacher-assignment__workspace {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  gap: 0.65rem;
+}
+
+.subject-group-teacher-assignment__panel {
+  display: grid;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  align-content: start;
+  padding: 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.7rem;
+  background: var(--color-surface);
+  gap: 0.45rem;
+}
+
+.subject-group-teacher-assignment__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  gap: 0.5rem;
+
+  strong {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--color-text);
+    font-size: 0.72rem;
+    font-weight: 850;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-width: 1.45rem;
+    height: 1.35rem;
+    padding: 0 0.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-subtle);
+    color: var(--color-text-soft);
+    font-size: 0.68rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+}
+
+.subject-group-teacher-assignment__teacher-list {
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: 18rem;
+  min-width: 0;
+  padding-right: 0.15rem;
+  gap: 0.35rem;
+}
+
+.subject-group-teacher-assignment__teacher {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 2.35rem;
+  padding: 0.3rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface-subtle);
+  gap: 0.45rem;
+}
+
+.subject-group-teacher-assignment__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.subject-group-teacher-assignment__teacher-name {
+  overflow: hidden;
+  min-width: 0;
+  color: var(--color-text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subject-group-teacher-assignment__state {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.subject-group-teacher-assignment__actions {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  gap: 0.45rem;
+}
+
+@media (max-width: 767.98px) {
+  .subject-group-teacher-assignment__workspace {
+    grid-template-columns: 1fr;
+  }
+}

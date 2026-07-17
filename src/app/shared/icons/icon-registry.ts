@@ -113,6 +113,8 @@ import {
   LucideListChecks,
   LucideRoute,
   LucideBetweenHorizontalStart,
+  LucideUserRoundMinus,
+  LucideUserRoundPlus,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -580,6 +582,10 @@ export const ICON_REGISTRY = {
     lucideName: 'triangle-alert',
     icon: LucideTriangleAlert,
   },
+  'triangle-alert': {
+    lucideName: 'triangle-alert',
+    icon: LucideTriangleAlert,
+  },
   info: {
     lucideName: 'info',
     icon: LucideInfo,
@@ -634,6 +640,16 @@ export const ICON_REGISTRY = {
   female: {
     lucideName: 'venus',
     icon: LucideVenus,
+  },
+
+  'add-user': {
+    lucideName: 'user-round-plus',
+    icon: LucideUserRoundPlus,
+  },
+
+  'remove-user': {
+    lucideName: 'user-round-minus',
+    icon: LucideUserRoundMinus,
   },
 
   default: {

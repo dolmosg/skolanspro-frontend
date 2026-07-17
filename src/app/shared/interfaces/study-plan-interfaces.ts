@@ -273,20 +273,36 @@ export interface IStudyPlanTerm {
  *
  * App\Models\Tenant\Planning\StudyPlans\StudyPlanStageGroup
  */
+export type StudyPlanStageGroupDeleteMode =
+  | 'normal'
+  | 'force_empty_assignments'
+  | 'blocked';
+
+export interface IStudyPlanStageGroupDelete {
+  mode: StudyPlanStageGroupDeleteMode;
+  assignments_count: number;
+}
+
 export interface IStudyPlanStageGroup {
   id: number;
   study_plan_stage_id: number;
+  parent_id: number | null;
   group_type_id: number;
   grade_id: number | null;
-  study_plan_stage_subject_id: number | null;
+  stage_subject_id: number | null;
   gender_id: number | null;
   code: string;
   name: string;
   quota: number;
   color: string | null;
+  active: boolean;
+  order: number;
   created_at?: string | null;
   updated_at?: string | null;
+  delete?: IStudyPlanStageGroupDelete;
   stage?: IStudyPlanStage | null;
+  parent?: IStudyPlanStageGroup | null;
+  children?: IStudyPlanStageGroup[];
   type?: IGroupType | null;
   grade?: IGrade | null;
   subject?: IStudyPlanStageSubject | null;

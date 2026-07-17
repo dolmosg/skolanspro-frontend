@@ -1,0 +1,102 @@
+<section class="study-plan-stage-groups-view">
+  <header class="study-plan-stage-groups-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  @if (stages().length > 0) {
+    <div class="study-plan-stage-groups-view__layout">
+      <aside class="study-plan-stage-groups-view__sidebar">
+        <section class="study-plan-stage-groups-view__section">
+          <header class="study-plan-stage-groups-view__section-header">
+            <div class="study-plan-stage-groups-view__section-title">
+              <span class="study-plan-stage-groups-view__section-icon">
+                <app-ui-icon name="families" size="sm" tone="primary" />
+              </span>
+              <h3>{{ 'planning.study-plan-organizations.stage-groups.title' | translate }}</h3>
+            </div>
+          </header>
+
+          <div class="study-plan-stage-groups-view__stage-list">
+            @for (stage of stages(); track stage.id) {
+              <section class="study-plan-stage-groups-view__stage">
+                <header class="study-plan-stage-groups-view__stage-header">
+                  <strong>{{ stage.name }}</strong>
+                  <span>
+                    {{
+                      groupsTranslationKey(stage.groups_count)
+                        | translate: { count: stage.groups_count }
+                    }}
+                  </span>
+                </header>
+
+                <div class="study-plan-stage-groups-view__grade-list">
+                  @for (grade of stage.grades; track grade.id ?? grade.type) {
+                    <button
+                      type="button"
+                      class="study-plan-stage-groups-view__grade-card"
+                      [class.study-plan-stage-groups-view__grade-card--active]="
+                        isSelected(stage, grade)
+                      "
+                      (click)="selectGroup(stage, grade)"
+                    >
+                      <span class="study-plan-stage-groups-view__grade-content">
+                        <strong>{{ grade.name }}</strong>
+                        @if (grade.description) {
+                          <span>{{ grade.description }}</span>
+                        }
+                      </span>
+
+                      <span class="study-plan-stage-groups-view__grade-meta">
+                        <span>
+                          {{
+                            groupsTranslationKey(grade.groups_count)
+                              | translate: { count: grade.groups_count }
+                          }}
+                        </span>
+                        <app-ui-icon name="drilldown" size="sm" tone="primary" />
+                      </span>
+                    </button>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        </section>
+      </aside>
+
+      <section class="study-plan-stage-groups-view__workspace">
+        @if (selectedGrade(); as grade) {
+          <div class="study-plan-stage-groups-view__workspace-header">
+            <span>{{ selectedStage()?.name }}</span>
+            <h3>{{ selectedTitle() }}</h3>
+            @if (selectedDescription()) {
+              <p>{{ selectedDescription() }}</p>
+            }
+          </div>
+
+          <app-study-plan-stage-groups-list
+            [route]="route()"
+            [stageId]="selectedListStageId()"
+            [gradeId]="selectedListGradeId()"
+            [mode]="selectedListMode()"
+            (saved)="onListSaved()"
+          />
+        } @else {
+          <div class="study-plan-stage-groups-view__workspace-empty">
+            <h3>{{ 'common.no-data' | translate }}</h3>
+          </div>
+        }
+      </section>
+    </div>
+  } @else {
+    <section class="study-plan-stage-groups-view__empty">
+      <p>{{ 'common.no-data' | translate }}</p>
+    </section>
+  }
+</section>

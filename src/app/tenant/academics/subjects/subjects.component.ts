@@ -309,8 +309,8 @@ export class SubjectsComponent extends SkolansBaseComponent implements OnInit {
       code: '',
       weekly_blocks: 0,
       learning_area_id: null,
-      subject_classification_id: null,
-      subject_subcategory_id: null,
+      subject_classification_id: 1,
+      subject_subcategory_id: 1,
       official: true,
       active: true,
     });
@@ -422,36 +422,36 @@ export class SubjectsComponent extends SkolansBaseComponent implements OnInit {
   }
 
   protected async deleteSubject(subject: SubjectListItem): Promise<void> {
-  const route = this.apiRoute();
+    const route = this.apiRoute();
 
-  if (!route) {
-    return;
+    if (!route) {
+      return;
+    }
+
+    const confirmed = await this.modal.open<ConfirmModalData, boolean>({
+      component: SklConfirmModal,
+      title: this.translate.instant('academics.subjects.delete'),
+      data: {
+        message: this.translate.instant('academics.subjects.messages.confirm-delete'),
+        confirmLabel: this.translate.instant('common.delete'),
+        cancelLabel: this.translate.instant('common.cancel'),
+        type: 'danger',
+      },
+      size: 'sm',
+      closeOnBackdrop: true,
+      closeOnEscape: true,
+      showCloseButton: true,
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.executeMutationRequest(this.api.delete(`${route}/${subject.id}`), () => {
+      this.subjects.update((current) => current.filter((item) => item.id !== subject.id));
+      this.clearSelectedSubject();
+    });
   }
-
-  const confirmed = await this.modal.open<ConfirmModalData, boolean>({
-    component: SklConfirmModal,
-    title: this.translate.instant('academics.subjects.delete'),
-    data: {
-      message: this.translate.instant('academics.subjects.messages.confirm-delete'),
-      confirmLabel: this.translate.instant('common.delete'),
-      cancelLabel: this.translate.instant('common.cancel'),
-      type: 'danger',
-    },
-    size: 'sm',
-    closeOnBackdrop: true,
-    closeOnEscape: true,
-    showCloseButton: true,
-  });
-
-  if (!confirmed) {
-    return;
-  }
-
-  this.executeMutationRequest(this.api.delete(`${route}/${subject.id}`), () => {
-    this.subjects.update((current) => current.filter((item) => item.id !== subject.id));
-    this.clearSelectedSubject();
-  });
-}
 
   protected onCodeFilter(event: Event): void {
     this.codeFilter.set((event.target as HTMLInputElement).value);
@@ -494,27 +494,21 @@ export class SubjectsComponent extends SkolansBaseComponent implements OnInit {
         this.clearSelectedSubject();
       });
 
-    this.levelControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.selectedLevelId.set(value);
-        this.gradeControl.setValue(null, { emitEvent: false });
-        this.selectedGradeId.set(null);
-        this.clearSelectedSubject();
-      });
+    this.levelControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      this.selectedLevelId.set(value);
+      this.gradeControl.setValue(null, { emitEvent: false });
+      this.selectedGradeId.set(null);
+      this.clearSelectedSubject();
+    });
 
-    this.gradeControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.selectedGradeId.set(value);
-        this.clearSelectedSubject();
-      });
+    this.gradeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      this.selectedGradeId.set(value);
+      this.clearSelectedSubject();
+    });
 
-    this.activeControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.activeFilter.set(value);
-      });
+    this.activeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      this.activeFilter.set(value);
+    });
 
     this.officialControl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))

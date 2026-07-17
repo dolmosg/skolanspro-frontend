@@ -58,6 +58,13 @@
 			},
 			"order": "Order Subject Subcategories",
 			"title": "Subject Subcategories",
+			"translation": {
+				"foreign": "Foreign language",
+				"maternal": "Native language",
+				"mathematics": "Mathematics",
+				"second": "Second language",
+				"without": "Without subclassification"
+			},
 			"update": "Edit Subject Subcategory"
 		},
 		"subjects": {
@@ -607,6 +614,7 @@
 		"cancel": "Cancel",
 		"capture": "Capture",
 		"clear": "Clear",
+		"close": "Close",
 		"context": "Context",
 		"create": "Create",
 		"current": "Current",
@@ -644,6 +652,20 @@
 	"configuration": {
 		"academic-catalogs": {
 			"index": "Academic Catalogs"
+		},
+		"academic-tutors": {
+			"help": {
+				"academic": "Responsible for the academic guidance and overall follow-up of the group.",
+				"foreign": "Responsible for the academic follow-up of the foreign language subject.",
+				"maternal": "Responsible for the academic follow-up of the native language subject.",
+				"spiritual": "Responsible for the spiritual guidance and values formation of the group."
+			},
+			"translation": {
+				"academic": "Academic Tutor",
+				"foreign": "Foreign Language Tutor",
+				"maternal": "Native Language Tutor",
+				"spiritual": "Spiritual Tutor"
+			}
 		},
 		"actions": {
 			"add": "New action",
@@ -2392,7 +2414,18 @@
 	},
 	"planning": {
 		"study-plan-academic-assignments": {
-			"index": "Assignments"
+			"add-group": "Add Group",
+			"assign-grade": "Assign Grade",
+			"assign-schedule": "Assign Schedule",
+			"assign-subject": "Assign Subject",
+			"index": "Assignments",
+			"manage-options": "Manage Options",
+			"manage-teachers": "Manage Teachers",
+			"manage-teams": "Manage Teams",
+			"remove-group": "Remove Group",
+			"remove-subject": "Remove Subject",
+			"review-grade": "Show pending",
+			"show-all": "Show all"
 		},
 		"study-plan-academics": {
 			"actions": {
@@ -2605,11 +2638,126 @@
 		},
 		"study-plan-organizations": {
 			"academic-assignments": {
+				"assign-grade": {
+					"confirm-accept": "Assign grade",
+					"confirm-cancel": "Cancel",
+					"confirm-message": "Only the grade's missing automatic assignments will be recreated. Existing assignments will not be modified. If automatic groups were previously removed, they will be recreated.",
+					"confirm-title": "Assign grade"
+				},
+				"assign-subject": {
+					"confirm-accept": "Assign subject",
+					"confirm-cancel": "Cancel",
+					"confirm-message": "Only the missing normal groups for subject \"{{ subject }}\" will be restored. Existing assignments will not be modified.",
+					"confirm-title": "Assign subject"
+				},
 				"assigned-count": "{{ assigned }} / {{ expected }} subjects assigned",
 				"description": "Summarizes assignment progress by stage, grade, and academic crossovers.",
 				"empty-description": "There are no academic assignments configured for this plan yet.",
 				"empty-title": "No academic assignments",
-				"title": "Academic assignments"
+				"group-creation": {
+					"code-placeholder": "Group code",
+					"color-placeholder": "Optional color",
+					"description": "Create a group for this subject.",
+					"name-placeholder": "Group name",
+					"no-color": "No color",
+					"no-gender": "No gender",
+					"subject": "Subject",
+					"title": "Add group"
+				},
+				"labels": {
+					"configuration": "Configuration",
+					"configured": "Configured"
+				},
+				"metrics": {
+					"assignments": "Assignments",
+					"groups": "Groups",
+					"options": "Options",
+					"schedules": "Schedules",
+					"subjects": "Subjects",
+					"teachers": "Teachers",
+					"teams": "Teams"
+				},
+				"more-teachers": "+{{ count }} more",
+				"options-editor": {
+					"automatic": "Automatic",
+					"cancel": "Cancel",
+					"grade-capture": "Capture grades",
+					"no": "No",
+					"report-card": "Official report card",
+					"save": "Save",
+					"success": "Options updated successfully.",
+					"yes": "Yes"
+				},
+				"remove-group": {
+					"confirm-accept": "Remove",
+					"confirm-cancel": "Cancel",
+					"confirm-message": "Do you want to remove group {{ group }} from {{ subject }}?",
+					"confirm-title": "Remove assignment",
+					"success": "The assignment was removed successfully."
+				},
+				"schedule-focus": {
+					"back": "Close focus mode",
+					"description": "Only the subject you are currently configuring is displayed.",
+					"title": "Focus mode"
+				},
+				"status": {
+					"complete": "Configuration complete",
+					"empty": "Unconfigured",
+					"partial": "Partial",
+					"pending": "Pending",
+					"review": "There are elements that need review"
+				},
+				"subject-count": "{{ count }} subject",
+				"subjects-count": "{{ count }} subjects",
+				"teacher-assignment": {
+					"add": "Add teacher to group",
+					"assigned": "Assigned Teachers",
+					"available": "Available Teachers",
+					"close": "Close",
+					"description": "Select the teachers who will teach this group.",
+					"no-assigned": "No teachers have been assigned to this group.",
+					"no-available": "No teachers are available for assignment.",
+					"no-search-results": "No teachers match that name.",
+					"remove": "Remove teacher from group",
+					"save": "Save Changes",
+					"search": "Search teacher...",
+					"search-placeholder": "Search teacher...",
+					"title": "Teacher Assignment"
+				},
+				"teachers": "Teachers",
+				"teams": {
+					"alphabetic": "Alphabetic",
+					"alphabetic-help": "A, B, C...",
+					"close": "Close",
+					"no-groups": "There are no normal groups available for this subject.",
+					"numbering-type": "Numbering type",
+					"numeric": "Numeric",
+					"numeric-help": "1, 2, 3...",
+					"requested-total": "Total requested teams",
+					"reduction-not-allowed": "Teams cannot be reduced from this screen. Reductions must be made from the groups catalog.",
+					"saving": "Saving...",
+					"subject": "Subject",
+					"team-quantity": "Number of teams",
+					"title": "Manage teams"
+				},
+				"title": "Academic assignments",
+				"view": {
+					"coming-soon": "Coming soon...",
+					"grade": "Grade",
+					"groups": "Groups",
+					"no-detail-description": "Select a grade to view its assigned subjects and groups.",
+					"no-detail-title": "Select a grade",
+					"no-groups": "This subject doesn’t have any assigned groups yet. Add a group to get started.",
+					"no-search-results-description": "Try searching by subject name, code, or type.",
+					"no-search-results-title": "No subjects found",
+					"no-subject-type": "No subject type",
+					"no-subjects-description": "This grade does not have subjects configured in the selected stage yet.",
+					"no-subjects-title": "No subjects assigned",
+					"search-placeholder": "Search subject, code, or type...",
+					"without-code": "No code"
+				},
+				"without-schedule": "No schedule",
+				"without-teachers": "No teachers"
 			},
 			"add-structure": "New Structure",
 			"columns": {
@@ -2657,11 +2805,68 @@
 				"variants": "Variants"
 			},
 			"stage-groups": {
+				"actions": {
+					"add": "Add",
+					"delete": "Delete",
+					"edit": "Edit"
+				},
+				"columns": {
+					"active": "Status",
+					"code": "Code",
+					"color": "Color",
+					"gender": "Gender",
+					"grade": "Grade",
+					"name": "Name",
+					"quota": "Quota",
+					"subject": "Subject",
+					"type": "Type"
+				},
+				"delete": {
+					"message": "This action will delete the group \"{{ group }}\".",
+					"title": "Delete group?"
+				},
 				"description": "Summarizes the groups configured by stage, grade, and crossovers.",
+				"detail-placeholder": "The academic group list will appear here.",
+				"editor": {
+					"add-placeholder": "The create form will be prepared here.",
+					"add-title": "Add group",
+					"edit-title": "Edit group",
+					"placeholder-description": "Select a group and use edit to modify it.",
+					"placeholder-title": "Group editor in preparation",
+					"selected-group": "Selected group: {{ code }} - {{ name }}"
+				},
 				"empty-description": "No academic groups have been configured.",
 				"empty-title": "No academic groups",
+				"filters": {
+					"all": "All",
+					"all-genders": "All genders",
+					"all-subjects": "All subjects",
+					"clear": "Clear filters",
+					"normal": "Normal",
+					"search-placeholder": "Search by code or name...",
+					"subject": "By subject"
+				},
+				"force-delete": {
+					"confirm": "Delete group and assignments",
+					"message": "The group \"{{ group }}\" has {{ count }} empty academic assignments. If you continue, the group and all related assignments will be deleted. This action cannot be undone.",
+					"title": "Delete group and assignments"
+				},
 				"group-count": "{{ count }} group",
 				"groups-count": "{{ count }} groups",
+				"labels": {
+					"crossover": "Crossovers",
+					"no-color": "No color",
+					"no-color-short": "-",
+					"no-gender": "No gender",
+					"no-subject": "No subject"
+				},
+				"list": {
+					"empty-description": "There are no academic groups for this selection.",
+					"empty-filtered-description": "Adjust or clear the filters to show groups again.",
+					"empty-filtered-title": "No results",
+					"empty-title": "No groups in this selection",
+					"title": "Group list"
+				},
 				"title": "Academic groups"
 			}
 		},

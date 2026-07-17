@@ -151,16 +151,16 @@
                   <td>{{ subject.weekly_blocks }}</td>
                   <td>
                     {{
-                      subject.classification?.translation ||
+                      (subject.classification?.translation ||
                         subject.classification?.name ||
-                        ('academics.subjects.labels.no-classification' | translate)
+                        'academics.subjects.labels.no-classification') | translate
                     }}
                   </td>
                   <td>
                     {{
-                      subject.subcategory?.translation ||
+                      (subject.subcategory?.translation ||
                         subject.subcategory?.name ||
-                        ('academics.subjects.labels.no-subcategory' | translate)
+                        'academics.subjects.labels.no-subcategory') | translate
                     }}
                   </td>
                   <td>
@@ -250,9 +250,9 @@
                   <input
                     type="text"
                     [value]="
-                      subject.learning_area?.translation ||
-                      subject.learning_area?.name ||
-                      ('academics.subjects.labels.no-learning-area' | translate)
+                      (subject.learning_area?.translation ||
+                        subject.learning_area?.name ||
+                        'academics.subjects.labels.no-learning-area') | translate
                     "
                     readonly
                   />
@@ -264,9 +264,9 @@
                     <input
                       type="text"
                       [value]="
-                        subject.classification?.translation ||
-                        subject.classification?.name ||
-                        ('academics.subjects.labels.no-classification' | translate)
+                        (subject.classification?.translation ||
+                          subject.classification?.name ||
+                          'academics.subjects.labels.no-classification') | translate
                       "
                       readonly
                     />
@@ -277,9 +277,9 @@
                     <input
                       type="text"
                       [value]="
-                        subject.subcategory?.translation ||
-                        subject.subcategory?.name ||
-                        ('academics.subjects.labels.no-subcategory' | translate)
+                        (subject.subcategory?.translation ||
+                          subject.subcategory?.name ||
+                          'academics.subjects.labels.no-subcategory') | translate
                       "
                       readonly
                     />
@@ -350,7 +350,7 @@
 
           @if (isEditingMode()) {
             <form
-              class="subjects-detail__section"
+              class="subjects-detail__section subjects-detail__section--form"
               [formGroup]="subjectForm"
               (ngSubmit)="creatingSubject() ? saveNewSubject() : saveSubject()"
             >
@@ -389,6 +389,7 @@
                 <app-sk-select
                   [items]="learningAreas()"
                   bindLabel="translation"
+                  [translateLabel]="true"
                   bindValue="id"
                   [placeholder]="'academics.subjects.placeholders.learning-area' | translate"
                   [control]="subjectForm.controls.learning_area_id"
@@ -400,6 +401,7 @@
                 <app-sk-select
                   [items]="classifications()"
                   bindLabel="translation"
+                  [translateLabel]="true"
                   bindValue="id"
                   [placeholder]="'academics.subjects.placeholders.classification' | translate"
                   [control]="subjectForm.controls.subject_classification_id"
@@ -411,6 +413,7 @@
                 <app-sk-select
                   [items]="availableSubcategories()"
                   bindLabel="translation"
+                  [translateLabel]="true"
                   bindValue="id"
                   [placeholder]="'academics.subjects.placeholders.subcategory' | translate"
                   [disabled]="!subjectForm.controls.subject_classification_id.value"

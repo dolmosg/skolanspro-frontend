@@ -19,6 +19,7 @@ export class UiButtonComponent {
   tooltipPosition = input<'top' | 'bottom'>('top');
 
   variant = input<'primary' | 'secondary' | 'ghost' | 'danger'>('secondary');
+  fill = input<'solid' | 'soft' | 'outline'>('solid');
   size = input<'sm' | 'md' | 'lg'>('md');
 
   iconLeft = input<string | null>(null);
@@ -54,6 +55,7 @@ export class UiButtonComponent {
     return [
       'ui-button',
       `ui-button--${this.variant()}`,
+      `ui-button--fill-${this.fill()}`,
       `ui-button--${this.size()}`,
       this.block() ? 'ui-button--block' : '',
       this.isIconOnly() ? 'ui-button--icon-only' : '',

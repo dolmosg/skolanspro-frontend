@@ -1,0 +1,194 @@
+<section class="subject-group-teacher-assignment">
+  <header class="subject-group-teacher-assignment__header">
+    <div class="subject-group-teacher-assignment__content">
+      <strong>
+        {{
+          'planning.study-plan-organizations.academic-assignments.teacher-assignment.title'
+            | translate
+        }}
+      </strong>
+      <span>
+        {{
+          'planning.study-plan-organizations.academic-assignments.teacher-assignment.description'
+            | translate
+        }}
+      </span>
+    </div>
+  </header>
+
+  <label class="subject-group-teacher-assignment__search">
+    <span>
+      {{
+        'planning.study-plan-organizations.academic-assignments.teacher-assignment.search'
+          | translate
+      }}
+    </span>
+    <input
+      type="text"
+      [value]="searchTerm()"
+      [attr.placeholder]="
+        'planning.study-plan-organizations.academic-assignments.teacher-assignment.search-placeholder'
+          | translate
+      "
+      [attr.aria-label]="
+        'planning.study-plan-organizations.academic-assignments.teacher-assignment.search-placeholder'
+          | translate
+      "
+      (input)="updateSearchTerm($event)"
+    />
+  </label>
+
+  @if (loading()) {
+    <p class="subject-group-teacher-assignment__state">
+      {{ 'general.loading' | translate }}
+    </p>
+  } @else {
+    <div class="subject-group-teacher-assignment__workspace">
+      <section class="subject-group-teacher-assignment__panel">
+        <header class="subject-group-teacher-assignment__panel-header">
+          <strong>
+            {{
+              'planning.study-plan-organizations.academic-assignments.teacher-assignment.available'
+                | translate
+            }}
+          </strong>
+          <span>{{ availableTeachers().length }}</span>
+        </header>
+
+        <div class="subject-group-teacher-assignment__teacher-list">
+          @if (availableTeachers().length === 0) {
+            <p class="subject-group-teacher-assignment__state">
+              {{
+                'planning.study-plan-organizations.academic-assignments.teacher-assignment.no-available'
+                  | translate
+              }}
+            </p>
+          } @else if (filteredAvailableTeachers().length === 0) {
+            <p class="subject-group-teacher-assignment__state">
+              {{
+                'planning.study-plan-organizations.academic-assignments.teacher-assignment.no-search-results'
+                  | translate
+              }}
+            </p>
+          } @else {
+            @for (teacher of filteredAvailableTeachers(); track teacher.id) {
+              <div class="subject-group-teacher-assignment__teacher">
+                <span class="subject-group-teacher-assignment__avatar">
+                  @if (teacher.photo) {
+                    <img [src]="teacher.photo" [alt]="teacherName(teacher)" />
+                  } @else {
+                    {{ teacherInitial(teacher) }}
+                  }
+                </span>
+
+                <span class="subject-group-teacher-assignment__teacher-name">
+                  {{ teacherName(teacher) || ('common.no-data' | translate) }}
+                </span>
+
+                <app-ui-button
+                  [label]="
+                    'planning.study-plan-organizations.academic-assignments.teacher-assignment.add'
+                      | translate
+                  "
+                  [title]="
+                    'planning.study-plan-organizations.academic-assignments.teacher-assignment.add'
+                      | translate
+                  "
+                  iconLeft="add-user"
+                  variant="primary"
+                  fill="soft"
+                  [iconOnly]="true"
+                  size="sm"
+                  (click)="addTeacher(teacher)"
+                />
+              </div>
+            }
+          }
+        </div>
+      </section>
+
+      <section class="subject-group-teacher-assignment__panel">
+        <header class="subject-group-teacher-assignment__panel-header">
+          <strong>
+            {{
+              'planning.study-plan-organizations.academic-assignments.teacher-assignment.assigned'
+                | translate
+            }}
+          </strong>
+          <span>{{ selectedTeachers().length }}</span>
+        </header>
+
+        <div class="subject-group-teacher-assignment__teacher-list">
+          @if (selectedTeachers().length > 0) {
+            @for (teacher of selectedTeachers(); track teacher.id) {
+              <div class="subject-group-teacher-assignment__teacher">
+                <span class="subject-group-teacher-assignment__avatar">
+                  @if (teacher.photo) {
+                    <img [src]="teacher.photo" [alt]="teacherName(teacher)" />
+                  } @else {
+                    {{ teacherInitial(teacher) }}
+                  }
+                </span>
+
+                <span class="subject-group-teacher-assignment__teacher-name">
+                  {{ teacherName(teacher) || ('common.no-data' | translate) }}
+                </span>
+
+                <app-ui-button
+                  [label]="
+                    'planning.study-plan-organizations.academic-assignments.teacher-assignment.remove'
+                      | translate
+                  "
+                  [title]="
+                    'planning.study-plan-organizations.academic-assignments.teacher-assignment.remove'
+                      | translate
+                  "
+                  iconLeft="remove-user"
+                  variant="danger"
+                  fill="soft"
+                  [iconOnly]="true"
+                  size="sm"
+                  (click)="removeTeacher(teacher)"
+                />
+              </div>
+            }
+          } @else {
+            <p class="subject-group-teacher-assignment__state">
+              {{
+                'planning.study-plan-organizations.academic-assignments.teacher-assignment.no-assigned'
+                  | translate
+              }}
+            </p>
+          }
+        </div>
+      </section>
+    </div>
+  }
+
+  <footer class="subject-group-teacher-assignment__actions">
+    <app-ui-button
+      [label]="
+        'planning.study-plan-organizations.academic-assignments.teacher-assignment.close'
+          | translate
+      "
+      variant="secondary"
+      fill="soft"
+      size="sm"
+      [disabled]="loading()"
+      (click)="closeEditor()"
+    />
+
+    <app-ui-button
+      [label]="
+        'planning.study-plan-organizations.academic-assignments.teacher-assignment.save'
+          | translate
+      "
+      iconLeft="save"
+      variant="primary"
+      fill="solid"
+      size="sm"
+      [disabled]="!hasChanges() || loading()"
+      (click)="saveChanges()"
+    />
+  </footer>
+</section>

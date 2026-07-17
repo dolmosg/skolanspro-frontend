@@ -58,6 +58,13 @@
 			},
 			"order": "Ordenar Subcategorías de Materias",
 			"title": "Subcategorías de Materias",
+			"translation": {
+				"foreign": "Lengua extranjera",
+				"maternal": "Lengua materna",
+				"mathematics": "Matemáticas",
+				"second": "Segunda lengua",
+				"without": "Sin subclasificación"
+			},
 			"update": "Editar Subcategoría de Materia"
 		},
 		"subjects": {
@@ -607,6 +614,7 @@
 		"cancel": "Cancelar",
 		"capture": "Captura",
 		"clear": "Limpiar",
+		"close": "Cerrar",
 		"context": "Contexto",
 		"create": "Crear",
 		"current": "Actual",
@@ -644,6 +652,20 @@
 	"configuration": {
 		"academic-catalogs": {
 			"index": "Catálogos académicos"
+		},
+		"academic-tutors": {
+			"help": {
+				"academic": "Responsable del acompañamiento académico y seguimiento general del grupo.",
+				"foreign": "Responsable del seguimiento académico en la asignatura de lengua extranjera.",
+				"maternal": "Responsable del seguimiento académico en la asignatura de lengua materna.",
+				"spiritual": "Responsable del acompañamiento espiritual y formación en valores del grupo."
+			},
+			"translation": {
+				"academic": "Tutor académico",
+				"foreign": "Tutor de lengua extranjera",
+				"maternal": "Tutor de lengua materna",
+				"spiritual": "Tutor espiritual"
+			}
 		},
 		"actions": {
 			"add": "Nueva acción",
@@ -2392,7 +2414,18 @@
 	},
 	"planning": {
 		"study-plan-academic-assignments": {
-			"index": "Asignaciones"
+			"add-group": "Agregar grupo",
+			"assign-grade": "Asignar grado",
+			"assign-schedule": "Asignar horario",
+			"assign-subject": "Asignar materia",
+			"index": "Asignaciones",
+			"manage-options": "Administrar opciones",
+			"manage-teachers": "Administrar docentes",
+			"manage-teams": "Administrar equipos",
+			"remove-group": "Quitar grupo",
+			"remove-subject": "Quitar materia",
+			"review-grade": "Ver pendientes",
+			"show-all": "Ver todo"
 		},
 		"study-plan-academics": {
 			"actions": {
@@ -2605,11 +2638,126 @@
 		},
 		"study-plan-organizations": {
 			"academic-assignments": {
+				"assign-grade": {
+					"confirm-accept": "Asignar grado",
+					"confirm-cancel": "Cancelar",
+					"confirm-message": "Se volverán a crear únicamente las asignaciones automáticas faltantes del grado. Las asignaciones existentes no serán modificadas. Si anteriormente se eliminaron grupos automáticos, volverán a crearse.",
+					"confirm-title": "Asignar grado"
+				},
+				"assign-subject": {
+					"confirm-accept": "Asignar materia",
+					"confirm-cancel": "Cancelar",
+					"confirm-message": "Se restaurarán únicamente los grupos normales faltantes para la materia \"{{ subject }}\". Las asignaciones existentes no serán modificadas.",
+					"confirm-title": "Asignar materia"
+				},
 				"assigned-count": "{{ assigned }} / {{ expected }} materias asignadas",
 				"description": "Resume el avance de asignación de materias por etapa, grado y cruces académicos.",
 				"empty-description": "Aún no hay asignaciones académicas configuradas para este plan.",
 				"empty-title": "Sin asignaciones académicas",
-				"title": "Asignaciones académicas"
+				"group-creation": {
+					"code-placeholder": "Código del grupo",
+					"color-placeholder": "Color opcional",
+					"description": "Crea un grupo para esta materia.",
+					"name-placeholder": "Nombre del grupo",
+					"no-color": "Sin color",
+					"no-gender": "Sin género",
+					"subject": "Materia",
+					"title": "Agregar grupo"
+				},
+				"labels": {
+					"configuration": "Configuración",
+					"configured": "Configurado"
+				},
+				"metrics": {
+					"assignments": "Asignaciones",
+					"groups": "Grupos",
+					"options": "Opciones",
+					"schedules": "Horarios",
+					"subjects": "Materias",
+					"teachers": "Docentes",
+					"teams": "Equipos"
+				},
+				"more-teachers": "+{{ count }} más",
+				"options-editor": {
+					"automatic": "Automático",
+					"cancel": "Cancelar",
+					"grade-capture": "Capturar calificaciones",
+					"no": "No",
+					"report-card": "Boleta oficial",
+					"save": "Guardar",
+					"success": "Opciones actualizadas correctamente.",
+					"yes": "Sí"
+				},
+				"remove-group": {
+					"confirm-accept": "Eliminar",
+					"confirm-cancel": "Cancelar",
+					"confirm-message": "¿Deseas eliminar la asignación del grupo {{ group }} en {{ subject }}?",
+					"confirm-title": "Eliminar asignación",
+					"success": "La asignación fue eliminada correctamente."
+				},
+				"schedule-focus": {
+					"back": "Cerrar enfoque",
+					"description": "Solo se muestra la materia que está configurando.",
+					"title": "Modo de enfoque"
+				},
+				"status": {
+					"complete": "Configuración completa",
+					"empty": "Sin configurar",
+					"partial": "Parcial",
+					"pending": "Pendiente",
+					"review": "Existen elementos que requieren revisión"
+				},
+				"subject-count": "{{ count }} asignatura",
+				"subjects-count": "{{ count }} asignaturas",
+				"teacher-assignment": {
+					"add": "Agregar docente al grupo",
+					"assigned": "Docentes asignados",
+					"available": "Docentes disponibles",
+					"close": "Cerrar",
+					"description": "Seleccione los docentes que impartirán este grupo.",
+					"no-assigned": "No hay docentes asignados a este grupo.",
+					"no-available": "No hay docentes disponibles para asignar.",
+					"no-search-results": "No se encontraron docentes con ese nombre.",
+					"remove": "Quitar docente del grupo",
+					"save": "Guardar cambios",
+					"search": "Buscar docente...",
+					"search-placeholder": "Buscar docente...",
+					"title": "Asignación de docentes"
+				},
+				"teachers": "Docentes",
+				"teams": {
+					"alphabetic": "Alfabética",
+					"alphabetic-help": "A, B, C...",
+					"close": "Cerrar",
+					"no-groups": "No hay grupos normales disponibles para esta materia.",
+					"numbering-type": "Tipo de numeración",
+					"numeric": "Numérica",
+					"numeric-help": "1, 2, 3...",
+					"requested-total": "Total de equipos solicitados",
+					"reduction-not-allowed": "No es posible reducir equipos desde esta pantalla. La reducción debe realizarse desde el catálogo de grupos.",
+					"saving": "Guardando...",
+					"subject": "Materia",
+					"team-quantity": "Número de equipos",
+					"title": "Administrar equipos"
+				},
+				"title": "Asignaciones académicas",
+				"view": {
+					"coming-soon": "Próximamente...",
+					"grade": "Grado",
+					"groups": "Grupos",
+					"no-detail-description": "Selecciona un grado para consultar sus materias y grupos asignados.",
+					"no-detail-title": "Selecciona un grado",
+					"no-groups": "Esta materia aún no tiene grupos asignados. Agrega un grupo para comenzar.",
+					"no-search-results-description": "Intenta buscar por nombre, código o tipo de materia.",
+					"no-search-results-title": "No se encontraron materias",
+					"no-subject-type": "Sin tipo de materia",
+					"no-subjects-description": "Este grado todavía no tiene materias configuradas en la etapa seleccionada.",
+					"no-subjects-title": "Sin materias asignadas",
+					"search-placeholder": "Buscar materia, código o tipo...",
+					"without-code": "Sin código"
+				},
+				"without-schedule": "Sin horario",
+				"without-teachers": "Sin docentes"
 			},
 			"add-structure": "Nueva Estructura",
 			"columns": {
@@ -2657,11 +2805,68 @@
 				"variants": "Variantes"
 			},
 			"stage-groups": {
+				"actions": {
+					"add": "Agregar",
+					"delete": "Eliminar",
+					"edit": "Editar"
+				},
+				"columns": {
+					"active": "Estado",
+					"code": "Código",
+					"color": "Color",
+					"gender": "Género",
+					"grade": "Grado",
+					"name": "Nombre",
+					"quota": "Cupo",
+					"subject": "Asignatura",
+					"type": "Tipo"
+				},
+				"delete": {
+					"message": "Esta acción eliminará el grupo \"{{ group }}\".",
+					"title": "¿Eliminar grupo?"
+				},
 				"description": "Resume los grupos configurados por etapa, grado y transversales.",
+				"detail-placeholder": "Aquí se mostrará la lista de grupos académicos.",
+				"editor": {
+					"add-placeholder": "Aquí se preparará el formulario de alta.",
+					"add-title": "Agregar grupo",
+					"edit-title": "Editar grupo",
+					"placeholder-description": "Selecciona un grupo y usa editar para modificarlo.",
+					"placeholder-title": "Editor de grupo en preparación",
+					"selected-group": "Grupo seleccionado: {{ code }} - {{ name }}"
+				},
 				"empty-description": "No hay grupos académicos configurados.",
 				"empty-title": "Sin grupos académicos",
+				"filters": {
+					"all": "Todos",
+					"all-genders": "Todos los géneros",
+					"all-subjects": "Todas las asignaturas",
+					"clear": "Limpiar filtros",
+					"normal": "Normales",
+					"search-placeholder": "Buscar por código o nombre...",
+					"subject": "Por asignatura"
+				},
+				"force-delete": {
+					"confirm": "Eliminar grupo y asignaciones",
+					"message": "El grupo \"{{ group }}\" tiene {{ count }} asignaciones académicas vacías. Si continúa, se eliminará el grupo y todas esas asignaciones relacionadas. Esta acción no se puede deshacer.",
+					"title": "Eliminar grupo y asignaciones"
+				},
 				"group-count": "{{ count }} grupo",
 				"groups-count": "{{ count }} grupos",
+				"labels": {
+					"crossover": "Transversales",
+					"no-color": "Sin color",
+					"no-color-short": "-",
+					"no-gender": "Sin género",
+					"no-subject": "Sin asignatura"
+				},
+				"list": {
+					"empty-description": "No hay grupos académicos para esta selección.",
+					"empty-filtered-description": "Ajusta o limpia los filtros para volver a ver grupos.",
+					"empty-filtered-title": "Sin resultados",
+					"empty-title": "Sin grupos en esta selección",
+					"title": "Lista de grupos"
+				},
 				"title": "Grupos académicos"
 			}
 		},

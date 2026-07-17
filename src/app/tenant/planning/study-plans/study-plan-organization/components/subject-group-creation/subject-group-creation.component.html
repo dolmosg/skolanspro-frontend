@@ -1,0 +1,162 @@
+<form class="subject-group-creation" [formGroup]="form" (ngSubmit)="saveGroup()">
+  <header class="subject-group-creation__header">
+    <span class="subject-group-creation__icon" aria-hidden="true">
+      <app-ui-icon name="add" size="sm" tone="primary" />
+    </span>
+
+    <div class="subject-group-creation__title">
+      <strong>
+        {{
+          'planning.study-plan-organizations.academic-assignments.group-creation.title'
+            | translate
+        }}
+      </strong>
+      <span>
+        {{
+          'planning.study-plan-organizations.academic-assignments.group-creation.description'
+            | translate
+        }}
+      </span>
+    </div>
+  </header>
+
+  <div class="subject-group-creation__fields">
+    <div class="subject-group-creation__row subject-group-creation__row--full">
+      <div class="subject-group-creation__context">
+        <span>
+          {{
+            'planning.study-plan-organizations.academic-assignments.group-creation.subject'
+              | translate
+          }}
+        </span>
+        <strong>{{ subject().name ?? ('common.no-data' | translate) }}</strong>
+      </div>
+    </div>
+
+    <div class="subject-group-creation__row subject-group-creation__row--two">
+      <label class="subject-group-creation__field">
+        <span>{{ 'planning.study-plan-organizations.stage-groups.columns.code' | translate }}</span>
+        <input
+          type="text"
+          formControlName="code"
+          maxlength="10"
+          [readOnly]="loading()"
+          [attr.placeholder]="
+            'planning.study-plan-organizations.academic-assignments.group-creation.code-placeholder'
+              | translate
+          "
+        />
+        <form-error [control]="form.controls.code"></form-error>
+      </label>
+
+      <label class="subject-group-creation__field">
+        <span>{{ 'planning.study-plan-organizations.stage-groups.columns.name' | translate }}</span>
+        <input
+          type="text"
+          formControlName="name"
+          maxlength="128"
+          [readOnly]="loading()"
+          [attr.placeholder]="
+            'planning.study-plan-organizations.academic-assignments.group-creation.name-placeholder'
+              | translate
+          "
+        />
+        <form-error [control]="form.controls.name"></form-error>
+      </label>
+    </div>
+
+    <div class="subject-group-creation__row subject-group-creation__row--two">
+      <label class="subject-group-creation__field">
+        <span>{{ 'planning.study-plan-organizations.stage-groups.columns.quota' | translate }}</span>
+        <input type="number" min="0" formControlName="quota" [readOnly]="loading()" />
+        <form-error [control]="form.controls.quota"></form-error>
+      </label>
+
+      <label class="subject-group-creation__field">
+        <span>{{ 'planning.study-plan-organizations.stage-groups.columns.gender' | translate }}</span>
+        <div class="subject-group-creation__select-control">
+          <app-sk-select
+            [items]="catalogs().genders"
+            bindLabel="translation"
+            bindValue="id"
+            [translateLabel]="true"
+            [searchable]="false"
+            [clearable]="true"
+            [disabled]="loading()"
+            [placeholder]="
+              'planning.study-plan-organizations.academic-assignments.group-creation.no-gender'
+            "
+            [control]="form.controls.gender_id"
+          />
+        </div>
+      </label>
+    </div>
+
+    <div class="subject-group-creation__row subject-group-creation__row--full">
+      <label class="subject-group-creation__field">
+        <span>{{ 'planning.study-plan-organizations.stage-groups.columns.color' | translate }}</span>
+        <div
+          class="subject-group-creation__color-control"
+          [class.subject-group-creation__color-control--empty]="!colorSelected()"
+        >
+          <span
+            class="subject-group-creation__color-preview"
+            [class.subject-group-creation__color-preview--empty]="!colorSelected()"
+            [style.background]="colorSelected() ? form.controls.color.value : null"
+            aria-hidden="true"
+          ></span>
+          <input
+            type="color"
+            formControlName="color"
+            [value]="colorPickerValue()"
+            [disabled]="loading()"
+            [attr.aria-label]="
+              'planning.study-plan-organizations.stage-groups.columns.color' | translate
+            "
+            [title]="'planning.study-plan-organizations.stage-groups.columns.color' | translate"
+            (input)="setColor($event)"
+          />
+          <strong>
+            @if (colorSelected()) {
+              {{ form.controls.color.value }}
+            } @else {
+            {{
+              'planning.study-plan-organizations.academic-assignments.group-creation.no-color'
+                | translate
+            }}
+          }
+          </strong>
+        </div>
+        <form-error [control]="form.controls.color"></form-error>
+      </label>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <p class="subject-group-creation__state">
+      {{ 'general.loading' | translate }}
+    </p>
+  }
+
+  <footer class="subject-group-creation__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      fill="soft"
+      size="sm"
+      type="button"
+      [disabled]="loading()"
+      (click)="closeEditor()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      iconLeft="save"
+      variant="primary"
+      fill="solid"
+      size="sm"
+      type="submit"
+      [disabled]="loading() || form.invalid"
+    />
+  </footer>
+</form>

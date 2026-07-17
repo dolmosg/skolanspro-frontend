@@ -70,7 +70,9 @@
 
   @if (!isBlockFormOpen() && !hasSelectedBlock() && (updateBlockOption() || deleteBlockOption())) {
     <p class="schedule-segment-blocks__selection-hint">
-      {{ 'planning.study-plan-schedule-segments.detail.blocks.select_to_enable_actions' | translate }}
+      {{
+        'planning.study-plan-schedule-segments.detail.blocks.select_to_enable_actions' | translate
+      }}
     </p>
   }
 
@@ -81,7 +83,7 @@
 
         <div class="schedule-segment-blocks__form-actions">
           <app-ui-button
-            [label]="'common.cancel' | translate"
+            [title]="'common.cancel' | translate"
             iconLeft="cancel"
             variant="danger"
             size="sm"
@@ -91,9 +93,10 @@
           />
 
           <app-ui-button
-            [label]="'common.save' | translate"
+            [title]="'common.save' | translate"
             iconLeft="save"
             variant="primary"
+            [iconOnly]="true"
             size="sm"
             type="submit"
             [disabled]="savingBlock() || blockForm.invalid"
@@ -127,12 +130,7 @@
           <span>{{
             'planning.study-plan-schedule-segments.detail.blocks.columns.code' | translate
           }}</span>
-          <input
-            type="text"
-            formControlName="code"
-            maxlength="10"
-            [readOnly]="savingBlock()"
-          />
+          <input type="text" formControlName="code" maxlength="10" [readOnly]="savingBlock()" />
           <form-error [control]="blockForm.controls.code"></form-error>
         </label>
 
@@ -140,12 +138,7 @@
           <span>{{
             'planning.study-plan-schedule-segments.detail.blocks.columns.name' | translate
           }}</span>
-          <input
-            type="text"
-            formControlName="name"
-            maxlength="255"
-            [readOnly]="savingBlock()"
-          />
+          <input type="text" formControlName="name" maxlength="255" [readOnly]="savingBlock()" />
           <form-error [control]="blockForm.controls.name"></form-error>
         </label>
 

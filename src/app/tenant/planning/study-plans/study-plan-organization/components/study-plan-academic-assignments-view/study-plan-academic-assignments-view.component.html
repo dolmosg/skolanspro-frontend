@@ -1,0 +1,111 @@
+<section class="study-plan-academic-assignments-view">
+  <header class="study-plan-academic-assignments-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  @if (stage(); as currentStage) {
+    <div class="study-plan-academic-assignments-view__layout">
+      <aside class="study-plan-academic-assignments-view__sidebar">
+        <section class="study-plan-academic-assignments-view__section">
+          <header class="study-plan-academic-assignments-view__section-header">
+            <div class="study-plan-academic-assignments-view__section-title">
+              <span class="study-plan-academic-assignments-view__section-icon">
+                <app-ui-icon name="list-checks" size="sm" tone="primary" />
+              </span>
+              <h3>
+                {{ 'planning.study-plan-organizations.academic-assignments.title' | translate }}
+              </h3>
+            </div>
+          </header>
+
+          <div class="study-plan-academic-assignments-view__stage-list">
+            <section class="study-plan-academic-assignments-view__stage">
+              <header class="study-plan-academic-assignments-view__stage-header">
+                <strong>{{ currentStage.name }}</strong>
+                <span>{{ currentStage.assigned_count }} / {{ currentStage.expected_count }}</span>
+              </header>
+
+              <div class="study-plan-academic-assignments-view__grade-list">
+                @for (grade of grades(); track grade.id ?? grade.type) {
+                  <button
+                    type="button"
+                    class="study-plan-academic-assignments-view__grade-card"
+                    [class.study-plan-academic-assignments-view__grade-card--active]="
+                      isSelected(grade)
+                    "
+                    (click)="selectGrade(grade)"
+                  >
+                    <span class="study-plan-academic-assignments-view__grade-content">
+                      <strong>{{ grade.name }}</strong>
+                      @if (grade.description) {
+                        <span>{{ grade.description }}</span>
+                      }
+                    </span>
+
+                    <span class="study-plan-academic-assignments-view__grade-meta">
+                      <span>
+                        {{
+                          subjectsTranslationKey(grade.subjects_count)
+                            | translate: { count: grade.subjects_count }
+                        }}
+                      </span>
+                      <span>
+                        {{
+                          groupsTranslationKey(grade.groups_count)
+                            | translate: { count: grade.groups_count }
+                        }}
+                      </span>
+                      <app-ui-icon name="drilldown" size="sm" tone="primary" />
+                    </span>
+                  </button>
+                }
+              </div>
+            </section>
+          </div>
+        </section>
+      </aside>
+
+      <section class="study-plan-academic-assignments-view__workspace">
+        @if (selectedGrade(); as grade) {
+          <app-study-plan-academic-assignments-grade-detail
+            [route]="route()"
+            [stage]="currentStage"
+            [gradeId]="grade.id"
+            [reloadToken]="detailReloadToken()"
+            [catalogs]="catalogs()"
+            (assignmentMutation)="relayAssignmentMutation($event)"
+          >
+            @if (assignGradeOption(); as assignOption) {
+              <div class="study-plan-academic-assignments-view__grade-actions" grade-actions>
+                <app-ui-button
+                  [title]="assignOption.translation | translate"
+                  [label]="assignOption.translation | translate"
+                  [iconLeft]="assignOption.icon"
+                  [variant]="assignOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  [disabled]="loading()"
+                  (click)="assignGrade()"
+                />
+              </div>
+            }
+          </app-study-plan-academic-assignments-grade-detail>
+        } @else {
+          <div class="study-plan-academic-assignments-view__workspace-empty">
+            <h3>{{ 'common.no-data' | translate }}</h3>
+          </div>
+        }
+      </section>
+    </div>
+  } @else {
+    <section class="study-plan-academic-assignments-view__empty">
+      <p>{{ 'common.no-data' | translate }}</p>
+    </section>
+  }
+</section>

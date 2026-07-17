@@ -1,5 +1,9 @@
 <section class="study-plan-organization">
-  @if (selectedStructureId() === null) {
+  @if (
+    selectedStructureId() === null &&
+    selectedGroupsStageId() === null &&
+    selectedAcademicAssignmentGradeId() === undefined
+  ) {
     <div class="study-plan-organization__schedule-type">
       <div class="study-plan-organization__schedule-type-icon" aria-hidden="true">
         <app-ui-icon name="calendar" size="lg" tone="primary" />
@@ -57,6 +61,7 @@
             <app-study-plan-stage-groups-summary
               [summary]="stageGroupsSummary()"
               [options]="stageGroupsOptions()"
+              (groupSelected)="openStageGroups($event)"
             />
           }
         </div>
@@ -80,7 +85,7 @@
           @if (hasAcademicAssignmentsChild()) {
             <app-study-plan-academic-assignments-summary
               [summary]="academicAssignmentsSummary()"
-              [options]="academicAssignmentsOptions()"
+              (openGrade)="openAcademicAssignments($event)"
             />
           }
           @if (hasScheduleConfiguration() && hasSchedulesChild()) {
@@ -92,12 +97,32 @@
         </div>
       </section>
     </div>
-  } @else {
+  } @else if (selectedStructureId() !== null) {
     <app-schedule-structure-view
       [route]="scheduleStructureRoute()"
       [structureId]="selectedStructureId()"
       [segmentId]="selectedSegmentId()"
       (back)="closeScheduleStructureView()"
+      (saved)="reloadOrganization()"
+    />
+  } @else if (selectedAcademicAssignmentGradeId() !== undefined) {
+    <app-study-plan-academic-assignments-view
+      [route]="academicAssignmentsRoute()"
+      [studyPlan]="currentStudyPlan()"
+      [stage]="selectedAcademicAssignmentStage()"
+      [gradeId]="selectedAcademicAssignmentGradeIdForView()"
+      [screenOptions]="academicAssignmentsOptions()"
+      (back)="closeAcademicAssignmentsView()"
+      (assignmentMutation)="handleAcademicAssignmentMutation($event)"
+    />
+  } @else {
+    <app-study-plan-stage-groups-view
+      [route]="stageGroupsRoute()"
+      [summary]="stageGroupsSummary()"
+      [stageId]="selectedGroupsStageId()"
+      [gradeId]="selectedGroupsGradeId()"
+      [mode]="selectedGroupsMode()"
+      (back)="closeStageGroupsView()"
       (saved)="reloadOrganization()"
     />
   }

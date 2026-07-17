@@ -370,10 +370,38 @@
         padding: 0.5rem 0.65rem;
         font-size: 0.85rem;
         color: var(--color-text, #111827);
-        background: #f8fafc;
+        background: var(--color-surface, #ffffff);
+        outline: none;
 
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    input[readonly] {
+        background: var(--color-surface-subtle, #f8fafc);
+        color: var(--color-text, #334155);
+        cursor: default;
+    }
+
+    input:disabled {
+        background: var(--color-surface-muted, #f1f5f9);
+        color: var(--color-text-muted, #94a3b8);
+        cursor: not-allowed;
+    }
+}
+
+.subjects-detail__section--form {
+    input:not([type="checkbox"]):not([readonly]):not(:disabled) {
+        background: var(--color-surface, #ffffff);
+
+        &:hover {
+            border-color: var(--color-border-strong, #94a3b8);
+        }
+
+        &:focus {
+            border-color: var(--color-primary, #7c3aed);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #7c3aed) 12%, transparent);
+        }
     }
 }
 
