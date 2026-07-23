@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   DestroyRef,
-  ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   Output,
@@ -26,9 +26,10 @@ import {
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AgGridAngular } from 'ag-grid-angular';
-import { fromEvent } from 'rxjs';
+import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_ES } from '@ag-grid-community/locale';
 
 export type SkolansTableSelectionMode = 'none' | 'single' | 'multiple';
+export type SkolansTableHeightMode = 'fixed' | 'fill';
 
 /**
  * SkolansTable
@@ -48,12 +49,12 @@ export type SkolansTableSelectionMode = 'none' | 'single' | 'multiple';
  * - Reapply grid state safely when inputs change after initialization.
  *
  * Height strategy:
- * - `height="fill"` is the recommended mode for full-page catalog layouts.
- *   It calculates a concrete pixel height from the nearest layout container.
+ * - `heightMode="fill"` is the explicit mode for full-page catalog layouts.
+ *   The legacy `height="fill"` API remains supported for existing consumers.
  * - Fixed CSS heights such as `height="420px"` are supported for modals,
  *   cards, tabs, or screens that need explicit sizing.
- * - Percentage heights are discouraged because AG Grid with `domLayout='normal'`
- *   requires a concrete rendered height and parent percentage chains are fragile.
+ * - Fill mode relies on the parent layout to provide resolvable space through
+ *   flex or grid sizing; the table never derives its height from the viewport.
  */
 @Component({
   selector: 'app-skolans-table',
@@ -65,7 +66,6 @@ export type SkolansTableSelectionMode = 'none' | 'single' | 'multiple';
 export class SkolansTable implements OnChanges {
   private readonly translate = inject(TranslateService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly host = inject(ElementRef<HTMLElement>);
 
   /** Column definitions */
   @Input() columnDefs: ColDef[] = [];
@@ -83,17 +83,15 @@ export class SkolansTable implements OnChanges {
   @Input() emptyMessage = 'common.no-data';
 
   /**
-   * CSS height applied to the AG Grid host.
+   * Legacy height API retained for existing consumers.
    *
-   * Supported modes:
-   * - `fill`: calculates a concrete pixel height based on the available layout space.
-   * - `auto`: maps to `100%` and depends on the parent layout.
-   * - fixed values like `420px`: passed directly to AG Grid.
-   *
-   * Avoid percentage values such as `50%` unless every parent has a guaranteed
-   * explicit height. For most catalog pages, prefer `fill`.
+   * `height="fill"` selects fill mode when `heightMode` is omitted. Any other
+   * value is applied as the exact fixed height.
    */
   @Input() height: string = '100%';
+
+  /** Explicit sizing strategy. When omitted, it is derived from the legacy height input. */
+  @Input() heightMode?: SkolansTableHeightMode;
 
   /** Enables AG Grid pagination. */
   @Input() pagination = false;
@@ -103,6 +101,9 @@ export class SkolansTable implements OnChanges {
 
   /** Page size used when pagination is enabled. */
   @Input() pageSize = 10;
+
+  /** Page sizes offered by AG Grid. The active page size is always added. */
+  @Input() pageSizeOptions: readonly number[] = [10, 20, 50, 100];
 
   /** Enables row drag mode for manual ordering flows. */
   @Input() enableRowDrag = false;
@@ -130,6 +131,52 @@ export class SkolansTable implements OnChanges {
     filter: false,
     floatingFilter: false,
   };
+
+  /** Official AG Grid locale matching the application's active language. */
+  protected get localeText(): Record<string, string> {
+    return this.translate.getCurrentLang().toLowerCase().startsWith('es')
+      ? AG_GRID_LOCALE_ES
+      : AG_GRID_LOCALE_EN;
+  }
+
+  /** Loading overlay supplied by the same official locale as the grid controls. */
+  protected get loadingOverlayTemplate(): string {
+    return this.localeText['loadingOoo'];
+  }
+
+  /** Valid, sorted selector options without mutating the consumer's input. */
+  protected get normalizedPageSizeOptions(): number[] {
+    return [...new Set([...this.pageSizeOptions, this.effectivePageSize])]
+      .filter((value) => Number.isInteger(value) && value > 0)
+      .sort((left, right) => left - right);
+  }
+
+  /** AG Grid hides the selector when there is no meaningful choice. */
+  protected get paginationPageSizeSelector(): number[] | false {
+    const options = this.normalizedPageSizeOptions;
+
+    return options.length > 1 ? options : false;
+  }
+
+  /** Keeps invalid external values from reaching AG Grid. */
+  protected get effectivePageSize(): number {
+    return Number.isInteger(this.pageSize) && this.pageSize > 0 ? this.pageSize : 10;
+  }
+
+  /** Current sizing mode, with backwards compatibility for height="fill". */
+  protected get effectiveHeightMode(): SkolansTableHeightMode {
+    return this.heightMode ?? (this.height?.trim() === 'fill' ? 'fill' : 'fixed');
+  }
+
+  @HostBinding('class.skolans-table-host--fill')
+  protected get usesFillHeight(): boolean {
+    return this.effectiveHeightMode === 'fill';
+  }
+
+  @HostBinding('class.skolans-table-host--fixed')
+  protected get usesFixedHeight(): boolean {
+    return this.effectiveHeightMode === 'fixed';
+  }
 
   /**
    * AG Grid row selection configuration.
@@ -161,50 +208,34 @@ export class SkolansTable implements OnChanges {
   /**
    * Inline style used by the AG Grid host element.
    *
-   * AG Grid is rendered with `domLayout='normal'`, which means the grid must
-   * receive an explicit rendered height. For `height="fill"`, this component
-   * supplies a computed pixel value through `resolvedHeight`. For fixed values,
-   * the provided height is passed directly to the grid.
+   * AG Grid uses `domLayout='normal'`: fixed mode receives the consumer's exact
+   * CSS height, while fill mode receives 100% from the resolvable parent chain.
    */
-  protected readonly tableStyle = computed(() => {
-    const requestedHeight = this.height?.trim() || '100%';
-
-    if (requestedHeight === 'fill') {
-      return {
-        width: '100%',
-        height: this.resolvedHeight(),
-      };
-    }
-
-    const normalizedHeight = requestedHeight === 'auto' ? '100%' : requestedHeight;
-
+  protected get tableStyle(): { width: string; height: string } {
     return {
       width: '100%',
-      height: normalizedHeight,
+      height: this.effectiveHeightMode === 'fill' ? '100%' : this.normalizedFixedHeight,
     };
-  });
+  }
+
+  /** Keeps the previous `height="auto"` behavior as a 100% legacy alias. */
+  private get normalizedFixedHeight(): string {
+    const requestedHeight = this.height?.trim() || '100%';
+
+    return requestedHeight === 'auto' ? '100%' : requestedHeight;
+  }
 
   private readonly gridApi = signal<GridApi | null>(null);
   private readonly internalRowData = signal<unknown[]>([]);
-  /**
-   * Resolved pixel height used by `height="fill"`.
-   *
-   * This value is intentionally stored in a signal because DOM measurements are
-   * not reactive by themselves. It is recalculated on grid initialization,
-   * height input changes, and viewport resize.
-   */
-  private readonly resolvedHeight = signal('400px');
-
-  /** Pending animation frame used to batch height recalculation. */
-  private frameId: number | null = null;
+  protected readonly renderGrid = signal(true);
+  private recreationTimerId: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     this.listenToLanguageChanges();
-    this.listenToViewportChanges();
 
     this.destroyRef.onDestroy(() => {
-      if (this.frameId !== null) {
-        cancelAnimationFrame(this.frameId);
+      if (this.recreationTimerId !== null) {
+        clearTimeout(this.recreationTimerId);
       }
     });
   }
@@ -217,8 +248,9 @@ export class SkolansTable implements OnChanges {
 
     if (!api) return;
 
-    if (changes['height']) {
-      this.scheduleHeightSync();
+    if (changes['pageSize'] || changes['pageSizeOptions']) {
+      this.recreateGrid();
+      return;
     }
 
     if (changes['columnDefs']) {
@@ -236,7 +268,7 @@ export class SkolansTable implements OnChanges {
       api.refreshCells({ force: true });
     }
 
-    if (changes['pagination'] || changes['pageSize'] || changes['alwaysShowPagination']) {
+    if (changes['pagination'] || changes['alwaysShowPagination']) {
       this.syncPaginationState(api);
     }
 
@@ -261,7 +293,6 @@ export class SkolansTable implements OnChanges {
     this.gridApi.set(event.api);
     this.gridReady.emit(event);
     this.syncGridState();
-    this.scheduleHeightSync();
   }
 
   /**
@@ -269,6 +300,16 @@ export class SkolansTable implements OnChanges {
    */
   onSelectionChanged(event: SelectionChangedEvent): void {
     this.selectionChange.emit(event.api.getSelectedRows());
+  }
+
+  /** Selects every row in the table, independently of filtering or pagination. */
+  selectAll(): void {
+    this.gridApi()?.selectAll('all');
+  }
+
+  /** Clears the complete row selection. */
+  clearSelection(): void {
+    this.gridApi()?.deselectAll('all');
   }
 
   /**
@@ -334,7 +375,7 @@ export class SkolansTable implements OnChanges {
   private listenToLanguageChanges(): void {
     this.translate.onLangChange
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.refreshTranslations());
+      .subscribe(() => this.recreateGrid());
   }
 
   /**
@@ -358,83 +399,6 @@ export class SkolansTable implements OnChanges {
   }
 
   /**
-   * Reacts to viewport resizing so `fill` mode can keep AG Grid height in pixels.
-   *
-   * Without this, resizing the browser would leave the grid with a stale height.
-   */
-  private listenToViewportChanges(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    fromEvent(window, 'resize')
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.scheduleHeightSync());
-  }
-
-  /**
-   * Batches height recalculation into the next animation frame.
-   *
-   * Layout measurements are safest after the browser has had a chance to apply
-   * pending DOM updates. This avoids measuring the table before surrounding
-   * toolbars, selection badges, or layout containers have settled.
-   */
-  private scheduleHeightSync(): void {
-    if ((this.height?.trim() || '100%') !== 'fill') {
-      return;
-    }
-
-    if (typeof window === 'undefined') {
-      this.resolvedHeight.set('400px');
-      return;
-    }
-
-    if (this.frameId !== null) {
-      cancelAnimationFrame(this.frameId);
-    }
-
-    this.frameId = window.requestAnimationFrame(() => {
-      this.frameId = null;
-      this.syncResolvedHeight();
-    });
-  }
-
-  /**
-   * Computes a real pixel height for AG Grid when `height="fill"`.
-   *
-   * The calculation uses the nearest known layout container and measures the
-   * remaining visible space from the table top to the container bottom:
-   *
-   *   resolvedHeight = container.bottom - table.top - safetyOffset
-   *
-   * This keeps local toolbars visible, prevents the page footer from being
-   * pushed away, and gives AG Grid the concrete pixel height it requires.
-   */
-  private syncResolvedHeight(): void {
-    const safetyOffset = 8;
-    const hostElement = this.host.nativeElement;
-    const hostRect = hostElement.getBoundingClientRect();
-
-    const layoutContainer =
-      hostElement.closest('.shell__content-body') ??
-      hostElement.closest('.sk-page__panel') ??
-      hostElement.parentElement;
-
-    const containerRect = layoutContainer?.getBoundingClientRect();
-
-    if (containerRect) {
-      const nextHeight = Math.max(300, Math.floor(containerRect.bottom - hostRect.top - safetyOffset));
-      this.resolvedHeight.set(`${nextHeight}px`);
-      return;
-    }
-
-    const viewportHeight = window.innerHeight;
-    const nextHeight = Math.max(300, Math.floor(viewportHeight - hostRect.top - 24));
-
-    this.resolvedHeight.set(`${nextHeight}px`);
-  }
-
-  /**
    * Applies pagination-related options in one place.
    *
    * Keeping these options centralized avoids inconsistent pagination behavior
@@ -442,8 +406,36 @@ export class SkolansTable implements OnChanges {
    */
   private syncPaginationState(api: GridApi): void {
     api.setGridOption('pagination', this.pagination);
-    api.setGridOption('paginationPageSize', this.pageSize);
+    api.setGridOption('paginationPageSize', this.effectivePageSize);
     api.setGridOption('suppressPaginationPanel', !this.pagination && !this.alwaysShowPagination);
+  }
+
+  /**
+   * Recreates AG Grid when an initial-only option changes.
+   *
+   * AG Grid reads locale text and page-size selector options only during grid
+   * creation. Recreating the grid is therefore required for runtime language or
+   * selector-option changes; all regular mutable inputs continue through GridApi.
+   */
+  private recreateGrid(): void {
+    if (!this.gridApi()) {
+      return;
+    }
+
+    this.gridApi.set(null);
+    this.renderGrid.set(false);
+
+    if (this.recreationTimerId !== null) {
+      clearTimeout(this.recreationTimerId);
+    }
+
+    this.recreationTimerId = setTimeout(() => {
+      this.recreationTimerId = null;
+
+      if (!this.destroyRef.destroyed) {
+        this.renderGrid.set(true);
+      }
+    });
   }
 
   /**

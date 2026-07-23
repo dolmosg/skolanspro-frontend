@@ -2298,7 +2298,7 @@
 		"study-plan-academic-assignments": "Asignaciones Académicas",
 		"study-plan-academics": "Estructura Académica",
 		"study-plan-attendance": "Asistencia",
-		"study-plan-evaluation": "Evaluación y Seguimiento",
+		"study-plan-evaluations": "Evaluación y Seguimiento",
 		"study-plan-general": "Información general",
 		"study-plan-grading": "Calificaciones",
 		"study-plan-information": "Información",
@@ -2490,6 +2490,121 @@
 				"within-grade": "Todas las etapas tienen materias en cada grado."
 			},
 			"title": "Estructura Académica"
+		},
+		"study-plan-evaluations": {
+			"aspects": {
+				"configured-subject-singular": "{{configured}} de {{total}} asignatura configurada",
+				"configured-subjects": "{{configured}} de {{total}} asignaturas configuradas",
+				"description": "Configuración de los aspectos utilizados para evaluar las asignaturas.",
+				"empty": "No hay información de etapas disponible.",
+				"open-catalog-aria-label": "Abrir el catálogo de aspectos",
+				"open-stage-aria-label": "Abrir la configuración de aspectos de la etapa {{stage}}",
+				"title": "Aspectos de evaluación",
+				"total": "Aspectos en el plan",
+				"unused-aspect-singular": "{{count}} aspecto sin utilizar",
+				"unused-aspects": "{{count}} aspectos sin utilizar",
+				"view-aspects": "Ver aspectos"
+			},
+			"aspects-view": {
+				"catalog-placeholder": "La configuración general de aspectos se mostrará aquí.",
+				"configuration": "Configuración",
+				"crossover-placeholder": "La configuración de aspectos transversales de la etapa {{stage}} se mostrará aquí.",
+				"crossovers": "Transversales",
+				"grade-placeholder": "La configuración de aspectos de {{grade}} en la etapa {{stage}} se mostrará aquí.",
+				"stage-placeholder": "La configuración de aspectos de la etapa {{stage}} se mostrará aquí.",
+				"stages": "Etapas"
+			}
+		},
+		"study-plan-aspect-configuration": {
+			"add": "Agregar aspecto",
+			"delete": "Eliminar aspecto",
+			"update": "Editar aspecto",
+			"automatic": "Configuración automática",
+			"manual": "Configuración manual",
+			"weight": "Configurar pesos",
+			"activities": "Configurar actividades"
+		},
+		"study-plan-aspects": {
+			"add": "Agregar aspecto",
+			"delete": "Eliminar aspecto",
+			"update": "Editar aspecto",
+			"columns": {
+				"description": "Descripción",
+				"name": "Nombre",
+				"programming": "Programación"
+			},
+			"count": "{{count}} aspectos",
+			"configuration": {
+				"actions-label": "Acciones de configuración de aspectos",
+				"activities-editor": {
+					"description": "Define la cantidad de actividades para {{count}} aspecto(s) seleccionado(s).",
+					"label": "Cantidad de actividades",
+					"title": "Configurar actividades"
+				},
+				"add-editor": {
+					"add-selected": "Agregar seleccionados",
+					"available-count": "{{count}} aspectos disponibles",
+					"description": "Selecciona los aspectos disponibles que deseas agregar.",
+					"empty": "No hay aspectos disponibles que coincidan con la búsqueda.",
+					"search": "Buscar aspectos",
+					"search-placeholder": "Buscar por nombre",
+					"selected-count": "{{count}} seleccionados",
+					"title": "Agregar aspectos"
+				},
+				"apply": "Aplicar",
+				"clear-selection": "Limpiar selección",
+				"columns": {
+					"activities": "Actividades",
+					"aspect": "Aspecto",
+					"automatic": "Automático",
+					"order": "Orden",
+					"weight": "Peso"
+				},
+				"confirmations": {
+					"automatic": {
+						"confirm": "Configurar automáticamente",
+						"description": "Se preparará la configuración automática para {{count}} aspecto(s) seleccionado(s).",
+						"title": "Configuración automática"
+					},
+					"delete": {
+						"confirm": "Quitar de la configuración",
+						"description": "Se quitarán {{count}} aspecto(s) únicamente de esta configuración. Los aspectos permanecerán en el catálogo general.",
+						"title": "Quitar aspectos de la configuración"
+					},
+					"manual": {
+						"confirm": "Configurar manualmente",
+						"description": "Se preparará la configuración manual para {{count}} aspecto(s) seleccionado(s).",
+						"title": "Configuración manual"
+					}
+				},
+				"empty": "No hay aspectos configurados para esta selección.",
+				"weight-editor": {
+					"description": "Define el peso para {{count}} aspecto(s) seleccionado(s).",
+					"label": "Peso o porcentaje",
+					"title": "Configurar pesos"
+				}
+			},
+			"empty": {
+				"description": "Aún no hay aspectos de evaluación en este plan.",
+				"title": "Sin aspectos"
+			},
+			"filters": {
+				"all": "Todos",
+				"search-label": "Búsqueda",
+				"unused": "No usados"
+			},
+			"no-description": "Sin descripción",
+			"no-results": {
+				"description": "Ningún aspecto coincide con la búsqueda.",
+				"title": "Sin resultados"
+			},
+			"programming": {
+				"no": "No",
+				"yes": "Sí"
+			},
+			"search": "Buscar aspectos...",
+			"subtitle": "Administra los aspectos generales disponibles para evaluar las asignaturas.",
+			"title": "Aspectos de evaluación"
 		},
 		"study-plan-attendance": {
 			"description": "Configura cómo se registra la asistencia y cuándo el alumno conserva derecho a presentar exámenes.",

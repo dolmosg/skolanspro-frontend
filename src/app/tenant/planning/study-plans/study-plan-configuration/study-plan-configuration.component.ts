@@ -24,6 +24,7 @@ import { ScreenChildItem, ScreenOptionItem } from '@shared/interfaces/access.int
 import { UiButtonComponent } from '@shared/ui/ui-button/ui-button';
 import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { StudyPlanAcademicsComponent } from '../study-plan-academics/study-plan-academics.component';
+import { StudyPlanEvaluationComponent } from '../study-plan-evaluation/study-plan-evaluation.component';
 import { StudyPlanOrganizationComponent } from '../study-plan-organization/study-plan-organization.component';
 
 export interface StudyPlanConfigurationItem {
@@ -262,6 +263,7 @@ interface AssistantEditingFieldContext {
     DatePipe,
     ReactiveFormsModule,
     StudyPlanAcademicsComponent,
+    StudyPlanEvaluationComponent,
     StudyPlanOrganizationComponent,
   ],
   templateUrl: './study-plan-configuration.component.html',

@@ -1,49 +1,53 @@
-<section class="person-fields">
-  <header class="person-fields__header">
-    <div>
-      <h1>{{ titleKey() | translate }}</h1>
-      <p>
-        {{ 'configuration.person-fields.description' | translate }}
-      </p>
+<section class="sk-page sk-page--fill">
+  <div class="sk-page__panel person-fields">
+    <header class="person-fields__header">
+      <div>
+        <h1>{{ titleKey() | translate }}</h1>
+        <p>
+          {{ 'configuration.person-fields.description' | translate }}
+        </p>
+      </div>
+
+      <div class="person-fields__actions">
+        @if (getScreenOption('reset'); as resetOption) {
+          <app-ui-button
+            [label]="resetOption.translation | translate"
+            [variant]="resetOption.color"
+            size="sm"
+            [iconLeft]="resetOption.icon"
+            [disabled]="!hasChanges() || saving()"
+            (click)="onReset()"
+          />
+        }
+
+        @if (getScreenOption('save'); as saveOption) {
+          <app-ui-button
+            [label]="saveOption.translation | translate"
+            [variant]="saveOption.color"
+            size="sm"
+            [iconLeft]="saveOption.icon"
+            [disabled]="!hasChanges() || saving()"
+            (click)="onSave()"
+          />
+        }
+      </div>
+    </header>
+
+    <div class="person-fields__notice">
+      {{ 'configuration.person-fields.rules' | translate }}
     </div>
 
-    <div class="person-fields__actions">
-      @if (getScreenOption('reset'); as resetOption) {
-        <app-ui-button
-          [label]="resetOption.translation | translate"
-          [variant]="resetOption.color"
-          size="sm"
-          [iconLeft]="resetOption.icon"
-          [disabled]="!hasChanges() || saving()"
-          (click)="onReset()"
-        />
-      }
-
-      @if (getScreenOption('save'); as saveOption) {
-        <app-ui-button
-          [label]="saveOption.translation | translate"
-          [variant]="saveOption.color"
-          size="sm"
-          [iconLeft]="saveOption.icon"
-          [disabled]="!hasChanges() || saving()"
-          (click)="onSave()"
-        />
-      }
+    <div class="sk-table-wrap">
+      <app-skolans-table
+        [rowData]="fields()"
+        [columnDefs]="columnDefs()"
+        [loading]="loading()"
+        [pagination]="false"
+        [enableRowDrag]="true"
+        [rowDragManaged]="true"
+        height="fill"
+        (rowDragEnd)="onRowOrderChange($event)"
+      />
     </div>
-  </header>
-
-  <div class="person-fields__notice">
-    {{ 'configuration.person-fields.rules' | translate }}
   </div>
-
-  <app-skolans-table
-    [rowData]="fields()"
-    [columnDefs]="columnDefs()"
-    [loading]="loading()"
-    [pagination]="false"
-    [enableRowDrag]="true"
-    [rowDragManaged]="true"
-    height="fill"
-    (rowDragEnd)="onRowOrderChange($event)"
-  />
 </section>

@@ -496,8 +496,11 @@
             />
           }
 
-          @case ('study-plan-evaluation') {
-            <p>Evaluación y seguimiento</p>
+          @case ('study-plan-evaluations') {
+            <app-study-plan-evaluation
+              [studyPlanId]="studyPlan()?.id ?? null"
+              [route]="childRoute('study-plan-evaluations')"
+            />
           }
 
           @case ('study-plan-report-cards') {

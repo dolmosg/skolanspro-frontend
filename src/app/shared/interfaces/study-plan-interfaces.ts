@@ -46,11 +46,60 @@ export interface IStudyPlan {
   section?: ISection | null;
   structure?: IStudyPlanStructure | null;
   stages?: IStudyPlanStage[];
+  aspects?: IStudyPlanAspect[];
   grading_settings?: IStudyPlanGradingSetting | null;
   attendance_settings?: IStudyPlanAttendanceSetting | null;
   lms_settings?: IStudyPlanLmsSetting | null;
+  programming_setting?: IStudyPlanProgrammingSetting | null;
   schedule_type?: IScheduleType | null;
   schedule_structures?: IStudyPlanScheduleStructure[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanAspect
+ */
+export interface IStudyPlanAspect {
+  id: number;
+  study_plan_id: number;
+  name: string;
+  description: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  study_plan?: IStudyPlan | null;
+  programming_setting?: IStudyPlanProgrammingSetting | null;
+}
+
+/** Stage projection returned by StudyPlanEvaluations in summaries.aspects. */
+export interface IStudyPlanAspectsStageSummary {
+  id: number;
+  name: string;
+  total_subjects: number;
+  configured_subjects: number;
+  unused_aspects: number;
+  completion_percent: number;
+  completion_color: string;
+}
+
+/** Aspect summary contract returned by StudyPlanEvaluations. */
+export interface IStudyPlanAspectsSummary {
+  total_aspects: number;
+  stages: IStudyPlanAspectsStageSummary[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanProgrammingSetting
+ */
+export interface IStudyPlanProgrammingSetting {
+  study_plan_id: number;
+  aspect_id: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  study_plan?: IStudyPlan | null;
+  aspect?: IStudyPlanAspect | null;
 }
 
 /**

@@ -1,0 +1,322 @@
+@if (configurationContext(); as context) {
+  <div class="study-plan-aspect-configuration">
+    <div class="study-plan-aspect-configuration__header">
+      @if (context.aspect_mode.name === 'term' || context.aspect_mode.name === 'full') {
+        <label class="study-plan-aspect-configuration__field">
+          <span>{{ 'configuration.aspect-modes.translation.term' | translate }}</span>
+          <app-sk-select
+            [items]="context.terms"
+            bindLabel="name"
+            bindValue="id"
+            [control]="selectedTermId"
+            [disabled]="context.terms.length === 0"
+            placeholder="common.select"
+          />
+        </label>
+      }
+
+      @if (context.aspect_mode.name === 'subject' || context.aspect_mode.name === 'full') {
+        <label class="study-plan-aspect-configuration__field">
+          <span>{{ 'configuration.aspect-modes.translation.subject' | translate }}</span>
+          <app-sk-select
+            [items]="context.subjects"
+            bindLabel="subject.name"
+            bindValue="id"
+            [control]="selectedStageSubjectId"
+            [disabled]="context.subjects.length === 0"
+            placeholder="common.select"
+          />
+        </label>
+      }
+    </div>
+
+    <div class="study-plan-aspect-configuration__content">
+      @if (aspectConfiguration()) {
+        <section class="study-plan-aspect-configuration__results">
+          <div
+            class="study-plan-aspect-configuration__actions"
+            role="toolbar"
+            [attr.aria-label]="
+              'planning.study-plan-aspects.configuration.actions-label' | translate
+            "
+          >
+            <div class="study-plan-aspect-configuration__business-actions">
+              @for (item of screenOptions(); track item.id) {
+                @if (getScreenOption(item.name); as action) {
+                  <app-ui-button
+                    [label]="action.translation | translate"
+                    [title]="action.translation | translate"
+                    [variant]="action.color"
+                    [iconLeft]="action.icon"
+                    [iconOnly]="true"
+                    [disabled]="isActionDisabled(action)"
+                    size="sm"
+                    (click)="onAction(action)"
+                  />
+                }
+              }
+            </div>
+
+            <div class="study-plan-aspect-configuration__selection-actions">
+              <app-ui-button
+                [label]="'common.select-all' | translate"
+                [title]="'common.select-all' | translate"
+                variant="secondary"
+                iconLeft="list-checks"
+                [iconOnly]="true"
+                [disabled]="!canSelectAllAspects()"
+                size="sm"
+                (click)="selectAllAspects()"
+              />
+              <app-ui-button
+                [label]="'planning.study-plan-aspects.configuration.clear-selection' | translate"
+                [title]="'planning.study-plan-aspects.configuration.clear-selection' | translate"
+                variant="secondary"
+                iconLeft="clear-search"
+                [iconOnly]="true"
+                [disabled]="!hasSelectedAspects()"
+                size="sm"
+                (click)="clearSelectedAspects()"
+              />
+            </div>
+          </div>
+
+          @if (activeEditor() === 'weight') {
+            <section class="study-plan-aspect-configuration__inline-editor">
+              <div>
+                <strong>
+                  {{ 'planning.study-plan-aspects.configuration.weight-editor.title' | translate }}
+                </strong>
+                <span>
+                  {{
+                    'planning.study-plan-aspects.configuration.weight-editor.description'
+                      | translate: { count: selectedAspectCount() }
+                  }}
+                </span>
+              </div>
+              <label class="study-plan-aspect-configuration__editor-field">
+                <span>
+                  {{ 'planning.study-plan-aspects.configuration.weight-editor.label' | translate }}
+                </span>
+                <input
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="0.01"
+                  [value]="weightDraft()"
+                  (input)="onWeightDraftChange($event)"
+                />
+              </label>
+              <div class="study-plan-aspect-configuration__editor-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  variant="danger"
+                  size="sm"
+                  (click)="closeEditor()"
+                />
+                <app-ui-button
+                  [label]="'planning.study-plan-aspects.configuration.apply' | translate"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="normalizedWeightDraft() === null"
+                  (click)="prepareWeightChange()"
+                />
+              </div>
+            </section>
+          }
+
+          @if (activeEditor() === 'activities') {
+            <section class="study-plan-aspect-configuration__inline-editor">
+              <div>
+                <strong>
+                  {{
+                    'planning.study-plan-aspects.configuration.activities-editor.title' | translate
+                  }}
+                </strong>
+                <span>
+                  {{
+                    'planning.study-plan-aspects.configuration.activities-editor.description'
+                      | translate: { count: selectedAspectCount() }
+                  }}
+                </span>
+              </div>
+              <label class="study-plan-aspect-configuration__editor-field">
+                <span>
+                  {{
+                    'planning.study-plan-aspects.configuration.activities-editor.label' | translate
+                  }}
+                </span>
+                <input
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  step="1"
+                  [value]="activitiesDraft()"
+                  (input)="onActivitiesDraftChange($event)"
+                />
+              </label>
+              <div class="study-plan-aspect-configuration__editor-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  variant="danger"
+                  size="sm"
+                  (click)="closeEditor()"
+                />
+                <app-ui-button
+                  [label]="'planning.study-plan-aspects.configuration.apply' | translate"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="normalizedActivitiesDraft() === null"
+                  (click)="prepareActivitiesChange()"
+                />
+              </div>
+            </section>
+          }
+
+          <div
+            class="study-plan-aspect-configuration__workspace"
+            [class.study-plan-aspect-configuration__workspace--with-aside]="isAddEditorOpen()"
+          >
+            <div class="study-plan-aspect-configuration__table">
+              <app-skolans-table
+                #aspectTable
+                [columnDefs]="columnDefs()"
+                [rowData]="configuredAspects()"
+                [loading]="loading()"
+                [selectionMode]="isAddEditorOpen() ? 'none' : 'multiple'"
+                heightMode="fill"
+                [pagination]="false"
+                [alwaysShowPagination]="false"
+                [getRowId]="getRowId"
+                emptyMessage="planning.study-plan-aspects.configuration.empty"
+                (selectionChange)="onSelectionChange($event)"
+              />
+            </div>
+
+            @if (isAddEditorOpen()) {
+              <aside class="study-plan-aspect-configuration__add-aside">
+                <header class="study-plan-aspect-configuration__aside-header">
+                  <div>
+                    <strong>
+                      {{ 'planning.study-plan-aspects.configuration.add-editor.title' | translate }}
+                    </strong>
+                    <span>
+                      {{
+                        'planning.study-plan-aspects.configuration.add-editor.description'
+                          | translate
+                      }}
+                    </span>
+                  </div>
+                  <app-ui-button
+                    [label]="'common.close' | translate"
+                    [title]="'common.close' | translate"
+                    iconLeft="close"
+                    [iconOnly]="true"
+                    variant="ghost"
+                    size="sm"
+                    (click)="closeEditor()"
+                  />
+                </header>
+
+                <label class="study-plan-aspect-configuration__search">
+                  <span>
+                    {{ 'planning.study-plan-aspects.configuration.add-editor.search' | translate }}
+                  </span>
+                  <input
+                    type="search"
+                    [value]="availableAspectSearch()"
+                    [placeholder]="
+                      'planning.study-plan-aspects.configuration.add-editor.search-placeholder'
+                        | translate
+                    "
+                    (input)="onAvailableAspectSearch($event)"
+                  />
+                </label>
+
+                <div class="study-plan-aspect-configuration__available-actions">
+                  <div class="study-plan-aspect-configuration__available-status">
+                    <span>
+                      {{
+                        'planning.study-plan-aspects.configuration.add-editor.available-count'
+                          | translate: { count: availableAspects().length }
+                      }}
+                    </span>
+                    <span>
+                      {{
+                        'planning.study-plan-aspects.configuration.add-editor.selected-count'
+                          | translate: { count: selectedAvailableAspectCount() }
+                      }}
+                    </span>
+                  </div>
+                  <div class="study-plan-aspect-configuration__available-buttons">
+                    <app-ui-button
+                      [label]="'common.select-all' | translate"
+                      [title]="'common.select-all' | translate"
+                      iconLeft="list-checks"
+                      [iconOnly]="true"
+                      variant="secondary"
+                      size="sm"
+                      [disabled]="!canSelectAllAvailableAspects()"
+                      (click)="selectAllAvailableAspects()"
+                    />
+                    <app-ui-button
+                      [label]="
+                        'planning.study-plan-aspects.configuration.clear-selection' | translate
+                      "
+                      [title]="
+                        'planning.study-plan-aspects.configuration.clear-selection' | translate
+                      "
+                      iconLeft="clear-search"
+                      [iconOnly]="true"
+                      variant="secondary"
+                      size="sm"
+                      [disabled]="selectedAvailableAspectCount() === 0"
+                      (click)="clearAvailableAspectSelection()"
+                    />
+                  </div>
+                </div>
+
+                <div class="study-plan-aspect-configuration__available-list">
+                  @for (aspect of filteredAvailableAspects(); track aspect.id) {
+                    <label class="study-plan-aspect-configuration__available-item">
+                      <input
+                        type="checkbox"
+                        [checked]="isAvailableAspectSelected(aspect.id)"
+                        (change)="toggleAvailableAspect(aspect.id)"
+                      />
+                      <span>{{ aspect.name }}</span>
+                    </label>
+                  } @empty {
+                    <p class="study-plan-aspect-configuration__available-empty">
+                      {{ 'planning.study-plan-aspects.configuration.add-editor.empty' | translate }}
+                    </p>
+                  }
+                </div>
+
+                <footer class="study-plan-aspect-configuration__aside-actions">
+                  <app-ui-button
+                    [label]="'common.cancel' | translate"
+                    variant="danger"
+                    size="sm"
+                    (click)="closeEditor()"
+                  />
+                  <app-ui-button
+                    [label]="
+                      'planning.study-plan-aspects.configuration.add-editor.add-selected'
+                        | translate
+                    "
+                    iconLeft="add"
+                    variant="primary"
+                    size="sm"
+                    [disabled]="selectedAvailableAspectCount() === 0"
+                    (click)="addSelectedAspects()"
+                  />
+                </footer>
+              </aside>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  </div>
+}

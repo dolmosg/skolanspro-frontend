@@ -1,0 +1,38 @@
+<section class="study-plan-evaluation">
+  @if (showAspectsView()) {
+    @if (evaluationPayload(); as payload) {
+      @if (aspectsRoute(); as route) {
+        <app-study-plan-aspects-view
+          [route]="route"
+          [studyPlan]="payload.study_plan"
+          [stageId]="selectedAspectsContext()?.stageId ?? null"
+          [gradeId]="selectedAspectsContext()?.gradeId ?? null"
+          [hasAllowedChildren]="aspectsHasAllowedChildren()"
+          (close)="closeAspectsView()"
+        />
+      }
+    }
+  } @else {
+    <div class="study-plan-evaluation__summaries">
+      @if (showAspectsSummary()) {
+        @if (evaluationPayload(); as payload) {
+          <app-study-plan-aspects-summary
+            [summary]="payload.summaries.aspects"
+            [studyPlan]="payload.study_plan"
+            [hasAllowedChildren]="aspectsHasAllowedChildren()"
+            (openCatalog)="openAspectsCatalog()"
+            (openConfiguration)="openStageAspects($event)"
+          />
+        }
+      }
+
+      @if (showGradeCaptureSummary()) {
+        <app-study-plan-grade-capture-summary />
+      }
+
+      @if (showCommentsSummary()) {
+        <app-study-plan-comments-summary />
+      }
+    </div>
+  }
+</section>

@@ -115,6 +115,12 @@ import {
   LucideBetweenHorizontalStart,
   LucideUserRoundMinus,
   LucideUserRoundPlus,
+  LucideCrosshair,
+  LucideWorkflow,
+  LucideToggleRight,
+  LucideToggleLeft,
+  LucideScale,
+  LucideMessageSquareQuote,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
@@ -650,6 +656,41 @@ export const ICON_REGISTRY = {
   'remove-user': {
     lucideName: 'user-round-minus',
     icon: LucideUserRoundMinus,
+  },
+
+  'sliders-horizontal': {
+    lucideName: 'sliders-horizontal',
+    icon: LucideSlidersHorizontal,
+  },
+
+  crosshair: {
+    lucideName: 'crosshair',
+    icon: LucideCrosshair,
+  },
+
+  workflow: {
+    lucideName: 'workflow',
+    icon: LucideWorkflow,
+  },
+
+  'toggle-right': {
+    lucideName: 'toggle-right',
+    icon: LucideToggleRight,
+  },
+
+  'toggle-left': {
+    lucideName: 'toggle-left',
+    icon: LucideToggleLeft,
+  },
+
+  scale: {
+    lucideName: 'scale',
+    icon: LucideScale,
+  },
+
+  'message-square-quote': {
+    lucideName: 'message-square-quote',
+    icon: LucideMessageSquareQuote,
   },
 
   default: {

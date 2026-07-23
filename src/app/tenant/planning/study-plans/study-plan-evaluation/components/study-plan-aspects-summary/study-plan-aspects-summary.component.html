@@ -1,0 +1,117 @@
+<article class="study-plan-aspects-summary">
+  <header class="study-plan-aspects-summary__header">
+    <div class="study-plan-aspects-summary__icon" aria-hidden="true">
+      <app-ui-icon name="list-checks" size="md" />
+    </div>
+
+    <div class="study-plan-aspects-summary__heading">
+      <h4>{{ 'planning.study-plan-evaluations.aspects.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-evaluations.aspects.description' | translate }}</p>
+    </div>
+
+    <button
+      type="button"
+      class="study-plan-aspects-summary__kpi"
+      [attr.aria-label]="
+        'planning.study-plan-evaluations.aspects.open-catalog-aria-label' | translate
+      "
+      (click)="openAspectsCatalog()"
+    >
+      <strong>{{ summary().total_aspects }}</strong>
+      <span>{{ 'planning.study-plan-evaluations.aspects.total' | translate }}</span>
+      <span class="study-plan-aspects-summary__kpi-action">
+        <span>{{ 'planning.study-plan-evaluations.aspects.view-aspects' | translate }}</span>
+        <app-ui-icon name="drilldown" size="sm" />
+      </span>
+    </button>
+  </header>
+
+  @if (summary().stages.length > 0) {
+    <div class="study-plan-aspects-summary__stages">
+      @for (stage of summary().stages; track stage.id) {
+        <section class="study-plan-aspects-summary__stage">
+          <header class="study-plan-aspects-summary__stage-header">
+            <strong class="study-plan-aspects-summary__stage-name">{{ stage.name }}</strong>
+            <strong
+              class="study-plan-aspects-summary__percent"
+              [style.color]="stage.completion_color"
+            >
+              {{ stage.completion_percent }}%
+            </strong>
+          </header>
+
+          <span class="study-plan-aspects-summary__subjects">
+            {{
+              configuredSubjectsTranslationKey(stage.total_subjects)
+                | translate
+                  : {
+                      configured: stage.configured_subjects,
+                      total: stage.total_subjects,
+                    }
+            }}
+          </span>
+
+          <div class="study-plan-aspects-summary__progress" aria-hidden="true">
+            <span
+              [style.width.%]="stage.completion_percent"
+              [style.backgroundColor]="stage.completion_color"
+            ></span>
+          </div>
+
+          <div class="study-plan-aspects-summary__unused">
+            <app-ui-icon name="info" size="sm" />
+            <span>
+              {{
+                unusedAspectsTranslationKey(stage.unused_aspects)
+                  | translate: { count: stage.unused_aspects }
+              }}
+            </span>
+          </div>
+
+          @if (hasAllowedChildren()) {
+            <div class="study-plan-aspects-summary__configuration-items">
+              @for (grade of grades(); track grade.id) {
+                <button
+                  type="button"
+                  class="study-plan-aspects-summary__configuration-item"
+                  (click)="openStageConfiguration(stage.id, grade.id)"
+                >
+                  <span
+                    class="study-plan-aspects-summary__configuration-marker"
+                    aria-hidden="true"
+                  >
+                  </span>
+                  <strong>{{ grade.description || grade.name }}</strong>
+                  <app-ui-icon name="chevron-right" size="sm" />
+                </button>
+              }
+
+              @if (crossoverStageIds().has(stage.id)) {
+                <button
+                  type="button"
+                  class="study-plan-aspects-summary__configuration-item"
+                  (click)="openStageConfiguration(stage.id, null)"
+                >
+                  <span
+                    class="study-plan-aspects-summary__configuration-marker"
+                    aria-hidden="true"
+                  >
+                  </span>
+                  <strong>
+                    {{ 'planning.study-plan-evaluations.aspects-view.crossovers' | translate }}
+                  </strong>
+                  <app-ui-icon name="chevron-right" size="sm" />
+                </button>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  } @else {
+    <div class="study-plan-aspects-summary__empty">
+      <app-ui-icon name="list-checks" size="md" />
+      <span>{{ 'planning.study-plan-evaluations.aspects.empty' | translate }}</span>
+    </div>
+  }
+</article>

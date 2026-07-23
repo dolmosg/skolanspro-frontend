@@ -1,0 +1,263 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.study-plan-aspects-view {
+  display: grid;
+  flex: 1 1 auto;
+  // Detail views need enough working space for their contextual toolbar and primary content.
+  --study-plan-aspects-view-workspace-min-height: 42rem;
+  grid-template-columns: 19rem minmax(0, 1fr);
+  grid-template-rows: auto minmax(var(--study-plan-aspects-view-workspace-min-height), auto);
+  width: 100%;
+  min-width: 0;
+  min-height: var(--study-plan-aspects-view-workspace-min-height);
+  overflow: visible;
+  gap: 1.25rem;
+}
+
+.study-plan-aspects-view__header {
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 1 / -1;
+}
+
+.study-plan-aspects-view__navigation,
+.study-plan-aspects-view__content {
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  background: var(--color-surface);
+  box-shadow: 0 2px 10px var(--color-border);
+}
+
+.study-plan-aspects-view__navigation {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  max-height: var(--study-plan-aspects-view-workspace-min-height);
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.study-plan-aspects-view__navigation-section,
+.study-plan-aspects-view__stages,
+.study-plan-aspects-view__stage,
+.study-plan-aspects-view__stage-items {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.study-plan-aspects-view__navigation-section {
+  gap: 0.65rem;
+}
+
+.study-plan-aspects-view__stages {
+  gap: 0.75rem;
+}
+
+.study-plan-aspects-view__navigation-label {
+  font-size: 0.7rem;
+  font-weight: 850;
+  color: var(--color-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.study-plan-aspects-view__navigation-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid transparent;
+  border-radius: 0.9rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  gap: 0.75rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: var(--color-primary-tint-hover);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  strong {
+    overflow: hidden;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.study-plan-aspects-view__navigation-item--active {
+  border-color: var(--color-primary-border-selected);
+  background: var(--color-primary-tint-selected);
+
+  &:hover {
+    border-color: var(--color-primary-border-selected);
+    background: var(--color-primary-tint-selected);
+  }
+
+  strong {
+    color: var(--color-primary);
+  }
+}
+
+.study-plan-aspects-view__navigation-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.study-plan-aspects-view__stage {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: var(--color-surface-subtle);
+  gap: 0.55rem;
+}
+
+.study-plan-aspects-view__stage-name {
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.study-plan-aspects-view__stage-items {
+  gap: 0.35rem;
+}
+
+.study-plan-aspects-view__stage-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  gap: 0.55rem;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+
+  &:hover {
+    background: var(--color-primary-tint-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  strong {
+    overflow: hidden;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.study-plan-aspects-view__stage-marker {
+  flex: 0 0 auto;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+}
+
+.study-plan-aspects-view__stage-item--active {
+  border-color: var(--color-primary-border-selected);
+  background: var(--color-primary-tint-selected);
+
+  &:hover {
+    border-color: var(--color-primary-border-selected);
+    background: var(--color-primary-tint-selected);
+  }
+
+  strong {
+    color: var(--color-primary);
+  }
+}
+
+.study-plan-aspects-view__stage-item--active .study-plan-aspects-view__stage-marker {
+  background: var(--color-primary);
+}
+
+.study-plan-aspects-view__content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  min-height: var(--study-plan-aspects-view-workspace-min-height);
+  overflow: visible;
+  padding: 1.25rem;
+  color: var(--color-text-muted);
+  text-align: center;
+
+  app-study-plan-aspects-catalog {
+    flex: 1 1 auto;
+    min-height: 0;
+    text-align: left;
+  }
+
+  p {
+    margin: 0;
+    max-width: 28rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 900px) {
+  .study-plan-aspects-view {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(var(--study-plan-aspects-view-workspace-min-height), auto);
+  }
+
+  .study-plan-aspects-view__header {
+    grid-column: 1;
+  }
+
+  .study-plan-aspects-view__navigation {
+    max-height: none;
+  }
+}

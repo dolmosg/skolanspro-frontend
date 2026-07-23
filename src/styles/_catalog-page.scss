@@ -17,6 +17,20 @@
   min-height: 0;
 }
 
+/*
+ * Routed pages opt into the full-height contract with `.sk-page--fill`.
+ * Angular inserts the activated component immediately after the primary
+ * router outlet, so this rule bridges the shell's available space to the
+ * page layout without changing intrinsic-height `.sk-page` consumers.
+ */
+.shell__content-body > router-outlet + *:has(> .sk-page.sk-page--fill) {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
 /* =========================================
    TOOLBAR (GLOBAL)
 ========================================= */

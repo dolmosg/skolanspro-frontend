@@ -71,6 +71,7 @@ export interface ScreenChildItem {
   parent_id?: number;
   module_id?: number;
   has_children?: boolean;
+  has_allowed_children?: boolean;
   /**
    * Backend-resolved actions available for this child controller.
    *

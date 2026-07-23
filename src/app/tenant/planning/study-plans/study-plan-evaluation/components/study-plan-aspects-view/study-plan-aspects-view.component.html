@@ -1,0 +1,95 @@
+<section class="study-plan-aspects-view">
+  <header class="study-plan-aspects-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="closeView()"
+    />
+  </header>
+
+  <aside class="study-plan-aspects-view__navigation">
+    <section class="study-plan-aspects-view__navigation-section">
+      <span class="study-plan-aspects-view__navigation-label">
+        {{ 'planning.study-plan-evaluations.aspects-view.configuration' | translate }}
+      </span>
+
+      <button
+        type="button"
+        class="study-plan-aspects-view__navigation-item"
+        [class.study-plan-aspects-view__navigation-item--active]="selectedContext() === null"
+        (click)="selectCatalog()"
+      >
+        <span class="study-plan-aspects-view__navigation-icon">
+          <app-ui-icon name="list-checks" size="sm" />
+        </span>
+        <strong>{{ 'planning.study-plan-evaluations.aspects.title' | translate }}</strong>
+      </button>
+    </section>
+
+    <section class="study-plan-aspects-view__navigation-section">
+      <span class="study-plan-aspects-view__navigation-label">
+        {{ 'planning.study-plan-evaluations.aspects-view.stages' | translate }}
+      </span>
+
+      <div class="study-plan-aspects-view__stages">
+        @for (stage of stages(); track stage.id) {
+          <section class="study-plan-aspects-view__stage">
+            <strong class="study-plan-aspects-view__stage-name">{{ stage.name }}</strong>
+
+            @if (hasAllowedChildren()) {
+              <div class="study-plan-aspects-view__stage-items">
+                @for (grade of grades(); track grade.id) {
+                  <button
+                    type="button"
+                    class="study-plan-aspects-view__stage-item"
+                    [class.study-plan-aspects-view__stage-item--active]="
+                      isConfigurationSelected(stage.id, grade.id)
+                    "
+                    (click)="selectConfiguration(stage.id, grade.id)"
+                  >
+                    <span class="study-plan-aspects-view__stage-marker" aria-hidden="true"></span>
+                    <strong>{{ grade.description || grade.name }}</strong>
+                  </button>
+                }
+
+                @if (stage.has_crossovers) {
+                  <button
+                    type="button"
+                    class="study-plan-aspects-view__stage-item"
+                    [class.study-plan-aspects-view__stage-item--active]="
+                      isConfigurationSelected(stage.id, null)
+                    "
+                    (click)="selectConfiguration(stage.id, null)"
+                  >
+                    <span class="study-plan-aspects-view__stage-marker" aria-hidden="true"></span>
+                    <strong>
+                      {{ 'planning.study-plan-evaluations.aspects-view.crossovers' | translate }}
+                    </strong>
+                  </button>
+                }
+              </div>
+            }
+          </section>
+        }
+      </div>
+    </section>
+  </aside>
+
+  <main class="study-plan-aspects-view__content">
+    @if (selectedContext(); as context) {
+      @if (configurationRoute(); as route) {
+        <app-study-plan-aspect-configuration
+          [route]="route"
+          [studyPlanId]="studyPlan().id"
+          [stageId]="context.stageId"
+          [gradeId]="context.gradeId"
+          [screenOptions]="configurationOptions()"
+        />
+      }
+    } @else {
+      <app-study-plan-aspects-catalog [studyPlanId]="studyPlan().id" [route]="route()" />
+    }
+  </main>
+</section>

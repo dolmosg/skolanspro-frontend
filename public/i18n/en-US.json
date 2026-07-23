@@ -2298,7 +2298,7 @@
 		"study-plan-academic-assignments": "Academic Assignments",
 		"study-plan-academics": "Academic Structure",
 		"study-plan-attendance": "Attendance",
-		"study-plan-evaluation": "Evaluation & Monitoring",
+		"study-plan-evaluations": "Evaluation & Monitoring",
 		"study-plan-general": "General information",
 		"study-plan-grading": "Grading",
 		"study-plan-information": "Information",
@@ -2490,6 +2490,121 @@
 				"within-grade": "All stages have subjects in each grade."
 			},
 			"title": "Academic Structure"
+		},
+		"study-plan-evaluations": {
+			"aspects": {
+				"configured-subject-singular": "{{configured}} of {{total}} subject configured",
+				"configured-subjects": "{{configured}} of {{total}} subjects configured",
+				"description": "Configuration of the aspects used to evaluate subjects.",
+				"empty": "No stage information is available.",
+				"open-catalog-aria-label": "Open the aspects catalog",
+				"open-stage-aria-label": "Open aspect configuration for the {{stage}} stage",
+				"title": "Evaluation aspects",
+				"total": "Aspects in the study plan",
+				"unused-aspect-singular": "{{count}} unused aspect",
+				"unused-aspects": "{{count}} unused aspects",
+				"view-aspects": "View aspects"
+			},
+			"aspects-view": {
+				"catalog-placeholder": "General aspect configuration will be displayed here.",
+				"configuration": "Configuration",
+				"crossover-placeholder": "Crossover aspect configuration for the {{stage}} stage will be displayed here.",
+				"crossovers": "Crossovers",
+				"grade-placeholder": "Aspect configuration for {{grade}} in the {{stage}} stage will be displayed here.",
+				"stage-placeholder": "Aspect configuration for the {{stage}} stage will be displayed here.",
+				"stages": "Stages"
+			}
+		},
+		"study-plan-aspect-configuration": {
+			"add": "Add aspect",
+			"delete": "Delete aspect",
+			"update": "Edit aspect",
+			"automatic": "Automatic configuration",
+			"manual": "Manual configuration",
+			"weight": "Configure weights",
+			"activities": "Configure activities"
+		},
+		"study-plan-aspects": {
+			"add": "Add aspect",
+			"delete": "Delete aspect",
+			"update": "Edit aspect",
+			"columns": {
+				"description": "Description",
+				"name": "Name",
+				"programming": "Programming"
+			},
+			"count": "{{count}} aspects",
+			"configuration": {
+				"actions-label": "Aspect configuration actions",
+				"activities-editor": {
+					"description": "Set the activity count for {{count}} selected aspect(s).",
+					"label": "Activity count",
+					"title": "Configure activities"
+				},
+				"add-editor": {
+					"add-selected": "Add selected",
+					"available-count": "{{count}} aspects available",
+					"description": "Select the available aspects you want to add.",
+					"empty": "No available aspects match the search.",
+					"search": "Search aspects",
+					"search-placeholder": "Search by name",
+					"selected-count": "{{count}} selected",
+					"title": "Add aspects"
+				},
+				"apply": "Apply",
+				"clear-selection": "Clear selection",
+				"columns": {
+					"activities": "Activities",
+					"aspect": "Aspect",
+					"automatic": "Automatic",
+					"order": "Order",
+					"weight": "Weight"
+				},
+				"confirmations": {
+					"automatic": {
+						"confirm": "Configure automatically",
+						"description": "Automatic configuration will be prepared for {{count}} selected aspect(s).",
+						"title": "Automatic configuration"
+					},
+					"delete": {
+						"confirm": "Remove from configuration",
+						"description": "{{count}} aspect(s) will be removed only from this configuration. The aspects will remain in the general catalog.",
+						"title": "Remove aspects from configuration"
+					},
+					"manual": {
+						"confirm": "Configure manually",
+						"description": "Manual configuration will be prepared for {{count}} selected aspect(s).",
+						"title": "Manual configuration"
+					}
+				},
+				"empty": "No aspects are configured for this selection.",
+				"weight-editor": {
+					"description": "Set the weight for {{count}} selected aspect(s).",
+					"label": "Weight or percentage",
+					"title": "Configure weights"
+				}
+			},
+			"empty": {
+				"description": "This study plan does not have evaluation aspects yet.",
+				"title": "No aspects"
+			},
+			"filters": {
+				"all": "All",
+				"search-label": "Search",
+				"unused": "Unused"
+			},
+			"no-description": "No description",
+			"no-results": {
+				"description": "No aspects match the search.",
+				"title": "No results"
+			},
+			"programming": {
+				"no": "No",
+				"yes": "Yes"
+			},
+			"search": "Search aspects...",
+			"subtitle": "Manage the general aspects available for evaluating subjects.",
+			"title": "Evaluation aspects"
 		},
 		"study-plan-attendance": {
 			"description": "Configure how attendance is recorded and when students keep eligibility to take exams.",

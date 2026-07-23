@@ -1,0 +1,119 @@
+<section class="study-plan-aspects-catalog">
+  <header class="study-plan-aspects-catalog__heading">
+    <div>
+      <h2>{{ 'planning.study-plan-aspects.title' | translate }}</h2>
+      <p>{{ 'planning.study-plan-aspects.subtitle' | translate }}</p>
+    </div>
+
+    <span>
+      {{ 'planning.study-plan-aspects.count' | translate: { count: aspects().length } }}
+    </span>
+  </header>
+
+  <div class="study-plan-aspects-catalog__filters-toolbar">
+    <div class="study-plan-aspects-catalog__filters">
+      <label class="study-plan-aspects-catalog__filter">
+        <span class="study-plan-aspects-catalog__filter-label">
+          {{ 'planning.study-plan-aspects.filters.search-label' | translate }}
+        </span>
+        <input
+          type="search"
+          [value]="searchTerm()"
+          [placeholder]="'planning.study-plan-aspects.search' | translate"
+          (input)="onSearchInput($event)"
+        />
+      </label>
+    </div>
+
+    <div class="study-plan-aspects-catalog__chips" role="list">
+      <button
+        type="button"
+        class="study-plan-aspects-catalog__chip"
+        [class.study-plan-aspects-catalog__chip--active]="activeFilter() === 'all'"
+        (click)="selectFilter('all')"
+      >
+        <span>{{ 'planning.study-plan-aspects.filters.all' | translate }}</span>
+        <strong>{{ aspects().length }}</strong>
+      </button>
+
+      <button
+        type="button"
+        class="study-plan-aspects-catalog__chip"
+        [class.study-plan-aspects-catalog__chip--active]="activeFilter() === 'unused'"
+        (click)="selectFilter('unused')"
+      >
+        <span>{{ 'planning.study-plan-aspects.filters.unused' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="study-plan-aspects-catalog__actions">
+    @if (getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [label]="addOption.translation | translate"
+        [title]="addOption.translation | translate"
+        [iconOnly]="true"
+        [variant]="addOption.color"
+        [iconLeft]="addOption.icon"
+        size="sm"
+      />
+    }
+
+    @if (getScreenOption('update'); as updateOption) {
+      <app-ui-button
+        [label]="updateOption.translation | translate"
+        [title]="updateOption.translation | translate"
+        [iconOnly]="true"
+        [variant]="updateOption.color"
+        [iconLeft]="updateOption.icon"
+        size="sm"
+        [disabled]="!selectedAspect()"
+      />
+    }
+
+    @if (getScreenOption('delete'); as deleteOption) {
+      <app-ui-button
+        [label]="deleteOption.translation | translate"
+        [title]="deleteOption.translation | translate"
+        [iconOnly]="true"
+        [variant]="deleteOption.color"
+        [iconLeft]="deleteOption.icon"
+        size="sm"
+        [disabled]="!selectedAspect()"
+      />
+    }
+  </div>
+
+  <div class="study-plan-aspects-catalog__table">
+    @if (loading()) {
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="[]"
+        [loading]="true"
+        heightMode="fill"
+      />
+    } @else if (aspects().length === 0) {
+      <div class="study-plan-aspects-catalog__empty">
+        <h3>{{ 'planning.study-plan-aspects.empty.title' | translate }}</h3>
+        <p>{{ 'planning.study-plan-aspects.empty.description' | translate }}</p>
+      </div>
+    } @else if (filteredAspects().length === 0) {
+      <div class="study-plan-aspects-catalog__empty">
+        <h3>{{ 'planning.study-plan-aspects.no-results.title' | translate }}</h3>
+        <p>{{ 'planning.study-plan-aspects.no-results.description' | translate }}</p>
+      </div>
+    } @else {
+      <app-skolans-table
+        [columnDefs]="columnDefs()"
+        [rowData]="filteredAspects()"
+        selectionMode="single"
+        heightMode="fill"
+        [pagination]="tablePagination()"
+        [alwaysShowPagination]="tablePagination()"
+        [pageSize]="10"
+        [getRowId]="getRowId"
+        (selectionChange)="onSelectionChange($event)"
+      />
+    }
+  </div>
+</section>
