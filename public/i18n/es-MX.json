@@ -856,6 +856,7 @@
 				"zip-code": "Código Postal"
 			},
 			"levels": "Asignar niveles",
+			"order": "Ordenar campuses",
 			"update": "Actualizar campus"
 		},
 		"catalogs": {
@@ -1279,6 +1280,7 @@
 		"grades": {
 			"add": "Nuevo Grado",
 			"delete": "Eliminar grado",
+			"order": "Ordenar grados",
 			"fields": {
 				"active": "Activo",
 				"description": "Descripción",
@@ -2517,6 +2519,7 @@
 		},
 		"study-plan-aspect-configuration": {
 			"add": "Agregar aspecto",
+			"set-order": "Ordenar aspectos configurados",
 			"delete": "Eliminar aspecto",
 			"update": "Editar aspecto",
 			"automatic": "Configuración automática",
@@ -2534,6 +2537,17 @@
 				"programming": "Programación"
 			},
 			"count": "{{count}} aspectos",
+			"delete-confirmation": {
+				"message": "¿Deseas eliminar el aspecto \"{{name}}\" del catálogo de este plan de estudios?",
+				"title": "Eliminar aspecto"
+			},
+			"delete-unavailable": "Solo pueden eliminarse aspectos que no estén siendo utilizados.",
+			"editor": {
+				"add-title": "Agregar aspecto",
+				"description": "Descripción",
+				"name": "Nombre",
+				"update-title": "Editar aspecto"
+			},
 			"configuration": {
 				"actions-label": "Acciones de configuración de aspectos",
 				"activities-editor": {
@@ -2731,6 +2745,7 @@
 		"study-plan-integrations": {
 			"active": "Activas",
 			"add": "Nueva integración",
+			"set-order": "Ordenar integraciones",
 			"configured": "integraciones configuradas",
 			"delete": "Eliminar integración",
 			"description": "Configura cómo se integran académicamente las asignaturas en boletas y promedios.",
@@ -3066,6 +3081,7 @@
 			"update": "Editar segmento"
 		},
 		"study-plan-schedule-structures": {
+			"activate": "Activar estructura",
 			"add": "Nueva Estructura",
 			"delete": "Eliminar Estructura",
 			"detail": {
@@ -3248,6 +3264,7 @@
 		},
 		"study-plan-subjects": {
 			"add": "Agregar asignaturas",
+			"reorder": "Ordenar asignaturas",
 			"assign-evaluation-type": "Asignar tipo de evaluación",
 			"assign-grading-strategy": "Asignar política de calificación",
 			"assign-subject-type": "Asignar tipo de asignatura",
@@ -3322,6 +3339,8 @@
 		},
 		"study-plans": {
 			"add": "Nuevo Plan de estudio",
+			"restore-stages": "Restaurar etapas",
+			"validate-restructure": "Validar reestructura académica",
 			"children": {
 				"academics": "Define la estructura académica del plan: etapas, grados y asignaturas.",
 				"evaluation": "Configura aspectos, captura de calificaciones y seguimiento académico.",

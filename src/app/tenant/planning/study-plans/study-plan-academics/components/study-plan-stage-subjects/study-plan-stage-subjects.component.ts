@@ -218,6 +218,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
 
   protected readonly canReorder = computed(() => {
     return (
+      !!this.getScreenOption('reorder') &&
       this.filteredSubjects().length > 1 &&
       !this.savingOrder() &&
       !this.hasActiveSearch() &&
@@ -241,9 +242,9 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
   protected readonly footerActions = computed<ScreenOptionItem[]>(() => {
     return [
       this.getScreenOption('manage-coordinators'),
-      this.getScreenOption('assign-evaluation-type'),
-      this.getScreenOption('assign-subject-type'),
-      this.getScreenOption('assign-grading-strategy'),
+      this.getScreenOption('bulk-evaluation-type'),
+      this.getScreenOption('bulk-subject-type'),
+      this.getScreenOption('bulk-grade-policy'),
       this.getScreenOption('delete'),
     ].filter((action): action is ScreenOptionItem => !!action);
   });
@@ -494,7 +495,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
       title: action.translation,
       subtitle: this.bulkActionDescription(),
       entity: 'StudyPlanStageSubject',
-      mode: `bulk-${action.name}`,
+      mode: action.name.startsWith('bulk-') ? action.name : `bulk-${action.name}`,
       data: {
         stageId: stage.id,
         stageName: stage.name,
@@ -707,15 +708,15 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
 
   protected executeAction(action: ScreenOptionItem): void {
     switch (action.name) {
-      case 'assign-evaluation-type':
+      case 'bulk-evaluation-type':
         this.assignEvaluationType();
         break;
 
-      case 'assign-subject-type':
+      case 'bulk-subject-type':
         this.assignSubjectType();
         break;
 
-      case 'assign-grading-strategy':
+      case 'bulk-grade-policy':
         this.assignGradePolicy();
         break;
 
@@ -740,7 +741,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
           : null,
         order: item.order ?? null,
       }));
-      const action = this.getScreenOption('assign-evaluation-type');
+      const action = this.getScreenOption('bulk-evaluation-type');
 
       if (action) {
         this.setBulkActionAssistantContext(action, selectionItems);
@@ -792,7 +793,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
           : null,
         order: item.order ?? null,
       }));
-      const action = this.getScreenOption('assign-subject-type');
+      const action = this.getScreenOption('bulk-subject-type');
 
       if (action) {
         this.setBulkActionAssistantContext(action, selectionItems);
@@ -853,7 +854,7 @@ export class StudyPlanStageSubjectsComponent extends SkolansBaseComponent {
           order: item.order ?? null,
         })),
       ];
-      const action = this.getScreenOption('assign-grading-strategy');
+      const action = this.getScreenOption('bulk-grade-policy');
 
       if (action) {
         this.setBulkActionAssistantContext(action, selectionItems);

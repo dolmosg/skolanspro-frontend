@@ -19,6 +19,7 @@
         <input
           type="search"
           [value]="searchTerm()"
+          [disabled]="isEditing()"
           [placeholder]="'planning.study-plan-aspects.search' | translate"
           (input)="onSearchInput($event)"
         />
@@ -30,6 +31,7 @@
         type="button"
         class="study-plan-aspects-catalog__chip"
         [class.study-plan-aspects-catalog__chip--active]="activeFilter() === 'all'"
+        [disabled]="isEditing()"
         (click)="selectFilter('all')"
       >
         <span>{{ 'planning.study-plan-aspects.filters.all' | translate }}</span>
@@ -40,6 +42,7 @@
         type="button"
         class="study-plan-aspects-catalog__chip"
         [class.study-plan-aspects-catalog__chip--active]="activeFilter() === 'unused'"
+        [disabled]="isEditing()"
         (click)="selectFilter('unused')"
       >
         <span>{{ 'planning.study-plan-aspects.filters.unused' | translate }}</span>
@@ -47,45 +50,105 @@
     </div>
   </div>
 
-  <div class="study-plan-aspects-catalog__actions">
-    @if (getScreenOption('add'); as addOption) {
-      <app-ui-button
-        [label]="addOption.translation | translate"
-        [title]="addOption.translation | translate"
-        [iconOnly]="true"
-        [variant]="addOption.color"
-        [iconLeft]="addOption.icon"
-        size="sm"
-      />
-    }
+  @if (editorMode(); as mode) {
+    <form
+      class="study-plan-aspects-catalog__editor"
+      [formGroup]="editorForm"
+      (ngSubmit)="saveEditor()"
+    >
+      <header class="study-plan-aspects-catalog__editor-header">
+        <h3>
+          {{
+            (mode === 'add'
+              ? 'planning.study-plan-aspects.editor.add-title'
+              : 'planning.study-plan-aspects.editor.update-title'
+            ) | translate
+          }}
+        </h3>
+      </header>
 
-    @if (getScreenOption('update'); as updateOption) {
-      <app-ui-button
-        [label]="updateOption.translation | translate"
-        [title]="updateOption.translation | translate"
-        [iconOnly]="true"
-        [variant]="updateOption.color"
-        [iconLeft]="updateOption.icon"
-        size="sm"
-        [disabled]="!selectedAspect()"
-      />
-    }
+      <div class="study-plan-aspects-catalog__editor-fields">
+        <label class="study-plan-aspects-catalog__editor-field">
+          <span>{{ 'planning.study-plan-aspects.editor.name' | translate }}</span>
+          <input #nameInput type="text" formControlName="name" maxlength="100" />
+          <form-error [control]="editorForm.controls.name" />
+        </label>
 
-    @if (getScreenOption('delete'); as deleteOption) {
-      <app-ui-button
-        [label]="deleteOption.translation | translate"
-        [title]="deleteOption.translation | translate"
-        [iconOnly]="true"
-        [variant]="deleteOption.color"
-        [iconLeft]="deleteOption.icon"
-        size="sm"
-        [disabled]="!selectedAspect()"
-      />
-    }
-  </div>
+        <label class="study-plan-aspects-catalog__editor-field">
+          <span>{{ 'planning.study-plan-aspects.editor.description' | translate }}</span>
+          <input type="text" formControlName="description" />
+          <form-error [control]="editorForm.controls.description" />
+        </label>
+      </div>
+
+      <div class="study-plan-aspects-catalog__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          (click)="cancelEditor()"
+        />
+
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="loading()"
+        />
+      </div>
+    </form>
+  } @else {
+    <div class="study-plan-aspects-catalog__actions">
+      @if (getScreenOption('add'); as addOption) {
+        <app-ui-button
+          [label]="addOption.translation | translate"
+          [title]="addOption.translation | translate"
+          [iconOnly]="true"
+          [variant]="addOption.color"
+          [iconLeft]="addOption.icon"
+          size="sm"
+          (click)="startAdd()"
+        />
+      }
+
+      @if (getScreenOption('update'); as updateOption) {
+        <app-ui-button
+          [label]="updateOption.translation | translate"
+          [title]="updateOption.translation | translate"
+          [iconOnly]="true"
+          [variant]="updateOption.color"
+          [iconLeft]="updateOption.icon"
+          size="sm"
+          [disabled]="!selectedAspect()"
+          (click)="startUpdate()"
+        />
+      }
+
+      @if (getScreenOption('delete'); as deleteOption) {
+        <app-ui-button
+          [label]="deleteOption.translation | translate"
+          [title]="
+            selectedAspect() && !selectedAspectIsUnused()
+              ? ('planning.study-plan-aspects.delete-unavailable' | translate)
+              : (deleteOption.translation | translate)
+          "
+          [iconOnly]="true"
+          [variant]="deleteOption.color"
+          [iconLeft]="deleteOption.icon"
+          size="sm"
+          [disabled]="!canDeleteSelectedAspect()"
+          (click)="deleteSelectedAspect()"
+        />
+      }
+    </div>
+  }
 
   <div class="study-plan-aspects-catalog__table">
-    @if (loading()) {
+    @if (loading() && aspects().length === 0) {
       <app-skolans-table
         [columnDefs]="columnDefs()"
         [rowData]="[]"
@@ -104,9 +167,11 @@
       </div>
     } @else {
       <app-skolans-table
+        #aspectsTable
         [columnDefs]="columnDefs()"
         [rowData]="filteredAspects()"
-        selectionMode="single"
+        [loading]="loading()"
+        [selectionMode]="isEditing() ? 'none' : 'single'"
         heightMode="fill"
         [pagination]="tablePagination()"
         [alwaysShowPagination]="tablePagination()"

@@ -132,6 +132,7 @@ type StudyPlanAcademicsPlan = StudyPlanConfigurationItem & {
 export class StudyPlanAcademicsComponent extends SkolansBaseComponent implements OnInit, OnChanges {
   readonly studyPlan = input<StudyPlanConfigurationItem | null>(null);
   readonly route = input<string | null>(null);
+  readonly restoreStagesOption = input<ScreenOptionItem | null>(null);
   readonly refreshToken = input(0);
 
   constructor() {

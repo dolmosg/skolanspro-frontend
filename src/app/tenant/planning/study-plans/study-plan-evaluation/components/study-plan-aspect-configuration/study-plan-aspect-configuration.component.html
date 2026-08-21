@@ -59,24 +59,24 @@
 
             <div class="study-plan-aspect-configuration__selection-actions">
               <app-ui-button
-                [label]="'common.select-all' | translate"
-                [title]="'common.select-all' | translate"
+                [label]="
+                  (areAllAspectsSelected()
+                    ? 'planning.study-plan-aspects.configuration.clear-selection'
+                    : 'common.select-all'
+                  ) | translate
+                "
+                [title]="
+                  (areAllAspectsSelected()
+                    ? 'planning.study-plan-aspects.configuration.clear-selection'
+                    : 'common.select-all'
+                  ) | translate
+                "
                 variant="secondary"
-                iconLeft="list-checks"
+                [iconLeft]="areAllAspectsSelected() ? 'clear-search' : 'check-check'"
                 [iconOnly]="true"
-                [disabled]="!canSelectAllAspects()"
+                [disabled]="loading() || isAddEditorOpen() || configuredAspectCount() === 0"
                 size="sm"
-                (click)="selectAllAspects()"
-              />
-              <app-ui-button
-                [label]="'planning.study-plan-aspects.configuration.clear-selection' | translate"
-                [title]="'planning.study-plan-aspects.configuration.clear-selection' | translate"
-                variant="secondary"
-                iconLeft="clear-search"
-                [iconOnly]="true"
-                [disabled]="!hasSelectedAspects()"
-                size="sm"
-                (click)="clearSelectedAspects()"
+                (click)="toggleAllAspects()"
               />
             </div>
           </div>
@@ -118,7 +118,7 @@
                   [label]="'planning.study-plan-aspects.configuration.apply' | translate"
                   variant="primary"
                   size="sm"
-                  [disabled]="normalizedWeightDraft() === null"
+                  [disabled]="normalizedWeightDraft() === null || loading()"
                   (click)="prepareWeightChange()"
                 />
               </div>
@@ -166,8 +166,87 @@
                   [label]="'planning.study-plan-aspects.configuration.apply' | translate"
                   variant="primary"
                   size="sm"
-                  [disabled]="normalizedActivitiesDraft() === null"
+                  [disabled]="normalizedActivitiesDraft() === null || loading()"
                   (click)="prepareActivitiesChange()"
+                />
+              </div>
+            </section>
+          }
+
+          @if (activeEditor() === 'aspect' && editingAspect(); as aspect) {
+            <section
+              class="study-plan-aspect-configuration__inline-editor study-plan-aspect-configuration__inline-editor--aspect"
+            >
+              <div class="study-plan-aspect-configuration__editor-heading">
+                <strong>{{ 'planning.study-plan-aspects.update' | translate }}</strong>
+                <span>{{ aspect.aspect.name }}</span>
+              </div>
+
+              <div class="study-plan-aspect-configuration__editor-fields">
+                <label
+                  class="study-plan-aspect-configuration__editor-field study-plan-aspect-configuration__editor-field--boolean"
+                >
+                  <span>
+                    {{ 'planning.study-plan-aspects.configuration.columns.automatic' | translate }}
+                  </span>
+                  <span class="study-plan-aspect-configuration__boolean-control">
+                    <input
+                      data-testid="aspect-automatic-input"
+                      type="checkbox"
+                      [checked]="aspectAutomaticDraft()"
+                      (change)="onAspectAutomaticDraftChange($event)"
+                    />
+                    <span>
+                      {{ (aspectAutomaticDraft() ? 'common.yes' : 'common.no') | translate }}
+                    </span>
+                  </span>
+                </label>
+
+                <label class="study-plan-aspect-configuration__editor-field">
+                  <span>
+                    {{ 'planning.study-plan-aspects.configuration.columns.weight' | translate }}
+                  </span>
+                  <input
+                    data-testid="aspect-weight-input"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    [value]="aspectWeightDraft()"
+                    [disabled]="aspectAutomaticDraft() || loading()"
+                    (input)="onAspectWeightDraftChange($event)"
+                  />
+                </label>
+
+                <label class="study-plan-aspect-configuration__editor-field">
+                  <span>
+                    {{ 'planning.study-plan-aspects.configuration.columns.activities' | translate }}
+                  </span>
+                  <input
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step="1"
+                    [value]="aspectActivitiesDraft()"
+                    (input)="onAspectActivitiesDraftChange($event)"
+                  />
+                </label>
+              </div>
+
+              <div class="study-plan-aspect-configuration__editor-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  variant="danger"
+                  size="sm"
+                  (click)="closeEditor()"
+                />
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="!canSaveAspectEditor()"
+                  (click)="saveAspectEditor()"
                 />
               </div>
             </section>

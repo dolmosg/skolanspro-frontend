@@ -92,7 +92,7 @@
               />
             }
           } @else {
-            @if (getScreenOption('order'); as orderOption) {
+            @if (getScreenOption('set-order'); as orderOption) {
               @if (items().length > 1) {
                 <app-ui-button
                   [iconLeft]="orderOption.icon"

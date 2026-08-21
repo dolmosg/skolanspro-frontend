@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { finalize } from 'rxjs/operators';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { ApiService } from './api-service';
 import { AuthStateSevice } from './auth-state-sevice';
 import { SidebarNavItem } from '../../layout/sidebar-nav-item.model';
@@ -27,43 +27,65 @@ export class NavigationService {
   readonly error = signal<string | null>(null);
 
   /**
+   * Identifies the latest navigation request so responses started before a
+   * role/context reset cannot restore stale sidebar or allowed-route state.
+   */
+  private loadVersion = 0;
+  private readonly resetRequests = new Subject<void>();
+
+  /**
    * Loads the current navigation tree from the API.
    */
-  load(force = false): void {
+  async load(force = false): Promise<void> {
     if (this.loading() || (!force && this.items().length > 0)) {
       return;
     }
 
+    const requestVersion = ++this.loadVersion;
     this.loading.set(true);
     this.error.set(null);
 
-    this.api
-      .get<NavigationApiPayload>('navigation')
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe({
-        next: (response) => {
-          if (!response.success) {
-            this.items.set([]);
-            this.error.set(response.message || 'No se pudo cargar la navegación.');
-            return;
-          }
+    try {
+      const response = await firstValueFrom(
+        this.api.get<NavigationApiPayload>('navigation').pipe(takeUntil(this.resetRequests)),
+        { defaultValue: null },
+      );
 
-          const payload = response.data;
+      if (!response || requestVersion !== this.loadVersion) {
+        return;
+      }
 
-          this.items.set(this.mapResponseToSidebarItems(payload?.items ?? []));
-          this.authState.setAllowedRoutes(payload?.allowedRoutes);
-        },
-        error: (error) => {
-          this.items.set([]);
-          this.error.set(error?.message || 'No se pudo cargar la navegación.');
-        },
-      });
+      if (!response.success) {
+        this.items.set([]);
+        this.error.set(response.message || 'No se pudo cargar la navegación.');
+        return;
+      }
+
+      const payload = response.data;
+
+      this.items.set(this.mapResponseToSidebarItems(payload?.items ?? []));
+      this.authState.setAllowedRoutes(payload?.allowedRoutes);
+    } catch (error) {
+      if (requestVersion !== this.loadVersion) {
+        return;
+      }
+
+      const requestError = error as { message?: string };
+      this.items.set([]);
+      this.error.set(requestError?.message || 'No se pudo cargar la navegación.');
+    } finally {
+      if (requestVersion === this.loadVersion) {
+        this.loading.set(false);
+      }
+    }
   }
 
   /**
    * Clears the current navigation state.
    */
   clear(): void {
+    this.loadVersion++;
+    this.resetRequests.next();
     this.items.set([]);
     this.authState.setAllowedRoutes([]);
     this.loading.set(false);

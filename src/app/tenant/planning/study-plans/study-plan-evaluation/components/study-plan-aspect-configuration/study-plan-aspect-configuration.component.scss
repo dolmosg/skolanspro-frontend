@@ -111,6 +111,33 @@
   }
 }
 
+.study-plan-aspect-configuration__inline-editor--aspect {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.study-plan-aspect-configuration__editor-heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.study-plan-aspect-configuration__editor-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+
+  .study-plan-aspect-configuration__editor-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  input {
+    box-sizing: border-box;
+  }
+}
+
 .study-plan-aspect-configuration__editor-field,
 .study-plan-aspect-configuration__search {
   display: grid;
@@ -135,6 +162,47 @@
   input:focus {
     border-color: var(--color-primary-border-selected);
     outline: none;
+  }
+}
+
+.study-plan-aspect-configuration__editor-field--boolean {
+  align-content: start;
+}
+
+.study-plan-aspect-configuration__inline-editor--aspect
+  .study-plan-aspect-configuration__editor-field
+  input:disabled {
+  border-color: var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 1;
+  outline: none;
+  box-shadow: none;
+}
+
+.study-plan-aspect-configuration__boolean-control {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.35rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  gap: 0.5rem;
+
+  input {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
   }
 }
 
@@ -255,7 +323,8 @@
   }
 
   .study-plan-aspect-configuration__workspace--with-aside,
-  .study-plan-aspect-configuration__inline-editor {
+  .study-plan-aspect-configuration__inline-editor,
+  .study-plan-aspect-configuration__editor-fields {
     grid-template-columns: minmax(0, 1fr);
   }
 

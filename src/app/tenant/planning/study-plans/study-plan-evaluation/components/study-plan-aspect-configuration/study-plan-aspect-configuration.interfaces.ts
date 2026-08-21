@@ -68,3 +68,10 @@ export interface StudyPlanAspectConfigurationResponse {
   configured_aspects: StudyPlanConfiguredAspect[];
   available_aspects: StudyPlanAspectConfigurationItem[];
 }
+
+export interface StudyPlanAspectUpdatePayload {
+  aspect_id: number;
+  automatic: boolean;
+  weight: number;
+  activities: number;
+}

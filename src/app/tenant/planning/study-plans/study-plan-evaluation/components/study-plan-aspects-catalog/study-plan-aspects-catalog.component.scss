@@ -107,6 +107,11 @@
       background: var(--color-primary-tint-hover);
       box-shadow: 0 2px 10px var(--color-border);
     }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
   }
 }
 
@@ -171,6 +176,75 @@
   transform: none;
 }
 
+.study-plan-aspects-catalog__chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.study-plan-aspects-catalog__editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  gap: 1rem;
+}
+
+.study-plan-aspects-catalog__editor-header {
+  h3 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.92rem;
+  }
+}
+
+.study-plan-aspects-catalog__editor-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.study-plan-aspects-catalog__editor-field {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+
+  > span {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+
+    &:focus {
+      border-color: var(--color-primary-border-selected);
+      outline: none;
+    }
+  }
+}
+
+.study-plan-aspects-catalog__editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .study-plan-aspects-catalog__empty {
   display: flex;
   flex: 1 1 auto;
@@ -209,5 +283,9 @@
 
   .study-plan-aspects-catalog__actions {
     justify-content: flex-start;
+  }
+
+  .study-plan-aspects-catalog__editor-fields {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

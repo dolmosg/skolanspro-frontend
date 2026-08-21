@@ -44,7 +44,7 @@ export class StudyPlanScheduleStructureSummaryComponent extends SkolansBaseCompo
    */
   protected readonly addStructureOption = computed(() => this.getScreenOption('add'));
 
-  protected readonly updateStructureOption = computed(() => this.getScreenOption('update'));
+  protected readonly activateStructureOption = computed(() => this.getScreenOption('activate'));
 
   constructor() {
     super();
@@ -70,7 +70,7 @@ export class StudyPlanScheduleStructureSummaryComponent extends SkolansBaseCompo
     return (
       !structure.active &&
       this.structures().length > 1 &&
-      !!this.updateStructureOption() &&
+      !!this.activateStructureOption() &&
       !!this.route() &&
       this.activatingStructureId() === null
     );

@@ -37,7 +37,7 @@
       <app-study-plan-stages-summary
         [stages]="stages()"
         [child]="stagesChild()"
-        [addStageOption]="getScreenOption('add-stage')"
+        [addStageOption]="restoreStagesOption()"
         [expectedStagesCount]="academicPlan()?.structure?.stages ?? null"
         (stageSelected)="openStage($event)"
         (addStage)="openAddStage()"

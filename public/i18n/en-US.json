@@ -856,6 +856,7 @@
 				"zip-code": "Zip Code"
 			},
 			"levels": "Assign levels",
+			"order": "Order campuses",
 			"update": "Update campus"
 		},
 		"catalogs": {
@@ -1279,6 +1280,7 @@
 		"grades": {
 			"add": "New Grade",
 			"delete": "Remove grade",
+			"order": "Order grades",
 			"fields": {
 				"active": "Active",
 				"description": "Description",
@@ -2517,6 +2519,7 @@
 		},
 		"study-plan-aspect-configuration": {
 			"add": "Add aspect",
+			"set-order": "Order configured aspects",
 			"delete": "Delete aspect",
 			"update": "Edit aspect",
 			"automatic": "Automatic configuration",
@@ -2534,6 +2537,17 @@
 				"programming": "Programming"
 			},
 			"count": "{{count}} aspects",
+			"delete-confirmation": {
+				"message": "Do you want to delete the aspect \"{{name}}\" from this study plan catalog?",
+				"title": "Delete aspect"
+			},
+			"delete-unavailable": "Only aspects that are not being used can be deleted.",
+			"editor": {
+				"add-title": "Add aspect",
+				"description": "Description",
+				"name": "Name",
+				"update-title": "Edit aspect"
+			},
 			"configuration": {
 				"actions-label": "Aspect configuration actions",
 				"activities-editor": {
@@ -2731,6 +2745,7 @@
 		"study-plan-integrations": {
 			"active": "Active",
 			"add": "New integration",
+			"set-order": "Order integrations",
 			"configured": "configured integrations",
 			"delete": "Delete integration",
 			"description": "Configure how subjects are academically combined for report cards and grade calculations.",
@@ -3066,6 +3081,7 @@
 			"update": "Edit segment"
 		},
 		"study-plan-schedule-structures": {
+			"activate": "Activate structure",
 			"add": "New Structure",
 			"delete": "Remove Structure",
 			"detail": {
@@ -3248,6 +3264,7 @@
 		},
 		"study-plan-subjects": {
 			"add": "Add subjects",
+			"reorder": "Order subjects",
 			"assign-evaluation-type": "Assign evaluation type",
 			"assign-grading-strategy": "Assign grading policy",
 			"assign-subject-type": "Assign subject type",
@@ -3322,6 +3339,8 @@
 		},
 		"study-plans": {
 			"add": "New Study Plan",
+			"restore-stages": "Restore stages",
+			"validate-restructure": "Validate academic restructure",
 			"children": {
 				"academics": "Define the academic structure of the plan: stages, grades, and subjects.",
 				"evaluation": "Configure aspects, grade capture, and academic monitoring.",

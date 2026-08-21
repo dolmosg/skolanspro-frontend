@@ -121,12 +121,17 @@ import {
   LucideToggleLeft,
   LucideScale,
   LucideMessageSquareQuote,
+  LucideCheckCheck,
 } from '@lucide/angular';
 
 export const ICON_REGISTRY = {
   dashboard: {
     lucideName: 'layout-dashboard',
     icon: LucideLayoutDashboard,
+  },
+  'check-check': {
+    lucideName: 'check-check',
+    icon: LucideCheckCheck,
   },
   circle: {
     lucideName: 'circle',

@@ -72,7 +72,7 @@
               />
             }
 
-            @if (getScreenOption('configure-options'); as optionsOption) {
+            @if (getScreenOption('options'); as optionsOption) {
               <app-ui-button
                 [iconLeft]="optionsOption.icon"
                 [variant]="optionsOption.color"
@@ -83,7 +83,7 @@
               />
             }
 
-            @if (getScreenOption('configure-actions'); as actionsOption) {
+            @if (getScreenOption('actions'); as actionsOption) {
               <app-ui-button
                 [iconLeft]="actionsOption.icon"
                 [variant]="actionsOption.color"
@@ -94,7 +94,7 @@
               />
             }
           } @else {
-            @if (getScreenOption('order'); as orderOption) {
+            @if (getScreenOption('set-order'); as orderOption) {
               @if (gradebookTypes().length > 1) {
                 <app-ui-button
                   [label]="orderOption.translation | translate"

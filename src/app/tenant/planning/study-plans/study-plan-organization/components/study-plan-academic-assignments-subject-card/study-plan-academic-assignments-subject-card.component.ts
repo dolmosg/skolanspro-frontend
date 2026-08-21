@@ -445,12 +445,12 @@ export class StudyPlanAcademicAssignmentsSubjectCardComponent extends SkolansBas
       return;
     }
 
-    if (action.name === 'manage-options') {
+    if (action.name === 'options') {
       this.editOptions(assignmentGroupId);
       return;
     }
 
-    if (action.name === 'assign-schedule') {
+    if (action.name === 'schedule') {
       this.editSchedule(assignmentGroupId);
       return;
     }
@@ -708,7 +708,14 @@ export class StudyPlanAcademicAssignmentsSubjectCardComponent extends SkolansBas
   }
 
   private optionForAction(key: SubjectActionKey | GroupActionKey): ScreenOptionItem | null {
-    return this.optionByName().get(key.replaceAll('_', '-')) ?? null;
+    const actionNames: Partial<Record<SubjectActionKey | GroupActionKey, string>> = {
+      add_group: 'groups',
+      assign_schedule: 'schedule',
+      manage_teams: 'teams',
+      manage_options: 'options',
+    };
+
+    return this.optionByName().get(actionNames[key] ?? key.replaceAll('_', '-')) ?? null;
   }
 
   private emitTeacherEditorState(): void {

@@ -1,5 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { AuthPerson, AuthRole, AuthSession, AuthUser } from '../interfaces/auth-session';
+import {
+  AuthPerson,
+  AuthRole,
+  AuthSession,
+  AuthUser,
+  SwitchRoleRequest,
+  TenantSwitchRoleSessionPayload,
+} from '../interfaces/auth-session';
+import { ApiResponse } from '../interfaces/api-response.interface';
 import { ApiService } from './api-service';
 import { Observable, of } from 'rxjs';
 import { catchError, finalize, map, shareReplay, tap } from 'rxjs/operators';
@@ -123,6 +131,20 @@ export class AuthStateSevice {
    * not yet been revalidated against the backend.
    */
   readonly hasToken = computed(() => !!this.state().token);
+
+  /**
+   * Requests a backend-authorized tenant role switch and replaces the complete
+   * local session only after the backend returns a successful reconstruction.
+   */
+  switchRole(request: SwitchRoleRequest): Observable<ApiResponse<TenantSwitchRoleSessionPayload>> {
+    return this.api.post<TenantSwitchRoleSessionPayload>('switch-role', request).pipe(
+      tap((response) => {
+        if (response.success) {
+          this.setSession(response.data);
+        }
+      }),
+    );
+  }
 
   /**
    * Replaces the current list of backend-approved route/resource keys.
@@ -443,6 +465,7 @@ export class AuthStateSevice {
         this.buildInitials(user.person?.full_name || user.name) ??
         undefined,
       role_id: user.role_id ?? user.role?.id,
+      actual_role: user.actual_role,
       photo: user.photo ?? undefined,
       person: serializedPerson ?? null,
       role: serializedRole,
@@ -486,6 +509,7 @@ export class AuthStateSevice {
     return {
       id: role.id,
       name: role.name,
+      translation: role.translation,
       path: role.path,
     };
   }

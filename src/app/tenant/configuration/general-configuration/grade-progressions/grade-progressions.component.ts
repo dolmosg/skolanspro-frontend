@@ -42,6 +42,7 @@ export class GradeProgressionsComponent extends BaseCrud<IGradeProgression> impl
   protected readonly savingOrder = signal(false);
 
   protected readonly hasGrades = computed(() => this.grades().length > 0);
+  protected readonly canOrder = computed(() => !!this.getScreenOption('order'));
 
   protected readonly getRowId = (params: GetRowIdParams<IGradeProgression>): string => {
     return String(params.data.id);
@@ -111,6 +112,10 @@ export class GradeProgressionsComponent extends BaseCrud<IGradeProgression> impl
   }
 
   protected onRowOrderChange(rows: unknown[]): void {
+    if (!this.canOrder()) {
+      return;
+    }
+
     const ordered = rows as IGradeProgression[];
 
     this.grades.set(
@@ -128,7 +133,7 @@ export class GradeProgressionsComponent extends BaseCrud<IGradeProgression> impl
   protected saveOrder(): void {
     const route = this.apiRoute();
 
-    if (!route) {
+    if (!route || !this.canOrder()) {
       return;
     }
 

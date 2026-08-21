@@ -13,17 +13,29 @@
  * - Emits UI interaction events related to layout and language changes
  */
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, computed, effect, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
+import { SwitchRoleRequest } from '../../shared/interfaces/auth-session';
 import { SiteLanguage } from '../../shared/interfaces/central.interfaces';
 import { LanguageService } from '../../shared/services/language-service';
 import { SiteStateService } from '../../shared/services/site-state';
 import { UiIconComponent } from '../../shared/ui/ui-icon/ui-icon';
 import { AuthStateSevice } from '../../shared/services/auth-state-sevice';
+import { NavigationService } from '../../shared/services/navigation-service';
+import { ToastService } from '../../shared/services/toast-service';
 import { Breadcrumb } from '../breadcrumb/breadcrumb';
-
-
 
 export interface TopbarLanguageOption {
   id: number;
@@ -35,6 +47,7 @@ export interface TopbarLanguageOption {
 
 export interface TopbarRoleOption {
   label: string;
+  translation: string;
   value: string;
 }
 
@@ -50,6 +63,8 @@ export class Topbar implements OnInit {
   private readonly siteState = inject(SiteStateService);
   private readonly router = inject(Router);
   private readonly authState = inject(AuthStateSevice);
+  private readonly navigationService = inject(NavigationService);
+  private readonly toast = inject(ToastService);
 
   constructor() {
     effect(() => {
@@ -89,6 +104,7 @@ export class Topbar implements OnInit {
   protected readonly languageMenuOpen = signal(false);
   protected readonly roleMenuOpen = signal(false);
   protected readonly userMenuOpen = signal(false);
+  protected readonly switchingRole = signal(false);
 
   /**
    * Resolves available languages.
@@ -117,13 +133,18 @@ export class Topbar implements OnInit {
    */
   protected readonly userInitialsComputed = computed(() => this.authState.userInitials() ?? '');
 
-  protected readonly currentRoleComputed = computed(() => this.authState.activeRole()?.name ?? '');
+  protected readonly currentRoleComputed = computed(() => {
+    const role = this.authState.activeRole();
+
+    return role?.translation ?? role?.name ?? '';
+  });
 
   protected readonly rolesComputed = computed<TopbarRoleOption[]>(() =>
     this.authState.availableRoles().map((role) => ({
       label: role.name,
+      translation: role.translation ?? role.name,
       value: String(role.id),
-    }))
+    })),
   );
 
   /**
@@ -158,7 +179,9 @@ export class Topbar implements OnInit {
    * Prefers backend-provided shorthand when available.
    */
   protected get currentLanguageLabel(): string {
-    const current = this.availableLanguages().find((language) => language.value === this.currentLanguage);
+    const current = this.availableLanguages().find(
+      (language) => language.value === this.currentLanguage,
+    );
 
     if (current?.shorthand) {
       return current.shorthand.toUpperCase();
@@ -202,7 +225,8 @@ export class Topbar implements OnInit {
     this.currentLanguage = this.languageService.currentLanguage();
 
     if (!this.currentLanguage) {
-      this.currentLanguage = this.siteState.languageCode() || this.availableLanguages()[0]?.value || 'es-MX';
+      this.currentLanguage =
+        this.siteState.languageCode() || this.availableLanguages()[0]?.value || 'es-MX';
     }
   }
 
@@ -219,16 +243,44 @@ export class Topbar implements OnInit {
   }
 
   /**
-   * Updates selected role using AuthStateService
+   * Requests a complete backend session reconstruction for the selected role.
    */
-  selectRole(value: string): void {
-    const selected = this.authState.availableRoles().find((r) => String(r.id) === value);
+  async selectRole(value: string): Promise<void> {
+    if (this.switchingRole()) {
+      return;
+    }
 
-    if (selected) {
-      this.authState.setActiveRole(selected);
+    const roleId = Number(value);
+
+    if (!Number.isInteger(roleId)) {
+      return;
     }
 
     this.roleMenuOpen.set(false);
+    this.switchingRole.set(true);
+
+    try {
+      const request: SwitchRoleRequest = { role_id: roleId };
+      const response = await firstValueFrom(this.authState.switchRole(request));
+
+      if (!response.success) {
+        this.toast.error(response.message);
+        return;
+      }
+
+      this.navigationService.clear();
+      await this.navigationService.load(true);
+
+      const rolePath = response.data.user.role.path.startsWith('/')
+        ? response.data.user.role.path
+        : `/${response.data.user.role.path}`;
+
+      await this.router.navigateByUrl(`/${response.data.context}${rolePath}`);
+    } catch {
+      // ApiService owns HTTP, authorization, and network error feedback.
+    } finally {
+      this.switchingRole.set(false);
+    }
   }
 
   /**

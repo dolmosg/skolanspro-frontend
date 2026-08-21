@@ -48,3 +48,19 @@ export interface AuthSession {
   tenant?: string | null;
   user: AuthUser | null;
 }
+
+export interface SwitchRoleRequest {
+  role_id: number;
+}
+
+export interface TenantSwitchRoleSessionPayload {
+  token: string;
+  token_type: string;
+  context: 'tenant';
+  tenant: string;
+  user: AuthUser & {
+    role: AuthRole & {
+      path: string;
+    };
+  };
+}

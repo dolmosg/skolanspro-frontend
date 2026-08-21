@@ -7,7 +7,7 @@
           variant="secondary"
           size="sm"
           iconLeft="close"
-          [disabled]="savingOrder()"
+          [disabled]="savingOrder() || !canOrder()"
           (click)="cancelOrdering()"
         />
 
@@ -16,7 +16,7 @@
           variant="primary"
           size="sm"
           iconLeft="check"
-          [disabled]="savingOrder()"
+          [disabled]="savingOrder() || !canOrder()"
           (click)="saveOrder()"
         />
       </div>
@@ -42,8 +42,8 @@
         [pagination]="false"
         [alwaysShowPagination]="false"
         [pageSize]="10"
-        [enableRowDrag]="true"
-        [rowDragManaged]="true"
+        [enableRowDrag]="canOrder()"
+        [rowDragManaged]="canOrder()"
         [suppressMoveWhenRowDragging]="true"
         [getRowId]="getRowId"
         (rowDragEnd)="onRowOrderChange($event)"

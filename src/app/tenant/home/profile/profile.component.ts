@@ -217,7 +217,7 @@ export class ProfileComponent extends SkolansBaseComponent implements OnInit {
         this.onUploadPhoto();
         break;
 
-      case 'reset-photo':
+      case 'remove-photo':
         this.onRemovePhoto();
         break;
 

@@ -86,10 +86,14 @@
   }
 
   &__menu--roles {
-    min-width: 460px;
+    width: min(460px, calc(100vw - 32px));
+    max-height: min(420px, calc(100vh - 104px));
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
     gap: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   &__menu--user {
@@ -190,6 +194,9 @@
   }
 
   &__action-btn--role {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     gap: 6px;
   }
 
@@ -267,8 +274,7 @@
     }
 
     &__menu--roles {
-      min-width: 320px;
-      grid-template-columns: 1fr;
+      width: min(420px, calc(100vw - 32px));
     }
   }
 }
@@ -286,6 +292,18 @@
 
     &__chevron {
       margin-left: 0;
+    }
+
+    &__menu--roles {
+      width: min(360px, calc(100vw - 24px));
+    }
+  }
+}
+
+@media (max-width: 479.98px) {
+  .topbar {
+    &__menu--roles {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 }

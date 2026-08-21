@@ -76,7 +76,7 @@
               />
             }
           } @else {
-            @if (getScreenOption('order'); as orderOption) {
+            @if (getScreenOption('set-order'); as orderOption) {
               @if (structures().length > 1) {
                 <app-ui-button
                   [label]="orderOption.translation | translate"
