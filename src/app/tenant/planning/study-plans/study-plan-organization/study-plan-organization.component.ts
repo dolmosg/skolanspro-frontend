@@ -12,6 +12,7 @@ import { StudyPlanAcademicAssignmentsViewComponent } from './components/study-pl
 import type { StudyPlanAcademicAssignmentsOrganizationMutation } from './components/study-plan-academic-assignments-grade-detail/study-plan-academic-assignments-grade-detail.component';
 import { StudyPlanScheduleStructureSummaryComponent } from './components/study-plan-schedule-structure-summary/study-plan-schedule-structure-summary.component';
 import { StudyPlanSchedulesSummaryComponent } from './components/study-plan-schedules-summary/study-plan-schedules-summary.component';
+import { StudyPlanSchedulesViewComponent } from './components/study-plan-schedules-view/study-plan-schedules-view.component';
 import { StudyPlanStageGroupsViewComponent } from './components/study-plan-stage-groups-view/study-plan-stage-groups-view.component';
 import { StudyPlanStageGroupsSummaryComponent } from './components/study-plan-stage-groups-summary/study-plan-stage-groups-summary.component';
 import { ScreenChildItem, ScreenOptionItem } from 'app/shared/interfaces/access.interfaces';
@@ -261,6 +262,7 @@ interface StudyPlanSchedulesSummaryCrossoverItem {
     StudyPlanStageGroupsSummaryComponent,
     StudyPlanAcademicAssignmentsSummaryComponent,
     StudyPlanSchedulesSummaryComponent,
+    StudyPlanSchedulesViewComponent,
     ScheduleStructureViewComponent,
     StudyPlanStageGroupsViewComponent,
     StudyPlanAcademicAssignmentsViewComponent,
@@ -283,6 +285,8 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   readonly selectedGroupsMode = signal<'grade' | 'crossover' | null>(null);
   readonly selectedAcademicAssignmentStageId = signal<number | null>(null);
   readonly selectedAcademicAssignmentGradeId = signal<number | null | undefined>(undefined);
+  protected readonly selectedScheduleStageId = signal<number | null>(null);
+  protected readonly selectedScheduleGradeId = signal<number | null>(null);
 
   readonly currentStudyPlan = computed(() => this.organizationStudyPlan() ?? this.studyPlan());
   readonly scheduleStructureSummary = computed(
@@ -328,6 +332,10 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
    * Organization owns route resolution and passes it to the request-capable list.
    */
   readonly stageGroupsRoute = computed(() => this.getScreenChildRoute('study-plan-stage-groups'));
+  /**
+   * Backend-resolved child route for the schedule reading workspace.
+   */
+  readonly schedulesRoute = computed(() => this.getScreenChildRoute('study-plan-schedules'));
   /**
    * Backend permissions determine whether the schedule structure child summary is visible.
    */
@@ -422,6 +430,7 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
     this.selectedSegmentId.set(null);
     this.closeStageGroupsView();
     this.closeAcademicAssignmentsView();
+    this.closeScheduleView();
   }
 
   protected openScheduleSegment(structureId: number, segmentId: number): void {
@@ -429,6 +438,7 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
     this.selectedSegmentId.set(segmentId);
     this.closeStageGroupsView();
     this.closeAcademicAssignmentsView();
+    this.closeScheduleView();
   }
 
   protected closeScheduleStructureView(): void {
@@ -439,6 +449,7 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   protected openStageGroups(selection: StudyPlanStageGroupsSelection): void {
     this.closeScheduleStructureView();
     this.closeAcademicAssignmentsView();
+    this.closeScheduleView();
     this.selectedGroupsStageId.set(selection.stageId);
     this.selectedGroupsGradeId.set(selection.gradeId);
     this.selectedGroupsMode.set(selection.mode);
@@ -453,6 +464,7 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   protected openAcademicAssignments(selection: StudyPlanAcademicAssignmentsSelection): void {
     this.closeScheduleStructureView();
     this.closeStageGroupsView();
+    this.closeScheduleView();
     this.selectedAcademicAssignmentStageId.set(selection.stageId);
     this.selectedAcademicAssignmentGradeId.set(selection.gradeId);
   }
@@ -460,6 +472,19 @@ export class StudyPlanOrganizationComponent extends SkolansBaseComponent {
   protected closeAcademicAssignmentsView(): void {
     this.selectedAcademicAssignmentStageId.set(null);
     this.selectedAcademicAssignmentGradeId.set(undefined);
+  }
+
+  protected openScheduleView(selection: { stageId: number; gradeId: number }): void {
+    this.closeScheduleStructureView();
+    this.closeStageGroupsView();
+    this.closeAcademicAssignmentsView();
+    this.selectedScheduleStageId.set(selection.stageId);
+    this.selectedScheduleGradeId.set(selection.gradeId);
+  }
+
+  protected closeScheduleView(): void {
+    this.selectedScheduleStageId.set(null);
+    this.selectedScheduleGradeId.set(null);
   }
 
   protected handleAcademicAssignmentMutation(

@@ -93,7 +93,11 @@
 
           <div class="study-plan-schedules-summary__items">
             @for (grade of stage.grades; track grade.id ?? grade.type) {
-              <div class="study-plan-schedules-summary__item">
+              <div
+                class="study-plan-schedules-summary__item"
+                [class.study-plan-schedules-summary__item--clickable]="grade.type === 'grade' && grade.id !== null"
+                (click)="onOpenSchedule(stage.id, grade.type === 'grade' ? grade.id : null)"
+              >
                 <div class="study-plan-schedules-summary__item-header">
                   <div class="study-plan-schedules-summary__item-main">
                     <strong class="study-plan-schedules-summary__name">

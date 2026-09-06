@@ -1,0 +1,296 @@
+<section class="study-plan-schedules-view">
+  <header class="study-plan-schedules-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="onBack()"
+    />
+  </header>
+
+  <section class="study-plan-schedules-view__workspace">
+    @if (selectedGrade()) {
+      <div class="study-plan-schedules-view__workspace-header">
+        <span>{{ selectedStage()?.name }}</span>
+        <h3>{{ selectedTitle() }}</h3>
+        @if (selectedDescription()) {
+          <p>{{ selectedDescription() }}</p>
+        }
+      </div>
+
+      @if (loadingContext()) {
+        <div class="study-plan-schedules-view__state">
+          {{ 'general.loading' | translate }}
+        </div>
+      } @else if (context(); as scheduleContext) {
+        @if (scheduleContext.segments.length > 0) {
+          <div class="study-plan-schedules-view__filters">
+            <label class="study-plan-schedules-view__filter">
+              <span>{{
+                'planning.study-plan-organizations.schedules.workspace.segment' | translate
+              }}</span>
+              <app-sk-select
+                [items]="scheduleContext.segments"
+                bindValue="id"
+                bindLabel="name"
+                [searchable]="false"
+                [clearable]="false"
+                [control]="segmentControl"
+              />
+            </label>
+
+            <label class="study-plan-schedules-view__filter">
+              <span>{{
+                'planning.study-plan-organizations.schedules.workspace.group' | translate
+              }}</span>
+              <app-sk-select
+                [items]="groupOptions()"
+                bindValue="id"
+                bindLabel="label"
+                placeholder="planning.study-plan-organizations.schedules.workspace.all-groups"
+                [searchable]="false"
+                [clearable]="false"
+                [control]="groupControl"
+              />
+            </label>
+
+            @if (showVariantSelector() && segmentSchedule(); as schedule) {
+              <label class="study-plan-schedules-view__filter">
+                <span>{{
+                  'planning.study-plan-organizations.schedules.variants' | translate
+                }}</span>
+                <app-sk-select
+                  [items]="schedule.variants"
+                  bindValue="id"
+                  bindLabel="name"
+                  [searchable]="false"
+                  [clearable]="false"
+                  [control]="variantControl"
+                />
+              </label>
+            }
+          </div>
+
+          <div class="study-plan-schedules-view__layout" cdkDropListGroup>
+            <aside class="study-plan-schedules-view__sidebar">
+              <header class="study-plan-schedules-view__panel-header">
+                <h4>
+                  {{ 'planning.study-plan-organizations.schedules.workspace.groups' | translate }}
+                </h4>
+              </header>
+
+              <div
+                class="study-plan-schedules-view__groups"
+                cdkDropList
+                [cdkDropListData]="visibleAssignments()"
+                [cdkDropListEnterPredicate]="rejectSidebarDrop"
+                [cdkDropListSortingDisabled]="true"
+                (cdkDropListDropped)="onSidebarDropCompleted()"
+              >
+                @for (group of visibleGroups(); track group.id) {
+                  <section class="study-plan-schedules-view__group">
+                    <header class="study-plan-schedules-view__group-header">
+                      @if (group.color) {
+                        <span
+                          class="study-plan-schedules-view__group-color"
+                          [style.background]="group.color"
+                        ></span>
+                      }
+                      <strong>{{ group.name }}</strong>
+                      @if (group.code) {
+                        <span>{{ group.code }}</span>
+                      }
+                    </header>
+
+                    <div class="study-plan-schedules-view__assignments">
+                      @for (assignment of group.assignments; track assignment.id) {
+                        <article
+                          class="study-plan-schedules-view__assignment"
+                          cdkDrag
+                          [cdkDragData]="assignmentDragData(assignment)"
+                          [cdkDragDisabled]="scheduleOperationPending()"
+                          (cdkDragStarted)="onAssignmentDragStarted()"
+                          (cdkDragMoved)="onAssignmentDragMoved($event)"
+                        >
+                          <strong>
+                            {{ assignment.subject?.name ?? ('common.no-data' | translate) }}
+                          </strong>
+                          <span>
+                            @if (assignment.team) {
+                              {{
+                                'planning.study-plan-organizations.schedules.workspace.team'
+                                  | translate
+                              }}:
+                              {{ assignment.team.name }}
+                            } @else if (assignment.subject_type) {
+                              {{ assignment.subject_type.name }}
+                            }
+                          </span>
+                        </article>
+                      } @empty {
+                        <p class="study-plan-schedules-view__group-empty">
+                          {{
+                            'planning.study-plan-organizations.schedules.workspace.no-assignments'
+                              | translate
+                          }}
+                        </p>
+                      }
+                    </div>
+                  </section>
+                } @empty {
+                  <div
+                    class="study-plan-schedules-view__state study-plan-schedules-view__state--compact"
+                  >
+                    {{
+                      'planning.study-plan-organizations.schedules.workspace.no-groups' | translate
+                    }}
+                  </div>
+                }
+              </div>
+            </aside>
+
+            <section class="study-plan-schedules-view__schedule">
+              <header class="study-plan-schedules-view__panel-header">
+                <div>
+                  <h4>
+                    {{
+                      'planning.study-plan-organizations.schedules.workspace.schedule' | translate
+                    }}
+                  </h4>
+                  @if (selectedSegment(); as segment) {
+                    <span>{{ segment.name }}</span>
+                  }
+                </div>
+              </header>
+
+              @if (loadingSegment()) {
+                <div class="study-plan-schedules-view__state">
+                  {{ 'general.loading' | translate }}
+                </div>
+              } @else if (segmentSchedule(); as schedule) {
+                @if (schedule.segment.days.length === 0) {
+                  <div class="study-plan-schedules-view__state">
+                    {{
+                      'planning.study-plan-organizations.schedules.workspace.no-days' | translate
+                    }}
+                  </div>
+                } @else if (schedule.segment.blocks.length === 0) {
+                  <div class="study-plan-schedules-view__state">
+                    {{
+                      'planning.study-plan-organizations.schedules.workspace.no-blocks' | translate
+                    }}
+                  </div>
+                } @else {
+                  <div class="study-plan-schedules-view__table-scroll">
+                    <table class="study-plan-schedules-view__table">
+                      <thead>
+                        <tr>
+                          <th scope="col">
+                            {{
+                              'planning.study-plan-organizations.schedules.workspace.block'
+                                | translate
+                            }}
+                          </th>
+                          @for (day of schedule.segment.days; track day.id) {
+                            <th scope="col">{{ day.translation | translate }}</th>
+                          }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (block of schedule.segment.blocks; track block.id) {
+                          <tr
+                            [class.study-plan-schedules-view__row--non-academic]="
+                              block.block_type?.name === 'break'
+                            "
+                          >
+                            <th scope="row">
+                              <span
+                                >{{ formatTime(block.start) }} - {{ formatTime(block.end) }}</span
+                              >
+                              @if (block.block_type) {
+                                <small>{{ block.block_type.translation | translate }}</small>
+                              }
+                            </th>
+                            @for (day of schedule.segment.days; track day.id) {
+                              <td
+                                class="study-plan-schedules-view__drop-cell"
+                                cdkDropList
+                                [attr.data-schedule-block-id]="block.id"
+                                [attr.data-schedule-day-id]="day.id"
+                                [class.study-plan-schedules-view__drop-cell--active]="
+                                  isActiveDropCell(block.id, day.id)
+                                "
+                                [cdkDropListData]="dropCell(block.id, day.id)"
+                                [cdkDropListEnterPredicate]="canEnterCell"
+                                [cdkDropListDisabled]="scheduleOperationPending()"
+                                (cdkDropListDropped)="onScheduleDropped($event)"
+                              >
+                                <div class="study-plan-schedules-view__cell-items">
+                                  @for (
+                                    item of cellAssignments(block.id, day.id);
+                                    track item.occupancy.id
+                                  ) {
+                                    <article
+                                      class="study-plan-schedules-view__occupancy"
+                                      cdkDrag
+                                      [cdkDragData]="occupancyDragData(item)"
+                                      [cdkDragDisabled]="scheduleOperationPending()"
+                                      (cdkDragStarted)="onAssignmentDragStarted()"
+                                      (cdkDragMoved)="onAssignmentDragMoved($event)"
+                                    >
+                                      <div class="study-plan-schedules-view__occupancy-content" cdkDragHandle>
+                                        <strong>
+                                          {{
+                                            item.assignment.subject?.name ??
+                                              ('common.no-data' | translate)
+                                          }}
+                                        </strong>
+                                        <span>
+                                          {{ item.group.name }}
+                                          @if (item.assignment.team) {
+                                            · {{ item.assignment.team.name }}
+                                          }
+                                        </span>
+                                      </div>
+                                      @if (deleteOption(); as deleteOption) {
+                                        <app-ui-button
+                                          class="study-plan-schedules-view__occupancy-delete"
+                                          [label]="deleteOption.translation | translate"
+                                          [title]="deleteOption.translation | translate"
+                                          [iconLeft]="deleteOption.icon"
+                                          [variant]="getScreenOptionVariant('delete', 'danger')"
+                                          fill="soft"
+                                          size="sm"
+                                          [iconOnly]="true"
+                                          [disabled]="scheduleOperationPending()"
+                                          (click)="confirmDeleteOccupancy(item)"
+                                        />
+                                      }
+                                    </article>
+                                  }
+                                </div>
+                              </td>
+                            }
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                }
+              }
+            </section>
+          </div>
+        } @else {
+          <div class="study-plan-schedules-view__state">
+            {{ 'planning.study-plan-organizations.schedules.workspace.no-segments' | translate }}
+          </div>
+        }
+      }
+    } @else {
+      <div class="study-plan-schedules-view__state">
+        <h3>{{ 'common.no-data' | translate }}</h3>
+      </div>
+    }
+  </section>
+</section>

@@ -15,7 +15,14 @@ interface NavigationApiItem {
 interface NavigationApiPayload {
   items: NavigationApiItem[];
   allowedRoutes?: string[] | null;
+  permissionsVersion: number;
 }
+
+interface PermissionVersionPayload {
+  permissionsVersion: number;
+}
+
+export type PermissionChangeResult = 'unchanged' | 'changed' | 'unavailable';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService {
@@ -32,13 +39,14 @@ export class NavigationService {
    */
   private loadVersion = 0;
   private readonly resetRequests = new Subject<void>();
+  private permissionCheck: Promise<PermissionChangeResult> | null = null;
 
   /**
    * Loads the current navigation tree from the API.
    */
-  async load(force = false): Promise<void> {
+  async load(force = false): Promise<boolean> {
     if (this.loading() || (!force && this.items().length > 0)) {
-      return;
+      return false;
     }
 
     const requestVersion = ++this.loadVersion;
@@ -52,31 +60,74 @@ export class NavigationService {
       );
 
       if (!response || requestVersion !== this.loadVersion) {
-        return;
+        return false;
       }
 
       if (!response.success) {
-        this.items.set([]);
         this.error.set(response.message || 'No se pudo cargar la navegación.');
-        return;
+        return false;
       }
 
       const payload = response.data;
 
-      this.items.set(this.mapResponseToSidebarItems(payload?.items ?? []));
-      this.authState.setAllowedRoutes(payload?.allowedRoutes);
+      if (!payload || !Number.isSafeInteger(payload.permissionsVersion)) {
+        this.error.set('La respuesta de navegación no contiene una versión válida.');
+        return false;
+      }
+
+      const items = this.mapResponseToSidebarItems(payload.items ?? []);
+      this.items.set(items);
+      this.authState.setAuthorizationSnapshot(payload.allowedRoutes, payload.permissionsVersion);
+      return true;
     } catch (error) {
       if (requestVersion !== this.loadVersion) {
-        return;
+        return false;
       }
 
       const requestError = error as { message?: string };
-      this.items.set([]);
       this.error.set(requestError?.message || 'No se pudo cargar la navegación.');
+      return false;
     } finally {
       if (requestVersion === this.loadVersion) {
         this.loading.set(false);
       }
+    }
+  }
+
+  checkForPermissionChanges(): Promise<PermissionChangeResult> {
+    if (this.permissionCheck) {
+      return this.permissionCheck;
+    }
+
+    this.permissionCheck = this.performPermissionCheck().finally(() => {
+      this.permissionCheck = null;
+    });
+
+    return this.permissionCheck;
+  }
+
+  private async performPermissionCheck(): Promise<PermissionChangeResult> {
+    try {
+      const response = await firstValueFrom(
+        this.api.get<PermissionVersionPayload>('navigation/permissions-version'),
+      );
+      if (!response.success) {
+        return 'unavailable';
+      }
+
+      const remoteVersion = response.data.permissionsVersion;
+
+      if (!Number.isSafeInteger(remoteVersion)) {
+        return 'unavailable';
+      }
+
+      if (remoteVersion === this.authState.permissionsVersion()) {
+        return 'unchanged';
+      }
+
+      return (await this.load(true)) ? 'changed' : 'unavailable';
+    } catch {
+      return 'unavailable';
     }
   }
 
@@ -87,7 +138,7 @@ export class NavigationService {
     this.loadVersion++;
     this.resetRequests.next();
     this.items.set([]);
-    this.authState.setAllowedRoutes([]);
+    this.authState.clearAllowedRoutes();
     this.loading.set(false);
     this.error.set(null);
   }

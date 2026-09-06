@@ -72,7 +72,22 @@ describe('AuthStateSevice role switching', () => {
       tenant: 'copan',
       user: initialUser,
     });
-    service.setAllowedRoutes(['home/root-dashboard']);
+    service.setAuthorizationSnapshot(['home/root-dashboard'], 3);
+  });
+
+  it('persists and clears the authorization snapshot revision with its routes', () => {
+    service.setAuthorizationSnapshot(['/home/root-dashboard'], 7);
+
+    expect(service.allowedRoutes()).toEqual(['/home/root-dashboard']);
+    expect(service.permissionsVersion()).toBe(7);
+    expect(localStorage.getItem('permissions_version')).toBe('7');
+
+    service.clear();
+
+    expect(service.allowedRoutes()).toEqual([]);
+    expect(service.permissionsVersion()).toBeNull();
+    expect(service.permissionsVersion()).toBeNull();
+    expect(localStorage.getItem('permissions_version')).toBeNull();
   });
 
   afterEach(() => {
@@ -119,6 +134,7 @@ describe('AuthStateSevice role switching', () => {
     expect(localStorage.getItem('token')).toBe('TOKEN_A');
     expect(localStorage.getItem('user')).toBe(previousStoredUser);
     expect(service.allowedRoutes()).toEqual(['home/root-dashboard']);
+    expect(service.permissionsVersion()).toBe(3);
   });
 
   it('preserves the previous session when the request fails', async () => {
@@ -132,5 +148,6 @@ describe('AuthStateSevice role switching', () => {
     expect(localStorage.getItem('token')).toBe('TOKEN_A');
     expect(localStorage.getItem('user')).toBe(previousStoredUser);
     expect(service.allowedRoutes()).toEqual(['home/root-dashboard']);
+    expect(service.permissionsVersion()).toBe(3);
   });
 });

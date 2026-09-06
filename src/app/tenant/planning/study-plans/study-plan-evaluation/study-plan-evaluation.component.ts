@@ -15,6 +15,7 @@ import {
 } from './components/study-plan-aspects-summary/study-plan-aspects-summary.component';
 import { StudyPlanAspectsViewComponent } from './components/study-plan-aspects-view/study-plan-aspects-view.component';
 import { StudyPlanCommentsSummaryComponent } from './components/study-plan-comments-summary/study-plan-comments-summary.component';
+import { StudyPlanCommentsViewComponent } from './components/study-plan-comments-view/study-plan-comments-view.component';
 import { StudyPlanGradeCaptureSummaryComponent } from './components/study-plan-grade-capture-summary/study-plan-grade-capture-summary.component';
 
 interface StudyPlanEvaluationGradingSettings extends IStudyPlanGradingSetting {
@@ -43,6 +44,7 @@ interface StudyPlanEvaluationPayload {
     StudyPlanAspectsViewComponent,
     StudyPlanGradeCaptureSummaryComponent,
     StudyPlanCommentsSummaryComponent,
+    StudyPlanCommentsViewComponent,
   ],
   templateUrl: './study-plan-evaluation.component.html',
   styleUrl: './study-plan-evaluation.component.scss',
@@ -52,9 +54,10 @@ export class StudyPlanEvaluationComponent extends SkolansBaseComponent implement
   readonly route = input<string | null>(null);
 
   protected readonly evaluationPayload = signal<StudyPlanEvaluationPayload | null>(null);
-  protected readonly selectedAspectsContext = signal<
-    StudyPlanAspectSelection | null | undefined
-  >(undefined);
+  protected readonly selectedAspectsContext = signal<StudyPlanAspectSelection | null | undefined>(
+    undefined,
+  );
+  protected readonly commentsController = signal<ScreenChildItem | null>(null);
 
   protected readonly showAspectsView = computed(() => this.selectedAspectsContext() !== undefined);
   protected readonly aspectsRoute = computed(() => this.getScreenChildRoute('study-plan-aspects'));
@@ -62,11 +65,12 @@ export class StudyPlanEvaluationComponent extends SkolansBaseComponent implement
     () => this.getScreenChild('study-plan-aspects')?.has_allowed_children ?? false,
   );
 
-  protected readonly showAspectsSummary = computed(() =>
-    this.hasScreenChild('study-plan-aspects'),
-  );
+  protected readonly showAspectsSummary = computed(() => this.hasScreenChild('study-plan-aspects'));
   protected readonly showGradeCaptureSummary = computed(() =>
     this.hasScreenChild('study-plan-grade-capture'),
+  );
+  protected readonly gradeCaptureRoute = computed(() =>
+    this.getScreenChildRoute('study-plan-grade-capture'),
   );
   protected readonly showCommentsSummary = computed(
     () =>
@@ -104,6 +108,14 @@ export class StudyPlanEvaluationComponent extends SkolansBaseComponent implement
 
   protected closeAspectsView(): void {
     this.selectedAspectsContext.set(undefined);
+  }
+
+  protected openCommentsView(controller: ScreenChildItem): void {
+    this.commentsController.set(controller);
+  }
+
+  protected closeCommentsView(): void {
+    this.commentsController.set(null);
   }
 
   private setEvaluationAssistantContext(): void {

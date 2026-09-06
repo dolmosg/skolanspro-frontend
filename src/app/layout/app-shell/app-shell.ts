@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, HostListener, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs/operators';
+import { auditTime, filter } from 'rxjs/operators';
+import { fromEvent, merge } from 'rxjs';
 import { Topbar } from '../topbar/topbar';
 import { SklModalHostComponent } from '../../shared/base/skl-modal-host.component/skl-modal-host.component';
 import { SideBarComponent } from '../side-bar/side-bar';
@@ -10,6 +11,7 @@ import { NavigationService } from '../../shared/services/navigation-service';
 import { SiteStateService } from '../../shared/services/site-state';
 import { AppContextService } from '@shared/services/app-context-service';
 import { AssistantLauncherComponent } from '../assistant-launcher/assistant-launcher.component';
+import { AuthStateSevice } from '../../shared/services/auth-state-sevice';
 
 const MOBILE_BREAKPOINT = 992;
 
@@ -40,6 +42,7 @@ export class AppShell {
   private readonly navigationService = inject(NavigationService);
   private readonly siteState = inject(SiteStateService);
   private readonly appContext = inject(AppContextService);
+  private readonly authState = inject(AuthStateSevice);
 
   /**
    * Navigation items provided to the sidebar component.
@@ -111,6 +114,46 @@ export class AppShell {
           this.sidebarOpen.set(false);
         }
       });
+
+    merge(
+      fromEvent(window, 'focus'),
+      fromEvent(document, 'visibilitychange').pipe(
+        filter(() => document.visibilityState === 'visible'),
+      ),
+    )
+      .pipe(auditTime(100), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => void this.refreshPermissions());
+  }
+
+  private async refreshPermissions(): Promise<void> {
+    const result = await this.navigationService.checkForPermissionChanges();
+
+    if (result !== 'changed' || this.currentRouteIsAllowed()) {
+      return;
+    }
+
+    const fallback = this.authState.activeRole()?.path;
+    if (fallback) {
+      const normalizedFallback = fallback.startsWith('/') ? fallback : `/${fallback}`;
+      await this.router.navigateByUrl(`/${this.appContext.type}${normalizedFallback}`);
+    }
+  }
+
+  private currentRouteIsAllowed(): boolean {
+    let route = this.router.routerState.snapshot.root;
+
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+
+    const accessRoute = route.data?.['access']?.route ?? route.data?.['api']?.route;
+
+    if (typeof accessRoute === 'string' && accessRoute.trim()) {
+      const accessKey = accessRoute.startsWith('/') ? accessRoute : `/${accessRoute}`;
+      return this.authState.hasAccess(accessKey);
+    }
+
+    return this.navigationService.hasRouteAccess(this.router.url);
   }
 
   /**

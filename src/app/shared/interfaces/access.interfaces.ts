@@ -63,7 +63,7 @@ export interface ScreenOptionItem {
 export interface ScreenChildItem {
   id: number;
   name: string;
-  route: string;
+  route?: string;
   translation: string;
   icon: string | null;
   color: 'primary' | 'secondary' | 'ghost' | 'danger';

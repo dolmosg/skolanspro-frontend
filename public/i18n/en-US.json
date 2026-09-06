@@ -2494,6 +2494,17 @@
 			"title": "Academic Structure"
 		},
 		"study-plan-evaluations": {
+			"grade-capture": {
+				"delete-confirmation": "Do you want to delete the grade capture rule for {{role}}?",
+				"delete-confirmation-title": "Delete grade capture rule",
+				"description": "Defines which roles can modify grades according to the term status.",
+				"empty": "No grade capture rules are configured.",
+				"role": "Role",
+				"select-role": "Select role",
+				"select-term-status": "Select term status",
+				"term-status": "Term status",
+				"title": "Grade capture"
+			},
 			"aspects": {
 				"configured-subject-singular": "{{configured}} of {{total}} subject configured",
 				"configured-subjects": "{{configured}} of {{total}} subjects configured",
@@ -2515,6 +2526,74 @@
 				"grade-placeholder": "Aspect configuration for {{grade}} in the {{stage}} stage will be displayed here.",
 				"stage-placeholder": "Aspect configuration for the {{stage}} stage will be displayed here.",
 				"stages": "Stages"
+			}
+		},
+		"study-plan-grade-capture": {
+			"add": "Add grade capture rule",
+			"delete": "Delete grade capture rule",
+			"update": "Edit grade capture rule"
+		},
+		"study-plan-comment-types": {
+			"add": "Add comment type",
+			"update": "Edit comment type",
+			"delete": "Delete comment type",
+			"delete-confirmation": {
+				"message": "Do you want to delete the comment type \"{{name}}\"?",
+				"title": "Delete comment type"
+			},
+			"editor": {
+				"description": "Description",
+				"language": "Language",
+				"name": "Name"
+			}
+		},
+		"study-plan-type-comments": {
+			"add": "Add comment",
+			"assign-grades": "Assign grades",
+			"delete": "Delete comment",
+			"update": "Edit comment"
+		},
+		"study-plan-comments": {
+			"delete-confirmation": {
+				"message": "Do you want to delete this comment?",
+				"title": "Delete comment"
+			},
+			"summary": {
+				"assigned-comment-singular": "{{count}} comment available for grades",
+				"assigned-comments": "{{count}} comments available for grades",
+				"comment-type-singular": "{{count}} comment type",
+				"comment-types": "{{count}} comment types",
+				"description": "Configure the comments available for evaluations.",
+				"empty": "Configure types and comments that can be used during evaluation.",
+				"loading": "Loading evaluation comments…",
+				"open-view-aria-label": "Open the study plan comments",
+				"title": "Evaluation comments",
+				"total": "Comments",
+				"view-comments": "View comments",
+				"unassigned-comment-singular": "{{count}} comment without assigned grades",
+				"unassigned-comments": "{{count}} comments without assigned grades"
+			},
+			"view": {
+			"comment-types": "Comment types",
+			"assign-grades": "Assign grades",
+			"empty-comment-types": "There are no comment types configured for this study plan.",
+			"comments": "Comments",
+			"comment": "Comment",
+			"comment-count": "{{count}} comment",
+				"comments-count": "{{count}} comments",
+			"comments-placeholder": "Comments for this type will be shown here.",
+			"edit-comment": "Edit comment",
+			"filtered-comments-count": "{{filtered}} of {{total}} comments",
+			"grades": "Grades",
+				"no-comments": "There are no comments registered for this type.",
+			"no-grades-assigned": "No grades assigned",
+			"no-grades-available": "No grades available.",
+			"no-results": "No comments found.",
+			"new-comment": "New comment",
+				"search-comment": "Search comments...",
+				"select-comment-type": "Select a comment type to view its comments.",
+				"title": "Study plan comments",
+				"without-grades-filter": "Without grades ({{count}})"
 			}
 		},
 		"study-plan-aspect-configuration": {
@@ -2932,7 +3011,23 @@
 				"subject-count": "{{ count }} subject",
 				"subjects-count": "{{ count }} subjects",
 				"title": "Schedules",
-				"variants": "Variants"
+				"variants": "Variants",
+				"workspace": {
+					"confirm-delete": "Do you want to delete this schedule assignment?",
+					"delete-title": "Delete schedule assignment?",
+					"all-groups": "All groups",
+					"block": "Block",
+					"group": "Group",
+					"groups": "Groups / subjects",
+					"no-assignments": "No assigned subjects",
+					"no-blocks": "This segment has no configured blocks.",
+					"no-days": "This segment has no configured days.",
+					"no-groups": "There are no groups configured for this grade.",
+					"no-segments": "There are no segments configured for this schedule.",
+					"schedule": "Schedule",
+					"segment": "Segment",
+					"team": "Team"
+				}
 			},
 			"stage-groups": {
 				"actions": {
@@ -3118,7 +3213,9 @@
 			"update": "Edit Structure"
 		},
 		"study-plan-schedules": {
-			"index": "Schedules"
+			"delete": "Delete",
+			"index": "Schedules",
+			"update": "Create Schedule Assignments"
 		},
 		"study-plan-stage-groups": {
 			"add": "New Group",

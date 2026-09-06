@@ -1,1 +1,189 @@
-<p>study-plan-grade-capture-summary works!</p>
+<section class="study-plan-grade-capture-summary">
+  <header class="study-plan-grade-capture-summary__header">
+    <div>
+      <h4>{{ 'planning.study-plan-evaluations.grade-capture.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-evaluations.grade-capture.description' | translate }}</p>
+    </div>
+
+    @if (getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [title]="addOption.translation | translate"
+        [iconLeft]="addOption.icon"
+        [variant]="addOption.color"
+        [iconOnly]="true"
+        size="sm"
+        type="button"
+        [disabled]="editorMode() !== null || loading() || availableRoles().length === 0"
+        (click)="startCreate()"
+      />
+    }
+  </header>
+
+  @if (payload(); as gradeCapturePayload) {
+    @if (gradeCapturePayload.items.length > 0 || editorMode() === 'create') {
+      <div class="study-plan-grade-capture-summary__cards">
+        @if (editorMode() === 'create') {
+          <form class="study-plan-grade-capture-summary__card" [formGroup]="editorForm" (ngSubmit)="saveEditor()">
+            <dl>
+              <div>
+                <dt>{{ 'planning.study-plan-evaluations.grade-capture.role' | translate }}</dt>
+                <dd>
+                  <app-sk-select
+                    [items]="availableRoles()"
+                    bindLabel="translation"
+                    bindValue="id"
+                    [translateLabel]="true"
+                    [clearable]="false"
+                    placeholder="planning.study-plan-evaluations.grade-capture.select-role"
+                    [control]="editorForm.controls.role_id"
+                  />
+                </dd>
+              </div>
+              <div>
+                <dt>{{ 'planning.study-plan-evaluations.grade-capture.term-status' | translate }}</dt>
+                <dd>
+                  <app-sk-select
+                    [items]="gradeCapturePayload.term_statuses"
+                    bindLabel="translation"
+                    bindValue="id"
+                    [translateLabel]="true"
+                    [clearable]="false"
+                    placeholder="planning.study-plan-evaluations.grade-capture.select-term-status"
+                    [control]="editorForm.controls.term_status_id"
+                  />
+                </dd>
+              </div>
+            </dl>
+
+            <div class="study-plan-grade-capture-summary__card-actions">
+              <app-ui-button
+                [title]="'common.cancel' | translate"
+                iconLeft="cancel"
+                variant="secondary"
+                [iconOnly]="true"
+                size="sm"
+                type="button"
+                [disabled]="loading()"
+                (click)="cancelEditor()"
+              />
+              <app-ui-button
+                [title]="'common.save' | translate"
+                iconLeft="save"
+                variant="primary"
+                [iconOnly]="true"
+                size="sm"
+                type="submit"
+                [disabled]="loading() || editorForm.invalid"
+              />
+            </div>
+          </form>
+        }
+
+        @for (item of gradeCapturePayload.items; track item.id) {
+          <article class="study-plan-grade-capture-summary__card">
+            @if (isEditing(item.id)) {
+              <form [formGroup]="editorForm" (ngSubmit)="saveEditor()">
+                <dl>
+                  <div>
+                    <dt>{{ 'planning.study-plan-evaluations.grade-capture.role' | translate }}</dt>
+                    <dd>
+                      <app-sk-select
+                        [items]="rolesForEditor(item)"
+                        bindLabel="translation"
+                        bindValue="id"
+                        [translateLabel]="true"
+                        [clearable]="false"
+                        placeholder="planning.study-plan-evaluations.grade-capture.select-role"
+                        [control]="editorForm.controls.role_id"
+                      />
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{{ 'planning.study-plan-evaluations.grade-capture.term-status' | translate }}</dt>
+                    <dd>
+                      <app-sk-select
+                        [items]="gradeCapturePayload.term_statuses"
+                        bindLabel="translation"
+                        bindValue="id"
+                        [translateLabel]="true"
+                        [clearable]="false"
+                        placeholder="planning.study-plan-evaluations.grade-capture.select-term-status"
+                        [control]="editorForm.controls.term_status_id"
+                      />
+                    </dd>
+                  </div>
+                </dl>
+
+                <div class="study-plan-grade-capture-summary__card-actions">
+                  <app-ui-button
+                    [title]="'common.cancel' | translate"
+                    iconLeft="cancel"
+                    variant="secondary"
+                    [iconOnly]="true"
+                    size="sm"
+                    type="button"
+                    [disabled]="loading()"
+                    (click)="cancelEditor()"
+                  />
+                  <app-ui-button
+                    [title]="'common.save' | translate"
+                    iconLeft="save"
+                    variant="primary"
+                    [iconOnly]="true"
+                    size="sm"
+                    type="submit"
+                    [disabled]="loading() || editorForm.invalid"
+                  />
+                </div>
+              </form>
+            } @else {
+              <dl>
+                <div>
+                  <dt>{{ 'planning.study-plan-evaluations.grade-capture.role' | translate }}</dt>
+                  <dd>{{ (item.role?.translation ?? '') | translate }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'planning.study-plan-evaluations.grade-capture.term-status' | translate }}</dt>
+                  <dd>{{ (item.status?.translation ?? '') | translate }}</dd>
+                </div>
+              </dl>
+
+              @if (item.deletable) {
+                <div class="study-plan-grade-capture-summary__card-actions">
+                  @if (getScreenOption('update'); as updateOption) {
+                    <app-ui-button
+                      [title]="updateOption.translation | translate"
+                      [iconLeft]="updateOption.icon"
+                      [variant]="updateOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      type="button"
+                      [disabled]="editorMode() !== null || loading()"
+                      (click)="startEdit(item)"
+                    />
+                  }
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="deleteOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      type="button"
+                      [disabled]="editorMode() !== null || loading()"
+                      (click)="deleteCapture(item)"
+                    />
+                  }
+                </div>
+              }
+            }
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="study-plan-grade-capture-summary__empty">
+        {{ 'planning.study-plan-evaluations.grade-capture.empty' | translate }}
+      </div>
+    }
+  }
+</section>

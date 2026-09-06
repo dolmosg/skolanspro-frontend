@@ -1,0 +1,419 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.study-plan-schedules-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.study-plan-schedules-view__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.study-plan-schedules-view__workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 28rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  background: var(--color-surface);
+  box-shadow: 0 2px 10px var(--color-border);
+  gap: 1.5rem;
+}
+
+.study-plan-schedules-view__workspace-header {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.25rem;
+
+  > span {
+    overflow: hidden;
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    color: var(--color-text);
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+  }
+}
+
+.study-plan-schedules-view__filters {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.study-plan-schedules-view__filter {
+  display: flex;
+  flex: 0 1 20rem;
+  flex-direction: column;
+  min-width: 14rem;
+  gap: 0.4rem;
+
+  > span {
+    color: var(--color-text-soft);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+}
+
+.study-plan-schedules-view__layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.study-plan-schedules-view__sidebar,
+.study-plan-schedules-view__schedule {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface-subtle);
+}
+
+.study-plan-schedules-view__panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+
+  h4 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  span {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+}
+
+.study-plan-schedules-view__groups,
+.study-plan-schedules-view__assignments,
+.study-plan-schedules-view__cell-items {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.study-plan-schedules-view__groups {
+  padding: 0.75rem;
+  gap: 0.75rem;
+}
+
+.study-plan-schedules-view__group {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+}
+
+.study-plan-schedules-view__group-header {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.5rem;
+
+  strong {
+    flex: 1;
+    min-width: 0;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  > span:last-child {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
+.study-plan-schedules-view__group-color {
+  flex: 0 0 auto;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+}
+
+.study-plan-schedules-view__assignments {
+  padding: 0.5rem;
+  gap: 0.35rem;
+}
+
+.study-plan-schedules-view__assignment,
+.study-plan-schedules-view__occupancy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface-subtle);
+  gap: 0.15rem;
+
+  strong,
+  span {
+    overflow-wrap: anywhere;
+  }
+
+  strong {
+    color: var(--color-text);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  span {
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+}
+
+.study-plan-schedules-view__assignment {
+  padding: 0.55rem;
+  cursor: grab;
+
+  &.cdk-drag-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.study-plan-schedules-view__assignment.cdk-drag-preview {
+  box-sizing: border-box;
+  box-shadow: var(--shadow-primary);
+}
+
+.study-plan-schedules-view__assignment.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.study-plan-schedules-view__group-empty {
+  margin: 0;
+  padding: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.study-plan-schedules-view__schedule {
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.study-plan-schedules-view__table-scroll {
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.study-plan-schedules-view__table {
+  width: 100%;
+  min-width: 47rem;
+  border-collapse: collapse;
+
+  th,
+  td {
+    min-width: 6.5rem;
+    padding: 0.625rem;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th:first-child {
+    width: 7rem;
+    min-width: 7rem;
+  }
+
+  thead th {
+    background: var(--color-surface-muted);
+    color: var(--color-text-soft);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  tbody th {
+    background: var(--color-surface-subtle);
+
+    span,
+    small {
+      display: block;
+    }
+
+    span,
+    small {
+      color: var(--color-text-muted);
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+  }
+
+  tr:last-child th,
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  th:last-child,
+  td:last-child {
+    border-right: 0;
+  }
+}
+
+.study-plan-schedules-view__row--non-academic td,
+.study-plan-schedules-view__row--non-academic th {
+  background: var(--color-surface-muted);
+}
+
+.study-plan-schedules-view__cell-items {
+  gap: 0.3rem;
+}
+
+.study-plan-schedules-view__drop-cell {
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease;
+
+  &--active {
+    background: var(--color-primary-tint-hover);
+    box-shadow: inset 0 0 0 2px var(--color-primary-border-selected);
+  }
+
+  &.cdk-drop-list-disabled {
+    cursor: wait;
+  }
+}
+
+.study-plan-schedules-view__occupancy {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0.4rem 0.45rem;
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.study-plan-schedules-view__occupancy-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.study-plan-schedules-view__occupancy-delete {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+
+  ::ng-deep .ui-button__control {
+    width: 26px;
+    min-height: 26px;
+    padding: 0;
+  }
+
+  ::ng-deep app-ui-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.study-plan-schedules-view__state {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 12rem;
+  padding: 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  text-align: center;
+
+  h3 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 800;
+  }
+}
+
+.study-plan-schedules-view__state--compact {
+  min-height: 6rem;
+}
+
+@media (max-width: 1100px) {
+  .study-plan-schedules-view__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .study-plan-schedules-view__workspace {
+    padding: 1rem;
+  }
+
+  .study-plan-schedules-view__filter {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+}

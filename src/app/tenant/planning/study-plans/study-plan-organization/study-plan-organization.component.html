@@ -2,7 +2,9 @@
   @if (
     selectedStructureId() === null &&
     selectedGroupsStageId() === null &&
-    selectedAcademicAssignmentGradeId() === undefined
+    selectedAcademicAssignmentGradeId() === undefined &&
+    selectedScheduleStageId() === null &&
+    selectedScheduleGradeId() === null
   ) {
     <div class="study-plan-organization__schedule-type">
       <div class="study-plan-organization__schedule-type-icon" aria-hidden="true">
@@ -92,6 +94,7 @@
             <app-study-plan-schedules-summary
               [summary]="schedulesSummary()"
               [options]="schedulesOptions()"
+              (openSchedule)="openScheduleView($event)"
             />
           }
         </div>
@@ -114,6 +117,15 @@
       [screenOptions]="academicAssignmentsOptions()"
       (back)="closeAcademicAssignmentsView()"
       (assignmentMutation)="handleAcademicAssignmentMutation($event)"
+    />
+  } @else if (selectedScheduleStageId() !== null && selectedScheduleGradeId() !== null) {
+    <app-study-plan-schedules-view
+      [route]="schedulesRoute()"
+      [screenOptions]="schedulesOptions()"
+      [summary]="schedulesSummary()"
+      [stageId]="selectedScheduleStageId()"
+      [gradeId]="selectedScheduleGradeId()"
+      (back)="closeScheduleView()"
     />
   } @else {
     <app-study-plan-stage-groups-view

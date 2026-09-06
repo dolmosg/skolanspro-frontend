@@ -2494,6 +2494,17 @@
 			"title": "Estructura Académica"
 		},
 		"study-plan-evaluations": {
+			"grade-capture": {
+				"delete-confirmation": "¿Deseas eliminar la regla de captura de calificaciones para {{role}}?",
+				"delete-confirmation-title": "Eliminar regla de captura de calificaciones",
+				"description": "Define qué roles pueden modificar calificaciones según el estado del periodo.",
+				"empty": "No hay reglas de captura de calificaciones configuradas.",
+				"role": "Rol",
+				"select-role": "Seleccionar rol",
+				"select-term-status": "Seleccionar estado del periodo",
+				"term-status": "Estado del periodo",
+				"title": "Captura de calificaciones"
+			},
 			"aspects": {
 				"configured-subject-singular": "{{configured}} de {{total}} asignatura configurada",
 				"configured-subjects": "{{configured}} de {{total}} asignaturas configuradas",
@@ -2515,6 +2526,74 @@
 				"grade-placeholder": "La configuración de aspectos de {{grade}} en la etapa {{stage}} se mostrará aquí.",
 				"stage-placeholder": "La configuración de aspectos de la etapa {{stage}} se mostrará aquí.",
 				"stages": "Etapas"
+			}
+		},
+		"study-plan-grade-capture": {
+			"add": "Agregar regla de captura",
+			"delete": "Eliminar regla de captura",
+			"update": "Editar regla de captura"
+		},
+		"study-plan-comment-types": {
+			"add": "Agregar tipo de comentario",
+			"update": "Editar tipo de comentario",
+			"delete": "Eliminar tipo de comentario",
+			"delete-confirmation": {
+				"message": "¿Deseas eliminar el tipo de comentario \"{{name}}\"?",
+				"title": "Eliminar tipo de comentario"
+			},
+			"editor": {
+				"description": "Descripción",
+				"language": "Idioma",
+				"name": "Nombre"
+			}
+		},
+		"study-plan-type-comments": {
+			"add": "Agregar comentario",
+			"assign-grades": "Asignar grados",
+			"delete": "Eliminar comentario",
+			"update": "Editar comentario"
+		},
+		"study-plan-comments": {
+			"delete-confirmation": {
+				"message": "¿Deseas eliminar este comentario?",
+				"title": "Eliminar comentario"
+			},
+			"summary": {
+				"assigned-comment-singular": "{{count}} comentario disponible para grados",
+				"assigned-comments": "{{count}} comentarios disponibles para grados",
+				"comment-type-singular": "{{count}} tipo de comentario",
+				"comment-types": "{{count}} tipos de comentario",
+				"description": "Configura los comentarios disponibles para las evaluaciones.",
+				"empty": "Configura tipos y comentarios que podrán utilizarse durante la evaluación.",
+				"loading": "Cargando comentarios de evaluación…",
+				"open-view-aria-label": "Abrir los comentarios del plan de estudio",
+				"title": "Comentarios de evaluación",
+				"total": "Comentarios",
+				"view-comments": "Ver comentarios",
+				"unassigned-comment-singular": "{{count}} comentario sin grados asignados",
+				"unassigned-comments": "{{count}} comentarios sin grados asignados"
+			},
+			"view": {
+			"comment-types": "Tipos de comentarios",
+			"assign-grades": "Asignar grados",
+			"empty-comment-types": "No hay tipos de comentarios configurados para este plan de estudio.",
+			"comments": "Comentarios",
+			"comment": "Comentario",
+			"comment-count": "{{count}} comentario",
+				"comments-count": "{{count}} comentarios",
+			"comments-placeholder": "Aquí se mostrarán los comentarios de este tipo.",
+			"edit-comment": "Editar comentario",
+			"filtered-comments-count": "{{filtered}} de {{total}} comentarios",
+			"grades": "Grados",
+				"no-comments": "No hay comentarios registrados para este tipo.",
+			"no-grades-assigned": "Sin grados asignados",
+			"no-grades-available": "No hay grados disponibles.",
+			"no-results": "No se encontraron comentarios.",
+			"new-comment": "Nuevo comentario",
+				"search-comment": "Buscar comentario...",
+				"select-comment-type": "Selecciona un tipo de comentario para consultar sus comentarios.",
+				"title": "Comentarios del plan de estudio",
+				"without-grades-filter": "Sin grados ({{count}})"
 			}
 		},
 		"study-plan-aspect-configuration": {
@@ -2932,7 +3011,23 @@
 				"subject-count": "{{ count }} asignatura",
 				"subjects-count": "{{ count }} asignaturas",
 				"title": "Horarios",
-				"variants": "Variantes"
+				"variants": "Variantes",
+				"workspace": {
+					"confirm-delete": "¿Deseas eliminar esta asignación de horario?",
+					"delete-title": "¿Eliminar asignación de horario?",
+					"all-groups": "Todos los grupos",
+					"block": "Bloque",
+					"group": "Grupo",
+					"groups": "Grupos / materias",
+					"no-assignments": "Sin materias asignadas",
+					"no-blocks": "El segmento no tiene bloques configurados.",
+					"no-days": "El segmento no tiene días configurados.",
+					"no-groups": "No hay grupos configurados para este grado.",
+					"no-segments": "No hay segmentos configurados para este horario.",
+					"schedule": "Horario",
+					"segment": "Segmento",
+					"team": "Equipo"
+				}
 			},
 			"stage-groups": {
 				"actions": {
@@ -3118,7 +3213,9 @@
 			"update": "Actualizar Estructura"
 		},
 		"study-plan-schedules": {
-			"index": "Horarios"
+			"delete": "Eliminar",
+			"index": "Horarios",
+			"update": "Crear asignaciones de horario"
 		},
 		"study-plan-stage-groups": {
 			"add": "Nuevo Grupo",

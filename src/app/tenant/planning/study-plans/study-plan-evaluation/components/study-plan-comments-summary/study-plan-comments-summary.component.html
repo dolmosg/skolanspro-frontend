@@ -1,1 +1,64 @@
-<p>study-plan-comments-summary works!</p>
+<article class="study-plan-comments-summary">
+  <header class="study-plan-comments-summary__header">
+    <div class="study-plan-comments-summary__icon" aria-hidden="true">
+      <app-ui-icon name="message-square" size="md" />
+    </div>
+    <div class="study-plan-comments-summary__heading">
+      <h4>{{ 'planning.study-plan-comments.summary.title' | translate }}</h4>
+      <p>{{ 'planning.study-plan-comments.summary.description' | translate }}</p>
+    </div>
+    @if (summary(); as commentsSummary) {
+      <button
+        type="button"
+        class="study-plan-comments-summary__kpi"
+        [attr.aria-label]="'planning.study-plan-comments.summary.open-view-aria-label' | translate"
+        (click)="openCommentsView()"
+      >
+        <strong>{{ commentsSummary.comments_count }}</strong
+        ><span>{{ 'planning.study-plan-comments.summary.total' | translate }}</span>
+        <span class="study-plan-comments-summary__kpi-action">
+          <span>{{ 'planning.study-plan-comments.summary.view-comments' | translate }}</span>
+          <app-ui-icon name="drilldown" size="sm" />
+        </span>
+      </button>
+    }
+  </header>
+  @if (summary(); as commentsSummary) {
+    @if (commentsSummary.types_count === 0 && commentsSummary.comments_count === 0) {
+      <div class="study-plan-comments-summary__empty">
+        <app-ui-icon name="message-square" size="md" /><span>{{
+          'planning.study-plan-comments.summary.empty' | translate
+        }}</span>
+      </div>
+    } @else {
+      <div class="study-plan-comments-summary__details">
+        <div class="study-plan-comments-summary__detail">
+          <strong>{{ commentsSummary.types_count }}</strong
+          ><span>{{
+            commentTypesTranslationKey(commentsSummary.types_count)
+              | translate: { count: commentsSummary.types_count }
+          }}</span>
+        </div>
+        <div class="study-plan-comments-summary__detail">
+          <strong>{{ commentsSummary.assigned_comments_count }}</strong
+          ><span>{{
+            assignedCommentsTranslationKey(commentsSummary.assigned_comments_count)
+              | translate: { count: commentsSummary.assigned_comments_count }
+          }}</span>
+        </div>
+      </div>
+      @if (commentsSummary.unassigned_comments_count > 0) {
+        <div class="study-plan-comments-summary__warning">
+          <app-ui-icon name="alert-circle" size="sm" /><span>{{
+            unassignedCommentsTranslationKey(commentsSummary.unassigned_comments_count)
+              | translate: { count: commentsSummary.unassigned_comments_count }
+          }}</span>
+        </div>
+      }
+    }
+  } @else if (loading()) {
+    <div class="study-plan-comments-summary__loading" aria-live="polite">
+      {{ 'planning.study-plan-comments.summary.loading' | translate }}
+    </div>
+  }
+</article>

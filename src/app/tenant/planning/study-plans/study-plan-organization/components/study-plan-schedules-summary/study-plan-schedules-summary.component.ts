@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import type { ScreenOptionItem } from '@shared/interfaces/access.interfaces';
@@ -21,6 +21,7 @@ export class StudyPlanSchedulesSummaryComponent {
    * This summary remains presentational and does not resolve permissions.
    */
   readonly options = input<ScreenOptionItem[]>([]);
+  readonly openSchedule = output<{ stageId: number; gradeId: number }>();
 
   protected readonly stages = computed<StudyPlanSchedulesSummaryStage[]>(() => {
     return this.summary()?.items ?? [];
@@ -52,5 +53,13 @@ export class StudyPlanSchedulesSummaryComponent {
     return count === 1
       ? 'planning.study-plan-organizations.schedules.scheduled-group-count'
       : 'planning.study-plan-organizations.schedules.scheduled-groups-count';
+  }
+
+  protected onOpenSchedule(stageId: number, gradeId: number | null): void {
+    if (gradeId === null) {
+      return;
+    }
+
+    this.openSchedule.emit({ stageId, gradeId });
   }
 }

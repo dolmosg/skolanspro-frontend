@@ -52,6 +52,7 @@ export class AuthStateSevice {
    * Flat list of backend-approved route/resource keys used by access guards.
    */
   private readonly allowedRoutesState = signal<string[]>([]);
+  private readonly permissionsVersionState = signal<number | null>(null);
 
   /**
    * In-flight `/me` validation request shared by concurrent guards.
@@ -66,6 +67,7 @@ export class AuthStateSevice {
    */
   readonly session = computed(() => this.state());
   readonly allowedRoutes = computed(() => this.allowedRoutesState());
+  readonly permissionsVersion = computed(() => this.permissionsVersionState());
   /**
    * Indicates whether a token and user are both currently available.
    */
@@ -150,12 +152,19 @@ export class AuthStateSevice {
    * Replaces the current list of backend-approved route/resource keys.
    */
   setAllowedRoutes(routes: string[] | null | undefined): void {
-    const normalizedRoutes = (routes ?? [])
-      .map((route) => route?.trim())
-      .filter((route): route is string => !!route);
+    const normalizedRoutes = this.normalizeAllowedRoutes(routes);
 
     this.allowedRoutesState.set(normalizedRoutes);
     this.persistAllowedRoutes(normalizedRoutes);
+  }
+
+  /** Replaces the locally authorized routes and their matching revision together. */
+  setAuthorizationSnapshot(routes: string[] | null | undefined, permissionsVersion: number): void {
+    const normalizedRoutes = this.normalizeAllowedRoutes(routes);
+    this.allowedRoutesState.set(normalizedRoutes);
+    this.permissionsVersionState.set(permissionsVersion);
+    this.persistAllowedRoutes(normalizedRoutes);
+    localStorage.setItem('permissions_version', String(permissionsVersion));
   }
 
   /**
@@ -167,7 +176,9 @@ export class AuthStateSevice {
    */
   clearAllowedRoutes(): void {
     this.allowedRoutesState.set([]);
+    this.permissionsVersionState.set(null);
     this.persistAllowedRoutes([]);
+    localStorage.removeItem('permissions_version');
   }
 
   /**
@@ -323,6 +334,7 @@ export class AuthStateSevice {
       rawContext === 'tenant' ? 'tenant' : rawContext === 'central' ? 'central' : null;
     const rawUser = localStorage.getItem('user');
     const rawAllowedRoutes = localStorage.getItem('allowed_routes');
+    const rawPermissionsVersion = localStorage.getItem('permissions_version');
 
     let user: AuthUser | null = null;
 
@@ -357,6 +369,15 @@ export class AuthStateSevice {
       user,
     });
     this.allowedRoutesState.set(allowedRoutes);
+    const permissionsVersion =
+      rawPermissionsVersion === null ? null : Number(rawPermissionsVersion);
+    this.permissionsVersionState.set(
+      permissionsVersion !== null &&
+        Number.isSafeInteger(permissionsVersion) &&
+        permissionsVersion >= 1
+        ? permissionsVersion
+        : null,
+    );
   }
 
   /**
@@ -400,6 +421,7 @@ export class AuthStateSevice {
       user: null,
     });
     this.allowedRoutesState.set([]);
+    this.permissionsVersionState.set(null);
     this.sessionValidationRequest = null;
 
     localStorage.removeItem('token');
@@ -408,6 +430,11 @@ export class AuthStateSevice {
     localStorage.removeItem('app_context');
     localStorage.removeItem('tenant');
     localStorage.removeItem('allowed_routes');
+    localStorage.removeItem('permissions_version');
+  }
+
+  private normalizeAllowedRoutes(routes: string[] | null | undefined): string[] {
+    return (routes ?? []).map((route) => route?.trim()).filter((route): route is string => !!route);
   }
 
   /**

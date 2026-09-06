@@ -6,6 +6,7 @@ import { ApiService } from '../../../shared/services/api-service';
 import { SiteStateService } from '../../../shared/services/site-state';
 import { ToastService } from '../../../shared/services/toast-service';
 import { AuthStateSevice } from '../../../shared/services/auth-state-sevice';
+import { NavigationService } from '../../../shared/services/navigation-service';
 
 interface LogoutResponseData {
   context?: 'central' | 'tenant';
@@ -24,6 +25,7 @@ export class Logout implements OnInit {
   private readonly siteState = inject(SiteStateService);
   private readonly toast = inject(ToastService);
   private readonly authState = inject(AuthStateSevice);
+  private readonly navigation = inject(NavigationService);
 
   protected processing = true;
 
@@ -47,6 +49,7 @@ export class Logout implements OnInit {
   }
 
   private clearSession(): void {
+    this.navigation.clear();
     this.authState.clear();
   }
 }

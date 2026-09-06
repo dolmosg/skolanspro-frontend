@@ -1,0 +1,433 @@
+<section class="study-plan-comments-view">
+  <header class="study-plan-comments-view__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      (click)="closeView()"
+    />
+  </header>
+
+  <main class="study-plan-comments-view__content">
+    <header class="study-plan-comments-view__heading">
+      <span class="study-plan-comments-view__icon" aria-hidden="true">
+        <app-ui-icon name="message-square" size="md" />
+      </span>
+      <div>
+        <h3>{{ 'planning.study-plan-comments.view.title' | translate }}</h3>
+        <p>{{ studyPlan().name }}</p>
+      </div>
+    </header>
+
+    <div class="study-plan-comments-view__layout">
+      <aside class="study-plan-comments-view__master">
+        <header class="study-plan-comments-view__panel-header study-plan-comments-view__panel-header--actions">
+          <h4>{{ 'planning.study-plan-comments.view.comment-types' | translate }}</h4>
+          <div class="study-plan-comments-view__panel-actions">
+            @if (getScreenOption('add'); as addOption) {
+              <app-ui-button
+                [label]="addOption.translation | translate"
+                [title]="addOption.translation | translate"
+                [iconLeft]="addOption.icon"
+                [variant]="getScreenOptionVariant('add')"
+                size="sm"
+                [iconOnly]="true"
+                [disabled]="loading() || commentWorkspaceActive()"
+                (click)="startCreateType()"
+              />
+            }
+          </div>
+        </header>
+        @if (types().length > 0 || creatingType()) {
+          <div class="study-plan-comments-view__types">
+            @if (creatingType()) {
+              <form
+                class="study-plan-comments-view__type-editor"
+                [formGroup]="typeForm"
+                (ngSubmit)="saveType()"
+              >
+                <label class="study-plan-comments-view__editor-field">
+                  <span>{{ 'planning.study-plan-comment-types.editor.name' | translate }}</span>
+                  <input type="text" formControlName="name" maxlength="128" />
+                  <form-error [control]="typeForm.controls.name" />
+                </label>
+
+                <label class="study-plan-comments-view__editor-field">
+                  <span>{{ 'planning.study-plan-comment-types.editor.language' | translate }}</span>
+                  <select formControlName="language_id">
+                    <option [ngValue]="null">{{ 'common.select' | translate }}</option>
+                    @for (language of languages(); track language.id) {
+                      <option [ngValue]="language.id">{{ language.label | translate }}</option>
+                    }
+                  </select>
+                  <form-error [control]="typeForm.controls.language_id" />
+                </label>
+
+                <label class="study-plan-comments-view__editor-field">
+                  <span>{{ 'planning.study-plan-comment-types.editor.description' | translate }}</span>
+                  <textarea formControlName="description" rows="3"></textarea>
+                  <form-error [control]="typeForm.controls.description" />
+                </label>
+
+                <div class="study-plan-comments-view__editor-actions">
+                  <app-ui-button
+                    [label]="'common.cancel' | translate"
+                    [title]="'common.cancel' | translate"
+                    iconLeft="cancel"
+                    variant="danger"
+                    size="sm"
+                    [disabled]="loading()"
+                    (click)="cancelTypeEditor()"
+                  />
+                  <app-ui-button
+                    type="submit"
+                    [label]="'common.save' | translate"
+                    [title]="'common.save' | translate"
+                    iconLeft="save"
+                    variant="primary"
+                    size="sm"
+                    [disabled]="loading()"
+                  />
+                </div>
+              </form>
+            }
+            @for (type of types(); track type.id) {
+              @if (editingTypeId() === type.id) {
+                <form
+                  class="study-plan-comments-view__type-editor"
+                  [formGroup]="typeForm"
+                  (ngSubmit)="saveType()"
+                >
+                  <label class="study-plan-comments-view__editor-field">
+                    <span>{{ 'planning.study-plan-comment-types.editor.name' | translate }}</span>
+                    <input type="text" formControlName="name" maxlength="128" />
+                    <form-error [control]="typeForm.controls.name" />
+                  </label>
+
+                  <label class="study-plan-comments-view__editor-field">
+                    <span>{{ 'planning.study-plan-comment-types.editor.language' | translate }}</span>
+                    <select formControlName="language_id">
+                      <option [ngValue]="null">{{ 'common.select' | translate }}</option>
+                      @for (language of languages(); track language.id) {
+                        <option [ngValue]="language.id">{{ language.label | translate }}</option>
+                      }
+                    </select>
+                    <form-error [control]="typeForm.controls.language_id" />
+                  </label>
+
+                  <label class="study-plan-comments-view__editor-field">
+                    <span>{{ 'planning.study-plan-comment-types.editor.description' | translate }}</span>
+                    <textarea formControlName="description" rows="3"></textarea>
+                    <form-error [control]="typeForm.controls.description" />
+                  </label>
+
+                  <div class="study-plan-comments-view__editor-actions">
+                    <app-ui-button
+                      [label]="'common.cancel' | translate"
+                      [title]="'common.cancel' | translate"
+                      iconLeft="cancel"
+                      variant="danger"
+                      size="sm"
+                      [disabled]="loading()"
+                      (click)="cancelTypeEditor()"
+                    />
+                    <app-ui-button
+                      type="submit"
+                      [label]="'common.save' | translate"
+                      [title]="'common.save' | translate"
+                      iconLeft="save"
+                      variant="primary"
+                      size="sm"
+                      [disabled]="loading()"
+                    />
+                  </div>
+                </form>
+              } @else {
+                <div
+                  class="study-plan-comments-view__type tr"
+                  role="button"
+                  tabindex="0"
+                  [class.study-plan-comments-view__type--selected]="selectedCommentType()?.id === type.id"
+                  (click)="selectCommentType(type)"
+                  (keydown.enter)="selectCommentType(type)"
+                  (keydown.space)="$event.preventDefault(); selectCommentType(type)"
+                >
+                  <strong>{{ type.name }}</strong>
+                  @if (type.language?.label; as languageLabel) {
+                    <span>{{ languageLabel | translate }}</span>
+                  }
+                  <small>{{ type.comments_count ?? 0 }}</small>
+                  @if (getScreenOption('update'); as updateOption) {
+                    <app-ui-button
+                      class="ta"
+                      [label]="updateOption.translation | translate"
+                      [title]="updateOption.translation | translate"
+                      [iconLeft]="updateOption.icon"
+                      [variant]="getScreenOptionVariant('update')"
+                      size="sm"
+                      [iconOnly]="true"
+                      [disabled]="loading() || commentWorkspaceActive()"
+                      (click)="$event.stopPropagation(); editType(type)"
+                    />
+                  }
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      class="ta"
+                      [label]="deleteOption.translation | translate"
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="getScreenOptionVariant('delete')"
+                      size="sm"
+                      [iconOnly]="true"
+                      [disabled]="loading() || commentWorkspaceActive()"
+                      (click)="$event.stopPropagation(); deleteType(type)"
+                    />
+                  }
+                </div>
+              }
+            }
+          </div>
+        } @else if (!loading()) {
+          <div class="study-plan-comments-view__state">
+            <p>{{ 'planning.study-plan-comments.view.empty-comment-types' | translate }}</p>
+          </div>
+        }
+      </aside>
+
+      <section class="study-plan-comments-view__detail">
+        <header class="study-plan-comments-view__panel-header study-plan-comments-view__panel-header--actions">
+          <h4>{{ 'planning.study-plan-comments.view.comments' | translate }}</h4>
+          @if (!commentWorkspaceActive()) {
+            @if (getCommentOption('add'); as addCommentOption) {
+              <app-ui-button
+                [label]="addCommentOption.translation | translate"
+                [title]="addCommentOption.translation | translate"
+                [iconLeft]="addCommentOption.icon"
+                [variant]="getCommentOptionVariant('add')"
+                size="sm"
+                [iconOnly]="true"
+                (click)="startCreateComment()"
+              />
+            }
+          }
+        </header>
+        @if (selectedCommentType(); as type) {
+          <div class="study-plan-comments-view__detail-context">
+            <p>
+              <strong>{{ type.name }}</strong>
+              @if (type.language?.label; as languageLabel) {
+                <span> · {{ languageLabel | translate }}</span>
+              }
+            </p>
+            @if (!commentWorkspaceActive()) {
+              <span class="study-plan-comments-view__comments-count">
+                @if (filteredComments().length < comments().length) {
+                  {{
+                    'planning.study-plan-comments.view.filtered-comments-count'
+                      | translate: { filtered: filteredComments().length, total: comments().length }
+                  }}
+                } @else if (comments().length === 1) {
+                  {{ 'planning.study-plan-comments.view.comment-count' | translate: { count: comments().length } }}
+                } @else {
+                  {{ 'planning.study-plan-comments.view.comments-count' | translate: { count: comments().length } }}
+                }
+              </span>
+            }
+          </div>
+
+          @if (commentEditorActive()) {
+            <form
+              class="study-plan-comments-view__type-editor study-plan-comments-view__comment-editor"
+              [formGroup]="commentForm"
+              (ngSubmit)="saveComment()"
+            >
+              <h5>
+                {{
+                  (creatingComment()
+                    ? 'planning.study-plan-comments.view.new-comment'
+                    : 'planning.study-plan-comments.view.edit-comment') | translate
+                }}
+              </h5>
+              <label class="study-plan-comments-view__editor-field">
+                <span>{{ 'planning.study-plan-comments.view.comment' | translate }}</span>
+                <textarea formControlName="comment" rows="6"></textarea>
+                <form-error [control]="commentForm.controls.comment" />
+              </label>
+              <div class="study-plan-comments-view__editor-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  [title]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  variant="danger"
+                  size="sm"
+                  [disabled]="loading()"
+                  (click)="cancelCommentEditor()"
+                />
+                <app-ui-button
+                  type="submit"
+                  [label]="'common.save' | translate"
+                  [title]="'common.save' | translate"
+                  iconLeft="save"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="loading()"
+                />
+              </div>
+            </form>
+          } @else if (assigningGradesComment(); as comment) {
+            <section class="study-plan-comments-view__type-editor study-plan-comments-view__comment-editor">
+              <h5>{{ 'planning.study-plan-comments.view.assign-grades' | translate }}</h5>
+              <div class="study-plan-comments-view__grade-reference">
+                <span>{{ 'planning.study-plan-comments.view.comment' | translate }}</span>
+                <p>{{ comment.comment }}</p>
+              </div>
+              <section class="study-plan-comments-view__grades">
+                <span>{{ 'planning.study-plan-comments.view.grades' | translate }}</span>
+                @if (grades().length > 0) {
+                  @for (grade of grades(); track grade.id) {
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          [checked]="isGradeSelected(grade.id)"
+                          (change)="toggleGrade(grade.id)"
+                        />
+                        <span>{{ grade.description }}</span>
+                      </label>
+                    </div>
+                  }
+                } @else {
+                  <p>{{ 'planning.study-plan-comments.view.no-grades-available' | translate }}</p>
+                }
+              </section>
+              <div class="study-plan-comments-view__editor-actions">
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  [title]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  variant="danger"
+                  size="sm"
+                  [disabled]="loading()"
+                  (click)="cancelAssignGrades()"
+                />
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  [title]="'common.save' | translate"
+                  iconLeft="save"
+                  variant="primary"
+                  size="sm"
+                  [disabled]="loading()"
+                  (click)="saveAssignedGrades()"
+                />
+              </div>
+            </section>
+          } @else if (comments().length > 0) {
+            <div class="study-plan-comments-view__comment-controls">
+              <input
+                type="search"
+                [value]="commentSearchTerm()"
+                [placeholder]="'planning.study-plan-comments.view.search-comment' | translate"
+                (input)="onCommentSearch($event)"
+              />
+              @if (commentsWithoutGradesCount() > 0) {
+                <button
+                  type="button"
+                  class="study-plan-comments-view__without-grades-filter"
+                  [class.study-plan-comments-view__without-grades-filter--active]="showCommentsWithoutGrades()"
+                  (click)="toggleCommentsWithoutGrades()"
+                >
+                  {{
+                    'planning.study-plan-comments.view.without-grades-filter'
+                      | translate: { count: commentsWithoutGradesCount() }
+                  }}
+                </button>
+              }
+            </div>
+
+            @if (filteredComments().length > 0) {
+              <div class="study-plan-comments-view__comments">
+                @for (item of filteredComments(); track item.comment.id) {
+                  <article
+                    class="study-plan-comments-view__comment c-row"
+                    [class.study-plan-comments-view__comment--without-grades]="!item.comment.grades?.length"
+                  >
+                    <span class="study-plan-comments-view__comment-number">{{ item.position }}</span>
+                    <div class="study-plan-comments-view__comment-content">
+                      <p>{{ item.comment.comment }}</p>
+                      @if (item.comment.grades?.length) {
+                        <small>
+                          @for (grade of item.comment.grades; track grade.id; let last = $last) {
+                        <span>{{ grade.description }}</span>@if (!last) {
+                          <span aria-hidden="true"> · </span>
+                        }
+                          }
+                        </small>
+                      } @else {
+                        <small>{{ 'planning.study-plan-comments.view.no-grades-assigned' | translate }}</small>
+                      }
+                    </div>
+                    <div
+                      class="study-plan-comments-view__comment-actions ca"
+                      [class.ng]="!item.comment.grades?.length"
+                    >
+                      @if (getCommentOption('update'); as updateCommentOption) {
+                        <app-ui-button
+                          class="act"
+                          [label]="updateCommentOption.translation | translate"
+                          [title]="updateCommentOption.translation | translate"
+                          [iconLeft]="updateCommentOption.icon"
+                          [variant]="getCommentOptionVariant('update')"
+                          size="sm"
+                          [iconOnly]="true"
+                          (click)="editComment(item.comment)"
+                        />
+                      }
+                      @if (getCommentOption('assign-grades'); as assignGradesOption) {
+                        <app-ui-button
+                          class="act cg"
+                          [label]="assignGradesOption.translation | translate"
+                          [title]="assignGradesOption.translation | translate"
+                          [iconLeft]="assignGradesOption.icon"
+                          [variant]="getCommentOptionVariant('assign-grades')"
+                          size="sm"
+                          [iconOnly]="true"
+                          (click)="assignGrades(item.comment)"
+                        />
+                      }
+                      @if (getCommentOption('delete'); as deleteCommentOption) {
+                        <app-ui-button
+                          class="act"
+                          [label]="deleteCommentOption.translation | translate"
+                          [title]="deleteCommentOption.translation | translate"
+                          [iconLeft]="deleteCommentOption.icon"
+                          [variant]="getCommentOptionVariant('delete')"
+                          size="sm"
+                          [iconOnly]="true"
+                          [disabled]="loading()"
+                          (click)="deleteComment(item.comment)"
+                        />
+                      }
+                    </div>
+                  </article>
+                }
+              </div>
+            } @else {
+              <div class="study-plan-comments-view__state">
+                <p>{{ 'planning.study-plan-comments.view.no-results' | translate }}</p>
+              </div>
+            }
+          } @else if (!loadingComments()) {
+            <div class="study-plan-comments-view__state">
+              <p>{{ 'planning.study-plan-comments.view.no-comments' | translate }}</p>
+            </div>
+          }
+        } @else {
+          <div class="study-plan-comments-view__state">
+            <p>{{ 'planning.study-plan-comments.view.select-comment-type' | translate }}</p>
+          </div>
+        }
+      </section>
+    </div>
+  </main>
+</section>

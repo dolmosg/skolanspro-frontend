@@ -26,6 +26,13 @@
   gap: 1rem;
 }
 
+.study-plan-evaluation__summary-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1rem;
+}
+
 @media (max-width: 900px) {
   .study-plan-evaluation__summaries {
     grid-template-columns: minmax(0, 1fr);

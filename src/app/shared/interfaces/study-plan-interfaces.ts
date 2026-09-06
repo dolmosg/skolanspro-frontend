@@ -1,7 +1,7 @@
 import { ISubject } from './academics.interfaces';
 import { ISchoolYear, ISection } from './administration.interfaces';
 import type { IDay } from './central.interfaces';
-import type { IPerson } from './identity.interfaces';
+import type { IPerson, IRole } from './identity.interfaces';
 import type {
   IAspectMode,
   IAttendanceCalculation,
@@ -15,6 +15,7 @@ import type {
   IGradingScale,
   IGroupType,
   ILevel,
+  ILanguage,
   IScheduleType,
   IStudyPlanStructure,
   ITermStatus,
@@ -53,6 +54,62 @@ export interface IStudyPlan {
   programming_setting?: IStudyPlanProgrammingSetting | null;
   schedule_type?: IScheduleType | null;
   schedule_structures?: IStudyPlanScheduleStructure[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanCommentType
+ */
+export interface IStudyPlanCommentType {
+  id: number;
+  study_plan_id: number;
+  name: string;
+  description: string;
+  language_id: number;
+  order: number;
+  comments_count?: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  language?: ILanguage | null;
+}
+
+/**
+ * Grade projection returned with App\Models\Tenant\Planning\StudyPlans\StudyPlanComment.
+ */
+export type IStudyPlanCommentGrade = Pick<IGrade, 'id' | 'description'>;
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\StudyPlanComment
+ */
+export interface IStudyPlanComment {
+  id: number;
+  study_plan_comment_type_id: number;
+  comment: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+  grades?: IStudyPlanCommentGrade[];
+  type?: IStudyPlanCommentType | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\StudyPlans\RatingCapture
+ */
+export interface IStudyPlanRatingCapture {
+  id: number;
+  deletable: boolean;
+  role_id: number;
+  term_status_id: number;
+  study_plan_id: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  role?: IRole | null;
+  status?: ITermStatus | null;
+  study_plan?: IStudyPlan | null;
 }
 
 /**

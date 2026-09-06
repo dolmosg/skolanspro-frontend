@@ -143,9 +143,9 @@ describe('Topbar role switching', () => {
 
   it('prevents duplicate requests and navigates using only the backend response path', async () => {
     const pendingResponse = new Subject<ApiResponse<TenantSwitchRoleSessionPayload>>();
-    let finishNavigationLoad: (() => void) | undefined;
+    let finishNavigationLoad: ((value: boolean) => void) | undefined;
     navigation.load.and.returnValue(
-      new Promise<void>((resolve) => {
+      new Promise<boolean>((resolve) => {
         finishNavigationLoad = resolve;
       }),
     );
@@ -171,7 +171,7 @@ describe('Topbar role switching', () => {
 
     expect(router.navigateByUrl).not.toHaveBeenCalled();
 
-    finishNavigationLoad?.();
+    finishNavigationLoad?.(true);
     await fixture.whenStable();
 
     expect(navigation.clear).toHaveBeenCalledBefore(navigation.load);
