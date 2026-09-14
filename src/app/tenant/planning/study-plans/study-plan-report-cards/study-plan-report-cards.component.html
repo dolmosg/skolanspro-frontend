@@ -1,0 +1,249 @@
+<section class="study-plan-report-cards">
+  @if (editorMode()) {
+    <form
+      class="study-plan-report-cards__editor"
+      [formGroup]="gradebookForm"
+      (ngSubmit)="saveGradebook()"
+    >
+      <header class="study-plan-report-cards__header">
+        <h3>
+          {{ editorTitle() | translate }}
+
+          @if (selectedStage(); as stage) {
+            <span aria-hidden="true"> · </span><span>{{ stage.name }}</span>
+          }
+        </h3>
+      </header>
+
+      <div class="study-plan-report-cards__editor-fields">
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.name' | translate }}</span>
+          <input type="text" formControlName="name" maxlength="100" [disabled]="loading()" />
+          <form-error [control]="gradebookForm.controls.name" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.translation' | translate }}</span>
+          <input type="text" formControlName="translation" maxlength="200" [disabled]="loading()" />
+          <form-error [control]="gradebookForm.controls.translation" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.type' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.gradebook_types ?? []"
+            bindLabel="translation"
+            [translateLabel]="true"
+            [clearable]="false"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.gradebook_type_id"
+          />
+          <form-error [control]="gradebookForm.controls.gradebook_type_id" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.report' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.gradebook_reports ?? []"
+            bindLabel="description"
+            [clearable]="false"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.gradebook_report_id"
+          />
+          <form-error [control]="gradebookForm.controls.gradebook_report_id" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.academic-tutor' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.academic_tutors ?? []"
+            bindLabel="translation"
+            [translateLabel]="true"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.academic_tutor_id"
+          />
+          <form-error [control]="gradebookForm.controls.academic_tutor_id" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.attendance' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.gradebook_attendances ?? []"
+            bindLabel="translation"
+            [translateLabel]="true"
+            [clearable]="false"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.gradebook_attendance_id"
+          />
+          <form-error [control]="gradebookForm.controls.gradebook_attendance_id" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.academy' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.academies ?? []"
+            bindLabel="name"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.academy_id"
+          />
+          <form-error [control]="gradebookForm.controls.academy_id" />
+        </label>
+
+        <label class="study-plan-report-cards__editor-field">
+          <span>{{ 'planning.study-plan-report-cards.fields.comment-language' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs()?.comment_languages ?? []"
+            bindLabel="label"
+            [translateLabel]="true"
+            [disabled]="loading()"
+            [control]="gradebookForm.controls.comment_language_id"
+          />
+          <form-error [control]="gradebookForm.controls.comment_language_id" />
+        </label>
+      </div>
+
+      <div class="study-plan-report-cards__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          [disabled]="loading()"
+          (click)="cancelEditor()"
+        />
+
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="loading()"
+        />
+      </div>
+    </form>
+  } @else if (selectedGradebook(); as gradebook) {
+      <app-study-plan-report-card-detail
+        [gradebook]="gradebook"
+        [studyPlanId]="studyPlanId()"
+        [children]="children()"
+        (back)="closeGradebookDetail()"
+      />
+  } @else {
+    <section class="study-plan-report-cards__catalog">
+      <header class="study-plan-report-cards__header">
+        <div class="study-plan-report-cards__header-identity">
+          <span class="study-plan-report-cards__header-icon" aria-hidden="true">
+            <app-ui-icon name="report-cards" size="sm" />
+          </span>
+
+          <div>
+            <h3>
+              {{ 'controllers.study-plan-report-cards' | translate }}
+
+              @if (selectedStage(); as stage) {
+                <span aria-hidden="true"> · </span><span>{{ stage.name }}</span>
+              }
+            </h3>
+            <p>{{ 'planning.study-plan-report-cards.description' | translate }}</p>
+          </div>
+        </div>
+
+        @if (getScreenOption('add'); as addOption) {
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [iconLeft]="addOption.icon"
+            [variant]="getScreenOptionVariant('add', 'primary')"
+            size="sm"
+            [disabled]="!selectedStage() || loading()"
+            (click)="startCreateGradebook()"
+          />
+        }
+      </header>
+
+      @if (selectedStage(); as stage) {
+        <div
+          class="study-plan-report-cards__items"
+          cdkDropList
+          cdkDropListOrientation="mixed"
+          [cdkDropListData]="stage.gradebooks"
+          [cdkDropListDisabled]="!getScreenOption('order') || loading()"
+          (cdkDropListDropped)="onGradebooksDropped($event)"
+        >
+          @for (gradebook of stage.gradebooks; track gradebook.id) {
+            <article
+              class="study-plan-report-cards__item"
+              cdkDrag
+              [cdkDragDisabled]="!getScreenOption('order') || loading()"
+            >
+              <div class="study-plan-report-cards__item-main">
+                @if (getScreenOption('order'); as orderOption) {
+                  <app-ui-icon
+                    class="study-plan-report-cards__item-order-handle"
+                    [name]="orderOption.icon"
+                    [title]="orderOption.translation | translate"
+                    size="sm"
+                    cdkDragHandle
+                  />
+                }
+
+                <span class="study-plan-report-cards__item-icon" aria-hidden="true">
+                  <app-ui-icon name="report-cards" size="sm" />
+                </span>
+
+                <div class="study-plan-report-cards__item-copy">
+                  <strong>{{ gradebook.name }}</strong>
+
+                  @if (gradebook.gradebook_type; as type) {
+                    <span>{{ type.translation | translate }}</span>
+                  }
+                </div>
+              </div>
+
+              <div class="study-plan-report-cards__item-actions">
+                <div class="study-plan-report-cards__item-contextual-actions">
+                  @if (getScreenOption('update'); as updateOption) {
+                    <app-ui-button
+                      [label]="updateOption.translation | translate"
+                      [title]="updateOption.translation | translate"
+                      [iconLeft]="updateOption.icon"
+                      [variant]="getScreenOptionVariant('update')"
+                      [iconOnly]="true"
+                      size="sm"
+                      (click)="updateGradebook(gradebook)"
+                    />
+                  }
+
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      [label]="deleteOption.translation | translate"
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="getScreenOptionVariant('delete')"
+                      [iconOnly]="true"
+                      size="sm"
+                      (click)="requestDeleteGradebook(gradebook)"
+                    />
+                  }
+                </div>
+
+                <app-ui-button
+                  [label]="'planning.study-plan-report-cards.configure' | translate"
+                  [title]="'planning.study-plan-report-cards.configure' | translate"
+                  iconLeft="drilldown"
+                  variant="ghost"
+                  [iconOnly]="true"
+                  size="sm"
+                  (click)="openGradebookDetail(gradebook)"
+                />
+              </div>
+            </article>
+          } @empty {
+            <p class="study-plan-report-cards__empty">{{ 'common.no-data' | translate }}</p>
+          }
+        </div>
+      }
+    </section>
+  }
+</section>

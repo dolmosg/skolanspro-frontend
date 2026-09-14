@@ -1,0 +1,152 @@
+<form class="gradebook-settings" [formGroup]="form" (ngSubmit)="save()">
+  @if (settingsLoaded()) {
+    <section class="gradebook-settings__group">
+      <header class="gradebook-settings__group-header">
+        <span class="gradebook-settings__group-icon" aria-hidden="true">
+          <app-ui-icon name="evaluation" size="sm" />
+        </span>
+
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-settings.groups.grading' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-settings.group-descriptions.grading' | translate }}</p>
+        </div>
+      </header>
+
+      <div class="gradebook-settings__fields gradebook-settings__fields--grading">
+        <label class="gradebook-settings__field gradebook-settings__field--compact">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.minimum-grade' | translate }}</span>
+          <input type="number" step="0.01" formControlName="minimum_grade" />
+          <form-error [control]="form.controls.minimum_grade" />
+        </label>
+
+        <label class="gradebook-settings__field gradebook-settings__field--compact">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.passing-grade' | translate }}</span>
+          <input type="number" step="0.01" formControlName="passing_grade" />
+          <form-error [control]="form.controls.passing_grade" />
+        </label>
+
+        <label class="gradebook-settings__field gradebook-settings__field--compact">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.decimals' | translate }}</span>
+          <input type="number" min="0" max="255" formControlName="decimals" />
+          <form-error [control]="form.controls.decimals" />
+        </label>
+
+        <label class="gradebook-settings__field gradebook-settings__field--compact">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.final-decimals' | translate }}</span>
+          <input type="number" min="0" max="255" formControlName="final_decimals" />
+          <form-error [control]="form.controls.final_decimals" />
+        </label>
+
+        <label class="gradebook-settings__field gradebook-settings__field--policy">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.rounding' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs().grade_policies"
+            bindLabel="translation"
+            bindValue="id"
+            [translateLabel]="true"
+            [control]="form.controls.rounding_id"
+          />
+          <form-error [control]="form.controls.rounding_id" />
+        </label>
+
+        <label class="gradebook-settings__field gradebook-settings__field--policy">
+          <span>{{ 'planning.study-plan-report-card-settings.fields.final-rounding' | translate }}</span>
+          <app-sk-select
+            [items]="catalogs().grade_policies"
+            bindLabel="translation"
+            bindValue="id"
+            [translateLabel]="true"
+            [control]="form.controls.final_rounding_id"
+          />
+          <form-error [control]="form.controls.final_rounding_id" />
+        </label>
+      </div>
+    </section>
+
+    <section class="gradebook-settings__group">
+      <header class="gradebook-settings__group-header">
+        <span class="gradebook-settings__group-icon" aria-hidden="true">
+          <app-ui-icon name="presentation" size="sm" />
+        </span>
+
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-settings.groups.presentation' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-settings.group-descriptions.presentation' | translate }}</p>
+        </div>
+      </header>
+
+      <div class="gradebook-settings__checks">
+        <label class="gradebook-settings__check">
+          <input type="checkbox" formControlName="show_grade_details" />
+          <span>{{ 'planning.study-plan-report-card-settings.fields.show-grade-details' | translate }}</span>
+        </label>
+        <label class="gradebook-settings__check">
+          <input type="checkbox" formControlName="show_total_row" />
+          <span>{{ 'planning.study-plan-report-card-settings.fields.show-total-row' | translate }}</span>
+        </label>
+        <label class="gradebook-settings__check">
+          <input type="checkbox" formControlName="show_total_column" />
+          <span>{{ 'planning.study-plan-report-card-settings.fields.show-total-column' | translate }}</span>
+        </label>
+      </div>
+
+      <label class="gradebook-settings__field gradebook-settings__field--wide">
+        <span>{{ 'planning.study-plan-report-card-settings.fields.null-grade-text' | translate }}</span>
+        <input type="text" maxlength="100" formControlName="null_grade_text" />
+        <form-error [control]="form.controls.null_grade_text" />
+      </label>
+    </section>
+
+    @if (hasIntegrations()) {
+      <section class="gradebook-settings__group">
+        <header class="gradebook-settings__group-header">
+          <span class="gradebook-settings__group-icon" aria-hidden="true">
+            <app-ui-icon name="workflow" size="sm" />
+          </span>
+
+          <div>
+            <h4>{{ 'planning.study-plan-report-card-settings.groups.integrations' | translate }}</h4>
+            <p>{{ 'planning.study-plan-report-card-settings.group-descriptions.integrations' | translate }}</p>
+          </div>
+        </header>
+
+        <div class="gradebook-settings__checks">
+          <label class="gradebook-settings__check">
+            <input type="checkbox" formControlName="calculate_integrations" />
+            <span>{{ 'planning.study-plan-report-card-settings.fields.calculate-integrations' | translate }}</span>
+          </label>
+          <label class="gradebook-settings__check">
+            <input type="checkbox" formControlName="expand_integrations" />
+            <span>{{ 'planning.study-plan-report-card-settings.fields.expand-integrations' | translate }}</span>
+          </label>
+        </div>
+      </section>
+    }
+
+    <section class="gradebook-settings__group">
+      <header class="gradebook-settings__group-header">
+        <span class="gradebook-settings__group-icon" aria-hidden="true">
+          <app-ui-icon name="families" size="sm" />
+        </span>
+
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-settings.groups.publication' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-settings.group-descriptions.publication' | translate }}</p>
+        </div>
+      </header>
+
+      <div class="gradebook-settings__checks">
+        <label class="gradebook-settings__check">
+          <input type="checkbox" formControlName="publish_to_parents" />
+          <span>{{ 'planning.study-plan-report-card-settings.fields.publish-to-parents' | translate }}</span>
+        </label>
+      </div>
+    </section>
+
+  }
+
+  <div class="gradebook-settings__actions">
+    <app-ui-button [label]="'common.cancel' | translate" iconLeft="cancel" variant="danger" size="sm" type="button" (click)="cancel.emit()" />
+    <app-ui-button [label]="'common.save' | translate" iconLeft="save" variant="primary" size="sm" type="submit" [disabled]="!settingsLoaded() || !canUpdate() || form.invalid || loading()" />
+  </div>
+</form>

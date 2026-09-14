@@ -57,6 +57,7 @@
                 size="sm"
                 [iconOnly]="true"
                 [title]="updateOption.translation | translate"
+                tooltipPosition="bottom"
                 (click)="onEdit()"
               />
             }
@@ -68,6 +69,7 @@
                 size="sm"
                 [iconOnly]="true"
                 [title]="deleteOption.translation | translate"
+                tooltipPosition="bottom"
                 (click)="onDelete()"
               />
             }
@@ -79,6 +81,7 @@
                 size="sm"
                 [iconOnly]="true"
                 [title]="optionsOption.translation | translate"
+                tooltipPosition="bottom"
                 (click)="onConfigureOptions()"
               />
             }
@@ -90,7 +93,20 @@
                 size="sm"
                 [iconOnly]="true"
                 [title]="actionsOption.translation | translate"
+                tooltipPosition="bottom"
                 (click)="onConfigureActions()"
+              />
+            }
+
+            @if (getScreenOption('relate-content'); as relateContentOption) {
+              <app-ui-button
+                [iconLeft]="relateContentOption.icon"
+                [variant]="relateContentOption.color"
+                size="sm"
+                [iconOnly]="true"
+                [title]="relateContentOption.translation | translate"
+                tooltipPosition="bottom"
+                (click)="onConfigureContent()"
               />
             }
           } @else {
@@ -102,6 +118,8 @@
                   size="sm"
                   [iconLeft]="orderOption.icon"
                   [iconOnly]="true"
+                  [title]="orderOption.translation | translate"
+                  tooltipPosition="bottom"
                   (click)="startOrdering()"
                 />
               }

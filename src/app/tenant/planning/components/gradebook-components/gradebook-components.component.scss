@@ -1,0 +1,183 @@
+.gradebook-components__filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.gradebook-components__filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.gradebook-components__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.gradebook-components__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.gradebook-components__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  min-width: 0;
+  padding: 0.85rem 0.95rem;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  gap: 0.75rem;
+}
+
+.gradebook-components__item--editing {
+  display: block;
+  grid-column: 1 / -1;
+  background: var(--color-surface);
+}
+
+.gradebook-components__item-main {
+  min-width: 0;
+}
+
+.gradebook-components__identity {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: 0.55rem;
+
+  strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  span {
+    flex: 0 0 auto;
+    color: var(--color-primary);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+}
+
+.gradebook-components__type {
+  display: inline-block;
+  margin-top: 0.3rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.gradebook-components__editor {
+  display: grid;
+  grid-template-columns:
+    minmax(100px, 0.6fr)
+    minmax(220px, 1.5fr)
+    minmax(180px, 1fr)
+    minmax(150px, 0.8fr)
+    auto;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.gradebook-components__editor--protected {
+  grid-template-columns:
+    minmax(100px, 0.6fr)
+    minmax(220px, 1.8fr)
+    minmax(150px, 0.8fr)
+    auto;
+}
+
+.gradebook-components__editor-field {
+  display: grid;
+  min-width: 0;
+  gap: 0.35rem;
+
+  > span {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.82rem;
+
+    &:focus {
+      border-color: var(--color-primary-border-selected);
+      outline: none;
+    }
+  }
+}
+
+.gradebook-components__editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.gradebook-components__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity 150ms ease,
+    visibility 150ms ease;
+}
+
+.gradebook-components__item:is(:hover, :focus-within) .gradebook-components__actions {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+@media (hover: none) {
+  .gradebook-components__actions {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 1024px) {
+  .gradebook-components__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .gradebook-components__editor {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gradebook-components__editor-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .gradebook-components__editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gradebook-components__editor-actions {
+    grid-column: auto;
+  }
+}

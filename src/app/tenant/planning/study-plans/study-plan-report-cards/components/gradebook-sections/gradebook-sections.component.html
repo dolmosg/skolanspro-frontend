@@ -1,0 +1,167 @@
+@if (loaded()) {
+  <section class="gradebook-sections">
+    <header class="gradebook-sections__header">
+      <div class="gradebook-sections__heading">
+        <span>{{ 'controllers.study-plan-report-card-sections' | translate }}</span>
+        <h4>{{ loadedGradebook()?.name }}</h4>
+      </div>
+
+      @if (getScreenOption('add'); as addOption) {
+        <app-ui-button
+          [label]="addOption.translation | translate"
+          [iconLeft]="addOption.icon"
+          [variant]="addOption.color"
+          size="sm"
+          [disabled]="orderSaving() || addSaving() || deletingSectionId() !== null"
+          (click)="openAddDrawer()"
+        />
+      }
+    </header>
+
+    @if (sections().length) {
+      <div
+        class="gradebook-sections__list"
+        cdkDropList
+        cdkDropListOrientation="mixed"
+        [cdkDropListData]="sections()"
+        [cdkDropListDisabled]="!getScreenOption('order') || orderSaving() || addSaving() || deletingSectionId() !== null"
+        (cdkDropListDropped)="reorderSections($event)"
+      >
+        @for (section of sections(); track section.id) {
+          <article
+            class="gradebook-sections__item"
+            cdkDrag
+            [cdkDragData]="section"
+            [cdkDragDisabled]="!getScreenOption('order') || orderSaving() || addSaving() || deletingSectionId() !== null"
+          >
+            <div class="gradebook-sections__item-main">
+              @if (getScreenOption('order'); as orderOption) {
+                <app-ui-icon
+                  class="gradebook-sections__order-handle"
+                  [name]="orderOption.icon"
+                  [title]="orderOption.translation | translate"
+                  size="sm"
+                  cdkDragHandle
+                />
+              }
+
+              <span class="gradebook-sections__order" aria-hidden="true">{{ section.order }}</span>
+              <div class="gradebook-sections__content">
+                <div class="gradebook-sections__identity">
+                  <strong>{{ section.name }}</strong>
+                  @if (section.code) {
+                    <span>{{ section.code }}</span>
+                  }
+                </div>
+
+                @if (section.type === 'gradebook') {
+                  <span class="gradebook-sections__type">{{ 'configuration.gradebook-section-types.translation.gradebook' | translate }}</span>
+                  @if (section.referenced_gradebook; as referencedGradebook) {
+                    <p>{{ referencedGradebook.name }}</p>
+                  }
+                } @else {
+                  @if (section.component?.section_type?.translation; as sectionTypeTranslation) {
+                    <span class="gradebook-sections__type">{{ sectionTypeTranslation | translate }}</span>
+                  }
+                  @if (section.component?.description; as description) {
+                    <p>{{ description }}</p>
+                  }
+                }
+              </div>
+            </div>
+
+            <div class="gradebook-sections__actions">
+              @if (getScreenOption('delete'); as deleteOption) {
+                <app-ui-button
+                  [label]="deleteOption.translation | translate"
+                  [title]="deleteOption.translation | translate"
+                  [iconLeft]="deleteOption.icon"
+                  [variant]="deleteOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  [disabled]="deletingSectionId() !== null"
+                  (click)="deleteSection(section)"
+                />
+              }
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="gradebook-sections__empty">
+        <app-ui-icon name="layout-panel-top" size="lg" tone="muted" aria-hidden="true" />
+        <p>{{ 'common.no-data' | translate }}</p>
+      </div>
+    }
+  </section>
+
+  @if (getScreenOption('add'); as addOption) {
+    <app-ui-drawer
+      [open]="addDrawerOpen()"
+      [title]="addOption.translation | translate"
+      [subtitle]="loadedGradebook()?.name ?? gradebook().name"
+      [busy]="addSaving()"
+      (close)="closeAddDrawer()"
+    >
+      @if (candidatesLoading()) {
+        <app-ui-selection-list
+          [items]="[]"
+          [selectedIds]="selectedCandidateIds()"
+          [loading]="true"
+          [emptyText]="'common.no-data' | translate"
+        />
+      } @else if (candidateGroups().length) {
+        <div class="gradebook-sections__candidate-groups">
+          @for (group of candidateGroups(); track group.type.id) {
+            <section class="gradebook-sections__candidate-group">
+              @if (group.type.translation; as typeTranslation) {
+                <h5>{{ typeTranslation | translate }}</h5>
+              } @else {
+                <h5>{{ group.type.name }}</h5>
+              }
+
+              <app-ui-selection-list
+                [items]="candidateItems(group)"
+                [selectedIds]="selectedCandidateIds()"
+                [disabled]="addSaving()"
+                [emptyText]="'common.no-data' | translate"
+                (selectionChange)="onCandidateSelectionChange($event)"
+              />
+            </section>
+          }
+        </div>
+      } @else {
+        <app-ui-selection-list
+          [items]="[]"
+          [selectedIds]="selectedCandidateIds()"
+          [emptyText]="'common.no-data' | translate"
+        />
+      }
+      <div class="gradebook-sections__drawer-footer" uiDrawerFooter>
+        <span>{{ selectedCandidatesCount() }} {{ 'common.selected' | translate }}</span>
+        <div class="gradebook-sections__drawer-actions">
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="danger"
+            size="sm"
+            [disabled]="addSaving()"
+            (click)="closeAddDrawer()"
+          />
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [iconLeft]="addOption.icon"
+            [variant]="addOption.color"
+            size="sm"
+            [disabled]="!selectedCandidatesCount() || candidatesLoading() || addSaving()"
+            (click)="addSections()"
+          />
+        </div>
+      </div>
+    </app-ui-drawer>
+  }
+} @else {
+  <section class="gradebook-sections__state" aria-live="polite">
+    <app-ui-icon name="layout-panel-top" size="lg" tone="muted" aria-hidden="true" />
+    <p>{{ 'general.loading' | translate }}</p>
+  </section>
+}

@@ -26,6 +26,7 @@ import { UiIconComponent } from '@shared/ui/ui-icon/ui-icon';
 import { StudyPlanAcademicsComponent } from '../study-plan-academics/study-plan-academics.component';
 import { StudyPlanEvaluationComponent } from '../study-plan-evaluation/study-plan-evaluation.component';
 import { StudyPlanOrganizationComponent } from '../study-plan-organization/study-plan-organization.component';
+import { StudyPlanReportCardsComponent } from '../study-plan-report-cards/study-plan-report-cards.component';
 
 export interface StudyPlanConfigurationItem {
   id: number;
@@ -265,6 +266,7 @@ interface AssistantEditingFieldContext {
     StudyPlanAcademicsComponent,
     StudyPlanEvaluationComponent,
     StudyPlanOrganizationComponent,
+    StudyPlanReportCardsComponent,
   ],
   templateUrl: './study-plan-configuration.component.html',
   styleUrl: './study-plan-configuration.component.scss',

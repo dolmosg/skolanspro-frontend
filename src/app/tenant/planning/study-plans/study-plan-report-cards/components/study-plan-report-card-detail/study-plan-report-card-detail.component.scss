@@ -1,0 +1,164 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.study-plan-report-card-detail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1.5rem;
+}
+
+.study-plan-report-card-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.study-plan-report-card-detail__workspace {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.5fr);
+  align-items: start;
+  min-width: 0;
+  gap: 1.5rem;
+  padding: 1.125rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-subtle);
+}
+
+.study-plan-report-card-detail__content {
+  min-width: 0;
+  width: 100%;
+}
+
+.study-plan-report-card-detail__identity {
+  min-width: 0;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    overflow-wrap: anywhere;
+    color: var(--color-text);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  p {
+    margin-top: 0.25rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+}
+
+.study-plan-report-card-detail__configuration {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.875rem;
+
+  h4 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+.study-plan-report-card-detail__children {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 17.5rem));
+  justify-content: start;
+  gap: 0.75rem;
+}
+
+.study-plan-report-card-detail__child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  gap: 0.5rem;
+  text-align: left;
+  width: 100%;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+
+  &:hover {
+    border-color: var(--color-primary-border-hover);
+    background: var(--color-primary-tint-hover);
+  }
+}
+
+.study-plan-report-card-detail__child--interactive {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-border-selected);
+    outline-offset: 1px;
+  }
+}
+
+.study-plan-report-card-detail__child--active {
+  background: var(--color-primary-tint-selected);
+  border-color: var(--color-primary-border-selected);
+}
+
+.study-plan-report-card-detail__child-main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.75rem;
+
+  > span:last-child {
+    overflow-wrap: anywhere;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+}
+
+.study-plan-report-card-detail__child-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--color-primary-border-hover);
+  border-radius: 0.5rem;
+  background: var(--color-primary-tint-hover);
+}
+
+@media (max-width: 600px) {
+  .study-plan-report-card-detail__children {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .study-plan-report-card-detail__workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 901px) {
+  .study-plan-report-card-detail__configuration h4 {
+    display: none;
+  }
+}

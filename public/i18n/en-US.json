@@ -1175,6 +1175,49 @@
 			},
 			"update": "Update Gradebook Action"
 		},
+		"gradebook-attendances": {
+			"add": "Add gradebook attendance",
+			"set-order": "Order gradebook attendance",
+			"delete": "Delete gradebook attendance",
+			"translation": {
+				"without": "Without attendance",
+				"grouped": "Grouped",
+				"interspersed": "Interspersed"
+			},
+			"update": "Edit gradebook attendance"
+		},
+		"gradebook-content-types": {
+			"add": "Add gradebook content type",
+			"delete": "Delete gradebook content type",
+			"help": {
+				"aspects": "Allows displaying academic aspects associated with subjects.",
+				"integrations": "Allows calculating or presenting academic integrations derived from study plan subjects.",
+				"rubrics": "Allows working with rubrics.",
+				"sections": "Allows composing the gradebook through sections or components.",
+				"subjects": "Allows working with subjects from the study plan."
+			},
+			"order": "Order gradebook content types",
+			"translation": {
+				"aspects": "Aspects",
+				"integrations": "Integrations",
+				"rubrics": "Rubrics",
+				"sections": "Sections",
+				"subjects": "Subjects"
+			},
+			"update": "Edit gradebook content type"
+		},
+		"gradebook_content_types": {
+			"subjects": "Subjects",
+			"subjects_help": "Academic subjects that can be included in the gradebook.",
+			"integrations": "Integrations",
+			"integrations_help": "Academic integrations defined by the study plan that can be included in the gradebook.",
+			"rubrics": "Rubrics",
+			"rubrics_help": "Rubrics that can be used as gradebook content.",
+			"sections": "Sections",
+			"sections_help": "Sections or components that can form a composite gradebook.",
+			"aspects": "Aspects",
+			"aspects_help": "Academic aspects selected within a subject that can be displayed in the gradebook."
+		},
 		"gradebook-options": {
 			"add": "New Grade Book Option",
 			"delete": "Remove Grade Book Option",
@@ -1235,15 +1278,17 @@
 			"add": "New Gradebook Type",
 			"configure-actions": "Set actions",
 			"configure-options": "Gradebook Type Options",
+			"content-types": {
+				"messages": {
+					"description": "Select the content types that this gradebook type can use.",
+					"empty": "No content types are available."
+				}
+			},
 			"delete": "Delete Gradebook Type",
 			"edit": "Edit Gradebook Type",
+			"relate-content": "Relate content",
 			"fields": {
-				"aspects": "Aspects",
-				"integrations": "Integrations",
 				"name": "Name",
-				"rubrics": "Rubrics",
-				"sections": "Sections",
-				"subjects": "Subjects",
 				"translation": "Translation"
 			},
 			"messages": {
@@ -2240,6 +2285,9 @@
 		"grade-policy-items": "Configure policy",
 		"grade-progressions": "Grade progressions",
 		"gradebook-actions": "Grade Book Actions",
+		"gradebook-attendances": "Gradebook attendance",
+		"gradebook-components": "Gradebook Components",
+		"gradebook-content-types": "Gradebook Content Types",
 		"gradebook-options": "Grade Book Options",
 		"gradebook-section-types": "Grade Book Section Types",
 		"gradebook-types": "Grade Book Types",
@@ -2308,6 +2356,12 @@
 		"study-plan-integrations": "Subject Integration",
 		"study-plan-lms": "LMS",
 		"study-plan-organizations": "Scheduling & Timetable",
+		"study-plan-report-card-aspects": "Aspects",
+		"study-plan-report-card-design": "Design",
+		"study-plan-report-card-rubrics": "Rubrics",
+		"study-plan-report-card-sections": "Sections",
+		"study-plan-report-card-settings": "Settings",
+		"study-plan-report-card-subjects": "Subjects",
 		"study-plan-report-cards": "Report Cards",
 		"study-plan-schedule-blocks": "Schedule Blocks",
 		"study-plan-schedule-segments": "Schedule Segments",
@@ -2415,6 +2469,20 @@
 		"utilities": "Utilities"
 	},
 	"planning": {
+		"gradebook-components": {
+			"add": "Add Gradebook Component",
+			"delete": "Delete Gradebook Component",
+			"update": "Update Gradebook Component",
+			"messages": {
+				"confirm-delete": "Do you want to delete the gradebook component \"{{name}}\"? This action cannot be undone."
+			},
+			"fields": {
+				"code": "Code",
+				"description": "Description",
+				"type": "Type",
+				"page-break": "Page break"
+			}
+		},
 		"study-plan-academic-assignments": {
 			"add-group": "Add Group",
 			"assign-grade": "Assign Grade",
@@ -2574,22 +2642,22 @@
 				"unassigned-comments": "{{count}} comments without assigned grades"
 			},
 			"view": {
-			"comment-types": "Comment types",
-			"assign-grades": "Assign grades",
-			"empty-comment-types": "There are no comment types configured for this study plan.",
-			"comments": "Comments",
-			"comment": "Comment",
-			"comment-count": "{{count}} comment",
+				"comment-types": "Comment types",
+				"assign-grades": "Assign grades",
+				"empty-comment-types": "There are no comment types configured for this study plan.",
+				"comments": "Comments",
+				"comment": "Comment",
+				"comment-count": "{{count}} comment",
 				"comments-count": "{{count}} comments",
-			"comments-placeholder": "Comments for this type will be shown here.",
-			"edit-comment": "Edit comment",
-			"filtered-comments-count": "{{filtered}} of {{total}} comments",
-			"grades": "Grades",
+				"comments-placeholder": "Comments for this type will be shown here.",
+				"edit-comment": "Edit comment",
+				"filtered-comments-count": "{{filtered}} of {{total}} comments",
+				"grades": "Grades",
 				"no-comments": "There are no comments registered for this type.",
-			"no-grades-assigned": "No grades assigned",
-			"no-grades-available": "No grades available.",
-			"no-results": "No comments found.",
-			"new-comment": "New comment",
+				"no-grades-assigned": "No grades assigned",
+				"no-grades-available": "No grades available.",
+				"no-results": "No comments found.",
+				"new-comment": "New comment",
 				"search-comment": "Search comments...",
 				"select-comment-type": "Select a comment type to view its comments.",
 				"title": "Study plan comments",
@@ -3093,6 +3161,106 @@
 					"title": "Group list"
 				},
 				"title": "Academic groups"
+			}
+		},
+		"study-plan-report-card-aspects": {
+			"add": "Add aspect",
+			"delete": "Delete aspect"
+		},
+      "study-plan-report-card-design": {
+			"update": "Update design"
+		},
+		"study-plan-report-card-sections": {
+			"add": "Add section",
+			"update": "Update section",
+			"delete": "Delete section",
+			"order": "Order sections",
+			"messages": {
+				"confirm-delete": "Do you want to delete the \"{{name}}\" section?"
+			}
+		},
+		"study-plan-report-card-settings": {
+			"update": "Update settings",
+			"groups": {
+				"grading": "Grading",
+				"presentation": "Results presentation",
+				"integrations": "Integrations",
+				"publication": "Publication"
+			},
+			"group-descriptions": {
+				"grading": "Defines the criteria used to calculate grades.",
+				"presentation": "Defines the additional information shown on the report card.",
+				"integrations": "Defines how integrations participate in the calculation.",
+				"publication": "Controls the availability of results for parents."
+			},
+			"fields": {
+				"minimum-grade": "Minimum grade",
+				"passing-grade": "Passing grade",
+				"decimals": "Decimals",
+				"final-decimals": "Final decimals",
+				"rounding": "Rounding",
+				"final-rounding": "Final rounding",
+				"show-grade-details": "Show grade details",
+				"show-total-row": "Show total row",
+				"show-total-column": "Show total column",
+				"null-grade-text": "Text for null grade",
+				"calculate-integrations": "Calculate integrations",
+				"expand-integrations": "Expand integrations",
+				"publish-to-parents": "Publish to parents"
+        }
+      },
+		"study-plan-report-card-design": {
+			"groups": {"general":"General","subject-header":"Subject header","title":"Title","subtitle":"Subtitle","grades":"Grades","totals":"Totals"},
+			"descriptions": {"general":"Configure the report card's general visual options.","subject-header":"Define the appearance used to identify subjects.","title":"Configure the text and colors used for the report card title.","subtitle":"Define the visual appearance of subtitles.","grades":"Configure the colors used to display grades.","totals":"Define the text, border, and alignment used for totals."},
+			"fields": {"font-size":"Font size","show-title":"Show title","legend":"Legend","name-background-color":"Name background color","subject-border-color":"Subject border color","title-text":"Title text","text-color":"Text color","background-color":"Background color","border-color":"Border color","subtitle-text-color":"Subtitle text color","subtitle-background-color":"Subtitle background color","grade-text-color":"Grade text color","grade-border-color":"Grade border color","grade-background-color":"Grade background color","total-text":"Total text","total-text-color":"Total text color","total-border-color":"Total border color","total-alignment":"Total alignment"},
+			"alignments": {"left":"Left","center":"Center","right":"Right"}
+		},
+		"study-plan-report-card-subjects": {
+			"add": "Add subject",
+			"add-subjects": "Add subjects",
+			"delete": "Delete subject",
+			"messages": {"confirm-delete":"Do you want to delete this subject? This action cannot be undone."},
+			"order": "Order subjects",
+			"subjects": "Subjects",
+			"grades": "Grades",
+			"crossovers": "Crossovers",
+			"no-subjects": "There are no subjects assigned in this context.",
+			"no-available-subjects": "There are no subjects available to add.",
+			"selected-subjects": "{{count}} selected"
+		},
+		"study-plan-report-card-rubrics": {
+			"add": "Add rubric",
+			"add-rubrics": "Add rubrics",
+			"delete": "Delete rubric",
+			"messages": {"confirm-delete":"Do you want to delete the rubric \"{{name}}\"? This action cannot be undone."},
+			"no-available-rubrics": "There are no rubrics available to add to this grade.",
+			"order": "Order rubrics",
+			"selected-rubrics": "Selected rubrics: {{count}}",
+			"grades": "Grades",
+			"rubrics": "Rubrics",
+			"no-rubrics": "There are no rubrics assigned to this grade."
+		},
+		"study-plan-report-cards": {
+			"add": "New report card",
+			"update": "Update report card",
+			"delete": "Delete report card",
+			"order": "Order report cards",
+			"information": "Information",
+			"description": "Configure the report cards for this stage.",
+			"configure": "Configure report card",
+			"configuration": "Report card configuration",
+			"fields": {
+				"name": "Name",
+				"translation": "Translation",
+				"type": "Report card type",
+				"report": "Report",
+				"academic-tutor": "Academic tutor",
+				"attendance": "Attendance",
+				"academy": "Academy",
+				"comment-language": "Comment language"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete the report card \"{{name}}\"? This action cannot be undone."
 			}
 		},
 		"study-plan-schedule-blocks": {

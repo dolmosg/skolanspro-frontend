@@ -1,0 +1,193 @@
+@if (loaded()) {
+  @if (stage(); as stage) {
+    <section class="gradebook-subjects">
+      <aside class="gradebook-subjects__navigation">
+        <header class="gradebook-subjects__navigation-header">
+          <h4>{{ 'planning.study-plan-report-card-subjects.grades' | translate }}</h4>
+        </header>
+
+        <div class="gradebook-subjects__context-list">
+          @for (grade of grades(); track grade.id) {
+            <button
+              type="button"
+              class="gradebook-subjects__context"
+              [class.gradebook-subjects__context--active]="isSelectedGrade(grade.id)"
+              [attr.aria-pressed]="isSelectedGrade(grade.id)"
+              (click)="selectGrade(grade.id)"
+            >
+              <span>{{ grade.name }}</span>
+              <app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+            </button>
+          }
+
+          @if (stage.has_crossovers) {
+            <button
+              type="button"
+              class="gradebook-subjects__context"
+              [class.gradebook-subjects__context--active]="isSelectedCrossovers()"
+              [attr.aria-pressed]="isSelectedCrossovers()"
+              (click)="selectCrossovers()"
+            >
+              <span>{{ 'planning.study-plan-report-card-subjects.crossovers' | translate }}</span>
+              <app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+            </button>
+          }
+        </div>
+      </aside>
+
+      <section class="gradebook-subjects__workspace">
+        @if (selectedContext(); as context) {
+          <header class="gradebook-subjects__workspace-header">
+            <div class="gradebook-subjects__workspace-heading">
+              <span>{{ 'planning.study-plan-report-card-subjects.subjects' | translate }}</span>
+              @if (context.type === 'crossovers') {
+                <h4>{{ 'planning.study-plan-report-card-subjects.crossovers' | translate }}</h4>
+              } @else {
+                <h4>{{ selectedGrade()?.name }}</h4>
+              }
+            </div>
+
+            @if (getScreenOption('add'); as addOption) {
+              <app-ui-button
+                [label]="addOption.translation | translate"
+                [iconLeft]="addOption.icon"
+                [variant]="addOption.color"
+                size="sm"
+                [disabled]="orderSaving() || deletingSubjectId() !== null"
+                (click)="openAddPanel()"
+              />
+            }
+          </header>
+
+          @if (visibleSubjects().length > 0) {
+            <div
+              class="gradebook-subjects__subject-list"
+              cdkDropList
+              cdkDropListOrientation="mixed"
+              [cdkDropListData]="visibleSubjects()"
+              [cdkDropListDisabled]="
+                !getScreenOption('order') ||
+                addSaving() ||
+                orderSaving() ||
+                deletingSubjectId() !== null
+              "
+              (cdkDropListDropped)="onSubjectsDropped($event)"
+            >
+              @for (item of visibleSubjects(); track item.id) {
+                <article
+                  class="gradebook-subjects__subject"
+                  cdkDrag
+                  [cdkDragDisabled]="
+                    !getScreenOption('order') ||
+                    addSaving() ||
+                    orderSaving() ||
+                    deletingSubjectId() !== null
+                  "
+                >
+                  <div class="gradebook-subjects__subject-main">
+                    @if (getScreenOption('order'); as orderOption) {
+                      <app-ui-icon
+                        class="gradebook-subjects__subject-order-handle"
+                        [name]="orderOption.icon"
+                        [title]="orderOption.translation | translate"
+                        size="sm"
+                        cdkDragHandle
+                      />
+                    }
+
+                    <span class="gradebook-subjects__subject-order">{{ item.order }}</span>
+
+                    @if (item.subject.code) {
+                      <span class="gradebook-subjects__subject-code">{{ item.subject.code }}</span>
+                    }
+
+                    <strong>{{ item.subject.name }}</strong>
+                  </div>
+
+                  <div class="gradebook-subjects__subject-actions">
+                    @if (getScreenOption('delete'); as deleteOption) {
+                      <app-ui-button
+                        [label]="deleteOption.translation | translate"
+                        [title]="deleteOption.translation | translate"
+                        [iconLeft]="deleteOption.icon"
+                        [variant]="deleteOption.color"
+                        [iconOnly]="true"
+                        size="sm"
+                        [disabled]="deletingSubjectId() !== null"
+                        (click)="deleteSubject(item)"
+                      />
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          } @else {
+            <div class="gradebook-subjects__empty">
+              <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+              <p>{{ 'planning.study-plan-report-card-subjects.no-subjects' | translate }}</p>
+            </div>
+          }
+        } @else {
+          <div class="gradebook-subjects__empty">
+            <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+            <p>{{ 'common.no-data' | translate }}</p>
+          </div>
+        }
+      </section>
+    </section>
+
+    <app-ui-drawer
+      [open]="addPanelOpen()"
+      [title]="'planning.study-plan-report-card-subjects.add-subjects' | translate"
+      [subtitle]="
+        selectedContext()?.type === 'crossovers'
+          ? ('planning.study-plan-report-card-subjects.crossovers' | translate)
+          : (selectedGrade()?.name ?? null)
+      "
+      [busy]="addSaving()"
+      (close)="closeAddPanel()"
+    >
+      <app-ui-selection-list
+        [items]="candidateItems()"
+        [selectedIds]="selectedCandidateIds()"
+        [disabled]="addSaving()"
+        [loading]="candidatesLoading()"
+        [emptyText]="'planning.study-plan-report-card-subjects.no-available-subjects' | translate"
+        (selectionChange)="onCandidateSelectionChange($event)"
+      />
+      <div class="gradebook-subjects__add-panel-footer" uiDrawerFooter>
+        <span>
+          {{
+            'planning.study-plan-report-card-subjects.selected-subjects'
+              | translate: { count: selectedCandidatesCount() }
+          }}
+        </span>
+
+        <div>
+          <app-ui-button
+            [label]="'common.cancel' | translate"
+            variant="danger"
+            size="sm"
+            [disabled]="addSaving()"
+            (click)="closeAddPanel()"
+          />
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              [variant]="addOption.color"
+              size="sm"
+              [disabled]="selectedCandidatesCount() === 0 || addSaving()"
+              (click)="addSubjects()"
+            />
+          }
+        </div>
+      </div>
+    </app-ui-drawer>
+  } @else {
+    <section class="gradebook-subjects__empty gradebook-subjects__empty--standalone">
+      <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+      <p>{{ 'common.no-data' | translate }}</p>
+    </section>
+  }
+}

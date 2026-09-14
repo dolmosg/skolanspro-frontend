@@ -13,7 +13,7 @@ import {
   ApiResponse,
   ApiSuccessResponse,
 } from '../interfaces/api-response.interface';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, type InterpolationParameters } from '@ngx-translate/core';
 import { ApiConfigService } from '@shared/services/api-config-service';
 import { SiteStateService } from '../services/site-state';
 import { NameCasingMode } from '../interfaces/central.interfaces';
@@ -326,17 +326,6 @@ export abstract class SkolansBaseComponent implements OnDestroy {
     this.toast.success(this.translate.instant(response.message));
   }
 
-  /**
-   * Opens the standardized delete confirmation modal.
-   *
-   * Concrete CRUD screens provide only the title and message translation keys.
-   * The visual structure, action labels, size, and behavior remain consistent
-   * across catalog screens.
-   *
-   * @param titleKey Translation key used as the modal title.
-   * @param messageKey Translation key used as the confirmation message.
-   * @returns True only when the user confirms the destructive action.
-   */
   protected ignoreHandledRequestError(): void {
     /**
      * HTTP errors are already normalized and notified by ApiService.
@@ -344,7 +333,24 @@ export abstract class SkolansBaseComponent implements OnDestroy {
      */
   }
 
-  protected async confirmDelete(titleKey: string, messageKey: string): Promise<boolean> {
+  /**
+   * Opens the standardized delete confirmation modal.
+   *
+   * Concrete CRUD screens provide translation keys and may interpolate the
+   * confirmation message with generic ngx-translate parameters. The visual
+   * structure, action labels, size, and behavior remain consistent across
+   * catalog screens.
+   *
+   * @param titleKey Translation key used as the modal title.
+   * @param messageKey Translation key used as the confirmation message.
+   * @param messageParams Optional interpolation values for the confirmation message.
+   * @returns True only when the user confirms the destructive action.
+   */
+  protected async confirmDelete(
+    titleKey: string,
+    messageKey: string,
+    messageParams?: InterpolationParameters,
+  ): Promise<boolean> {
     const confirmed = await this.modal.open<
       {
         message: string;
@@ -357,7 +363,7 @@ export abstract class SkolansBaseComponent implements OnDestroy {
       component: SklConfirmModal,
       title: this.translate.instant(titleKey),
       data: {
-        message: this.translate.instant(messageKey),
+        message: this.translate.instant(messageKey, messageParams),
         confirmLabel: this.translate.instant('common.delete'),
         cancelLabel: this.translate.instant('common.cancel'),
         type: 'danger',

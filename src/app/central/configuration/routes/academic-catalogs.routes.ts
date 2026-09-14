@@ -262,6 +262,22 @@ export const ACADEMIC_CATALOGS_ROUTES: Routes = [
           ),
       },
       {
+        path: 'gradebook-attendances',
+        data: {
+          breadcrumb: 'controllers.gradebook-attendances',
+          title: 'controllers.gradebook-attendances',
+          collectionKey: 'gradebook-attendances',
+          itemKey: 'gradebook-attendance',
+          api: {
+            route: 'configuration/gradebook-attendances',
+          },
+        },
+        loadComponent: () =>
+          import('@shared/components/catalog-crud/catalog-crud.component').then(
+            (m) => m.CatalogCrudComponent,
+          ),
+      },
+      {
         path: 'gradebook-types',
         data: {
           breadcrumb: 'controllers.gradebook-types',
@@ -286,6 +302,22 @@ export const ACADEMIC_CATALOGS_ROUTES: Routes = [
           itemKey: 'gradebook-option',
           api: {
             route: 'configuration/gradebook-options',
+          },
+        },
+        loadComponent: () =>
+          import('@shared/components/catalog-crud/catalog-crud.component').then(
+            (m) => m.CatalogCrudComponent,
+          ),
+      },
+      {
+        path: 'gradebook-content-types',
+        data: {
+          breadcrumb: 'controllers.gradebook-content-types',
+          title: 'controllers.gradebook-content-types',
+          collectionKey: 'gradebook-content-types',
+          itemKey: 'gradebook-content-type',
+          api: {
+            route: 'configuration/gradebook-content-types',
           },
         },
         loadComponent: () =>

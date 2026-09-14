@@ -1,0 +1,124 @@
+<section class="study-plan-report-card-detail">
+  <header class="study-plan-report-card-detail__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="back.emit()"
+    />
+  </header>
+
+  <div class="study-plan-report-card-detail__workspace">
+    <div class="study-plan-report-card-detail__identity">
+      <h3>{{ gradebook().name }}</h3>
+
+      @if (gradebook().gradebook_type; as type) {
+        <p>{{ type.translation | translate }}</p>
+      }
+    </div>
+
+    <section class="study-plan-report-card-detail__configuration">
+      <h4>{{ 'planning.study-plan-report-cards.configuration' | translate }}</h4>
+
+      <div class="study-plan-report-card-detail__children">
+        @for (child of effectiveChildren(); track child.id) {
+          @if (isSettingsChild(child) || isSubjectsChild(child)) {
+            <button
+              type="button"
+              class="study-plan-report-card-detail__child study-plan-report-card-detail__child--interactive"
+              [class.study-plan-report-card-detail__child--active]="selectedChild()?.id === child.id"
+              (click)="selectChild(child)"
+            >
+              <span class="study-plan-report-card-detail__child-main">
+                @if (child.icon; as icon) {
+                  <span class="study-plan-report-card-detail__child-icon" aria-hidden="true">
+                    <app-ui-icon [name]="icon" size="md" tone="primary" />
+                  </span>
+                }
+
+                <span>{{ child.translation | translate }}</span>
+              </span>
+
+              <app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+            </button>
+          } @else {
+            <article class="study-plan-report-card-detail__child">
+              <div class="study-plan-report-card-detail__child-main">
+                @if (child.icon; as icon) {
+                  <span class="study-plan-report-card-detail__child-icon" aria-hidden="true">
+                    <app-ui-icon [name]="icon" size="md" tone="primary" />
+                  </span>
+                }
+
+                <span>{{ child.translation | translate }}</span>
+              </div>
+
+              <app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+            </article>
+          }
+        } @empty {
+          <p>{{ 'common.no-data' | translate }}</p>
+        }
+      </div>
+    </section>
+  </div>
+
+  @if (selectedSettings(); as selectedSettings) {
+    @if (studyPlanId(); as studyPlanId) {
+      @if (selectedSettings.route; as route) {
+        <section class="study-plan-report-card-detail__content">
+          <app-gradebook-settings
+            [gradebook]="gradebook()"
+            [studyPlanId]="studyPlanId"
+            [route]="route"
+            (cancel)="closeSelectedChild()"
+          />
+        </section>
+      }
+    }
+  }
+
+  @if (selectedDesign(); as selectedDesign) {
+    @if (studyPlanId(); as studyPlanId) {
+      @if (selectedDesign.route; as route) {
+        <section class="study-plan-report-card-detail__content">
+          <app-gradebook-design [gradebook]="gradebook()" [studyPlanId]="studyPlanId" [route]="route" (cancel)="closeSelectedChild()" />
+        </section>
+      }
+    }
+  }
+
+  @if (selectedSubjects(); as selectedSubjects) {
+    @if (studyPlanId(); as studyPlanId) {
+      @if (selectedSubjects.route; as route) {
+        <section class="study-plan-report-card-detail__content">
+          <app-gradebook-subjects [gradebook]="gradebook()" [studyPlanId]="studyPlanId" [route]="route" />
+        </section>
+      }
+    }
+  }
+  @if (selectedAspects(); as selectedAspects) {
+    @if (studyPlanId(); as studyPlanId) {
+      @if (selectedAspects.route; as route) {
+        <section class="study-plan-report-card-detail__content">
+          <app-gradebook-aspects [gradebook]="gradebook()" [studyPlanId]="studyPlanId" [route]="route" />
+        </section>
+      }
+    }
+  }
+  @if (selectedRubrics(); as selectedRubrics) {
+    @if (studyPlanId(); as studyPlanId) {
+      @if (selectedRubrics.route; as route) { <section class="study-plan-report-card-detail__content"><app-gradebook-rubrics [gradebook]="gradebook()" [studyPlanId]="studyPlanId" [route]="route" /></section> }
+    }
+  }
+
+  @if (selectedSections(); as selectedSections) {
+    @if (selectedSections.route; as route) {
+      <section class="study-plan-report-card-detail__content">
+        <app-gradebook-sections [gradebook]="gradebook()" [route]="route" />
+      </section>
+    }
+  }
+</section>

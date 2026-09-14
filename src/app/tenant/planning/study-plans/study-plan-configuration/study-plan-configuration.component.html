@@ -505,7 +505,10 @@
           }
 
           @case ('study-plan-report-cards') {
-            <p>Boletas</p>
+            <app-study-plan-report-cards
+              [studyPlanId]="studyPlan()?.id ?? null"
+              [route]="childRoute('study-plan-report-cards')"
+            />
           }
 
           @default {

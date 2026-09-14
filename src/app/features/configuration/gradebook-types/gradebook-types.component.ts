@@ -30,6 +30,13 @@ import {
   IGradebookTypeOption,
 } from '../gradebook-type-options-modal/gradebook-type-options-modal.component';
 
+import {
+  GradebookTypeContentTypesModalComponent,
+  GradebookTypeContentTypesModalData,
+  GradebookTypeContentTypesModalResult,
+  IGradebookContentType,
+} from '../gradebook-type-content-types-modal/gradebook-type-content-types-modal.component';
+
 export interface IGradebookTypeRelation {
   id: number;
   name: string;
@@ -46,15 +53,11 @@ export interface IGradebookType {
   id: number;
   name: string;
   translation: string | null;
-  subjects: boolean;
-  integrations: boolean;
-  aspects: boolean;
-  sections: boolean;
-  rubrics: boolean;
   active: boolean;
   order: number;
   options: IGradebookTypeRelation[];
   actions: IGradebookTypeRelation[];
+  contentTypes: IGradebookTypeRelation[];
 }
 
 interface GradebookTypesIndexData {
@@ -74,6 +77,13 @@ interface GradebookTypeActionsData {
   'gradebook-type': IGradebookType;
   'available-gradebook-actions': IGradebookAction[];
   'gradebook-type-actions': IGradebookTypeAction[];
+  options?: ScreenOptionItem[];
+}
+
+interface GradebookTypeContentTypesData {
+  'gradebook-type': IGradebookType;
+  'available-gradebook-content-types': IGradebookContentType[];
+  'gradebook-type-content-types': IGradebookContentType[];
   options?: ScreenOptionItem[];
 }
 
@@ -131,46 +141,6 @@ export class GradebookTypesComponent extends BaseCrud<IGradebookType> implements
 
           return this.translate.instant(params.value);
         },
-      },
-      {
-        field: 'subjects',
-        headerValueGetter: () =>
-          this.translate.instant('configuration.gradebook-types.fields.subjects'),
-        width: 120,
-        sortable: !ordering,
-        filter: false,
-      },
-      {
-        field: 'integrations',
-        headerValueGetter: () =>
-          this.translate.instant('configuration.gradebook-types.fields.integrations'),
-        width: 130,
-        sortable: !ordering,
-        filter: false,
-      },
-      {
-        field: 'aspects',
-        headerValueGetter: () =>
-          this.translate.instant('configuration.gradebook-types.fields.aspects'),
-        width: 120,
-        sortable: !ordering,
-        filter: false,
-      },
-      {
-        field: 'sections',
-        headerValueGetter: () =>
-          this.translate.instant('configuration.gradebook-types.fields.sections'),
-        width: 120,
-        sortable: !ordering,
-        filter: false,
-      },
-      {
-        field: 'rubrics',
-        headerValueGetter: () =>
-          this.translate.instant('configuration.gradebook-types.fields.rubrics'),
-        width: 120,
-        sortable: !ordering,
-        filter: false,
       },
       {
         field: 'active',
@@ -497,4 +467,54 @@ export class GradebookTypesComponent extends BaseCrud<IGradebookType> implements
     },
   );
 }
+
+  protected onConfigureContent(): void {
+    const item = this.selectedGradebookTypes()[0];
+
+    if (!item) {
+      return;
+    }
+
+    const route = this.apiRoute();
+
+    if (!route) {
+      return;
+    }
+
+    this.executeSilentRequest<GradebookTypeContentTypesData>(
+      this.api.get(`${route}/content-types/${item.id}`),
+      async (res) => {
+        const result = await this.modal.open<
+          GradebookTypeContentTypesModalData,
+          GradebookTypeContentTypesModalResult
+        >({
+          component: GradebookTypeContentTypesModalComponent,
+          data: {
+            type: res.data['gradebook-type'],
+            availableContentTypes: res.data['available-gradebook-content-types'] ?? [],
+            selectedContentTypes: res.data['gradebook-type-content-types'] ?? [],
+          },
+          title: this.translate.instant('configuration.gradebook-types.relate-content'),
+          description: this.translate.instant(
+            'configuration.gradebook-types.content-types.messages.description',
+          ),
+          size: 'md',
+          closeOnBackdrop: true,
+          closeOnEscape: true,
+          showCloseButton: true,
+        });
+
+        if (!result?.saved || result.ids === undefined) {
+          return;
+        }
+
+        this.executeMutationRequest<GradebookTypeContentTypesData>(
+          this.api.put(`${route}/content-types/${item.id}`, { ids: result.ids }),
+          () => {
+            this.reloadGradebookTypes();
+          },
+        );
+      },
+    );
+  }
 }

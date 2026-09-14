@@ -6,6 +6,7 @@
   [searchable]="searchable()"
   [clearable]="clearable()"
   [disabled]="disabled()"
+  [searchFn]="translateLabel() ? searchTranslatedLabel : undefined"
   [placeholder]="resolvedPlaceholder() | translate"
   appendTo="body"
 >

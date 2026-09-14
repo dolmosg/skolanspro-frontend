@@ -1,0 +1,26 @@
+@if (loading()) {
+  <div class="ui-selection-list__state">
+    <span class="ui-selection-list__spinner"></span>
+  </div>
+} @else if (items().length) {
+  <div class="ui-selection-list">
+    @for (item of items(); track item.id) {
+      <label [class.ui-selection-list__item--without-code]="!item.code"
+        ><input
+          type="checkbox"
+          [checked]="selectedIds().has(item.id)"
+          [disabled]="disabled()"
+          (change)="change(item.id, $event)"
+        />
+        @if (item.code) {
+          <span>{{ item.code }}</span>
+        }
+        <strong>{{ item.name }}</strong></label
+      >
+    }
+  </div>
+} @else {
+  <div class="ui-selection-list__state">
+    <p>{{ emptyText() }}</p>
+  </div>
+}

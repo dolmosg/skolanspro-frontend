@@ -6,11 +6,14 @@ import type {
   IAspectMode,
   IAttendanceCalculation,
   IAttendanceType,
+  IAcademicTutor,
   IBlockType,
   ICommentType,
   IDescriptiveSheetType,
   IGender,
   IGrade,
+  IGradebookAttendance,
+  IGradebookType,
   IGradePolicy,
   IGradingScale,
   IGroupType,
@@ -343,6 +346,65 @@ export interface IStudyPlanStage {
   subjects?: IStudyPlanStageSubject[];
   integrations?: ISubjectIntegration[];
   groups?: IStudyPlanStageGroup[];
+  gradebooks?: IGradebook[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\Gradebooks\Gradebook
+ */
+export interface IGradebook {
+  id: number;
+  name: string;
+  translation: string | null;
+  order: number;
+  stage_id: number;
+  gradebook_type_id: number;
+  gradebook_report_id: number;
+  academic_tutor_id: number | null;
+  gradebook_attendance_id: number;
+  academy_id: number | null;
+  comment_language_id: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  stage?: IStudyPlanStage | null;
+  gradebook_type?: IGradebookType | null;
+  report?: IGradebookReport | null;
+  academic_tutor?: IAcademicTutor | null;
+  gradebook_attendance?: IGradebookAttendance | null;
+  academy?: IAcademy | null;
+  comment_language?: ILanguage | null;
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\Gradebooks\GradebookReport
+ */
+export interface IGradebookReport {
+  id: number;
+  description: string;
+  helper: string | null;
+  direction: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  gradebooks?: IGradebook[];
+}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Tenant\Planning\Gradebooks\Academy
+ */
+export interface IAcademy {
+  id: number;
+  name: string;
+  section_id: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+  section?: ISection | null;
+  gradebooks?: IGradebook[];
 }
 
 /**

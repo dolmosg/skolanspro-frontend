@@ -366,11 +366,19 @@ export interface IGradebookOption {
 export interface IGradebookSectionType {
   active: boolean;
   configurable: boolean;
+  deletable: boolean;
   id: number;
   name: string | null;
   order: number;
   translation: string;
 }
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Central\Configuration\AcademicCatalogs\GradebookContentType
+ */
+export interface IGradebookContentType extends ICatalogModel {}
 
 /**
  * Represents the JSON contract of:
@@ -386,11 +394,26 @@ export interface IGradebookType {
   name: string | null;
   options?: IGradebookOption[];
   order: number;
+  content_types?: IGradebookContentType[];
   rubrics: boolean;
   sections: boolean;
   subjects: boolean;
   translation: string;
 }
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Central\Configuration\AcademicCatalogs\AcademicTutor
+ */
+export interface IAcademicTutor extends ICatalogModel {}
+
+/**
+ * Represents the JSON contract of:
+ *
+ * App\Models\Central\Configuration\AcademicCatalogs\GradebookAttendance
+ */
+export interface IGradebookAttendance extends ICatalogModel {}
 
 /**
  * Represents the JSON contract of:

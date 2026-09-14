@@ -1,0 +1,230 @@
+<section class="gradebook-components">
+  <div class="gradebook-components__filters">
+    <label>
+      <span>{{ 'planning.study-plans.fields.section' | translate }}</span>
+      <app-sk-select
+        [items]="sections()"
+        bindLabel="description"
+        bindValue="id"
+        [placeholder]="'planning.study-plans.fields.section' | translate"
+        [control]="sectionControl"
+        [disabled]="editingComponentId() !== null || creatingComponent()"
+      />
+    </label>
+
+    <label>
+      <span>{{ 'planning.study-plans.fields.level' | translate }}</span>
+      <app-sk-select
+        [items]="levels()"
+        bindLabel="description"
+        bindValue="id"
+        [placeholder]="'planning.study-plans.fields.level' | translate"
+        [control]="levelControl"
+        [disabled]="editingComponentId() !== null || creatingComponent()"
+      />
+    </label>
+  </div>
+
+  @if (
+    editingComponentId() === null &&
+    !creatingComponent() &&
+    selectedSectionId() !== null &&
+    selectedLevelId() !== null
+  ) {
+    @if (getScreenOption('add'); as addOption) {
+      <div class="gradebook-components__toolbar">
+        <app-ui-button
+          [label]="addOption.translation | translate"
+          [variant]="addOption.color"
+          [iconLeft]="addOption.icon"
+          size="sm"
+          (click)="addComponent()"
+        />
+      </div>
+    }
+  }
+
+  @if (creatingComponent() || gradebookComponents().length > 0) {
+    <div class="gradebook-components__list">
+      @if (creatingComponent()) {
+        <article class="gradebook-components__item gradebook-components__item--editing">
+          <form class="gradebook-components__editor" (submit)="$event.preventDefault()">
+            <label class="gradebook-components__editor-field">
+              <span>{{ 'planning.gradebook-components.fields.code' | translate }}</span>
+              <input type="text" [formControl]="editorCodeControl" />
+            </label>
+
+            <label class="gradebook-components__editor-field">
+              <span>{{ 'planning.gradebook-components.fields.description' | translate }}</span>
+              <input type="text" [formControl]="editorDescriptionControl" />
+            </label>
+
+            <label class="gradebook-components__editor-field">
+              <span>{{ 'planning.gradebook-components.fields.type' | translate }}</span>
+              <app-sk-select
+                [items]="sectionGradebookTypes()"
+                bindLabel="translation"
+                bindValue="id"
+                [translateLabel]="true"
+                [clearable]="false"
+                [control]="editorSectionTypeControl"
+              />
+            </label>
+
+            <label class="gradebook-components__editor-field">
+              <span>{{ 'planning.gradebook-components.fields.page-break' | translate }}</span>
+              <app-sk-select
+                [items]="pageBreakOptions"
+                bindLabel="translation"
+                bindValue="value"
+                [translateLabel]="true"
+                [clearable]="false"
+                [control]="editorPageBreakControl"
+              />
+            </label>
+
+            <div class="gradebook-components__editor-actions">
+              <app-ui-button
+                [label]="'common.save' | translate"
+                iconLeft="save"
+                variant="primary"
+                [iconOnly]="true"
+                size="sm"
+                [disabled]="!canCreateComponent()"
+                (click)="saveNewComponent()"
+              />
+              <app-ui-button
+                [label]="'common.cancel' | translate"
+                iconLeft="cancel"
+                variant="danger"
+                [iconOnly]="true"
+                size="sm"
+                type="button"
+                [disabled]="creatingComponentRequest()"
+                (click)="cancelComponentEdit()"
+              />
+            </div>
+          </form>
+        </article>
+      }
+
+      @for (component of gradebookComponents(); track component.id) {
+        <article
+          class="gradebook-components__item"
+          [class.gradebook-components__item--editing]="editingComponentId() === component.id"
+        >
+          @if (editingComponentId() === component.id) {
+            <form
+              class="gradebook-components__editor"
+              [class.gradebook-components__editor--protected]="component.section_type?.deletable === false"
+              (submit)="$event.preventDefault()"
+            >
+              <label class="gradebook-components__editor-field">
+                <span>{{ 'planning.gradebook-components.fields.code' | translate }}</span>
+                <input type="text" [formControl]="editorCodeControl" />
+              </label>
+
+              <label class="gradebook-components__editor-field">
+                <span>{{ 'planning.gradebook-components.fields.description' | translate }}</span>
+                <input type="text" [formControl]="editorDescriptionControl" />
+              </label>
+
+              @if (component.section_type?.deletable !== false) {
+                <label class="gradebook-components__editor-field">
+                  <span>{{ 'planning.gradebook-components.fields.type' | translate }}</span>
+                  <app-sk-select
+                    [items]="sectionGradebookTypes()"
+                    bindLabel="translation"
+                    bindValue="id"
+                    [translateLabel]="true"
+                    [clearable]="false"
+                    [control]="editorSectionTypeControl"
+                  />
+                </label>
+              }
+
+              <label class="gradebook-components__editor-field">
+                <span>{{ 'planning.gradebook-components.fields.page-break' | translate }}</span>
+                <app-sk-select
+                  [items]="pageBreakOptions"
+                  bindLabel="translation"
+                  bindValue="value"
+                  [translateLabel]="true"
+                  [clearable]="false"
+                  [control]="editorPageBreakControl"
+                />
+              </label>
+
+              <div class="gradebook-components__editor-actions">
+                <app-ui-button
+                  [label]="'common.save' | translate"
+                  iconLeft="save"
+                  variant="primary"
+                  [iconOnly]="true"
+                  size="sm"
+                  [disabled]="!canUpdateComponent()"
+                  (click)="saveComponentEdit()"
+                />
+                <app-ui-button
+                  [label]="'common.cancel' | translate"
+                  iconLeft="cancel"
+                  variant="danger"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="updatingComponentRequest()"
+                  (click)="cancelComponentEdit()"
+                />
+              </div>
+            </form>
+          } @else {
+            <div class="gradebook-components__item-main">
+              <div class="gradebook-components__identity">
+                <strong>{{ component.description ?? component.code }}</strong>
+
+                @if (component.description) {
+                  <span>{{ component.code }}</span>
+                }
+              </div>
+
+              @if (component.section_type?.translation; as sectionTypeTranslation) {
+                <span class="gradebook-components__type">{{ sectionTypeTranslation | translate }}</span>
+              }
+            </div>
+
+            @if (editingComponentId() === null && !creatingComponent()) {
+              <div class="gradebook-components__actions">
+                @if (getScreenOption('update'); as updateOption) {
+                  <app-ui-button
+                    [label]="updateOption.translation | translate"
+                    [title]="updateOption.translation | translate"
+                    [iconLeft]="updateOption.icon"
+                    [variant]="updateOption.color"
+                    [iconOnly]="true"
+                    size="sm"
+                    (click)="editComponent(component)"
+                  />
+                }
+
+                @if (component.section_type?.deletable) {
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      [label]="deleteOption.translation | translate"
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="deleteOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      [disabled]="deletingComponentId() !== null"
+                      (click)="deleteComponent(component)"
+                    />
+                  }
+                }
+              </div>
+            }
+          }
+        </article>
+      }
+    </div>
+  }
+</section>

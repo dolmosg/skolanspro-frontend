@@ -1,0 +1,101 @@
+@if (loaded()) {
+  <section class="gradebook-aspects">
+    <aside class="gradebook-aspects__navigation">
+      @for (grade of grades(); track grade.id) {
+        <section class="gradebook-aspects__group">
+          <h4>{{ grade.name }}</h4>
+
+          @if (grade.subjects.length) {
+            <div class="gradebook-aspects__subject-list">
+              @for (item of grade.subjects; track item.id) {
+                <button
+                  type="button"
+                  class="gradebook-aspects__subject"
+                  [class.gradebook-aspects__subject--active]="isSelectedSubject(item.id)"
+                  [attr.aria-pressed]="isSelectedSubject(item.id)"
+                  (click)="selectSubject(item.id)"
+                >
+                  @if (item.subject.code) {
+                    <span class="gradebook-aspects__subject-code">{{ item.subject.code }}</span>
+                  }
+                  <span class="gradebook-aspects__subject-name">{{ item.subject.name }}</span>
+                </button>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      @if (stage()?.has_crossovers && crossovers().length) {
+        <section class="gradebook-aspects__group gradebook-aspects__group--crossovers">
+          <h4>{{ 'planning.study-plan-report-card-subjects.crossovers' | translate }}</h4>
+
+          <div class="gradebook-aspects__subject-list">
+            @for (item of crossovers(); track item.id) {
+              <button
+                type="button"
+                class="gradebook-aspects__subject"
+                [class.gradebook-aspects__subject--active]="isSelectedSubject(item.id)"
+                [attr.aria-pressed]="isSelectedSubject(item.id)"
+                (click)="selectSubject(item.id)"
+              >
+                @if (item.subject.code) {
+                  <span class="gradebook-aspects__subject-code">{{ item.subject.code }}</span>
+                }
+                <span class="gradebook-aspects__subject-name">{{ item.subject.name }}</span>
+              </button>
+            }
+          </div>
+        </section>
+      }
+    </aside>
+
+    <section class="gradebook-aspects__workspace">
+      @if (selectedSubject(); as selectedSubject) {
+        <header class="gradebook-aspects__subject-identity">
+          @if (selectedSubject.subject.code) {
+            <span>{{ selectedSubject.subject.code }}</span>
+          }
+          <h4>{{ selectedSubject.subject.name }}</h4>
+        </header>
+
+        @if (aspectsLoading()) {
+          <div class="gradebook-aspects__state" aria-live="polite">
+            <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+            <p>{{ 'general.loading' | translate }}</p>
+          </div>
+        } @else if (aspects().length) {
+          <div class="gradebook-aspects__aspect-list">
+            @for (aspect of aspects(); track aspect.id) {
+              <label class="gradebook-aspects__aspect">
+                <input
+                  type="checkbox"
+                  [checked]="aspect.selected"
+                  [disabled]="isAspectUpdating(aspect.id)"
+                  [attr.aria-busy]="isAspectUpdating(aspect.id)"
+                  (change)="toggleAspect(aspect)"
+                />
+                <span>{{ aspect.name }}</span>
+              </label>
+            }
+          </div>
+        } @else {
+          <div class="gradebook-aspects__empty">
+            <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+            <p>{{ 'common.no-data' | translate }}</p>
+          </div>
+        }
+      } @else {
+        <div class="gradebook-aspects__empty">
+          <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+          <p>{{ 'common.no-data' | translate }}</p>
+        </div>
+      }
+    </section>
+  </section>
+} @else {
+  <section class="gradebook-aspects__state" aria-live="polite">
+    <app-ui-icon name="book-open" size="lg" tone="muted" aria-hidden="true" />
+    <p>{{ 'general.loading' | translate }}</p>
+  </section>
+}

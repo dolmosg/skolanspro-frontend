@@ -1,0 +1,162 @@
+@if (loaded()) {
+  <section class="gradebook-rubrics">
+    <aside class="gradebook-rubrics__navigation">
+      <header>
+        <h4>{{ 'planning.study-plan-report-card-rubrics.grades' | translate }}</h4>
+      </header>
+      <div class="gradebook-rubrics__context-list">
+        @for (grade of grades(); track grade.id) {
+          <button
+            type="button"
+            class="gradebook-rubrics__context"
+            [class.gradebook-rubrics__context--active]="isSelectedGrade(grade.id)"
+            [attr.aria-pressed]="isSelectedGrade(grade.id)"
+            (click)="selectGrade(grade.id)"
+          >
+            <span>{{ grade.name }}</span
+            ><app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+          </button>
+        }
+      </div>
+    </aside>
+    <section class="gradebook-rubrics__workspace">
+      @if (selectedGrade(); as selectedGrade) {
+        <header class="gradebook-rubrics__workspace-header">
+          <div class="gradebook-rubrics__workspace-heading">
+            <span>{{ 'planning.study-plan-report-card-rubrics.rubrics' | translate }}</span>
+            <h4>{{ selectedGrade.name }}</h4>
+          </div>
+          @if (getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              [variant]="addOption.color"
+              size="sm"
+              [disabled]="orderSaving() || deletingRubricId() !== null"
+              (click)="openAddPanel()"
+            />
+          }
+        </header>
+        @if (visibleRubrics().length) {
+          <div
+            class="gradebook-rubrics__list"
+            cdkDropList
+            cdkDropListOrientation="mixed"
+            [cdkDropListData]="visibleRubrics()"
+            [cdkDropListDisabled]="
+              !getScreenOption('order') ||
+              addPanelOpen() ||
+              addSaving() ||
+              orderSaving() ||
+              deletingRubricId() !== null
+            "
+            (cdkDropListDropped)="onRubricsDropped($event)"
+          >
+            @for (item of visibleRubrics(); track item.id) {
+              <article
+                class="gradebook-rubrics__rubric"
+                cdkDrag
+                [cdkDragDisabled]="
+                  !getScreenOption('order') ||
+                  addPanelOpen() ||
+                  addSaving() ||
+                  orderSaving() ||
+                  deletingRubricId() !== null
+                "
+              >
+                <div class="gradebook-rubrics__rubric-main">
+                  @if (getScreenOption('order'); as orderOption) {
+                    <app-ui-icon
+                      class="gradebook-rubrics__rubric-order-handle"
+                      [name]="orderOption.icon"
+                      [title]="orderOption.translation | translate"
+                      size="sm"
+                      cdkDragHandle
+                    />
+                  }
+
+                  <span class="gradebook-rubrics__rubric-order">{{ item.order }}</span>
+                  <div class="gradebook-rubrics__rubric-content">
+                    <strong>{{ item.rubric.name }}</strong>
+                    @if (item.rubric.qualifier) {
+                      <small>{{ item.rubric.qualifier }}</small>
+                    }
+                    @if (item.rubric.description) {
+                      <p>{{ item.rubric.description }}</p>
+                    }
+                  </div>
+                </div>
+
+                <div class="gradebook-rubrics__rubric-actions">
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      [label]="deleteOption.translation | translate"
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="deleteOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      [disabled]="deletingRubricId() !== null"
+                      (click)="deleteRubric(item)"
+                    />
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="gradebook-rubrics__empty">
+            <app-ui-icon name="book-open" size="lg" tone="muted" />
+            <p>{{ 'planning.study-plan-report-card-rubrics.no-rubrics' | translate }}</p>
+          </div>
+        }
+      } @else {
+        <div class="gradebook-rubrics__empty">
+          <app-ui-icon name="book-open" size="lg" tone="muted" />
+          <p>{{ 'common.no-data' | translate }}</p>
+        </div>
+      }
+    </section>
+  </section>
+  <app-ui-drawer
+    [open]="addPanelOpen()"
+    [title]="'planning.study-plan-report-card-rubrics.add-rubrics' | translate"
+    [subtitle]="selectedGrade()?.name ?? null"
+    [busy]="addSaving()"
+    (close)="closeAddPanel()"
+  >
+    <app-ui-selection-list
+      [items]="candidateItems()"
+      [selectedIds]="selectedCandidateIds()"
+      [disabled]="addSaving()"
+      [loading]="candidatesLoading()"
+      [emptyText]="'planning.study-plan-report-card-rubrics.no-available-rubrics' | translate"
+      (selectionChange)="onCandidateSelectionChange($event)"
+    />
+    <div uiDrawerFooter class="gradebook-rubrics__drawer-footer">
+      <span>{{
+        'planning.study-plan-report-card-rubrics.selected-rubrics'
+          | translate: { count: selectedCandidatesCount() }
+      }}</span>
+      <div>
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          variant="danger"
+          size="sm"
+          [disabled]="addSaving()"
+          (click)="closeAddPanel()"
+        />
+        @if (getScreenOption('add'); as addOption) {
+          <app-ui-button
+            [label]="addOption.translation | translate"
+            [iconLeft]="addOption.icon"
+            [variant]="addOption.color"
+            size="sm"
+            [disabled]="!selectedCandidatesCount() || candidatesLoading() || addSaving()"
+            (click)="addRubrics()"
+          />
+        }
+      </div>
+    </div>
+  </app-ui-drawer>
+}

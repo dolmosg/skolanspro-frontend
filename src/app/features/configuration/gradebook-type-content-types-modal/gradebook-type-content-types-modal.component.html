@@ -1,0 +1,78 @@
+<div class="gradebook-type-content-types-modal">
+  <div class="gradebook-type-content-types-modal__header">
+    <div class="sk-selection-inline">
+      <span class="sk-selection-badge">{{ selectedCount() }}</span>
+      <strong>{{ 'common.selected' | translate }}</strong>
+    </div>
+
+    <div class="gradebook-type-content-types-modal__bulk">
+      <app-ui-button
+        [label]="'common.select-all' | translate"
+        variant="secondary"
+        size="sm"
+        iconLeft="check"
+        type="button"
+        [disabled]="!hasRows() || allSelected()"
+        (click)="selectAll()"
+      />
+
+      <app-ui-button
+        [label]="'common.clear' | translate"
+        variant="ghost"
+        size="sm"
+        iconLeft="clear-search"
+        type="button"
+        [disabled]="selectedCount() === 0"
+        (click)="clearAll()"
+      />
+    </div>
+  </div>
+
+  <div class="gradebook-type-content-types-modal__list">
+    @if (!hasRows()) {
+      <div class="gradebook-type-content-types-modal__empty">
+        {{ 'configuration.gradebook-types.content-types.messages.empty' | translate }}
+      </div>
+    } @else {
+      @for (row of rows(); track row.contentType.id) {
+        <label
+          class="gradebook-type-content-types-modal__item"
+          [class.gradebook-type-content-types-modal__item--selected]="row.selected"
+        >
+          <input
+            type="checkbox"
+            [checked]="row.selected"
+            (change)="toggleSelected(row)"
+          />
+
+          <span class="gradebook-type-content-types-modal__copy">
+            <strong>{{ contentTypeLabel(row.contentType) | translate }}</strong>
+            @if (row.contentType.help_translation; as helpTranslation) {
+              <small>{{ helpTranslation | translate }}</small>
+            }
+          </span>
+        </label>
+      }
+    }
+  </div>
+
+  <div class="gradebook-type-content-types-modal__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      variant="secondary"
+      size="sm"
+      iconLeft="close"
+      type="button"
+      (click)="onCancel()"
+    />
+
+    <app-ui-button
+      [label]="'common.save' | translate"
+      variant="primary"
+      size="sm"
+      iconLeft="check"
+      type="button"
+      (click)="onSubmit()"
+    />
+  </div>
+</div>

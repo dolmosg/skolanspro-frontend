@@ -14,13 +14,7 @@ export interface GradeBookTypeModalData {
 export interface GradeBookTypePayload {
   name: string;
   translation: string | null;
-  subjects: boolean;
-  integrations: boolean;
-  aspects: boolean;
-  sections: boolean;
-  rubrics: boolean;
   active: boolean;
-  order: number;
 }
 
 export interface GradeBookTypeModalResult {
@@ -51,13 +45,7 @@ export class GradeBookTypeModalComponent {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(45)]],
     translation: ['', [Validators.maxLength(150)]],
-    subjects: [false],
-    integrations: [false],
-    aspects: [false],
-    sections: [false],
-    rubrics: [false],
     active: [true],
-    order: [0, [Validators.required, Validators.min(0), Validators.max(255)]],
   });
 
   constructor() {
@@ -67,13 +55,7 @@ export class GradeBookTypeModalComponent {
       this.form.reset({
         name: item?.name ?? '',
         translation: item?.translation ?? '',
-        subjects: item?.subjects ?? false,
-        integrations: item?.integrations ?? false,
-        aspects: item?.aspects ?? false,
-        sections: item?.sections ?? false,
-        rubrics: item?.rubrics ?? false,
         active: item?.active ?? true,
-        order: item?.order ?? 0,
       });
     });
   }
@@ -108,13 +90,7 @@ export class GradeBookTypeModalComponent {
     return {
       name: value.name.trim(),
       translation: this.nullableTrim(value.translation),
-      subjects: value.subjects,
-      integrations: value.integrations,
-      aspects: value.aspects,
-      sections: value.sections,
-      rubrics: value.rubrics,
       active: value.active,
-      order: Number(value.order),
     };
   }
 

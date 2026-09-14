@@ -1,0 +1,204 @@
+<form class="gradebook-design" [formGroup]="form" (ngSubmit)="save()">
+  @if (designLoaded()) {
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="configuration" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.general' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-design.descriptions.general' | translate }}</p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields gradebook-design__fields--general">
+        <label class="gradebook-design__field"
+          ><span>{{ 'planning.study-plan-report-card-design.fields.font-size' | translate }}</span
+          ><input type="number" formControlName="font_size" /></label
+        ><div class="gradebook-design__general-toggle">
+          <span>{{ 'planning.study-plan-report-card-design.fields.show-title' | translate }}</span>
+          <label class="gradebook-design__check"
+            ><input type="checkbox" formControlName="show_title" /><span>{{
+              'planning.study-plan-report-card-design.fields.show-title' | translate
+            }}</span></label
+          >
+        </div>
+        <label class="gradebook-design__general-legend"
+          ><span>{{ 'planning.study-plan-report-card-design.fields.legend' | translate }}</span
+          ><textarea formControlName="legend"></textarea>
+        </label>
+      </div>
+    </section>
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="book-open" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.subject-header' | translate }}</h4>
+          <p>
+            {{ 'planning.study-plan-report-card-design.descriptions.subject-header' | translate }}
+          </p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields">
+        <label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.name-background-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('name_background_color')" [style.background-color]="hasPickerColor('name_background_color') ? pickerColor('name_background_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('name_background_color')" [disabled]="form.controls.name_background_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.name-background-color' | translate" (input)="setColorFromPicker('name_background_color', $event)" /></span><input type="text" formControlName="name_background_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.subject-border-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('subject_border_color')" [style.background-color]="hasPickerColor('subject_border_color') ? pickerColor('subject_border_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('subject_border_color')" [disabled]="form.controls.subject_border_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.subject-border-color' | translate" (input)="setColorFromPicker('subject_border_color', $event)" /></span><input type="text" formControlName="subject_border_color"
+          /></div></label>
+      </div>
+    </section>
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="presentation" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.title' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-design.descriptions.title' | translate }}</p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields">
+        <label
+          ><span>{{ 'planning.study-plan-report-card-design.fields.title-text' | translate }}</span
+          ><input type="text" formControlName="title_text" /></label
+        ><label class="gradebook-design__field"
+          ><span>{{ 'planning.study-plan-report-card-design.fields.text-color' | translate }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('title_text_color')" [style.background-color]="hasPickerColor('title_text_color') ? pickerColor('title_text_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('title_text_color')" [disabled]="form.controls.title_text_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.text-color' | translate" (input)="setColorFromPicker('title_text_color', $event)" /></span><input type="text" formControlName="title_text_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.background-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('title_background_color')" [style.background-color]="hasPickerColor('title_background_color') ? pickerColor('title_background_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('title_background_color')" [disabled]="form.controls.title_background_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.background-color' | translate" (input)="setColorFromPicker('title_background_color', $event)" /></span><input type="text" formControlName="title_background_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.border-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('title_border_color')" [style.background-color]="hasPickerColor('title_border_color') ? pickerColor('title_border_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('title_border_color')" [disabled]="form.controls.title_border_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.border-color' | translate" (input)="setColorFromPicker('title_border_color', $event)" /></span><input type="text" formControlName="title_border_color"
+          /></div></label>
+      </div>
+    </section>
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="type" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.subtitle' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-design.descriptions.subtitle' | translate }}</p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields">
+        <label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.subtitle-text-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('subtitle_text_color')" [style.background-color]="hasPickerColor('subtitle_text_color') ? pickerColor('subtitle_text_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('subtitle_text_color')" [disabled]="form.controls.subtitle_text_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.subtitle-text-color' | translate" (input)="setColorFromPicker('subtitle_text_color', $event)" /></span><input type="text" formControlName="subtitle_text_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.subtitle-background-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('subtitle_background_color')" [style.background-color]="hasPickerColor('subtitle_background_color') ? pickerColor('subtitle_background_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('subtitle_background_color')" [disabled]="form.controls.subtitle_background_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.subtitle-background-color' | translate" (input)="setColorFromPicker('subtitle_background_color', $event)" /></span><input type="text" formControlName="subtitle_background_color"
+          /></div></label>
+      </div>
+    </section>
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="evaluation" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.grades' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-design.descriptions.grades' | translate }}</p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields">
+        <label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.grade-text-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('grade_text_color')" [style.background-color]="hasPickerColor('grade_text_color') ? pickerColor('grade_text_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('grade_text_color')" [disabled]="form.controls.grade_text_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.grade-text-color' | translate" (input)="setColorFromPicker('grade_text_color', $event)" /></span><input type="text" formControlName="grade_text_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.grade-border-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('grade_border_color')" [style.background-color]="hasPickerColor('grade_border_color') ? pickerColor('grade_border_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('grade_border_color')" [disabled]="form.controls.grade_border_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.grade-border-color' | translate" (input)="setColorFromPicker('grade_border_color', $event)" /></span><input type="text" formControlName="grade_border_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.grade-background-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('grade_background_color')" [style.background-color]="hasPickerColor('grade_background_color') ? pickerColor('grade_background_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('grade_background_color')" [disabled]="form.controls.grade_background_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.grade-background-color' | translate" (input)="setColorFromPicker('grade_background_color', $event)" /></span><input type="text" formControlName="grade_background_color"
+          /></div></label>
+      </div>
+    </section>
+    <section class="gradebook-design__group">
+      <header>
+        <span><app-ui-icon name="table-of-contents" size="sm" /></span>
+        <div>
+          <h4>{{ 'planning.study-plan-report-card-design.groups.totals' | translate }}</h4>
+          <p>{{ 'planning.study-plan-report-card-design.descriptions.totals' | translate }}</p>
+        </div>
+      </header>
+      <div class="gradebook-design__fields">
+        <label
+          ><span>{{ 'planning.study-plan-report-card-design.fields.total-text' | translate }}</span
+          ><input type="text" formControlName="total_text" /></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.total-text-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('total_text_color')" [style.background-color]="hasPickerColor('total_text_color') ? pickerColor('total_text_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('total_text_color')" [disabled]="form.controls.total_text_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.total-text-color' | translate" (input)="setColorFromPicker('total_text_color', $event)" /></span><input type="text" formControlName="total_text_color"
+          /></div></label
+        ><label class="gradebook-design__field"
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.total-border-color' | translate
+          }}</span
+          ><div class="gradebook-design__color-control"
+            ><span class="gradebook-design__color-swatch" [class.gradebook-design__color-swatch--unset]="!hasPickerColor('total_border_color')" [style.background-color]="hasPickerColor('total_border_color') ? pickerColor('total_border_color') : null"><input type="color" class="gradebook-design__color-picker" [value]="pickerColor('total_border_color')" [disabled]="form.controls.total_border_color.disabled" [attr.aria-label]="'planning.study-plan-report-card-design.fields.total-border-color' | translate" (input)="setColorFromPicker('total_border_color', $event)" /></span><input type="text" formControlName="total_border_color"
+          /></div></label
+        ><label
+          ><span>{{
+            'planning.study-plan-report-card-design.fields.total-alignment' | translate
+          }}</span
+          ><app-sk-select
+            [items]="totalAlignmentOptions"
+            bindLabel="translation"
+            bindValue="value"
+            [translateLabel]="true"
+            [control]="form.controls.total_alignment"
+          />
+        </label>
+      </div>
+    </section>
+  }
+  <div class="gradebook-design__actions">
+    <app-ui-button
+      [label]="'common.cancel' | translate"
+      iconLeft="cancel"
+      variant="danger"
+      size="sm"
+      type="button"
+      (click)="cancel.emit()"
+    /><app-ui-button
+      [label]="'common.save' | translate"
+      iconLeft="save"
+      variant="primary"
+      size="sm"
+      type="submit"
+      [disabled]="!designLoaded() || !canUpdate() || form.invalid || loading()"
+    />
+  </div>
+</form>

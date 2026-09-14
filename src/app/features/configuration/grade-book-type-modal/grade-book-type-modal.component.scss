@@ -50,28 +50,18 @@
   }
 }
 
-.gradebook-type-modal__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.65rem 1rem;
-  width: 100%;
-  min-width: 0;
+.gradebook-type-modal__active label {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  font-size: 0.85rem;
+  gap: 0.5rem;
 
-  label {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--color-text, #374151);
-
-    input[type='checkbox'] {
-      flex: 0 0 auto;
-      width: 16px;
-      height: 16px;
-      accent-color: var(--color-primary, #f97316);
-      cursor: pointer;
-    }
+  input[type='checkbox'] {
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
   }
 }
 

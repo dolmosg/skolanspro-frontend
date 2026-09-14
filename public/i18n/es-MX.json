@@ -1175,6 +1175,49 @@
 			},
 			"update": "Actualizar Acción de Boleta"
 		},
+		"gradebook-attendances": {
+			"add": "Agregar asistencia en boletas",
+			"set-order": "Ordenar asistencia en boletas",
+			"delete": "Eliminar asistencia en boletas",
+			"translation": {
+				"without": "Sin asistencia",
+				"grouped": "Agrupada",
+				"interspersed": "Intercalada"
+			},
+			"update": "Editar asistencia en boletas"
+		},
+		"gradebook-content-types": {
+			"add": "Agregar tipo de contenido de boleta",
+			"delete": "Eliminar tipo de contenido de boleta",
+			"help": {
+				"aspects": "Permite mostrar aspectos académicos asociados a las materias.",
+				"integrations": "Permite calcular o presentar integraciones académicas derivadas de las materias del plan de estudios.",
+				"rubrics": "Permite trabajar con rúbricas.",
+				"sections": "Permite componer la boleta mediante secciones o componentes.",
+				"subjects": "Permite trabajar con materias del plan de estudios."
+			},
+			"order": "Ordenar tipos de contenido de boleta",
+			"translation": {
+				"aspects": "Aspectos",
+				"integrations": "Integraciones",
+				"rubrics": "Rúbricas",
+				"sections": "Secciones",
+				"subjects": "Materias"
+			},
+			"update": "Editar tipo de contenido de boleta"
+		},
+		"gradebook_content_types": {
+			"subjects": "Materias",
+			"subjects_help": "Materias académicas que pueden formar parte de la boleta.",
+			"integrations": "Integraciones",
+			"integrations_help": "Integraciones académicas definidas por el plan de estudios que pueden formar parte de la boleta.",
+			"rubrics": "Rúbricas",
+			"rubrics_help": "Rúbricas que pueden utilizarse como contenido de la boleta.",
+			"sections": "Secciones",
+			"sections_help": "Secciones o componentes que pueden formar una boleta compuesta.",
+			"aspects": "Aspectos",
+			"aspects_help": "Aspectos académicos seleccionados dentro de una materia que pueden mostrarse en la boleta."
+		},
 		"gradebook-options": {
 			"add": "Nueva Opción de Boleta",
 			"delete": "Eliminar Opción de Boleta",
@@ -1235,15 +1278,17 @@
 			"add": "Nuevo Tipo de Boleta",
 			"configure-actions": "Establecer acciones",
 			"configure-options": "Opciones del Tipo de Boleta",
+			"content-types": {
+				"messages": {
+					"description": "Seleccione los tipos de contenido que puede utilizar este tipo de boleta.",
+					"empty": "No hay tipos de contenido disponibles."
+				}
+			},
 			"delete": "Eliminar Tipo de Boleta",
 			"edit": "Editar Tipo de Boleta",
+			"relate-content": "Relacionar contenidos",
 			"fields": {
-				"aspects": "Aspectos",
-				"integrations": "Integraciones",
 				"name": "Nombre",
-				"rubrics": "Rúbricas",
-				"sections": "Secciones",
-				"subjects": "Materias",
 				"translation": "Traducción"
 			},
 			"messages": {
@@ -2240,6 +2285,9 @@
 		"grade-policy-items": "Configurar política",
 		"grade-progressions": "Progresión de grados",
 		"gradebook-actions": "Acciones de Boleta",
+		"gradebook-attendances": "Asistencia en boletas",
+		"gradebook-components": "Componentes de boleta",
+		"gradebook-content-types": "Tipos de contenido de boleta",
 		"gradebook-options": "Opciones de Boleta",
 		"gradebook-section-types": "Tipos de Secciones de Boletas",
 		"gradebook-types": "Tipos de Boletas",
@@ -2308,6 +2356,12 @@
 		"study-plan-integrations": "Integración de Asignaturas",
 		"study-plan-lms": "LMS",
 		"study-plan-organizations": "Organización y Horarios",
+		"study-plan-report-card-aspects": "Aspectos",
+		"study-plan-report-card-design": "Diseño",
+		"study-plan-report-card-rubrics": "Rúbricas",
+		"study-plan-report-card-sections": "Secciones",
+		"study-plan-report-card-settings": "Configuración",
+		"study-plan-report-card-subjects": "Asignaturas",
 		"study-plan-report-cards": "Boletas",
 		"study-plan-schedule-blocks": "Bloques de horarios",
 		"study-plan-schedule-segments": "Segmentos de horario",
@@ -2415,6 +2469,20 @@
 		"utilities": "Utilerías"
 	},
 	"planning": {
+		"gradebook-components": {
+			"add": "Agregar componente de boleta",
+			"delete": "Eliminar componente de boleta",
+			"update": "Actualizar componente de boleta",
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar el componente de boleta \"{{name}}\"? Esta acción no se puede deshacer."
+			},
+			"fields": {
+				"code": "Código",
+				"description": "Descripción",
+				"type": "Tipo",
+				"page-break": "Salto de página"
+			}
+		},
 		"study-plan-academic-assignments": {
 			"add-group": "Agregar grupo",
 			"assign-grade": "Asignar grado",
@@ -2574,22 +2642,22 @@
 				"unassigned-comments": "{{count}} comentarios sin grados asignados"
 			},
 			"view": {
-			"comment-types": "Tipos de comentarios",
-			"assign-grades": "Asignar grados",
-			"empty-comment-types": "No hay tipos de comentarios configurados para este plan de estudio.",
-			"comments": "Comentarios",
-			"comment": "Comentario",
-			"comment-count": "{{count}} comentario",
+				"comment-types": "Tipos de comentarios",
+				"assign-grades": "Asignar grados",
+				"empty-comment-types": "No hay tipos de comentarios configurados para este plan de estudio.",
+				"comments": "Comentarios",
+				"comment": "Comentario",
+				"comment-count": "{{count}} comentario",
 				"comments-count": "{{count}} comentarios",
-			"comments-placeholder": "Aquí se mostrarán los comentarios de este tipo.",
-			"edit-comment": "Editar comentario",
-			"filtered-comments-count": "{{filtered}} de {{total}} comentarios",
-			"grades": "Grados",
+				"comments-placeholder": "Aquí se mostrarán los comentarios de este tipo.",
+				"edit-comment": "Editar comentario",
+				"filtered-comments-count": "{{filtered}} de {{total}} comentarios",
+				"grades": "Grados",
 				"no-comments": "No hay comentarios registrados para este tipo.",
-			"no-grades-assigned": "Sin grados asignados",
-			"no-grades-available": "No hay grados disponibles.",
-			"no-results": "No se encontraron comentarios.",
-			"new-comment": "Nuevo comentario",
+				"no-grades-assigned": "Sin grados asignados",
+				"no-grades-available": "No hay grados disponibles.",
+				"no-results": "No se encontraron comentarios.",
+				"new-comment": "Nuevo comentario",
 				"search-comment": "Buscar comentario...",
 				"select-comment-type": "Selecciona un tipo de comentario para consultar sus comentarios.",
 				"title": "Comentarios del plan de estudio",
@@ -3093,6 +3161,106 @@
 					"title": "Lista de grupos"
 				},
 				"title": "Grupos académicos"
+			}
+		},
+		"study-plan-report-card-aspects": {
+			"add": "Agregar aspecto",
+			"delete": "Eliminar aspecto"
+		},
+      "study-plan-report-card-design": {
+			"update": "Actualizar diseño"
+		},
+		"study-plan-report-card-sections": {
+			"add": "Agregar sección",
+			"update": "Actualizar sección",
+			"delete": "Eliminar sección",
+			"order": "Ordenar secciones",
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar la sección \"{{name}}\"?"
+			}
+		},
+		"study-plan-report-card-settings": {
+			"update": "Actualizar configuración",
+			"groups": {
+				"grading": "Calificación",
+				"presentation": "Presentación de resultados",
+				"integrations": "Integraciones",
+				"publication": "Publicación"
+			},
+			"group-descriptions": {
+				"grading": "Define los criterios utilizados para calcular las calificaciones.",
+				"presentation": "Define la información adicional que se muestra en la boleta.",
+				"integrations": "Define cómo participan las integraciones en el cálculo.",
+				"publication": "Controla la disponibilidad de los resultados para los padres."
+			},
+			"fields": {
+				"minimum-grade": "Calificación mínima",
+				"passing-grade": "Calificación aprobatoria",
+				"decimals": "Decimales",
+				"final-decimals": "Decimales finales",
+				"rounding": "Redondeo",
+				"final-rounding": "Redondeo final",
+				"show-grade-details": "Mostrar detalle de calificaciones",
+				"show-total-row": "Mostrar fila total",
+				"show-total-column": "Mostrar columna total",
+				"null-grade-text": "Texto para calificación nula",
+				"calculate-integrations": "Calcular integraciones",
+				"expand-integrations": "Expandir integraciones",
+				"publish-to-parents": "Publicar a padres"
+        }
+      },
+		"study-plan-report-card-design": {
+			"groups": {"general":"General","subject-header":"Encabezado de asignatura","title":"Título","subtitle":"Subtítulo","grades":"Calificaciones","totals":"Totales"},
+			"descriptions": {"general":"Configura las opciones visuales generales de la boleta.","subject-header":"Define la apariencia utilizada para identificar las asignaturas.","title":"Configura el texto y los colores utilizados en el título de la boleta.","subtitle":"Define la apariencia visual de los subtítulos.","grades":"Configura los colores utilizados para mostrar las calificaciones.","totals":"Define el texto, borde y alineación utilizados para los totales."},
+			"fields": {"font-size":"Tamaño de fuente","show-title":"Mostrar título","legend":"Leyenda","name-background-color":"Color de fondo del nombre","subject-border-color":"Color del borde de asignatura","title-text":"Texto del título","text-color":"Color del texto","background-color":"Color de fondo","border-color":"Color del borde","subtitle-text-color":"Color del texto del subtítulo","subtitle-background-color":"Color de fondo del subtítulo","grade-text-color":"Color del texto de calificación","grade-border-color":"Color del borde de calificación","grade-background-color":"Color de fondo de calificación","total-text":"Texto de total","total-text-color":"Color del texto de total","total-border-color":"Color del borde de total","total-alignment":"Alineación del total"},
+			"alignments": {"left":"Izquierda","center":"Centro","right":"Derecha"}
+		},
+		"study-plan-report-card-subjects": {
+			"add": "Agregar asignatura",
+			"add-subjects": "Agregar asignaturas",
+			"delete": "Eliminar asignatura",
+			"messages": {"confirm-delete":"¿Deseas eliminar esta asignatura? Esta acción no se puede deshacer."},
+			"order": "Ordenar asignaturas",
+			"subjects": "Asignaturas",
+			"grades": "Grados",
+			"crossovers": "Crossovers",
+			"no-subjects": "No hay asignaturas asignadas en este contexto.",
+			"no-available-subjects": "No hay asignaturas disponibles para agregar.",
+			"selected-subjects": "{{count}} seleccionadas"
+		},
+		"study-plan-report-card-rubrics": {
+			"add": "Agregar rúbrica",
+			"add-rubrics": "Agregar rúbricas",
+			"delete": "Eliminar rúbrica",
+			"messages": {"confirm-delete":"¿Deseas eliminar la rúbrica \"{{name}}\"? Esta acción no se puede deshacer."},
+			"no-available-rubrics": "No hay rúbricas disponibles para agregar a este grado.",
+			"order": "Ordenar rúbricas",
+			"selected-rubrics": "Rúbricas seleccionadas: {{count}}",
+			"grades": "Grados",
+			"rubrics": "Rúbricas",
+			"no-rubrics": "No hay rúbricas asignadas en este grado."
+		},
+		"study-plan-report-cards": {
+			"add": "Nueva boleta",
+			"update": "Actualizar boleta",
+			"delete": "Eliminar boleta",
+			"order": "Ordenar boletas",
+			"information": "Información",
+			"description": "Configura las boletas correspondientes a esta etapa.",
+			"configure": "Configurar boleta",
+			"configuration": "Configuración de la boleta",
+			"fields": {
+				"name": "Nombre",
+				"translation": "Traducción",
+				"type": "Tipo de boleta",
+				"report": "Reporte",
+				"academic-tutor": "Tutor académico",
+				"attendance": "Asistencia",
+				"academy": "Academia",
+				"comment-language": "Idioma de comentarios"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar la boleta \"{{name}}\"? Esta acción no se puede deshacer."
 			}
 		},
 		"study-plan-schedule-blocks": {
