@@ -1,0 +1,172 @@
+<section class="rubric-assignments">
+  <header class="rubric-assignments__header">
+    <div>
+      <h2>{{ child().translation | translate }}</h2>
+      <p>{{ rubric().name }}</p>
+    </div>
+  </header>
+
+  @if (loaded()) {
+    <div class="rubric-assignments__layout">
+      <section class="rubric-assignments__panel">
+        <header class="rubric-assignments__panel-header">
+          <h3>{{ 'planning.rubric-assignments.groups' | translate }}</h3>
+        </header>
+
+        <div class="rubric-assignments__list rubric-assignments__list--groups">
+          @for (group of groups(); track group.id) {
+            <label
+              class="rubric-assignments__group"
+              [class.rubric-assignments__group--selected]="group.selected"
+            >
+              <input
+                type="checkbox"
+                [checked]="group.selected"
+                [disabled]="
+                  !getScreenOption('update-groups') || detailState() !== null || loading()
+                "
+                (change)="toggleGroup(group, $event)"
+              />
+
+              <span class="rubric-assignments__group-content">
+                <strong>{{ group.name }}</strong>
+                @if (group.code) {
+                  <small>{{ group.code }}</small>
+                }
+              </span>
+            </label>
+          } @empty {
+            <p class="rubric-assignments__empty">
+              {{ 'planning.rubric-assignments.empty-groups' | translate }}
+            </p>
+          }
+        </div>
+      </section>
+
+      <section class="rubric-assignments__panel">
+        <header class="rubric-assignments__panel-header">
+          @if (subjectSection(); as section) {
+            <h3>
+              {{ 'planning.rubric-assignments.subjects' | translate }} · {{ section.name }}
+            </h3>
+          } @else {
+            <h3>{{ 'planning.rubric-assignments.sections' | translate }}</h3>
+          }
+        </header>
+
+        @if (detailState()?.mode === 'subjects') {
+          <div class="rubric-assignments__subjects-editor">
+            <div class="rubric-assignments__subjects-toolbar">
+              <app-ui-button
+                [label]="'common.back' | translate"
+                iconLeft="arrow-left"
+                variant="ghost"
+                fill="soft"
+                size="sm"
+                type="button"
+                [disabled]="loading()"
+                (click)="cancelSubjects()"
+              />
+            </div>
+
+            <div class="rubric-assignments__list rubric-assignments__list--subjects">
+              @if (subjectsLoaded()) {
+                @for (stageSubject of subjects(); track stageSubject.id) {
+                  <label class="rubric-assignments__subject">
+                    <input
+                      type="checkbox"
+                      [checked]="selectedSubjectIds().has(stageSubject.id)"
+                      [disabled]="loading()"
+                      (change)="toggleSubject(stageSubject.id, $event)"
+                    />
+
+                    <span class="rubric-assignments__subject-name">
+                      @if (stageSubject.subject.code) {
+                        <strong>{{ stageSubject.subject.code }}</strong>
+                        <span aria-hidden="true">—</span>
+                      }
+                      <span>{{ stageSubject.subject.name }}</span>
+                    </span>
+                  </label>
+                } @empty {
+                  <p class="rubric-assignments__empty">
+                    {{ 'planning.rubric-assignments.empty-subjects' | translate }}
+                  </p>
+                }
+              }
+            </div>
+
+            <div class="rubric-assignments__subjects-actions">
+              <app-ui-button
+                [label]="'common.cancel' | translate"
+                variant="danger"
+                fill="soft"
+                size="sm"
+                type="button"
+                [disabled]="loading()"
+                (click)="cancelSubjects()"
+              />
+              <app-ui-button
+                [label]="'common.save' | translate"
+                variant="primary"
+                size="sm"
+                type="button"
+                [disabled]="loading() || !subjectsLoaded()"
+                (click)="saveSubjects()"
+              />
+            </div>
+          </div>
+        } @else {
+          <div class="rubric-assignments__list">
+            @for (section of sections(); track section.id) {
+              <article
+                class="rubric-assignments__section"
+                [class.rubric-assignments__section--actionable]="
+                  !!getScreenOption('update-subjects')
+                "
+              >
+                <span class="rubric-assignments__section-content">
+                  <strong>{{ section.name }}</strong>
+                  @if (section.description) {
+                    <small>{{ section.description }}</small>
+                  }
+                  <small class="rubric-assignments__section-count">
+                    {{
+                      'planning.rubric-assignments.assigned-subjects'
+                        | translate: { count: section.stage_subjects_count }
+                    }}
+                  </small>
+                </span>
+
+                @if (getScreenOption('update-subjects'); as updateSubjectsOption) {
+                  <span class="rubric-assignments__section-actions">
+                    <app-ui-button
+                      [label]="updateSubjectsOption.translation | translate"
+                      [title]="
+                        (hasSelectedGroups()
+                          ? updateSubjectsOption.translation
+                          : 'planning.rubric-assignments.select-group-to-manage-subjects'
+                        ) | translate
+                      "
+                      [iconLeft]="updateSubjectsOption.icon"
+                      [variant]="updateSubjectsOption.color"
+                      [iconOnly]="true"
+                      [disabled]="loading() || !hasSelectedGroups()"
+                      size="sm"
+                      type="button"
+                      (click)="openSubjects(section)"
+                    />
+                  </span>
+                }
+              </article>
+            } @empty {
+              <p class="rubric-assignments__empty">
+                {{ 'planning.rubric-assignments.empty-sections' | translate }}
+              </p>
+            }
+          </div>
+        }
+      </section>
+    </div>
+  }
+</section>

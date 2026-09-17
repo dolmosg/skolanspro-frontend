@@ -1,0 +1,281 @@
+<section class="sk-page">
+  @if (selectedRubric(); as rubric) {
+    <app-rubric-detail
+      [rubric]="rubric"
+      [children]="getScreenChildren()"
+      (back)="closeRubricDetail()"
+    />
+  } @else {
+  <div class="rubrics__filters">
+    <label>
+      <span>{{ 'planning.study-plan-general.fields.school-year' | translate }}</span>
+      <app-sk-select
+        id="rubrics-year"
+        [items]="years()"
+        bindLabel="name"
+        bindValue="id"
+        [control]="yearControl"
+        [clearable]="false"
+        [disabled]="loading() || editor() !== null || years().length === 0"
+        [placeholder]="'planning.study-plan-general.fields.school-year' | translate"
+      />
+    </label>
+
+    <label>
+      <span>{{ 'planning.study-plan-integrations.stage' | translate }}</span>
+      <app-sk-select
+        id="rubrics-stage"
+        [items]="stageOptions()"
+        bindLabel="label"
+        bindValue="id"
+        [control]="stageControl"
+        [clearable]="false"
+        [disabled]="loading() || editor() !== null || stages().length === 0"
+        [placeholder]="'planning.study-plan-integrations.stage' | translate"
+      />
+    </label>
+
+    <label>
+      <span>{{ 'administration.student-years.fields.grade' | translate }}</span>
+      <app-sk-select
+        id="rubrics-grade"
+        [items]="grades()"
+        bindLabel="name"
+        bindValue="id"
+        [control]="gradeControl"
+        [clearable]="false"
+        [disabled]="loading() || editor() !== null || grades().length === 0"
+        [placeholder]="'administration.student-years.fields.grade' | translate"
+      />
+    </label>
+  </div>
+
+  @if (
+    editor() === null &&
+    yearControl.value !== null &&
+    stageControl.value !== null &&
+    gradeControl.value !== null
+  ) {
+    @if (getScreenOption('add'); as addOption) {
+      <div class="rubrics__toolbar">
+        <app-ui-button
+          [label]="addOption.translation | translate"
+          [iconLeft]="addOption.icon"
+          [variant]="addOption.color"
+          size="sm"
+          (click)="startCreate()"
+        />
+      </div>
+    }
+  }
+
+  @if (editor()?.mode === 'create' || rubrics().length) {
+    <div class="rubrics__list">
+      @if (editor()?.mode === 'create') {
+        <ng-container
+          [ngTemplateOutlet]="rubricEditor"
+          [ngTemplateOutletContext]="{ mode: 'create' }"
+        />
+      }
+
+      @for (rubric of rubrics(); track rubric.id) {
+        @if (editor(); as editorState) {
+          @if (editorState.mode === 'edit' && editorState.rubricId === rubric.id) {
+            <ng-container
+              [ngTemplateOutlet]="rubricEditor"
+              [ngTemplateOutletContext]="{ mode: 'edit' }"
+            />
+          } @else {
+            <ng-container [ngTemplateOutlet]="rubricCard" [ngTemplateOutletContext]="{ rubric }" />
+          }
+        } @else {
+          <ng-container [ngTemplateOutlet]="rubricCard" [ngTemplateOutletContext]="{ rubric }" />
+        }
+      }
+    </div>
+  } @else {
+    <div class="rubrics__empty">
+      <p>{{ 'planning.rubrics.empty' | translate }}</p>
+    </div>
+  }
+  }
+</section>
+
+<ng-template #rubricCard let-rubric="rubric">
+  <article class="rubrics__card">
+    <header class="rubrics__card-header">
+      <div class="rubrics__card-heading">
+        <h3>{{ rubric.name }}</h3>
+        @if (rubric.qualifier) {
+          <span>{{ rubric.qualifier }}</span>
+        }
+      </div>
+      <div class="rubrics__card-actions">
+        @if (getScreenOption('update'); as updateOption) {
+          <app-ui-button
+            [label]="updateOption.translation | translate"
+            [title]="updateOption.translation | translate"
+            [iconLeft]="updateOption.icon"
+            [variant]="updateOption.color"
+            [iconOnly]="true"
+            size="sm"
+            (click)="startEdit(rubric)"
+          />
+        }
+        @if (getScreenOption('delete'); as deleteOption) {
+          <app-ui-button
+            [label]="deleteOption.translation | translate"
+            [title]="deleteOption.translation | translate"
+            [iconLeft]="deleteOption.icon"
+                    [variant]="deleteOption.color"
+                    [iconOnly]="true"
+                    size="sm"
+                    (click)="deleteRubric(rubric)"
+                  />
+        }
+        @if (getScreenChildren().length) {
+          <app-ui-button
+            [label]="'planning.rubrics.configure' | translate"
+            [title]="'planning.rubrics.configure' | translate"
+            iconLeft="drilldown"
+            variant="ghost"
+            [iconOnly]="true"
+            size="sm"
+            (click)="openRubricDetail(rubric)"
+          />
+        }
+      </div>
+    </header>
+
+    @if (rubric.description) {
+      <p class="rubrics__card-description">{{ rubric.description }}</p>
+    }
+
+    <footer class="rubrics__card-statuses">
+      <span class="rubrics__card-status" [class.rubrics__card-status--automatic]="rubric.automatic">
+        {{
+          (rubric.automatic
+            ? 'planning.rubrics.status.automatic'
+            : 'planning.rubrics.status.manual'
+          ) | translate
+        }}
+      </span>
+      <span
+        class="rubrics__card-status"
+        [class.rubrics__card-status--active]="rubric.active"
+        [class.rubrics__card-status--inactive]="!rubric.active"
+      >
+        {{ (rubric.active ? 'common.active' : 'common.inactive') | translate }}
+      </span>
+    </footer>
+  </article>
+</ng-template>
+
+<ng-template #rubricEditor let-mode="mode">
+  <article class="rubrics__card rubrics__card--editing">
+    <form class="rubrics__editor" [formGroup]="rubricForm" (ngSubmit)="saveEditor()">
+      <header class="rubrics__editor-header">
+        <h3>
+          {{
+            (mode === 'create' ? 'planning.rubrics.editor.create' : 'planning.rubrics.editor.edit')
+              | translate
+          }}
+        </h3>
+      </header>
+
+      <div class="rubrics__editor-fields">
+        <label class="rubrics__editor-field">
+          <span>{{ 'planning.rubrics.fields.name' | translate }}</span>
+          <input type="text" formControlName="name" maxlength="70" />
+          <form-error [control]="rubricForm.controls.name" />
+        </label>
+
+        <label class="rubrics__editor-field">
+          <span>{{ 'planning.rubrics.fields.qualifier' | translate }}</span>
+          <input type="text" formControlName="qualifier" maxlength="45" />
+          <form-error [control]="rubricForm.controls.qualifier" />
+        </label>
+
+        <label class="rubrics__editor-field rubrics__editor-field--wide">
+          <span>{{ 'planning.rubrics.fields.description' | translate }}</span>
+          <textarea formControlName="description" rows="2"></textarea>
+          <form-error [control]="rubricForm.controls.description" />
+        </label>
+
+        <label class="rubrics__editor-field">
+          <span>{{ 'planning.rubrics.fields.rubric-type' | translate }}</span>
+          <app-sk-select
+            [items]="rubricTypes()"
+            bindLabel="translation"
+            bindValue="id"
+            [translateLabel]="true"
+            [clearable]="false"
+            [control]="rubricForm.controls.rubric_type_id"
+          />
+          <form-error [control]="rubricForm.controls.rubric_type_id" />
+        </label>
+
+        <label class="rubrics__editor-field">
+          <span>{{ 'planning.rubrics.fields.display-mode' | translate }}</span>
+          <app-sk-select
+            [items]="displayModeOptions"
+            bindLabel="translation"
+            bindValue="value"
+            [translateLabel]="true"
+            [clearable]="false"
+            [control]="rubricForm.controls.display_mode"
+          />
+          <form-error [control]="rubricForm.controls.display_mode" />
+        </label>
+
+        <label class="rubrics__editor-field rubrics__editor-field--wide">
+          <span>{{ 'planning.rubrics.fields.not-assessed-text' | translate }}</span>
+          <input type="text" formControlName="not_assessed_text" maxlength="100" />
+          <form-error [control]="rubricForm.controls.not_assessed_text" />
+        </label>
+      </div>
+
+      <div class="rubrics__editor-booleans">
+        <label
+          ><input type="checkbox" formControlName="show_scale_description" />
+          <span>{{ 'planning.rubrics.fields.show-scale-description' | translate }}</span></label
+        >
+        <label
+          ><input type="checkbox" formControlName="automatic" />
+          <span>{{ 'planning.rubrics.fields.automatic' | translate }}</span></label
+        >
+        <label
+          ><input type="checkbox" formControlName="special_education" />
+          <span>{{ 'planning.rubrics.fields.special-education' | translate }}</span></label
+        >
+        <label
+          ><input type="checkbox" formControlName="accepts_special_education" />
+          <span>{{ 'planning.rubrics.fields.accepts-special-education' | translate }}</span></label
+        >
+        <label
+          ><input type="checkbox" formControlName="active" />
+          <span>{{ 'common.active' | translate }}</span></label
+        >
+      </div>
+
+      <footer class="rubrics__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          (click)="cancelEditor()"
+        />
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="rubricForm.invalid || loading()"
+        />
+      </footer>
+    </form>
+  </article>
+</ng-template>

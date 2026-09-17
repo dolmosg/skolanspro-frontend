@@ -1,0 +1,319 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rubric-skills {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rubric-skills__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.75rem;
+}
+
+.rubric-skills__header h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rubric-skills__context {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  gap: 0.45rem;
+}
+
+.rubric-skills__context span {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rubric-skills__context strong {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 0.86rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rubric-skills__list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.5rem;
+  gap: 0.2rem;
+}
+
+.rubric-skills__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-soft);
+  gap: 0.6rem;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.rubric-skills__item:hover,
+.rubric-skills__item:focus-within {
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-skills__item--subtitle {
+  align-items: center;
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+  color: var(--color-primary);
+}
+
+.rubric-skills__leading,
+.rubric-skills__actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.rubric-skills__leading {
+  gap: 0.25rem;
+}
+
+:host ::ng-deep .rubric-skills__order-handle .ui-button__control:not(:disabled) {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.rubric-skills__actions {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  transform: translateY(-50%);
+  visibility: hidden;
+  opacity: 0;
+  gap: 0.2rem;
+  transition:
+    opacity 120ms ease,
+    visibility 120ms ease;
+}
+
+.rubric-skills__item:hover .rubric-skills__actions,
+.rubric-skills__item:focus-within .rubric-skills__actions {
+  visibility: visible;
+  opacity: 1;
+}
+
+.cdk-drop-list-dragging .rubric-skills__item,
+.rubric-skills__item.cdk-drag-animating {
+  transition: transform 200ms ease;
+}
+
+.rubric-skills__item.cdk-drag-preview {
+  box-sizing: border-box;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-primary);
+}
+
+.rubric-skills__item--subtitle.cdk-drag-preview {
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-skills__item.cdk-drag-dragging {
+  border-color: var(--color-primary-border-selected);
+}
+
+.rubric-skills__item.cdk-drag-placeholder {
+  border-style: dashed;
+  background: var(--color-surface-muted);
+  opacity: 0.45;
+}
+
+.rubric-skills__position {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.rubric-skills__item--subtitle .rubric-skills__position {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.rubric-skills__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-right: 4.75rem;
+  gap: 0.12rem;
+}
+
+.rubric-skills__name {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.rubric-skills__content strong,
+.rubric-skills__content small {
+  overflow-wrap: anywhere;
+}
+
+.rubric-skills__content strong {
+  color: var(--color-text);
+  font-size: 0.87rem;
+  font-weight: 700;
+}
+
+.rubric-skills__item--subtitle .rubric-skills__content strong {
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.rubric-skills__subtitle-badge {
+  flex: 0 0 auto;
+  padding: 0.12rem 0.4rem;
+  border: 1px solid var(--color-primary-border-hover);
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.rubric-skills__content small {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.rubric-skills__empty {
+  margin: 0;
+  padding: 2rem 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.rubric-skills__editor-card {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px solid var(--color-primary-border-selected);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-skills__editor {
+  display: grid;
+  min-width: 0;
+  gap: 0.55rem;
+}
+
+.rubric-skills__editor h4 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.rubric-skills__editor-field {
+  display: grid;
+  min-width: 0;
+  color: var(--color-text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.2rem;
+}
+
+.rubric-skills__editor-field input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 2.25rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.rubric-skills__editor-field input:focus {
+  border-color: var(--color-primary-border-selected);
+  outline: none;
+}
+
+.rubric-skills__editor-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  color: var(--color-text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  gap: 0.4rem;
+}
+
+.rubric-skills__editor-checkbox input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.rubric-skills__editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+@media (hover: none) {
+  .rubric-skills__actions {
+    visibility: visible;
+    opacity: 1;
+  }
+}

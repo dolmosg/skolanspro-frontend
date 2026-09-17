@@ -2332,7 +2332,13 @@
 		"question-types": "Tipos de Preguntas",
 		"roles": "Roles",
 		"root-dashboard": "Panel",
+		"rubric-assignments": "Asignaciones de rúbrica",
+		"rubric-scales": "Escalas de rúbrica",
+		"rubric-sections": "Secciones de rúbrica",
+		"rubric-skills": "Habilidades de rúbrica",
+		"rubric-terms": "Periodos de rúbrica",
 		"rubric-types": "Tipos de Rúbricas",
+		"rubrics": "Rúbricas",
 		"schedule-types": "Tipos de Horario",
 		"school-years": "Ciclos escolares",
 		"sections": "Secciones",
@@ -2482,6 +2488,119 @@
 				"type": "Tipo",
 				"page-break": "Salto de página"
 			}
+		},
+		"rubrics": {
+			"add": "Agregar rúbrica",
+			"update": "Editar rúbrica",
+			"delete": "Eliminar rúbrica",
+			"configure": "Configurar rúbrica",
+			"configuration": "Configuración",
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar la rúbrica \"{{name}}\"? Esta acción no se puede deshacer."
+			},
+			"empty": "No existen rúbricas para la etapa y grado seleccionados.",
+			"display-modes": {
+				"name": "Nombre",
+				"description": "Descripción",
+				"both": "Nombre y descripción"
+			},
+			"editor": {
+				"create": "Nueva rúbrica",
+				"edit": "Editar rúbrica"
+			},
+			"fields": {
+				"name": "Nombre",
+				"qualifier": "Calificador",
+				"description": "Descripción",
+				"rubric-type": "Tipo de rúbrica",
+				"display-mode": "Mostrar",
+				"not-assessed-text": "Texto no evaluado",
+				"show-scale-description": "Mostrar descripción de escala",
+				"automatic": "Automática",
+				"special-education": "Educación especial",
+				"accepts-special-education": "Acepta educación especial"
+			},
+			"status": {
+				"automatic": "Automática",
+				"manual": "Manual"
+			}
+		},
+		"rubric-terms": {
+			"update": "Editar periodos",
+			"save": "Actualizar periodos"
+		},
+		"rubric-assignments": {
+			"assigned-subjects": "Asignadas: {{count}}",
+			"groups": "Grupos",
+			"sections": "Secciones",
+			"subjects": "Materias",
+			"empty-groups": "No hay grupos disponibles.",
+			"empty-sections": "No hay secciones evaluadas por docentes.",
+			"empty-subjects": "No hay materias disponibles para los grupos seleccionados.",
+			"update-groups": "Actualizar grupos",
+			"update-subjects": "Administrar materias",
+			"select-group-to-manage-subjects": "Selecciona al menos un grupo para administrar materias."
+		},
+		"rubric-scales": {
+			"add": "Agregar escala",
+			"update": "Editar escala",
+			"delete": "Eliminar escala",
+			"editor": {
+				"create": "Nueva escala",
+				"edit": "Editar escala"
+			},
+			"fields": {
+				"color": "Color",
+				"description": "Descripción",
+				"name": "Nombre"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar la escala \"{{name}}\"?"
+			},
+			"order": "Ordenar escalas"
+		},
+		"rubric-sections": {
+			"add": "Agregar sección",
+			"update": "Editar sección",
+			"delete": "Eliminar sección",
+			"order": "Ordenar secciones",
+			"editor": {
+				"create": "Nueva sección",
+				"edit": "Editar sección"
+			},
+			"fields": {
+				"name": "Nombre",
+				"description": "Descripción",
+				"evaluator-role": "Evaluador"
+			},
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar la sección \"{{name}}\"? También se eliminarán sus habilidades."
+			},
+			"sections": "Secciones",
+			"skills": "Habilidades",
+			"selected-section": "Sección",
+			"skills-placeholder": "Las habilidades de esta sección aparecerán aquí."
+		},
+		"rubric-skills": {
+			"add": "Agregar habilidad",
+			"update": "Editar habilidad",
+			"delete": "Eliminar habilidad",
+			"editor": {
+				"create": "Nueva habilidad",
+				"edit": "Editar habilidad"
+			},
+			"empty": "No se han agregado habilidades a esta sección.",
+			"fields": {
+				"description": "Descripción",
+				"name": "Nombre",
+				"subtitle": "Es subtítulo"
+			},
+			"loading": "Cargando habilidades…",
+			"messages": {
+				"confirm-delete": "¿Deseas eliminar \"{{name}}\"?"
+			},
+			"order": "Ordenar habilidades",
+			"subtitle": "Subtítulo"
 		},
 		"study-plan-academic-assignments": {
 			"add-group": "Agregar grupo",

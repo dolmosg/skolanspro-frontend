@@ -1,0 +1,192 @@
+<section class="rubric-scales">
+  <header class="rubric-scales__header">
+    <div>
+      <h2>{{ child().translation | translate }}</h2>
+      <p>{{ rubric().name }}</p>
+    </div>
+
+    @if (editor() === null && getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [label]="addOption.translation | translate"
+        [iconLeft]="addOption.icon"
+        [variant]="addOption.color"
+        size="sm"
+        type="button"
+        [disabled]="loading()"
+        (click)="startCreate()"
+      />
+    }
+  </header>
+
+  @if (loaded()) {
+    <div
+      class="rubric-scales__list"
+      cdkDropList
+      cdkDropListOrientation="mixed"
+      [cdkDropListData]="scales()"
+      [cdkDropListDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+      (cdkDropListDropped)="reorderScales($event)"
+    >
+      @if (editor()?.mode === 'create') {
+        <ng-container
+          [ngTemplateOutlet]="scaleEditor"
+          [ngTemplateOutletContext]="{ mode: 'create' }"
+        />
+      }
+
+      @for (scale of scales(); track scale.id) {
+        @if (isEditingScale(scale.id)) {
+          <ng-container
+            [ngTemplateOutlet]="scaleEditor"
+            [ngTemplateOutletContext]="{ mode: 'edit' }"
+          />
+        } @else {
+          <article
+            class="rubric-scales__item"
+            cdkDrag
+            [cdkDragData]="scale"
+            [cdkDragDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+          >
+            <div class="rubric-scales__position">
+              <span>{{ scale.order + 1 }}</span>
+
+              @if (getScreenOption('order'); as orderOption) {
+                <app-ui-button
+                  [label]="orderOption.translation | translate"
+                  [title]="orderOption.translation | translate"
+                  [iconLeft]="orderOption.icon"
+                  [variant]="orderOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  class="rubric-scales__order-handle"
+                  [disabled]="editor() !== null || loading()"
+                  cdkDragHandle
+                />
+              }
+            </div>
+
+            <span
+              class="rubric-scales__color"
+              [class.rubric-scales__color--empty]="!scale.color"
+              [style.background-color]="scale.color"
+              [attr.aria-label]="scale.color ?? null"
+            ></span>
+
+            <div class="rubric-scales__content">
+              <h3>{{ scale.name }}</h3>
+              <p>{{ scale.description }}</p>
+            </div>
+
+            <div class="rubric-scales__actions">
+              @if (getScreenOption('update'); as updateOption) {
+                <app-ui-button
+                  [label]="updateOption.translation | translate"
+                  [title]="updateOption.translation | translate"
+                  [iconLeft]="updateOption.icon"
+                  [variant]="updateOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="editor() !== null || loading()"
+                  (click)="startEdit(scale)"
+                />
+              }
+
+              @if (getScreenOption('delete'); as deleteOption) {
+                <app-ui-button
+                  [label]="deleteOption.translation | translate"
+                  [title]="deleteOption.translation | translate"
+                  [iconLeft]="deleteOption.icon"
+                  [variant]="deleteOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="editor() !== null || loading()"
+                  (click)="deleteScale(scale)"
+                />
+              }
+            </div>
+          </article>
+        }
+      }
+
+      @if (!scales().length && editor()?.mode !== 'create') {
+        <p class="rubric-scales__empty">{{ 'common.no-data' | translate }}</p>
+      }
+    </div>
+  }
+</section>
+
+<ng-template #scaleEditor let-mode="mode">
+  <article class="rubric-scales__item rubric-scales__item--editing">
+    <form class="rubric-scales__editor" [formGroup]="scaleForm" (ngSubmit)="saveEditor()">
+      <header class="rubric-scales__editor-header">
+        <h3>
+          {{
+            (mode === 'create'
+              ? 'planning.rubric-scales.editor.create'
+              : 'planning.rubric-scales.editor.edit'
+            ) | translate
+          }}
+        </h3>
+      </header>
+
+      <div class="rubric-scales__editor-fields">
+        <label class="rubric-scales__editor-field">
+          <span>{{ 'planning.rubric-scales.fields.name' | translate }}</span>
+          <input type="text" formControlName="name" maxlength="70" [readOnly]="loading()" />
+          <form-error [control]="scaleForm.controls.name" />
+        </label>
+
+        <label class="rubric-scales__editor-field">
+          <span>{{ 'planning.rubric-scales.fields.description' | translate }}</span>
+          <input type="text" formControlName="description" [readOnly]="loading()" />
+          <form-error [control]="scaleForm.controls.description" />
+        </label>
+
+        <label class="rubric-scales__editor-field">
+          <span>{{ 'planning.rubric-scales.fields.color' | translate }}</span>
+          <div class="rubric-scales__color-control">
+            <span
+              class="rubric-scales__color-swatch"
+              [class.rubric-scales__color-swatch--unset]="!hasPickerColor()"
+              [style.background-color]="hasPickerColor() ? pickerColor() : null"
+            >
+              <input
+                type="color"
+                class="rubric-scales__color-picker"
+                [value]="pickerColor()"
+                [disabled]="loading()"
+                [attr.aria-label]="'planning.rubric-scales.fields.color' | translate"
+                (input)="setColorFromPicker($event)"
+              />
+            </span>
+            <input type="text" formControlName="color" maxlength="20" [readOnly]="loading()" />
+          </div>
+          <form-error [control]="scaleForm.controls.color" />
+        </label>
+      </div>
+
+      <footer class="rubric-scales__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          [disabled]="loading()"
+          (click)="cancelEditor()"
+        />
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="scaleForm.invalid || loading()"
+        />
+      </footer>
+    </form>
+  </article>
+</ng-template>

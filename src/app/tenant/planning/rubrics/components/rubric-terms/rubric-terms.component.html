@@ -1,0 +1,50 @@
+<section class="rubric-terms">
+  <header class="rubric-terms__header">
+    <div>
+      <h2>{{ child().translation | translate }}</h2>
+      <p>{{ rubric().name }}</p>
+    </div>
+  </header>
+
+  @if (loaded()) {
+    <div class="rubric-terms__list">
+      @for (term of terms(); track term.id) {
+        <label
+          class="rubric-terms__item"
+          [class.rubric-terms__item--selected]="isSelected(term.id)"
+          [class.rubric-terms__item--readonly]="!canUpdate()"
+        >
+          <input
+            type="checkbox"
+            [checked]="isSelected(term.id)"
+            [disabled]="!canUpdate() || loading()"
+            (change)="toggleTerm(term.id, $event)"
+          />
+
+          <span class="rubric-terms__term">
+            <strong>{{ term.name }}</strong>
+
+            @if (term.code) {
+              <span>{{ term.code }}</span>
+            }
+          </span>
+        </label>
+      } @empty {
+        <p class="rubric-terms__empty">{{ 'common.no-data' | translate }}</p>
+      }
+    </div>
+
+    @if (getScreenOption('update')) {
+      <footer class="rubric-terms__actions">
+        <app-ui-button
+          [label]="'planning.rubric-terms.save' | translate"
+          variant="primary"
+          size="sm"
+          type="button"
+          [disabled]="loading()"
+          (click)="save()"
+        />
+      </footer>
+    }
+  }
+</section>

@@ -1,0 +1,280 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.rubric-assignments {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.rubric-assignments__header h2,
+.rubric-assignments__header p,
+.rubric-assignments__panel-header h3,
+.rubric-assignments__empty {
+  margin: 0;
+}
+
+.rubric-assignments__header h2 {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.rubric-assignments__header p {
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.rubric-assignments__layout {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.82fr) minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.rubric-assignments__panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 18rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.rubric-assignments__panel-header {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rubric-assignments__panel-header h3 {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rubric-assignments__list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-height: 24rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  gap: 0.2rem;
+}
+
+.rubric-assignments__group,
+.rubric-assignments__section {
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+
+.rubric-assignments__group {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  color: var(--color-text-soft);
+  gap: 0.65rem;
+}
+
+.rubric-assignments__group:has(input:not(:disabled)) {
+  cursor: pointer;
+}
+
+.rubric-assignments__group:has(input:not(:disabled)):hover {
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-assignments__group--selected {
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-assignments__group input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.rubric-assignments__group-content,
+.rubric-assignments__section-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.rubric-assignments__group-content strong,
+.rubric-assignments__group-content small,
+.rubric-assignments__section strong,
+.rubric-assignments__section small {
+  overflow-wrap: anywhere;
+}
+
+.rubric-assignments__group-content strong,
+.rubric-assignments__section strong {
+  color: var(--color-text);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.rubric-assignments__group-content small,
+.rubric-assignments__section small {
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.rubric-assignments__section .rubric-assignments__section-count {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+.rubric-assignments__section {
+  position: relative;
+  color: var(--color-text-soft);
+}
+
+.rubric-assignments__section--actionable {
+  padding-right: 3.25rem;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.rubric-assignments__section--actionable:hover,
+.rubric-assignments__section--actionable:focus-within {
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-assignments__section-actions {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  transform: translateY(-50%);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 120ms ease,
+    visibility 120ms ease;
+}
+
+.rubric-assignments__section:hover .rubric-assignments__section-actions,
+.rubric-assignments__section:focus-within .rubric-assignments__section-actions {
+  visibility: visible;
+  opacity: 1;
+}
+
+.rubric-assignments__subjects-editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.rubric-assignments__subjects-toolbar {
+  display: flex;
+  padding: 0.45rem 0.5rem 0;
+}
+
+.rubric-assignments__list--subjects {
+  flex: 1;
+}
+
+.rubric-assignments__subject {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-soft);
+  cursor: pointer;
+  gap: 0.65rem;
+}
+
+.rubric-assignments__subject:hover {
+  border-color: var(--color-primary-border-hover);
+  background: var(--color-primary-tint-hover);
+}
+
+.rubric-assignments__subject input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.rubric-assignments__subject-name {
+  display: flex;
+  min-width: 0;
+  color: var(--color-text);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  gap: 0.3rem;
+}
+
+.rubric-assignments__subjects-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  gap: 0.45rem;
+}
+
+:host ::ng-deep .rubric-assignments__section-actions .ui-button__control::after {
+  width: max-content;
+  right: 0;
+  left: auto;
+  transform: none;
+}
+
+:host ::ng-deep .rubric-assignments__section-actions .ui-button__control::before {
+  right: 0.75rem;
+  left: auto;
+  transform: none;
+}
+
+.rubric-assignments__empty {
+  padding: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .rubric-assignments__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rubric-assignments__panel {
+    min-height: auto;
+  }
+
+  .rubric-assignments__list {
+    max-height: 18rem;
+  }
+}
+
+@media (hover: none) {
+  .rubric-assignments__section-actions {
+    visibility: visible;
+    opacity: 1;
+  }
+}

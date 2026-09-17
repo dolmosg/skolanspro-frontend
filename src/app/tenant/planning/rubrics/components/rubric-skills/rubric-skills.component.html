@@ -1,0 +1,179 @@
+<section class="rubric-skills">
+  <header class="rubric-skills__header">
+    <h3>{{ 'planning.rubric-sections.skills' | translate }}</h3>
+
+    @if (getScreenOption('add'); as addOption) {
+      <app-ui-button
+        [label]="addOption.translation | translate"
+        [title]="addOption.translation | translate"
+        [iconLeft]="addOption.icon"
+        [variant]="addOption.color"
+        size="sm"
+        type="button"
+        [disabled]="editor() !== null || loading()"
+        (click)="startCreate()"
+      />
+    }
+  </header>
+
+  <header class="rubric-skills__context">
+    <span>{{ 'planning.rubric-sections.selected-section' | translate }}</span>
+    <strong>{{ section().name }}</strong>
+  </header>
+
+  @if (loaded()) {
+    <div
+      class="rubric-skills__list"
+      cdkDropList
+      cdkDropListOrientation="vertical"
+      [cdkDropListData]="skills()"
+      [cdkDropListDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+      (cdkDropListDropped)="reorderSkills($event)"
+    >
+      @if (editor()?.mode === 'create') {
+        <ng-container
+          [ngTemplateOutlet]="skillEditor"
+          [ngTemplateOutletContext]="{ mode: 'create' }"
+        />
+      }
+
+      @for (skill of skills(); track skill.id) {
+        @if (isEditingSkill(skill.id)) {
+          <ng-container
+            [ngTemplateOutlet]="skillEditor"
+            [ngTemplateOutletContext]="{ mode: 'edit' }"
+          />
+        } @else {
+          <article
+            class="rubric-skills__item"
+            cdkDrag
+            [cdkDragData]="skill"
+            [cdkDragDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+            [class.rubric-skills__item--subtitle]="skill.subtitle"
+          >
+            <span class="rubric-skills__leading">
+              @if (getScreenOption('order'); as orderOption) {
+                <app-ui-button
+                  class="rubric-skills__order-handle"
+                  [label]="orderOption.translation | translate"
+                  [title]="orderOption.translation | translate"
+                  [iconLeft]="orderOption.icon"
+                  [variant]="orderOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="editor() !== null || loading()"
+                  cdkDragHandle
+                />
+              }
+
+              <span class="rubric-skills__position">{{ skill.order + 1 }}</span>
+            </span>
+
+            <span class="rubric-skills__content">
+              <span class="rubric-skills__name">
+                <strong>{{ skill.name }}</strong>
+
+                @if (skill.subtitle) {
+                  <span class="rubric-skills__subtitle-badge">
+                    {{ 'planning.rubric-skills.subtitle' | translate }}
+                  </span>
+                }
+              </span>
+
+              @if (skill.description && (!skill.subtitle || skill.description !== skill.name)) {
+                <small>{{ skill.description }}</small>
+              }
+            </span>
+
+            <span class="rubric-skills__actions">
+              @if (getScreenOption('update'); as updateOption) {
+                <app-ui-button
+                  [label]="updateOption.translation | translate"
+                  [title]="updateOption.translation | translate"
+                  [iconLeft]="updateOption.icon"
+                  [variant]="updateOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="editor() !== null || loading()"
+                  (click)="startEdit(skill)"
+                />
+              }
+
+              @if (getScreenOption('delete'); as deleteOption) {
+                <app-ui-button
+                  [label]="deleteOption.translation | translate"
+                  [title]="deleteOption.translation | translate"
+                  [iconLeft]="deleteOption.icon"
+                  [variant]="deleteOption.color"
+                  [iconOnly]="true"
+                  size="sm"
+                  type="button"
+                  [disabled]="editor() !== null || loading()"
+                  (click)="deleteSkill(skill)"
+                />
+              }
+            </span>
+          </article>
+        }
+      } @empty {
+        <p class="rubric-skills__empty">{{ 'planning.rubric-skills.empty' | translate }}</p>
+      }
+    </div>
+  } @else {
+    <p class="rubric-skills__empty">{{ 'planning.rubric-skills.loading' | translate }}</p>
+  }
+</section>
+
+<ng-template #skillEditor let-mode="mode">
+  <article class="rubric-skills__editor-card">
+    <form class="rubric-skills__editor" [formGroup]="skillForm" (ngSubmit)="saveEditor()">
+      <h4>
+        {{
+          (mode === 'create'
+            ? 'planning.rubric-skills.editor.create'
+            : 'planning.rubric-skills.editor.edit'
+          ) | translate
+        }}
+      </h4>
+
+      <label class="rubric-skills__editor-field">
+        <span>{{ 'planning.rubric-skills.fields.name' | translate }}</span>
+        <input type="text" formControlName="name" [readOnly]="loading()" />
+        <form-error [control]="skillForm.controls.name" />
+      </label>
+
+      <label class="rubric-skills__editor-field">
+        <span>{{ 'planning.rubric-skills.fields.description' | translate }}</span>
+        <input type="text" formControlName="description" [readOnly]="loading()" />
+        <form-error [control]="skillForm.controls.description" />
+      </label>
+
+      <label class="rubric-skills__editor-checkbox">
+        <input type="checkbox" formControlName="subtitle" [attr.disabled]="loading() || null" />
+        <span>{{ 'planning.rubric-skills.fields.subtitle' | translate }}</span>
+      </label>
+
+      <footer class="rubric-skills__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          [disabled]="loading()"
+          (click)="cancelEditor()"
+        />
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="skillForm.invalid || loading()"
+        />
+      </footer>
+    </form>
+  </article>
+</ng-template>

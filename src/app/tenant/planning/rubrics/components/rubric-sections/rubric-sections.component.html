@@ -1,0 +1,211 @@
+<section class="rubric-sections">
+  <header class="rubric-sections__header">
+    <div>
+      <h2>{{ child().translation | translate }}</h2>
+      <p>{{ rubric().name }}</p>
+    </div>
+  </header>
+
+  @if (loaded()) {
+    <div
+      class="rubric-sections__layout"
+      [class.rubric-sections__layout--single]="skillsChild() === null"
+    >
+      <aside class="rubric-sections__master">
+        <header class="rubric-sections__panel-header rubric-sections__panel-header--actions">
+          <h3>{{ 'planning.rubric-sections.sections' | translate }}</h3>
+
+          @if (editor() === null && getScreenOption('add'); as addOption) {
+            <app-ui-button
+              [label]="addOption.translation | translate"
+              [title]="addOption.translation | translate"
+              [iconLeft]="addOption.icon"
+              [variant]="addOption.color"
+              size="sm"
+              type="button"
+              [disabled]="loading()"
+              (click)="startCreate()"
+            />
+          }
+        </header>
+
+        <div
+          class="rubric-sections__list"
+          cdkDropList
+          cdkDropListOrientation="vertical"
+          [cdkDropListData]="sections()"
+          [cdkDropListDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+          (cdkDropListDropped)="reorderSections($event)"
+        >
+          @if (editor()?.mode === 'create') {
+            <ng-container
+              [ngTemplateOutlet]="sectionEditor"
+              [ngTemplateOutletContext]="{ mode: 'create' }"
+            />
+          }
+
+          @for (section of sections(); track section.id) {
+            @if (isEditingSection(section.id)) {
+              <ng-container
+                [ngTemplateOutlet]="sectionEditor"
+                [ngTemplateOutletContext]="{ mode: 'edit' }"
+              />
+            } @else {
+              <article
+                class="rubric-sections__item"
+                cdkDrag
+                [cdkDragData]="section"
+                [cdkDragDisabled]="!getScreenOption('order') || editor() !== null || loading()"
+                role="button"
+                tabindex="0"
+                [class.rubric-sections__item--selected]="selectedSection()?.id === section.id"
+                [attr.aria-pressed]="selectedSection()?.id === section.id"
+                (click)="selectSection(section)"
+                (keydown.enter)="selectSection(section)"
+                (keydown.space)="$event.preventDefault(); selectSection(section)"
+              >
+                <span class="rubric-sections__leading">
+                  <span class="rubric-sections__position">{{ section.order + 1 }}</span>
+
+                  @if (getScreenOption('order'); as orderOption) {
+                    <app-ui-button
+                      class="rubric-sections__order-handle"
+                      [label]="orderOption.translation | translate"
+                      [title]="orderOption.translation | translate"
+                      [iconLeft]="orderOption.icon"
+                      [variant]="orderOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      type="button"
+                      [disabled]="editor() !== null || loading()"
+                      cdkDragHandle
+                      (click)="$event.stopPropagation()"
+                      (keydown)="$event.stopPropagation()"
+                    />
+                  }
+                </span>
+
+                <span class="rubric-sections__item-content">
+                  <strong>{{ section.name }}</strong>
+                  @if (section.description) {
+                    <small>{{ section.description }}</small>
+                  }
+                </span>
+
+                <span class="rubric-sections__item-actions">
+                  @if (getScreenOption('update'); as updateOption) {
+                    <app-ui-button
+                      [label]="updateOption.translation | translate"
+                      [title]="updateOption.translation | translate"
+                      [iconLeft]="updateOption.icon"
+                      [variant]="updateOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      type="button"
+                      [disabled]="editor() !== null || loading()"
+                      (click)="$event.stopPropagation(); startEdit(section)"
+                      (keydown)="$event.stopPropagation()"
+                    />
+                  }
+
+                  @if (getScreenOption('delete'); as deleteOption) {
+                    <app-ui-button
+                      [label]="deleteOption.translation | translate"
+                      [title]="deleteOption.translation | translate"
+                      [iconLeft]="deleteOption.icon"
+                      [variant]="deleteOption.color"
+                      [iconOnly]="true"
+                      size="sm"
+                      type="button"
+                      [disabled]="editor() !== null || loading()"
+                      (click)="$event.stopPropagation(); deleteSection(section)"
+                      (keydown)="$event.stopPropagation()"
+                    />
+                  }
+                </span>
+              </article>
+            }
+          } @empty {
+            <p class="rubric-sections__empty">{{ 'common.no-data' | translate }}</p>
+          }
+        </div>
+      </aside>
+
+      @if (skillsChild(); as child) {
+        <section class="rubric-sections__detail">
+          @if (selectedSection(); as section) {
+            <app-rubric-skills [section]="section" [child]="child" />
+          } @else {
+            <header class="rubric-sections__panel-header">
+              <h3>{{ 'planning.rubric-sections.skills' | translate }}</h3>
+            </header>
+            <p class="rubric-sections__empty rubric-sections__empty--detail">
+              {{ 'common.no-data' | translate }}
+            </p>
+          }
+        </section>
+      }
+    </div>
+  }
+</section>
+
+<ng-template #sectionEditor let-mode="mode">
+  <article class="rubric-sections__editor-card">
+    <form class="rubric-sections__editor" [formGroup]="sectionForm" (ngSubmit)="saveEditor()">
+      <h4>
+        {{
+          (mode === 'create'
+            ? 'planning.rubric-sections.editor.create'
+            : 'planning.rubric-sections.editor.edit'
+          ) | translate
+        }}
+      </h4>
+
+      <label class="rubric-sections__editor-field">
+        <span>{{ 'planning.rubric-sections.fields.name' | translate }}</span>
+        <input type="text" formControlName="name" maxlength="128" [readOnly]="loading()" />
+        <form-error [control]="sectionForm.controls.name" />
+      </label>
+
+      <label class="rubric-sections__editor-field">
+        <span>{{ 'planning.rubric-sections.fields.description' | translate }}</span>
+        <input type="text" formControlName="description" [readOnly]="loading()" />
+        <form-error [control]="sectionForm.controls.description" />
+      </label>
+
+      <label class="rubric-sections__editor-field">
+        <span>{{ 'planning.rubric-sections.fields.evaluator-role' | translate }}</span>
+        <app-sk-select
+          [items]="catalogs().evaluator_roles"
+          bindLabel="translation"
+          bindValue="id"
+          [translateLabel]="true"
+          [placeholder]="'common.select' | translate"
+          [disabled]="loading()"
+          [control]="sectionForm.controls.evaluator_role_id"
+        />
+        <form-error [control]="sectionForm.controls.evaluator_role_id" />
+      </label>
+
+      <footer class="rubric-sections__editor-actions">
+        <app-ui-button
+          [label]="'common.cancel' | translate"
+          iconLeft="cancel"
+          variant="danger"
+          size="sm"
+          type="button"
+          [disabled]="loading()"
+          (click)="cancelEditor()"
+        />
+        <app-ui-button
+          [label]="'common.save' | translate"
+          iconLeft="save"
+          variant="primary"
+          size="sm"
+          type="submit"
+          [disabled]="sectionForm.invalid || loading()"
+        />
+      </footer>
+    </form>
+  </article>
+</ng-template>

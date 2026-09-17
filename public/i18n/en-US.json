@@ -2332,7 +2332,13 @@
 		"question-types": "Question Types",
 		"roles": "Roles",
 		"root-dashboard": "Dashboard",
+		"rubric-assignments": "Rubric Assignments",
+		"rubric-scales": "Rubric Scales",
+		"rubric-sections": "Rubric Sections",
+		"rubric-skills": "Rubric Skills",
+		"rubric-terms": "Rubric Terms",
 		"rubric-types": "Rubric Types",
+		"rubrics": "Rubrics",
 		"schedule-types": "Schedule Types",
 		"school-years": "School Years",
 		"sections": "Sections",
@@ -2482,6 +2488,119 @@
 				"type": "Type",
 				"page-break": "Page break"
 			}
+		},
+		"rubrics": {
+			"add": "Add Rubric",
+			"update": "Edit Rubric",
+			"delete": "Delete Rubric",
+			"configure": "Configure rubric",
+			"configuration": "Configuration",
+			"messages": {
+				"confirm-delete": "Do you want to delete the rubric \"{{name}}\"? This action cannot be undone."
+			},
+			"empty": "There are no rubrics for the selected stage and grade.",
+			"display-modes": {
+				"name": "Name",
+				"description": "Description",
+				"both": "Name and description"
+			},
+			"editor": {
+				"create": "New rubric",
+				"edit": "Edit rubric"
+			},
+			"fields": {
+				"name": "Name",
+				"qualifier": "Qualifier",
+				"description": "Description",
+				"rubric-type": "Rubric type",
+				"display-mode": "Display",
+				"not-assessed-text": "Not assessed text",
+				"show-scale-description": "Show scale description",
+				"automatic": "Automatic",
+				"special-education": "Special education",
+				"accepts-special-education": "Accepts special education"
+			},
+			"status": {
+				"automatic": "Automatic",
+				"manual": "Manual"
+			}
+		},
+		"rubric-terms": {
+			"update": "Edit Terms",
+			"save": "Update Terms"
+		},
+		"rubric-assignments": {
+			"assigned-subjects": "Assigned: {{count}}",
+			"groups": "Groups",
+			"sections": "Sections",
+			"subjects": "Subjects",
+			"empty-groups": "No groups are available.",
+			"empty-sections": "There are no sections evaluated by teachers.",
+			"empty-subjects": "No subjects are available for the selected groups.",
+			"update-groups": "Update groups",
+			"update-subjects": "Manage subjects",
+			"select-group-to-manage-subjects": "Select at least one group to manage subjects."
+		},
+		"rubric-scales": {
+			"add": "Add Scale",
+			"update": "Edit Scale",
+			"delete": "Delete Scale",
+			"editor": {
+				"create": "New scale",
+				"edit": "Edit scale"
+			},
+			"fields": {
+				"color": "Color",
+				"description": "Description",
+				"name": "Name"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete the scale \"{{name}}\"?"
+			},
+			"order": "Order scales"
+		},
+		"rubric-sections": {
+			"add": "Add Section",
+			"update": "Edit Section",
+			"delete": "Delete Section",
+			"order": "Order sections",
+			"editor": {
+				"create": "New section",
+				"edit": "Edit section"
+			},
+			"fields": {
+				"name": "Name",
+				"description": "Description",
+				"evaluator-role": "Evaluator"
+			},
+			"messages": {
+				"confirm-delete": "Do you want to delete the section \"{{name}}\"? Its skills will also be deleted."
+			},
+			"sections": "Sections",
+			"skills": "Skills",
+			"selected-section": "Section",
+			"skills-placeholder": "The skills for this section will appear here."
+		},
+		"rubric-skills": {
+			"add": "Add Skill",
+			"update": "Edit Skill",
+			"delete": "Delete Skill",
+			"editor": {
+				"create": "New skill",
+				"edit": "Edit skill"
+			},
+			"empty": "No skills have been added to this section.",
+			"fields": {
+				"description": "Description",
+				"name": "Name",
+				"subtitle": "Is subtitle"
+			},
+			"loading": "Loading skills…",
+			"messages": {
+				"confirm-delete": "Do you want to delete \"{{name}}\"?"
+			},
+			"order": "Order skills",
+			"subtitle": "Subtitle"
 		},
 		"study-plan-academic-assignments": {
 			"add-group": "Add Group",

@@ -24,4 +24,8 @@ export const PLANNING_ROUTES: Routes = [
     loadChildren: () =>
       import('../study-plans/routes/study-plans.routes').then((m) => m.STUDY_PLANS_ROUTES),
   },
+  {
+    path: 'rubrics',
+    loadChildren: () => import('../rubrics/rubrics.routes').then((m) => m.RUBRICS_ROUTES),
+  },
 ];

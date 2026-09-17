@@ -435,6 +435,10 @@ export const ICON_REGISTRY = {
     lucideName: 'sliders-horizontal',
     icon: LucideSlidersHorizontal,
   },
+  skills: {
+    lucideName: 'sliders-horizontal',
+    icon: LucideSlidersHorizontal,
+  },
 
   'users-manage': {
     lucideName: 'users-round',
@@ -696,6 +700,11 @@ export const ICON_REGISTRY = {
   'message-square-quote': {
     lucideName: 'message-square-quote',
     icon: LucideMessageSquareQuote,
+  },
+
+  rubrics: {
+    lucideName: 'list-checks',
+    icon: LucideListChecks,
   },
 
   default: {

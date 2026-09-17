@@ -1,0 +1,69 @@
+<section class="rubric-detail">
+  <header class="rubric-detail__header">
+    <app-ui-button
+      [label]="'common.back' | translate"
+      iconLeft="back"
+      variant="secondary"
+      size="sm"
+      type="button"
+      (click)="back.emit()"
+    />
+  </header>
+
+  <div class="rubric-detail__workspace">
+    <div class="rubric-detail__identity">
+      <h2>{{ rubric().name }}</h2>
+
+      @if (rubric().qualifier) {
+        <p>{{ rubric().qualifier }}</p>
+      }
+    </div>
+
+    <section class="rubric-detail__configuration">
+      <h3>{{ 'planning.rubrics.configuration' | translate }}</h3>
+
+      <div class="rubric-detail__children">
+        @for (child of children(); track child.id) {
+          <article
+            class="rubric-detail__child"
+            [class]="'rubric-detail__child rubric-detail__child--' + child.color"
+            [class.rubric-detail__child--interactive]="
+              child.name === 'rubric-terms' ||
+              child.name === 'rubric-scales' ||
+              child.name === 'rubric-sections' ||
+              child.name === 'rubric-assignments'
+            "
+            [class.rubric-detail__child--selected]="selectedChild()?.id === child.id"
+            (click)="openChild(child)"
+          >
+            <div class="rubric-detail__child-main">
+              @if (child.icon; as icon) {
+                <span class="rubric-detail__child-icon" aria-hidden="true">
+                  <app-ui-icon [name]="icon" size="md" tone="primary" />
+                </span>
+              }
+
+              <span>{{ child.translation | translate }}</span>
+            </div>
+
+            <app-ui-icon name="drilldown" size="sm" tone="muted" aria-hidden="true" />
+          </article>
+        } @empty {
+          <p class="rubric-detail__empty">{{ 'common.no-data' | translate }}</p>
+        }
+      </div>
+    </section>
+  </div>
+
+  @if (selectedChild(); as child) {
+    @if (child.name === 'rubric-terms') {
+      <app-rubric-terms [rubric]="rubric()" [child]="child" />
+    } @else if (child.name === 'rubric-scales') {
+      <app-rubric-scales [rubric]="rubric()" [child]="child" />
+    } @else if (child.name === 'rubric-sections') {
+      <app-rubric-sections [rubric]="rubric()" [child]="child" />
+    } @else if (child.name === 'rubric-assignments') {
+      <app-rubric-assignments [rubric]="rubric()" [child]="child" />
+    }
+  }
+</section>
